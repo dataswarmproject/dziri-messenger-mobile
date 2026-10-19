@@ -1,4 +1,42 @@
-# Dziri Messenger first source checkpoint
+# Dziri Inbox companion checkpoint
+
+19 October 2026. The owner's correction identifies **dziri-inbox** as the existing
+web app. The current mobile entry now uses its Rails staff sessions and APIs,
+replacing the previous consumer-only default. Inbox baseline: `47b8909`.
+
+Real local server checks pass for staff login, profile, queue access, persisted
+messages/private notes, status, assignment, cross-account rejection and logout.
+Only synthetic local demo data was changed; scripted status/assignment changes
+were restored. No production backend, bridge, external channel, app-store or
+paid cloud build was activated.
+
+Current checks: 16 mobile/domain tests, consumer-plus-Inbox typecheck, lint,
+ring/layout/theme consistency and frozen dependency install passed. Final web,
+Android and iOS bundle export passed. The existing web editor's 286 selected
+tests and rebuilt dashboard/SDK also passed.
+
+Actual two-client browser proof: a reply sent in the companion appeared in the
+existing web dashboard without reload; a reply typed and sent in the repaired
+web editor appeared in the companion without reload. Resolving on mobile changed
+the web workflow to Reopen. These checks used account 43 / conversation 1 in the
+standalone synthetic local demo. Screenshots are recorded under
+`D:/codex-artifacts/dziri-inbox-mobile-wiring-20261019`.
+
+Browser testing caught and fixed a fetch receiver error and changing FlatList
+viewability callback. The fetch regression is included in unit checks. It also
+exposed duplicate ProseMirror model constructors in the web editor; a separate
+Inbox worktree unifies the dependency and Vite resolution, with an identity guard.
+
+The shared black-theme snapshot matches Inbox. Development watches its source;
+bundle export refreshes the snapshot. Server/API updates serve both clients;
+screen changes still require separate platform builds.
+
+Android/iOS exports are JavaScript/Hermes evidence only. The Android SDK is absent
+on this host and iOS requires macOS/Xcode or separately authorized build access.
+Native storage, lifecycle and push still need device checks. Staff attachments,
+calls, full settings, localization and durable offline sends remain unfinished.
+
+## Historical consumer checkpoint (superseded default)
 
 19 October 2026, Africa/Algiers. Scope: local source, isolated tests and JavaScript
 bundles. This is an initial implementation, not a production release or native

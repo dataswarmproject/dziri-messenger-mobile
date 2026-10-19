@@ -1,5 +1,14 @@
 # Dziri Messenger implementation rules
 
+- The current default product is the staff companion to `dziri-inbox`, per the
+  owner's correction. Its runtime is `src/inbox/`, using the same Rails sessions,
+  account APIs and Action Cable as the web dashboard. No parallel message store.
+- `src/dziri/` retains the previous consumer slice for later integration; it is
+  not mounted. Consumer-only rules below apply to that slice, not staff access.
+- Web/mobile runtime changes share the server immediately. Platform UI code
+  still requires its own build. Theme source is `dziri-inbox/config/dziri-theme.json`;
+  use `sync:inbox` before development/build rather than editing the generated copy.
+
 - Preserve upstream history, MIT notices and the upstream native component layouts.
 - Consumer runtime is `src/dziri/`; it must not import Chatwoot staff auth,
   account APIs, Redux store, private notes, Firebase subscriptions or Sentry setup.

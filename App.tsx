@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
 import './reanimatedConfig';
 
-// Consumer builds must never initialize the upstream staff store or telemetry.
-export { default } from './src/dziri/app';
+// Inbox companion uses the existing Rails service, without legacy telemetry/store.
+export { default } from './src/inbox/app';

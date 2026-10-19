@@ -37,6 +37,7 @@ const layoutChanges = execFileSync(
 assert.equal(layoutChanges, '', `Upstream native layouts/fonts changed: ${layoutChanges}`);
 const entry = readFileSync(resolve(root, 'App.tsx'), 'utf8');
 assert.doesNotMatch(entry, /from ['"].*(sentry|store|src\/app)/i);
+assert.match(entry, /src\/inbox\/app/, 'Default entry must connect to Dziri Inbox');
 const appConfig = readFileSync(resolve(root, 'app.config.ts'), 'utf8');
 assert.doesNotMatch(
   appConfig,
@@ -53,6 +54,6 @@ if (index !== -1) {
   assert.deepEqual(mobile, inbox, 'Dziri Inbox and mobile theme snapshots have diverged');
 }
 console.log(
-  'Dziri consistency passed: ring assets, upstream layouts/fonts, consumer identity' +
+  'Dziri consistency passed: ring assets, upstream layouts/fonts, Inbox companion identity' +
     (index === -1 ? '' : ', shared Inbox theme'),
 );

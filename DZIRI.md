@@ -1,4 +1,64 @@
-# Dziri Messenger
+# Dziri Inbox mobile companion
+
+The current default app connects to the existing **dziri-inbox** Rails service.
+The web dashboard and mobile use the same staff accounts, workspaces,
+conversation IDs, messages, assignments, status and read state. Action Cable
+refreshes the mobile queries after web changes; foreground/reconnect refresh
+and a 15-second fallback recover missed events. There is no second message store.
+Convex is not needed for the standalone Inbox companion.
+
+The active entry is `App.tsx` -> `src/inbox/app.tsx`. The previous consumer slice
+under `src/dziri/` is retained but not mounted. Personal DMs stay outside staff
+queues. Native session tokens use SecureStore; web preview tokens stay in memory.
+Staff MFA uses the existing challenge. Disposed sessions abort outstanding requests.
+
+Implemented: staff login, workspace selection, open/resolved/all queues,
+inbox/history pagination, live refresh, text replies, private notes, self assignment,
+resolve/reopen and visible-message read acknowledgements. Failed writes are not
+automatically replayed; refresh history before manually retrying an unconfirmed
+reply because the Rails message API has no client retry key.
+
+## Shared updates and local run
+
+Message/workflow changes through either client use the same server immediately.
+Backend fixes apply to both clients when that server is updated. The shared
+color authority is `dziri-inbox/config/dziri-theme.json`. `pnpm start` and
+`pnpm web` synchronize and watch the sibling source; `pnpm bundle:inbox`
+refreshes the snapshot before exporting.
+
+Platform screens remain separate Vue and React Native code. Screen changes and
+updated theme tokens in installed native apps require their respective builds.
+
+With Dziri Inbox already running on localhost:3901:
+
+```powershell
+pnpm install --frozen-lockfile
+pnpm bundle:inbox
+pnpm preview:inbox
+```
+
+Open http://localhost:3904 and use the same local staff login as the web dashboard.
+The loopback preview proxy forwards auth/API/cable endpoints and strips browser
+cookies. It does not change the Inbox host's CORS or security configuration.
+It is a local preview tool. `DZIRI_INBOX_PREVIEW_ORIGIN` selects another HTTPS host.
+
+For native builds use public origin-only `EXPO_PUBLIC_INBOX_URL` in ignored
+`.env.local`, or enter the HTTPS Inbox address at sign-in. Android emulator
+development can use http://10.0.2.2:3901. Physical devices need a reachable HTTPS
+development host. Production never defaults to the local demo.
+
+`pnpm test`, `pnpm typecheck`, `pnpm lint` and the consistency guard verify source.
+`scripts/verify-inbox.mjs` checks the real local server using explicit environment
+variables `DZIRI_INBOX_TEST_EMAIL`, `DZIRI_INBOX_TEST_PASSWORD`, and
+`DZIRI_INBOX_TEST_CONVERSATION`. It refuses non-loopback servers and adds a
+synthetic private note in the named local demo conversation.
+
+Mobile attachment upload/viewing, push, calls, durable offline outbox, search,
+full settings and translated staff-screen labels remain additional work.
+Attachments show an explicit web-inbox placeholder. External channels remain off.
+Bundles do not prove native-device acceptance; see `VERIFICATION.md`.
+
+## Historical consumer checkpoint (superseded default)
 
 An isolated consumer fork of Chatwoot Mobile. Upstream is pinned at
 `e3c8fc5f3d0ece96ea6843e38759bc9b44e13112` (mobile 4.9.11).

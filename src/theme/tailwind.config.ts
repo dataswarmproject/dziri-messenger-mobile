@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
+import { nativeThemeColors } from '../dziri/theme';
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 // Light theme colors
@@ -22,7 +23,7 @@ export const twConfig = {
   theme: {
     ...defaultTheme,
     extend: {
-      colors: { ...chatwootAppColors },
+      colors: { ...chatwootAppColors, ...nativeThemeColors },
       fontSize: {
         xs: '12px',
         cxs: '13px',

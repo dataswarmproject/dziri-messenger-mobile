@@ -3,6 +3,11 @@
 
 ---
 
+# Dziri Messenger fork
+
+Consumer implementation, local commands and verification limits: [DZIRI.md](./DZIRI.md).
+The original Chatwoot project description follows for upstream attribution.
+
 # Chatwoot
 
 Mobile app for chatwoot platform. Built with React Native and Expo.

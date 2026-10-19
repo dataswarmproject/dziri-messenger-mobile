@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "noEmit": true },
+  "include": [
+    "App.tsx",
+    "app.config.ts",
+    "reanimatedConfig.ts",
+    "src/dziri/**/*.ts",
+    "src/dziri/**/*.tsx",
+    "src/theme/**/*.ts",
+    "src/global.d.ts"
+  ]
+}

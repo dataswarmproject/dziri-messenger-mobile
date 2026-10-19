@@ -5,7 +5,7 @@ orbs:
 jobs:
   build-and-test:
     docker:
-      - image: cimg/node:20.9.0
+      - image: cimg/node:24.13.0
     steps:
       - checkout
       - run:
@@ -28,8 +28,12 @@ jobs:
             - .pnpm-store
             - node_modules
       - run:
-          command: npx pnpm@10.11.0 exec jest --maxWorkers=2
-          name: Run pnpm tests
+          command: |
+            npx pnpm@10.11.0 test
+            npx pnpm@10.11.0 run typecheck:consumer
+            npx pnpm@10.11.0 run lint
+            npx pnpm@10.11.0 run check:consistency
+          name: Verify Dziri consumer slice
 
 workflows:
   test_my_app:

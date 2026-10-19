@@ -6,6 +6,7 @@ node_modules/
 # Expo
 .expo/
 dist/
+dist-*/
 web-build/
 
 # Native
@@ -43,3 +44,6 @@ google-services.json
 GoogleService-Info.plist
 .env
 .env.local
+
+# Local verification output and runtime state
+.codex/

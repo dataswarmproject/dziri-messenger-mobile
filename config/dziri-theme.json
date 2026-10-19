@@ -1,0 +1,30 @@
+{
+  "primary": "#c91c41",
+  "background": "#f2f1e8",
+  "light": {
+    "slate-1": "253 252 247", "slate-2": "247 246 239", "slate-3": "238 236 225", "slate-4": "231 228 216",
+    "slate-5": "223 220 207", "slate-6": "211 207 193", "slate-7": "194 190 174", "slate-8": "171 167 150",
+    "slate-9": "139 136 121", "slate-10": "123 120 105", "slate-11": "108 108 102", "slate-12": "26 27 23",
+    "blue-1": "255 252 253", "blue-2": "255 247 248", "blue-3": "254 234 237", "blue-4": "255 220 225",
+    "blue-5": "255 206 214", "blue-6": "248 191 200", "blue-7": "239 172 184", "blue-8": "229 146 163",
+    "blue-9": "201 28 65", "blue-10": "178 20 55", "blue-11": "181 22 59", "blue-12": "100 23 43",
+    "background-color": "242 241 232", "surface-1": "251 250 244", "surface-2": "255 255 255",
+    "border-container": "220 219 211", "border-weak": "220 219 211", "border-strong": "202 202 193",
+    "text-blue": "100 23 43", "solid-blue": "254 234 237", "solid-blue-2": "255 247 248",
+    "border-blue": "201, 28, 65, 0.5", "border-blue-strong": "100 23 43", "label-background": "247 246 239"
+  },
+  "dark": {
+    "slate-1": "15 17 18", "slate-2": "18 20 21", "slate-3": "25 27 28", "slate-4": "31 33 34",
+    "slate-5": "39 41 42", "slate-6": "48 50 51", "slate-7": "62 64 64", "slate-8": "80 82 82",
+    "slate-9": "108 109 107", "slate-10": "128 129 125", "slate-11": "154 152 149", "slate-12": "242 239 234",
+    "blue-1": "25 17 19", "blue-2": "30 21 23", "blue-3": "58 20 30", "blue-4": "78 19 37",
+    "blue-5": "94 26 46", "blue-6": "111 37 57", "blue-7": "136 52 73", "blue-8": "179 68 94",
+    "blue-9": "201 28 65", "blue-10": "223 43 81", "blue-11": "255 139 160", "blue-12": "254 210 219",
+    "background-color": "10 11 11", "surface-1": "15 17 18", "surface-2": "16 16 16",
+    "border-container": "31 31 34", "border-weak": "31 31 34", "border-strong": "42 42 42",
+    "solid-1": "15 17 18", "solid-2": "16 16 16", "solid-3": "18 20 21", "solid-active": "25 27 28",
+    "card-color": "15 17 18", "button-color": "15 17 18", "label-background": "18 20 21",
+    "text-blue": "254 210 219", "solid-blue": "58 20 30", "solid-blue-2": "30 21 23",
+    "border-blue": "255, 107, 137, 0.5", "border-blue-strong": "136 52 73"
+  }
+}

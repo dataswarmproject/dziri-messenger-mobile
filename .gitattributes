@@ -2,6 +2,7 @@ assets/dziri-ring.svg -text
 /src/inbox/** text eol=lf
 /src/dziri/** text eol=lf
 /src/messenger.tsx text eol=lf
+/src/entry.tsx text eol=lf
 /src/access.ts text eol=lf
 /App.tsx text eol=lf
 /app.config.ts text eol=lf

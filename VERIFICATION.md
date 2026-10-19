@@ -1,4 +1,23 @@
-# Customer, staff and agent access checkpoint
+# Entry screen redesign
+
+The customer/team entry now has a responsive two-column desktop layout,
+single-column mobile layout, compact language controls, visible keyboard focus,
+and the approved ring composited into the dark background without a visible tile.
+Original logo files/hashes and account routing are preserved. Arabic uses a
+system sans fallback, mirrored layout/arrows and an unchanged logo orientation.
+
+Typecheck, lint, 18 existing tests, brand/runtime consistency and web/Android/iOS
+bundle export passed. The design heuristic scan found no warnings/errors;
+this does not claim exact Geist fidelity. Browser checks cover the desktop and
+390px layouts, Arabic, keyboard focus/activation and both account destinations.
+Native device rendering of blend mode remains unverified. See
+`docs/design/entry-screen.md` for the scoped design contract.
+
+The shared Inbox source changed during this task after the owner asked that chat
+to restore original Chatwoot styling. The mobile snapshot now follows that
+current blue/charcoal palette; the entry redesign uses its tokens directly.
+
+## Customer, staff and agent access checkpoint
 
 The owner's clarification expands the app to customers as well as staff/agents.
 The root chooser mounts separate existing-auth runtimes, with no client-selected

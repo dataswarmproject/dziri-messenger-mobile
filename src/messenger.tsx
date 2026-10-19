@@ -1,28 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Linking, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Image } from 'expo-image';
 import Constants from 'expo-constants';
 import CustomerApp from './dziri/app';
 import TeamApp from './inbox/app';
-import { LocaleProvider, useLocale } from './dziri/locale';
-import { LanguageChoice } from './dziri/ui';
+import { LocaleProvider } from './dziri/locale';
 import { colorsFor } from './dziri/theme';
 import { supportLink } from './access';
+import { EntryScreen } from './entry';
 
 const colors = colorsFor(true);
 const styles = StyleSheet.create({
   fill: { flex: 1, backgroundColor: colors.background },
-  card: {
-    padding: 22,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-    gap: 10,
-  },
-  title: { color: colors.text, fontSize: 23, fontWeight: '600' },
-  description: { color: colors.secondary, fontSize: 16, lineHeight: 23 },
 });
 
 export default function Messenger() {
@@ -64,42 +53,8 @@ function MessengerRuntime() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.fill}>
-        <ChooseView choose={setView} />
+        <EntryScreen choose={setView} />
       </SafeAreaView>
     </SafeAreaProvider>
-  );
-}
-
-function ChooseView({ choose }: { choose: (view: 'customer' | 'team') => void }) {
-  const { t } = useLocale();
-  return (
-    <View style={[styles.fill, { justifyContent: 'center', padding: 24 }]}>
-      <View style={{ maxWidth: 460, width: '100%', alignSelf: 'center', gap: 20 }}>
-        <Image
-          source={require('../assets/dziri-ring.png')}
-          style={{ width: 80, height: 80 }}
-          contentFit="contain"
-        />
-        <Text style={styles.title}>{t.app}</Text>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t.customerView}
-          onPress={() => choose('customer')}
-          style={styles.card}>
-          <Text style={styles.title}>{t.customerView}</Text>
-          <Text style={styles.description}>{t.customerViewHint}</Text>
-        </Pressable>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t.teamView}
-          onPress={() => choose('team')}
-          style={styles.card}>
-          <Text style={styles.title}>{t.teamView}</Text>
-          <Text style={styles.description}>{t.teamViewHint}</Text>
-        </Pressable>
-        <Text style={styles.description}>{t.roleHint}</Text>
-        <LanguageChoice />
-      </View>
-    </View>
   );
 }

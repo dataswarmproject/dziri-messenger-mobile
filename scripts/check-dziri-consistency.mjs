@@ -1,7 +1,7 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { resolve, dirname } from 'node:path';
+import { resolve, dirname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 
@@ -37,7 +37,30 @@ const layoutChanges = execFileSync(
 assert.equal(layoutChanges, '', `Upstream native layouts/fonts changed: ${layoutChanges}`);
 const entry = readFileSync(resolve(root, 'App.tsx'), 'utf8');
 assert.doesNotMatch(entry, /from ['"].*(sentry|store|src\/app)/i);
-assert.match(entry, /src\/inbox\/app/, 'Default entry must connect to Dziri Inbox');
+assert.match(entry, /src\/messenger/, 'Default entry must offer customer and team views');
+const launcher = readFileSync(resolve(root, 'src/messenger.tsx'), 'utf8');
+assert.match(launcher, /from ['"]\.\/dziri\/app['"]/);
+assert.match(launcher, /from ['"]\.\/inbox\/app['"]/);
+for (const file of readdirSync(resolve(root, 'src/dziri'), { recursive: true }).filter(name =>
+  /\.tsx?$/.test(String(name)),
+)) {
+  const consumer = readFileSync(resolve(root, 'src/dziri', String(file)), 'utf8');
+  for (const imported of consumer.matchAll(/\bfrom ['"]([^'"]+)['"]/g)) {
+    const target = imported[1].startsWith('.')
+      ? resolve(dirname(resolve(root, 'src/dziri', String(file))), imported[1])
+      : imported[1].startsWith('@/')
+        ? resolve(root, 'src', imported[1].slice(2))
+        : null;
+    if (!target) continue;
+    for (const staffPath of ['src/inbox', 'src/store', 'src/services/APIService']) {
+      const forbidden = resolve(root, staffPath);
+      assert.ok(
+        target !== forbidden && !target.startsWith(forbidden + sep),
+        `Consumer must not import staff runtime: ${file} -> ${imported[1]}`,
+      );
+    }
+  }
+}
 const appConfig = readFileSync(resolve(root, 'app.config.ts'), 'utf8');
 assert.doesNotMatch(
   appConfig,
@@ -54,6 +77,6 @@ if (index !== -1) {
   assert.deepEqual(mobile, inbox, 'Dziri Inbox and mobile theme snapshots have diverged');
 }
 console.log(
-  'Dziri consistency passed: ring assets, upstream layouts/fonts, Inbox companion identity' +
+  'Dziri consistency passed: ring assets, upstream layouts/fonts, isolated customer/team runtimes' +
     (index === -1 ? '' : ', shared Inbox theme'),
 );

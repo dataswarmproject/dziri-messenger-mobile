@@ -30,6 +30,8 @@ import {
 } from './client';
 import { loadSession, saveSession } from './session';
 import { subscribeInbox } from './live';
+import { staffRole } from '../access';
+import { useLocale } from '../dziri/locale';
 
 const colors = colorsFor(true);
 const messageViewability = { itemVisiblePercentThreshold: 75, minimumViewTime: 500 };
@@ -89,7 +91,8 @@ function Action({
   );
 }
 
-export default function InboxApp() {
+export default function InboxApp({ onExit }: { onExit?: () => void }) {
+  const { t } = useLocale();
   const [fonts, fontError] = useFonts({
     'Inter-400-20': require('../assets/fonts/Inter-400-20.ttf'),
     'Inter-600-20': require('../assets/fonts/Inter-600-20.ttf'),
@@ -99,6 +102,11 @@ export default function InboxApp() {
       <SafeAreaProvider>
         <SafeAreaView style={styles.fill}>
           <StatusBar style="light" />
+          {onExit ? (
+            <Pressable accessibilityRole="button" onPress={onExit} style={{ padding: 12 }}>
+              <Text style={styles.text}>{t.switchView}</Text>
+            </Pressable>
+          ) : null}
           {fontError ? (
             <Text style={styles.error}>Unable to load fonts.</Text>
           ) : fonts ? (
@@ -113,7 +121,9 @@ export default function InboxApp() {
 }
 
 function Connection() {
-  const [origin, setOrigin] = useState(Constants.expoConfig?.extra?.inboxUrl ?? '');
+  const [origin, setOrigin] = useState(
+    process.env.EXPO_PUBLIC_INBOX_URL ?? Constants.expoConfig?.extra?.inboxUrl ?? '',
+  );
   const [proxy, setProxy] = useState(false);
   const [ready, setReady] = useState(Platform.OS !== 'web');
   const [client, setClient] = useState<InboxClient | null>(null);
@@ -365,7 +375,7 @@ function Accounts({
   profile: Profile;
   logout: () => void;
 }) {
-  const available = profile.accounts.filter(account => account.status === 'active');
+  const available = profile.accounts.filter(account => staffRole(account) !== null);
   const [accountId, setAccountId] = useState(
     available.find(account => account.id === profile.account_id)?.id ?? available[0]?.id,
   );
@@ -388,6 +398,11 @@ function Accounts({
           />
         ))}
       </ScrollView>
+      <Text style={[styles.muted, { paddingHorizontal: 16 }]}>
+        {available.find(account => account.id === accountId)?.role === 'administrator'
+          ? 'Staff · administrator'
+          : 'Agent'}
+      </Text>
       {accountId ? (
         <Workspace key={accountId} client={client} profile={profile} account={accountId} />
       ) : (

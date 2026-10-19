@@ -3,6 +3,8 @@
   "compilerOptions": { "noEmit": true },
   "include": [
     "App.tsx",
+    "src/messenger.tsx",
+    "src/access.ts",
     "app.config.ts",
     "reanimatedConfig.ts",
     "src/dziri/**/*.ts",

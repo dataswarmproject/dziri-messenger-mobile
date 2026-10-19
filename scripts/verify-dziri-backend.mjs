@@ -11,6 +11,8 @@ if (!process.argv[2])
 const backend = resolve(process.argv[2]);
 const runner = resolve(backend, 'node_modules/vitest/vitest.mjs');
 const authServer = resolve(mobile, 'node_modules/@convex-dev/auth/dist/server/index.js');
+const suites = ['tests/activation/thread-header.test.ts'];
+if (process.argv.includes('--with-inbox')) suites.push('tests/activation/dziri-inbox.test.ts');
 for (const path of [
   runner,
   authServer,
@@ -28,7 +30,7 @@ writeFileSync(
       resolve: { alias: [{ find: '@convex-dev/auth/server', replacement: authServer }] },
       test: {
         environment: 'edge-runtime',
-        include: ['tests/activation/thread-header.test.ts'],
+        include: suites,
         setupFiles: ['tests/setup.ts'],
         server: { deps: { inline: ['convex-test'] } },
         pool: 'forks',

@@ -21,6 +21,7 @@ import { canSendText, messageText, storedReceipt } from './message-policy';
 import { useLocale } from './locale';
 import { Notice, useColors } from './ui';
 import type { MessengerRoutes } from './routes';
+import { SupportConnection } from './support';
 
 const MessageBubble = memo(function MessageBubble({
   message,
@@ -188,6 +189,7 @@ function Conversation({
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : 0}
       style={[tailwind.style('flex-1'), { backgroundColor: colors.background }]}>
+      {thread.type === 'support' ? <SupportConnection threadId={threadId} /> : null}
       {!isWebSocketConnected ? (
         <Text
           accessibilityRole="alert"

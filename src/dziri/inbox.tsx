@@ -98,6 +98,12 @@ export function InboxScreen({ navigation }: NativeStackScreenProps<MessengerRout
     : threads;
   return (
     <View style={[tailwind.style('flex-1'), { backgroundColor: colors.background }]}>
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => navigation.navigate('Support')}
+        style={tailwind.style('p-4')}>
+        <Text style={{ color: colors.primary }}>{t.support}</Text>
+      </Pressable>
       <TextInput
         value={search}
         onChangeText={setSearch}

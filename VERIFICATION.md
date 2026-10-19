@@ -1,4 +1,34 @@
-# Dziri Inbox companion checkpoint
+# Customer, staff and agent access checkpoint
+
+The owner's clarification expands the app to customers as well as staff/agents.
+The root chooser mounts separate existing-auth runtimes, with no client-selected
+role grants. Team access requires an active administrator/agent membership.
+Customers keep their canonical Dziri identity and messages and gain support
+availability, explicit sharing consent, connection readiness and withdrawal UI.
+
+An anonymous read-only request to `honorable-moose-964` on 19 October 2026 again
+returned the disabled-free-plan error. The customer view must show a truthful
+unavailable state until restoration. No actual customer login, customer-to-Inbox
+live exchange, billing change or bridge activation is claimed in this checkpoint.
+
+The actual existing backend's 25 isolated tests passed (19 Inbox bridge and
+6 message/header checks), including consent, private-note exclusion and tenancy.
+These are fixture tests, not live production connectivity. Role and support-link
+tests reject inactive/customer roles and links that try to supply access/consent.
+
+Current verification: 18 mobile/domain tests, 25 backend fixture tests,
+typecheck, lint, frozen install, ring/layout/theme/runtime isolation guard and
+web/Android/iOS exports passed. Browser checks verified the English/Arabic
+chooser, locale retention when switching views, the real disabled-backend
+customer notice, separate staff sign-in and active administrator workspace.
+Staff queues recovered after an independent local service restart.
+
+The native support form/withdrawal code is implemented against the existing
+backend functions. Live customer form submission cannot be qualified while the
+customer backend is disabled. Native device and OS universal-link association
+verification remain pending. No production role changes were made.
+
+## Earlier team companion checkpoint
 
 19 October 2026. The owner's correction identifies **dziri-inbox** as the existing
 web app. The current mobile entry now uses its Rails staff sessions and APIs,

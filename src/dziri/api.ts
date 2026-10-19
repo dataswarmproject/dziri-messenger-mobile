@@ -42,6 +42,24 @@ export interface MessageRecord {
 }
 
 export const dziriApi = {
+  supportAvailability: makeFunctionReference<
+    'query',
+    { companyId: string },
+    { name: string; available: boolean } | null
+  >('inbox/service:supportAvailability'),
+  startSupport: makeFunctionReference<
+    'mutation',
+    { companyId: string; consent: boolean },
+    { threadId: string; connectionId: string }
+  >('inbox/service:startSupport'),
+  supportConnection: makeFunctionReference<
+    'query',
+    { threadId: string },
+    { connectionId: string; connected: boolean; ready: boolean; orderId: string | null } | null
+  >('inbox/service:connectionStatus'),
+  stopSharing: makeFunctionReference<'mutation', { connectionId: string }, null>(
+    'inbox/service:disconnect',
+  ),
   me: makeFunctionReference<'query', Record<string, never>, { _id: string; name?: string } | null>(
     'users:getMe',
   ),

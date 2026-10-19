@@ -1,10 +1,15 @@
 # Dziri Messenger implementation rules
 
-- The current default product is the staff companion to `dziri-inbox`, per the
-  owner's correction. Its runtime is `src/inbox/`, using the same Rails sessions,
-  account APIs and Action Cable as the web dashboard. No parallel message store.
-- `src/dziri/` retains the previous consumer slice for later integration; it is
-  not mounted. Consumer-only rules below apply to that slice, not staff access.
+- The product serves customers, staff and agents, per the owner's clarification.
+  `src/messenger.tsx` selects the customer (`src/dziri/`) or team (`src/inbox/`)
+  runtime. A view selection never grants roles. Staff/agent access comes only
+  from current active server-returned workspace membership.
+- Team mode uses the existing Rails sessions, account APIs and Action Cable.
+  Customer mode uses canonical Dziri identity/messages and the existing consent
+  bridge to support. Keep credentials and caches isolated between runtimes;
+  never expose staff account APIs/private notes through the customer client.
+- Public support links select only the support company; they never grant staff
+  access, convey credentials, activate the bridge or imply customer consent.
 - Web/mobile runtime changes share the server immediately. Platform UI code
   still requires its own build. Theme source is `dziri-inbox/config/dziri-theme.json`;
   use `sync:inbox` before development/build rather than editing the generated copy.

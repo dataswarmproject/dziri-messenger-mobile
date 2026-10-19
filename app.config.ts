@@ -13,7 +13,11 @@ const config: ExpoConfig = {
     package: 'com.dziri.messenger',
     adaptiveIcon: { foregroundImage: './assets/dziri-ring.png', backgroundColor: '#0a0b0b' },
   },
-  extra: { inboxUrl: process.env.EXPO_PUBLIC_INBOX_URL ?? '' },
+  extra: {
+    inboxUrl: process.env.EXPO_PUBLIC_INBOX_URL ?? '',
+    convexUrl: process.env.EXPO_PUBLIC_CONVEX_URL ?? '',
+    supportCompanyId: process.env.EXPO_PUBLIC_SUPPORT_COMPANY_ID ?? '',
+  },
   plugins: [
     'expo-font',
     'expo-image',

@@ -1,4 +1,32 @@
-# Dziri Inbox mobile companion
+# Dziri Messenger: customers, staff and agents
+
+The app now opens with **Customer** and **Staff & agents** views. Both modes are
+mounted from `src/messenger.tsx` and can return to the chooser. The chosen view
+does not determine permissions: Inbox uses active server-returned agent/admin
+memberships, and the customer backend derives the authenticated Dziri user.
+
+Customers retain their existing Dziri login, private chats and canonical message
+IDs. The support screen checks the existing `inbox/service:supportAvailability`,
+requires an explicit sharing checkbox before `startSupport`, and exposes
+`connectionStatus` and `disconnect` in the support conversation. The existing
+bridge forwards that opted-in conversation to the corresponding Inbox workspace;
+private staff notes and unrelated personal messages remain excluded.
+
+`EXPO_PUBLIC_CONVEX_URL` must match the consumer web app's deployment. An anonymous
+read-only probe shows a clear outage state before login when that backend is
+disabled. `EXPO_PUBLIC_SUPPORT_COMPANY_ID` selects the default support business;
+an approved `https://dziri.app/support/<companyId>` or
+`dziri-messenger://support/<companyId>` link can select another support destination.
+Opening a link never starts a conversation or grants consent automatically.
+The custom app scheme is configured; HTTPS universal/app-link OS association
+still requires device and domain verification.
+
+The customer backend was freshly checked on 19 October 2026 and still reports
+disabled deployments due to plan limits. Live customer/support synchronization
+cannot be accepted until that backend and the separately gated bridge are restored.
+No billing change or production activation was performed.
+
+## Team companion checkpoint
 
 The current default app connects to the existing **dziri-inbox** Rails service.
 The web dashboard and mobile use the same staff accounts, workspaces,
@@ -7,8 +35,8 @@ refreshes the mobile queries after web changes; foreground/reconnect refresh
 and a 15-second fallback recover missed events. There is no second message store.
 Convex is not needed for the standalone Inbox companion.
 
-The active entry is `App.tsx` -> `src/inbox/app.tsx`. The previous consumer slice
-under `src/dziri/` is retained but not mounted. Personal DMs stay outside staff
+The team entry is `src/inbox/app.tsx`. The customer entry is `src/dziri/app.tsx`.
+Personal DMs stay outside staff
 queues. Native session tokens use SecureStore; web preview tokens stay in memory.
 Staff MFA uses the existing challenge. Disposed sessions abort outstanding requests.
 

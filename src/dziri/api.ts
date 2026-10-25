@@ -60,6 +60,9 @@ export interface MessageRecord {
 }
 
 export const dziriApi = {
+  acceptTerms: makeFunctionReference<'mutation', { source: string }, unknown>(
+    'core/id/cndp:acceptTerms',
+  ),
   capabilities: makeFunctionReference<'query', Record<string, never>, MessengerCapabilities | null>(
     'messaging/messenger:capabilities',
   ),

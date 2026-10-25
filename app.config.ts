@@ -1,4 +1,5 @@
 import type { ExpoConfig } from 'expo/config';
+import dziriBackend from './config/dziri-backend.json';
 
 const config: ExpoConfig = {
   name: 'Dziri Messenger',
@@ -15,7 +16,7 @@ const config: ExpoConfig = {
   },
   extra: {
     inboxUrl: process.env.EXPO_PUBLIC_INBOX_URL ?? '',
-    convexUrl: process.env.EXPO_PUBLIC_CONVEX_URL ?? '',
+    convexUrl: process.env.EXPO_PUBLIC_CONVEX_URL ?? dziriBackend.convexUrl,
     supportCompanyId: process.env.EXPO_PUBLIC_SUPPORT_COMPANY_ID ?? '',
   },
   plugins: [

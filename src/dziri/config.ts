@@ -1,3 +1,7 @@
+// Shared production backend used by Dziri Consumer and Business. This origin is public.
+import dziriBackend from '../../config/dziri-backend.json' with { type: 'json' };
+export const MAIN_DZIRI_CONVEX_URL = dziriBackend.convexUrl;
+
 /** Configuration is fixed by the build, never supplied by a message or deep link. */
 export function deploymentUrl(value: string, development: boolean): string | null {
   if (!value) return null;

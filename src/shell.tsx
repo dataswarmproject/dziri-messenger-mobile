@@ -51,42 +51,44 @@ export function MessengerShell({
         </View>
         {account}
       </View>
-      <View style={{ borderBottomWidth: 1, borderColor: colors.border }}>
-        <ScrollView
-          horizontal
-          accessibilityRole="tablist"
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            flexGrow: 1,
-            flexDirection: rtl ? 'row-reverse' : 'row',
-            paddingHorizontal: 12,
-          }}>
-          {messengerTabs(capabilities).map(tab => (
-            <Pressable
-              key={tab}
-              accessibilityRole="tab"
-              aria-selected={tab === selected}
-              accessibilityState={{ selected: tab === selected }}
-              onPress={() => select?.(tab)}
-              style={({ pressed }) => ({
-                paddingHorizontal: 16,
-                paddingVertical: 16,
-                minHeight: 48,
-                opacity: pressed ? 0.65 : 1,
-                borderBottomWidth: 2,
-                borderBottomColor: tab === selected ? colors.primary : 'transparent',
-              })}>
-              <Text
-                style={{
-                  color: tab === selected ? colors.primary : colors.secondary,
-                  fontWeight: tab === selected ? '600' : '400',
-                }}>
-                {labels[tab]}
-              </Text>
-            </Pressable>
-          ))}
-        </ScrollView>
-      </View>
+      {capabilities && select ? (
+        <View style={{ borderBottomWidth: 1, borderColor: colors.border }}>
+          <ScrollView
+            horizontal
+            accessibilityRole="tablist"
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              flexGrow: 1,
+              flexDirection: rtl ? 'row-reverse' : 'row',
+              paddingHorizontal: 12,
+            }}>
+            {messengerTabs(capabilities).map(tab => (
+              <Pressable
+                key={tab}
+                accessibilityRole="tab"
+                aria-selected={tab === selected}
+                accessibilityState={{ selected: tab === selected }}
+                onPress={() => select?.(tab)}
+                style={({ pressed }) => ({
+                  paddingHorizontal: 16,
+                  paddingVertical: 16,
+                  minHeight: 48,
+                  opacity: pressed ? 0.65 : 1,
+                  borderBottomWidth: 2,
+                  borderBottomColor: tab === selected ? colors.primary : 'transparent',
+                })}>
+                <Text
+                  style={{
+                    color: tab === selected ? colors.primary : colors.secondary,
+                    fontWeight: tab === selected ? '600' : '400',
+                  }}>
+                  {labels[tab]}
+                </Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        </View>
+      ) : null}
       <View style={{ flex: 1 }}>{children}</View>
     </View>
   );

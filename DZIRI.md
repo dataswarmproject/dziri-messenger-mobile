@@ -131,7 +131,8 @@ application/test suite is not an active build target of this first slice.
 
 ## First implementation slice
 
-Existing-account password sign-in, secure native token persistence, bounded
+Shared Consumer password sign-in, sign-up with Terms/Privacy consent, SMS recovery,
+secure native token persistence, bounded
 inbox/search, paginated history, text sends with an in-memory retry identifier,
 visible-message receipts, AR/FR/EN labels and light/dark tokens.
 

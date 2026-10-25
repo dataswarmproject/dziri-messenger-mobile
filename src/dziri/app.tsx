@@ -1,5 +1,6 @@
 import React, {
   Component,
+  useCallback,
   createContext,
   useContext,
   useEffect,
@@ -23,10 +24,10 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { tailwind } from '../theme';
-import { deploymentUrl, secureStorageKey } from './config';
+import { deploymentUrl, secureStorageKey, MAIN_DZIRI_CONVEX_URL } from './config';
 import { useLocale } from './locale';
 import { LanguageChoice, Notice, useColors } from './ui';
-import { SignInScreen } from './auth';
+import { SignInScreen, SignUpCompletion } from './auth';
 import { InboxScreen } from './inbox';
 import { ConversationScreen } from './conversation';
 import { dziriApi } from './api';
@@ -84,7 +85,9 @@ function Bootstrap() {
   const dark = useColorScheme() === 'dark';
   const [fontsLoaded, fontError] = useFonts(consumerFonts);
   const url = deploymentUrl(
-    process.env.EXPO_PUBLIC_CONVEX_URL ?? Constants.expoConfig?.extra?.convexUrl ?? '',
+    process.env.EXPO_PUBLIC_CONVEX_URL ??
+      Constants.expoConfig?.extra?.convexUrl ??
+      MAIN_DZIRI_CONVEX_URL,
     __DEV__,
   );
   return (
@@ -191,6 +194,10 @@ function SessionRuntime({ url, reset }: { url: string; reset: () => void }) {
 }
 
 function AuthGate() {
+  const [registrationPending, setRegistrationPending] = useState(false);
+  const { signOut } = useAuthActions();
+  const resetSession = useContext(ResetSession);
+  const completeRegistration = useCallback(() => setRegistrationPending(false), []);
   const { isLoading, isAuthenticated } = useConvexAuth();
   const { t } = useLocale();
   if (isLoading)
@@ -199,11 +206,18 @@ function AuthGate() {
         <Notice text={t.loading} busy />
       </MessengerShell>
     );
-  return isAuthenticated ? (
+  return isAuthenticated && registrationPending ? (
+    <MessengerShell>
+      <SignUpCompletion
+        complete={completeRegistration}
+        cancel={() => signOut().then(resetSession)}
+      />
+    </MessengerShell>
+  ) : isAuthenticated ? (
     <UserNavigator />
   ) : (
     <MessengerShell>
-      <SignInScreen />
+      <SignInScreen registrationPending={setRegistrationPending} />
     </MessengerShell>
   );
 }

@@ -1,3 +1,21 @@
+## Main database and account screens — 25 October 2026
+
+The current client defaults to main Dziri (`dashing-orca-24`), with shared Consumer
+password sign-in, registration plus recorded Terms/Privacy consent, and SMS code
+recovery through the same provider. All conversation tabs are hidden until login
+and server capabilities resolve. The approved transparent logo and Consumer
+fonts remain in place.
+
+Client checks: 27 tests, TypeScript, ESLint, consistency guard and web/Android/iOS
+exports passed. Browser checks confirm Arabic RTL at 390 px without horizontal
+overflow, zero pre-login tabs, and working navigation to Sign up and Forgot
+password. Backend contract qualification and a real signed-in exchange are
+tracked separately in `docs/MAIN_DZIRI_CONNECTION.md`. No verification step
+created a production account, sent an SMS or changed a password.
+
+Earlier sections below describe the initial checkpoint and its limitations;
+the default-URL and sign-in-only notes are superseded by this entry.
+
 # Consolidated messenger and transparent logo — 25 October 2026
 
 Prepared one shell with Friends always visible and server-derived Customers and

@@ -14,13 +14,14 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "test:domain": "node --test tests/domain.test.mjs",
-    "test": "node --test tests/domain.test.mjs tests/inbox.test.mjs tests/access.test.mjs tests/tabs.test.mjs",
+    "test": "node --test tests/domain.test.mjs tests/inbox.test.mjs tests/access.test.mjs tests/tabs.test.mjs tests/auth.test.mjs",
     "typecheck:consumer": "tsc --noEmit --project tsconfig.consumer.json",
     "typecheck": "tsc --noEmit --project tsconfig.consumer.json",
     "lint": "eslint App.tsx app.config.ts src/messenger.tsx src/shell.tsx src/messenger-policy.ts src/access.ts src/dziri src/inbox src/theme/tailwind.config.ts",
     "check:consistency": "node scripts/check-dziri-consistency.mjs",
     "bundle:android": "expo export --platform android --output-dir dist-android",
-    "bundle:ios": "expo export --platform ios --output-dir dist-ios"
+    "bundle:ios": "expo export --platform ios --output-dir dist-ios",
+    "check:connection": "node scripts/check-dziri-connection.mjs"
   },
   "dependencies": {
     "@convex-dev/auth": "0.0.95",

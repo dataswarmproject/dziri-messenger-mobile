@@ -2,7 +2,63 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { deploymentUrl, secureStorageKey } from '../src/dziri/config.ts';
 import { createTextSender } from '../src/dziri/text-sender.ts';
-import { canSendText, messageText, storedReceipt } from '../src/dziri/message-policy.ts';
+import {
+  canSendText,
+  messageText,
+  storedReceipt,
+  deliveryState,
+} from '../src/dziri/message-policy.ts';
+import { createOutbox } from '../src/dziri/outbox.ts';
+
+test('double ticks need real delivery; blue ticks need shared reads from every original recipient', () => {
+  assert.equal(deliveryState(100), 'sent');
+  assert.equal(deliveryState(100, undefined, 99), 'sent');
+  assert.equal(deliveryState(100, undefined, 100), 'delivered');
+  assert.equal(deliveryState(100, 100), 'read');
+  assert.equal(deliveryState(100, 200, 200, []), 'sent');
+  assert.equal(
+    deliveryState(100, undefined, undefined, [
+      { joinedAt: 1, readAt: 100 },
+      { joinedAt: 1, deliveredAt: 100 },
+      { joinedAt: 101 },
+    ]),
+    'delivered',
+  );
+  assert.equal(
+    deliveryState(100, undefined, undefined, [{ joinedAt: 1, readAt: 100 }, { joinedAt: 1 }]),
+    'sent',
+  );
+});
+test('failed outgoing replies retry the same command and reconcile even after a lost acknowledgement', async () => {
+  const calls = [];
+  let state = [];
+  let finish;
+  const outbox = createOutbox(
+    draft => {
+      calls.push(draft);
+      return new Promise((resolve, reject) => {
+        finish = { resolve, reject };
+      });
+    },
+    () => 'stable-id',
+    value => (state = value),
+    () => 100,
+  );
+  outbox.enqueue(' hello ', { id: 'parent', body: 'quoted', deleted: false });
+  assert.equal(state[0].status, 'pending');
+  outbox.retry('stable-id');
+  assert.equal(calls.length, 1);
+  finish.reject(new Error('uncertain'));
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(state[0].status, 'failed');
+  outbox.retry('stable-id');
+  assert.equal(calls[1].id, calls[0].id);
+  assert.equal(calls[1].reply.id, 'parent');
+  outbox.acknowledge(['stable-id']);
+  finish.resolve('stored');
+  await new Promise(resolve => setImmediate(resolve));
+  assert.deepEqual(state, []);
+});
 
 test('encryption-marked or frozen threads cannot send plaintext; subscriber rules stay intact', () => {
   const thread = { isFrozen: false, encryption: 'server', isReadOnly: false, myRole: 'member' };

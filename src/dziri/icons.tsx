@@ -8,6 +8,11 @@ const sources = {
   support: require('../../assets/icons/support.svg'),
   close: require('../../assets/icons/close.svg'),
   check: require('../../assets/icons/check.svg'),
+  doubleCheck: require('../../assets/icons/double-check.svg'),
+  info: require('../../assets/icons/info.svg'),
+  reply: require('../../assets/icons/reply.svg'),
+  smile: require('../../assets/icons/smile.svg'),
+  send: require('../../assets/icons/send.svg'),
 };
 export type IconName = keyof typeof sources;
 export function Icon({ name, color, size = 20 }: { name: IconName; color: string; size?: number }) {
@@ -27,6 +32,7 @@ export function IconButton({
   onPress,
   color,
   busy = false,
+  disabled = false,
   expanded,
 }: {
   name: IconName;
@@ -34,14 +40,15 @@ export function IconButton({
   onPress: () => void;
   color: string;
   busy?: boolean;
+  disabled?: boolean;
   expanded?: boolean;
 }) {
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
-      accessibilityState={{ disabled: busy, expanded }}
-      disabled={busy}
+      accessibilityState={{ disabled: busy || disabled, expanded }}
+      disabled={busy || disabled}
       onPress={onPress}
       style={({ pressed }) => ({
         width: 44,

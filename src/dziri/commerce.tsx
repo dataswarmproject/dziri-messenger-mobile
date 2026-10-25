@@ -1,15 +1,17 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { randomUUID } from 'expo-crypto';
-import { FlatList, KeyboardAvoidingView, Platform, Pressable, View } from 'react-native';
-import { Text, TextInput } from './typography';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 import { useMutation, useQuery } from 'convex/react';
-import { useIsFocused } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { dziriApi } from './api';
+import { dziriApi, type ReplyPreview, type ReactionSummary } from './api';
 import type { MessengerRoutes } from './routes';
 import { useLocale } from './locale';
 import { Notice, useColors } from './ui';
-import { createTextSender } from './text-sender';
+import { useOutbox } from './use-outbox';
+import type { OutgoingDraft } from './outbox';
+import { MessageList } from './message-list';
+import { MessageComposer } from './message-composer';
+import type { BubbleMessage } from './message-bubble';
+import { deliveryState } from './message-policy';
 
 export function CommerceScreen(props: NativeStackScreenProps<MessengerRoutes, 'Commerce'>) {
   return (
@@ -19,142 +21,135 @@ export function CommerceScreen(props: NativeStackScreenProps<MessengerRoutes, 'C
     />
   );
 }
-
 function Commerce({ route, navigation }: NativeStackScreenProps<MessengerRoutes, 'Commerce'>) {
   const { conversationId, storeId } = route.params;
-  const scope = storeId ? { conversationId, storeId } : { conversationId };
-  const { t, rtl } = useLocale();
+  const scope = useMemo(
+    () => (storeId ? { conversationId, storeId } : { conversationId }),
+    [conversationId, storeId],
+  );
+  const { t } = useLocale();
   const colors = useColors();
   const me = useQuery(dziriApi.me, {});
   const detail = useQuery(dziriApi.commerceDetail, scope);
   const messages = useQuery(dziriApi.commerceMessages, detail ? { ...scope, limit: 100 } : 'skip');
   const send = useMutation(dziriApi.commerceSend);
-  const sender = useMemo(
-    () =>
-      createTextSender(
-        ({ threadId, body, clientMessageId }) =>
-          send({
-            conversationId: threadId,
-            ...(storeId ? { storeId } : {}),
-            content: body,
-            clientMessageId,
-          }),
-        randomUUID,
-      ),
-    [send, storeId],
-  );
   const markRead = useMutation(dziriApi.commerceRead);
-  const focused = useIsFocused();
-  const [body, setBody] = useState('');
-  const [busy, setBusy] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const lock = useRef(false);
-  const latest = messages?.at(-1)?._id;
+  const markDelivered = useMutation(dziriApi.commerceDelivered);
+  const react = useMutation(dziriApi.commerceReact);
+  const transmit = useCallback(
+    (draft: OutgoingDraft) =>
+      send({
+        ...scope,
+        content: draft.body,
+        clientMessageId: draft.id,
+        ...(draft.reply ? { parentMessageId: draft.reply.id } : {}),
+      }),
+    [send, scope],
+  );
+  const confirmed = useMemo(
+    () =>
+      (messages ?? []).flatMap(message =>
+        message.clientMessageId ? [message.clientMessageId] : [],
+      ),
+    [messages],
+  );
+  const outbox = useOutbox(transmit, confirmed);
+  const [reply, setReply] = useState<ReplyPreview | null>(null);
   useEffect(() => {
     if (detail) navigation.setOptions({ title: detail.otherName });
   }, [detail, navigation]);
-  useEffect(() => {
-    if (focused && latest)
-      void markRead(storeId ? { conversationId, storeId } : { conversationId }).catch(() => {});
-  }, [focused, latest, conversationId, storeId, markRead]);
+  const read = useCallback(
+    (messageIds: string[]) => markRead({ ...scope, messageIds }),
+    [markRead, scope],
+  );
+  const delivered = useCallback(
+    (messageIds: string[]) => markDelivered({ ...scope, messageIds }),
+    [markDelivered, scope],
+  );
+  const toggle = useCallback(
+    (message: BubbleMessage, emoji: string) =>
+      react({ messageId: message.id, emoji, ...(storeId ? { storeId } : {}) }),
+    [react, storeId],
+  );
   if (detail === null || me === null) return <Notice text={t.failed} />;
   if (!detail || !me || !messages) return <Notice text={t.loading} busy />;
-  async function submit() {
-    const content = body.trim();
-    if (!content || lock.current) return;
-    lock.current = true;
-    setBusy(true);
-    setFailed(false);
-    try {
-      await sender.send(conversationId, content);
-      setBody('');
-    } catch {
-      setFailed(true);
-    } finally {
-      lock.current = false;
-      setBusy(false);
-    }
-  }
+  const rows: BubbleMessage[] = [
+    ...outbox.drafts
+      .filter(draft => !confirmed.includes(draft.id))
+      .map(draft => ({
+        id: draft.id,
+        senderId: me._id,
+        name: me.name || t.you,
+        image: me.image,
+        body: draft.body,
+        createdAt: draft.createdAt,
+        reply: draft.reply,
+        reactions: [],
+        status: draft.status,
+        local: true,
+      })),
+    ...messages.map(message => {
+      const reactions = new Map<string, ReactionSummary>();
+      for (const reaction of message.reactions ?? []) {
+        const current = reactions.get(reaction.emoji) ?? {
+          emoji: reaction.emoji,
+          count: 0,
+          mine: false,
+        };
+        current.count++;
+        current.mine ||= reaction.userId === me._id;
+        reactions.set(reaction.emoji, current);
+      }
+      return {
+        id: message._id,
+        senderId: message.senderId,
+        name: message.senderName,
+        image: message.senderImage,
+        body: message.deletedAt !== undefined ? t.deleted : message.content,
+        createdAt: message.createdAt,
+        deleted: message.deletedAt !== undefined,
+        reactions: [...reactions.values()],
+        reply: message.parentMessageId
+          ? {
+              id: message.parentMessageId,
+              senderName: message.parentSenderName,
+              body: message.parentContent ?? undefined,
+              deleted: message.parentDeleted ?? false,
+            }
+          : undefined,
+        status:
+          message.senderSide === detail.viewerSide && message.deletedAt === undefined
+            ? deliveryState(message.createdAt, message.receiptReadAt, message.deliveredAt)
+            : undefined,
+      };
+    }),
+  ].sort((a, b) => b.createdAt - a.createdAt);
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: colors.background }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <FlatList
-        inverted
-        data={[...messages].reverse()}
-        keyExtractor={message => message._id}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              padding: 12,
-              alignItems: item.senderId === me._id ? 'flex-end' : 'flex-start',
-            }}>
-            <View
-              style={{
-                maxWidth: '85%',
-                padding: 12,
-                borderRadius: 14,
-                backgroundColor: item.senderId === me._id ? colors.outgoing : colors.surface,
-              }}>
-              <Text
-                selectable
-                style={{
-                  color: item.senderId === me._id ? colors.outgoingText : colors.text,
-                  writingDirection: 'auto',
-                }}>
-                {item.deletedAt ? t.deleted : item.content}
-              </Text>
-            </View>
-          </View>
-        )}
-        ListEmptyComponent={<Text style={{ padding: 24, color: colors.secondary }}>{t.empty}</Text>}
+      <MessageList
+        messages={rows}
+        myId={me._id}
+        reply={message =>
+          setReply({
+            id: message.id,
+            senderName: message.name,
+            body: message.body.slice(0, 240),
+            deleted: false,
+          })
+        }
+        react={toggle}
+        retry={outbox.retry}
+        read={read}
+        delivered={delivered}
       />
-      {failed ? (
-        <Text accessibilityRole="alert" style={{ padding: 12, color: colors.text }}>
-          {t.commerceSendFailed}
-        </Text>
-      ) : null}
-      <View
-        style={{
-          flexDirection: rtl ? 'row-reverse' : 'row',
-          gap: 10,
-          padding: 12,
-          borderTopWidth: 1,
-          borderColor: colors.border,
-        }}>
-        <TextInput
-          accessibilityLabel={t.message}
-          placeholder={t.message}
-          placeholderTextColor={colors.secondary}
-          value={body}
-          onChangeText={setBody}
-          editable={!busy}
-          maxLength={8000}
-          multiline
-          style={{
-            flex: 1,
-            maxHeight: 120,
-            minHeight: 48,
-            borderRadius: 12,
-            padding: 12,
-            color: colors.text,
-            backgroundColor: colors.surface,
-          }}
-        />
-        <Pressable
-          accessibilityRole="button"
-          disabled={busy || !body.trim()}
-          onPress={() => void submit()}
-          style={{
-            padding: 14,
-            alignSelf: 'flex-end',
-            borderRadius: 12,
-            backgroundColor: colors.primary,
-            opacity: busy || !body.trim() ? 0.5 : 1,
-          }}>
-          <Text style={{ color: '#fff' }}>{busy ? t.loading : t.send}</Text>
-        </Pressable>
-      </View>
+      <MessageComposer
+        reply={reply}
+        cancelReply={() => setReply(null)}
+        submit={outbox.enqueue}
+        full={outbox.drafts.length >= 20}
+      />
     </KeyboardAvoidingView>
   );
 }

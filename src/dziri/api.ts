@@ -19,6 +19,29 @@ export interface CommerceMessage {
   content: string;
   createdAt: number;
   deletedAt?: number;
+  clientMessageId?: string;
+  senderName: string;
+  senderImage?: string | null;
+  senderSide: 'buyer' | 'seller';
+  deliveredAt?: number;
+  receiptReadAt?: number;
+  parentMessageId?: string;
+  parentContent?: string | null;
+  parentSenderName?: string;
+  parentDeleted?: boolean;
+  reactions: { emoji: string; userId: string }[];
+}
+
+export interface ReplyPreview {
+  id: string;
+  senderName?: string;
+  body?: string;
+  deleted: boolean;
+}
+export interface ReactionSummary {
+  emoji: string;
+  count: number;
+  mine: boolean;
 }
 
 // Narrow public contract for the existing backend, not another backend/schema.
@@ -47,6 +70,9 @@ export interface ThreadDetail {
   isReadOnly: boolean;
   myRole: string;
   peerReadAt?: number;
+  peerDeliveredAt?: number;
+  deliveryReceiptsEnabled: boolean;
+  recipientReceipts: { joinedAt: number; readAt?: number; deliveredAt?: number }[];
 }
 
 export interface MessageRecord {
@@ -54,6 +80,11 @@ export interface MessageRecord {
   threadId: string;
   senderId: string;
   senderName?: string;
+  senderImage?: string;
+  clientMessageId?: string;
+  replyToMessageId?: string;
+  replyPreview?: ReplyPreview;
+  reactionSummary: ReactionSummary[];
   type: string;
   body?: string;
   ciphertext?: string;
@@ -77,7 +108,7 @@ export const dziriApi = {
   commerceDetail: makeFunctionReference<
     'query',
     { conversationId: string; storeId?: string },
-    { otherName: string; storeName: string } | null
+    { otherName: string; storeName: string; viewerSide: 'buyer' | 'seller' } | null
   >('marketplaceMessages:getConversation'),
   commerceMessages: makeFunctionReference<
     'query',
@@ -86,14 +117,30 @@ export const dziriApi = {
   >('marketplaceMessages:listMessages'),
   commerceSend: makeFunctionReference<
     'mutation',
-    { conversationId: string; storeId?: string; content: string; clientMessageId: string },
+    {
+      conversationId: string;
+      storeId?: string;
+      content: string;
+      clientMessageId: string;
+      parentMessageId?: string;
+    },
     number
   >('marketplaceMessages:sendMessage'),
   commerceRead: makeFunctionReference<
     'mutation',
-    { conversationId: string; storeId?: string },
+    { conversationId: string; storeId?: string; messageIds: string[] },
     null
   >('marketplaceMessages:markConversationAsRead'),
+  commerceDelivered: makeFunctionReference<
+    'mutation',
+    { conversationId: string; storeId?: string; messageIds: string[] },
+    null
+  >('marketplaceMessages:markMessagesDelivered'),
+  commerceReact: makeFunctionReference<
+    'mutation',
+    { storeId?: string; messageId: string; emoji: string },
+    unknown
+  >('marketplaceMessages:toggleReaction'),
   supportAvailability: makeFunctionReference<
     'query',
     { companyId: string },
@@ -112,9 +159,11 @@ export const dziriApi = {
   stopSharing: makeFunctionReference<'mutation', { connectionId: string }, null>(
     'inbox/service:disconnect',
   ),
-  me: makeFunctionReference<'query', Record<string, never>, { _id: string; name?: string } | null>(
-    'users:getMe',
-  ),
+  me: makeFunctionReference<
+    'query',
+    Record<string, never>,
+    { _id: string; name?: string; image?: string } | null
+  >('users:getMe'),
   threads: makeFunctionReference<'query', Record<string, never>, ThreadSummary[]>(
     'messaging/threads:listMyThreads',
   ),
@@ -128,9 +177,17 @@ export const dziriApi = {
   >('messaging/messenger:messages'),
   sendText: makeFunctionReference<
     'mutation',
-    { threadId: string; body: string; clientMessageId: string },
+    { threadId: string; body: string; clientMessageId: string; replyToMessageId?: string },
     string
   >('messaging/messenger:sendText'),
+  markDelivered: makeFunctionReference<'mutation', { threadId: string; messageId: string }, null>(
+    'messaging/messenger:markDelivered',
+  ),
+  toggleReaction: makeFunctionReference<
+    'mutation',
+    { threadId: string; messageId: string; emoji: string },
+    boolean
+  >('messaging/messenger:toggleReaction'),
   markRead: makeFunctionReference<'mutation', { threadId: string; messageId: string }, null>(
     'messaging/messenger:markRead',
   ),

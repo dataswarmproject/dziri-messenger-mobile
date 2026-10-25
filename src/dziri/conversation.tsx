@@ -1,91 +1,29 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  AppState,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  View,
-  type ViewToken,
-} from 'react-native';
-import { Text, TextInput } from './typography';
-import { FlashList } from '@shopify/flash-list';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 import { useConvexConnectionState, useMutation, usePaginatedQuery, useQuery } from 'convex/react';
-import { randomUUID } from 'expo-crypto';
-import { useIsFocused } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { tailwind } from '../theme';
-import { dziriApi, type MessageRecord } from './api';
-import { createTextSender } from './text-sender';
-import { canSendText, messageText, storedReceipt } from './message-policy';
+import { Text } from './typography';
+import { dziriApi, type ReplyPreview } from './api';
+import { canSendText, messageText, deliveryState } from './message-policy';
 import { useLocale } from './locale';
 import { Notice, useColors } from './ui';
 import type { MessengerRoutes } from './routes';
 import { SupportConnection } from './support';
-
-const MessageBubble = memo(function MessageBubble({
-  message,
-  myId,
-  peerReadAt,
-}: {
-  message: MessageRecord;
-  myId: string;
-  peerReadAt?: number;
-}) {
-  const colors = useColors();
-  const { t } = useLocale();
-  const mine = message.senderId === myId;
-  const receipt = storedReceipt(message, myId, peerReadAt);
-  return (
-    <View style={[tailwind.style('px-3 py-1'), { alignItems: mine ? 'flex-end' : 'flex-start' }]}>
-      <View
-        style={[
-          tailwind.style('pl-3 pr-2.5 py-2 rounded-2xl'),
-          {
-            maxWidth: '85%',
-            backgroundColor: mine ? colors.outgoing : colors.surface,
-          },
-        ]}>
-        {!mine && message.senderName ? (
-          <Text style={[tailwind.style('text-xs pb-1'), { color: colors.secondary }]}>
-            {message.senderName}
-          </Text>
-        ) : null}
-        <Text
-          selectable
-          style={[
-            tailwind.style('text-base leading-[22px] font-inter-normal-20'),
-            {
-              color: mine ? colors.outgoingText : colors.text,
-              writingDirection: 'auto',
-            },
-          ]}>
-          {messageText(message, t)}
-        </Text>
-        {receipt ? (
-          <Text
-            style={[
-              tailwind.style('text-xs pt-1'),
-              { color: colors.outgoingText, textAlign: 'right' },
-            ]}>
-            {t[receipt]}
-          </Text>
-        ) : null}
-      </View>
-    </View>
-  );
-});
+import { MessageList } from './message-list';
+import { MessageComposer } from './message-composer';
+import type { BubbleMessage } from './message-bubble';
+import { useOutbox } from './use-outbox';
+import type { OutgoingDraft } from './outbox';
 
 export function ConversationScreen(props: NativeStackScreenProps<MessengerRoutes, 'Conversation'>) {
-  // A different thread must never inherit the previous conversation's retry key/draft.
   return <Conversation key={props.route.params.threadId} {...props} />;
 }
-
 function Conversation({
   route,
   navigation,
 }: NativeStackScreenProps<MessengerRoutes, 'Conversation'>) {
   const { threadId } = route.params;
-  const { t, rtl } = useLocale();
+  const { t } = useLocale();
   const colors = useColors();
   const thread = useQuery(dziriApi.thread, { threadId });
   const me = useQuery(dziriApi.me, {});
@@ -94,184 +32,144 @@ function Conversation({
     thread && thread.encryption !== 'e2ee' ? { threadId } : 'skip',
     { initialNumItems: 30 },
   );
-  const mutate = useMutation(dziriApi.sendText);
+  const send = useMutation(dziriApi.sendText);
   const markRead = useMutation(dziriApi.markRead);
-  const sender = useMemo(() => createTextSender(mutate, randomUUID), [mutate]);
+  const markDelivered = useMutation(dziriApi.markDelivered);
+  const react = useMutation(dziriApi.toggleReaction);
+  const transmit = useCallback(
+    (draft: OutgoingDraft) =>
+      send({
+        threadId,
+        body: draft.body,
+        clientMessageId: draft.id,
+        ...(draft.reply ? { replyToMessageId: draft.reply.id } : {}),
+      }),
+    [send, threadId],
+  );
+  const confirmed = useMemo(
+    () =>
+      messages.results.flatMap(message =>
+        message.clientMessageId ? [message.clientMessageId] : [],
+      ),
+    [messages.results],
+  );
+  const outbox = useOutbox(transmit, confirmed);
+  const [reply, setReply] = useState<ReplyPreview | null>(null);
   const { isWebSocketConnected } = useConvexConnectionState();
-  const focused = useIsFocused();
-  const [active, setActive] = useState(AppState.currentState === 'active');
-  const [body, setBody] = useState('');
-  const [sending, setSending] = useState(false);
-  const submitting = useRef(false);
-  const [failed, setFailed] = useState(false);
-  const visible = useRef<MessageRecord | null>(null);
-  const acknowledged = useRef<string | null>(null);
-  const mounted = useRef(true);
-
-  useEffect(() => {
-    mounted.current = true;
-    const subscription = AppState.addEventListener('change', state =>
-      setActive(state === 'active'),
-    );
-    return () => {
-      mounted.current = false;
-      subscription.remove();
-    };
-  }, []);
   useEffect(() => {
     if (thread) navigation.setOptions({ title: thread.title || t.unknown });
   }, [thread, navigation, t.unknown]);
-
-  const acknowledgeVisible = useCallback(() => {
-    const message = visible.current;
-    if (
-      !focused ||
-      !active ||
-      !isWebSocketConnected ||
-      !message ||
-      acknowledged.current === message._id
-    )
-      return;
-    acknowledged.current = message._id;
-    void markRead({ threadId, messageId: message._id }).catch(() => {
-      if (acknowledged.current === message._id) acknowledged.current = null;
-    });
-  }, [focused, active, isWebSocketConnected, markRead, threadId]);
-  useEffect(acknowledgeVisible, [acknowledgeVisible]);
-  const viewability = useCallback(
-    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
-      visible.current =
-        viewableItems
-          .filter(token => token.isViewable)
-          .map(token => token.item as MessageRecord)
-          .sort((a, b) => b.createdAt - a.createdAt)[0] ?? null;
-      acknowledgeVisible();
+  const newest = useCallback(
+    (ids: string[]) => {
+      const accepted = new Set(ids);
+      return messages.results
+        .filter(m => accepted.has(m._id))
+        .sort((a, b) => b.createdAt - a.createdAt)[0]?._id;
     },
-    [acknowledgeVisible],
+    [messages.results],
   );
-  const viewabilityConfig = useRef({
-    itemVisiblePercentThreshold: 80,
-    minimumViewTime: 500,
-  }).current;
-  const renderMessage = useCallback(
-    ({ item }: { item: MessageRecord }) => (
-      <MessageBubble message={item} myId={me?._id ?? ''} peerReadAt={thread?.peerReadAt} />
-    ),
-    [me?._id, thread?.peerReadAt],
+  const read = useCallback(
+    async (ids: string[]) => {
+      const messageId = newest(ids);
+      if (messageId) await markRead({ threadId, messageId });
+    },
+    [newest, markRead, threadId],
   );
-
-  const send = async () => {
-    if (!thread || !canSendText(thread) || !isWebSocketConnected || submitting.current) return;
-    const submitted = body;
-    submitting.current = true;
-    setSending(true);
-    setFailed(false);
-    try {
-      await sender.send(threadId, submitted);
-      if (mounted.current) setBody(current => (current === submitted ? '' : current));
-    } catch {
-      if (mounted.current) setFailed(true);
-    } finally {
-      submitting.current = false;
-      if (mounted.current) setSending(false);
-    }
-  };
-
+  const delivered = useCallback(
+    async (ids: string[]) => {
+      const messageId = newest(ids);
+      if (messageId) await markDelivered({ threadId, messageId });
+    },
+    [newest, markDelivered, threadId],
+  );
+  const toggle = useCallback(
+    (message: BubbleMessage, emoji: string) => react({ threadId, messageId: message.id, emoji }),
+    [react, threadId],
+  );
   if (thread === undefined || me === undefined) return <Notice text={t.loading} busy />;
   if (!thread || !me) return <Notice text={t.unavailable} />;
   if (thread.encryption === 'e2ee') return <Notice text={t.encryptionUnavailable} />;
   const writable = canSendText(thread);
-  const disabled =
-    !writable || !isWebSocketConnected || sending || !body.trim() || body.trim().length > 8000;
+  const rows: BubbleMessage[] = [
+    ...outbox.drafts
+      .filter(draft => !confirmed.includes(draft.id))
+      .map(draft => ({
+        id: draft.id,
+        senderId: me._id,
+        name: me.name || t.you,
+        image: me.image,
+        body: draft.body,
+        createdAt: draft.createdAt,
+        reply: draft.reply,
+        reactions: [],
+        status: draft.status,
+        local: true,
+      })),
+    ...messages.results.map(message => ({
+      id: message._id,
+      senderId: message.senderId,
+      name: message.senderName || (message.senderId === me._id ? me.name || t.you : t.unknown),
+      image: message.senderImage,
+      body: messageText(message, t),
+      createdAt: message.createdAt,
+      deleted: message.deletedAt !== undefined,
+      reply: message.replyPreview,
+      reactions: message.reactionSummary ?? [],
+      status:
+        message.senderId === me._id && message.deletedAt === undefined
+          ? deliveryState(
+              message.createdAt,
+              thread.peerReadAt,
+              thread.peerDeliveredAt,
+              thread.type === 'dm' ? undefined : thread.recipientReceipts,
+            )
+          : undefined,
+    })),
+  ].sort((a, b) => b.createdAt - a.createdAt);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : 0}
-      style={[tailwind.style('flex-1'), { backgroundColor: colors.background }]}>
+      style={{ flex: 1, backgroundColor: colors.background }}>
       {thread.type === 'support' ? <SupportConnection threadId={threadId} /> : null}
       {!isWebSocketConnected ? (
         <Text
           accessibilityRole="alert"
-          style={[tailwind.style('text-center py-2'), { color: colors.secondary }]}>
+          style={{ padding: 8, textAlign: 'center', color: colors.secondary }}>
           {t.connection}
         </Text>
       ) : null}
-      <FlashList
-        data={messages.results}
-        renderItem={renderMessage}
-        keyExtractor={messageKey}
-        inverted
-        onViewableItemsChanged={viewability}
-        viewabilityConfig={viewabilityConfig}
-        ListEmptyComponent={
-          messages.status === 'LoadingFirstPage' ? <Notice text={t.loading} busy /> : null
+      <MessageList
+        messages={rows}
+        myId={me._id}
+        reply={
+          writable
+            ? message =>
+                setReply({
+                  id: message.id,
+                  senderName: message.name,
+                  body: message.body.slice(0, 240),
+                  deleted: false,
+                })
+            : undefined
         }
-        ListFooterComponent={
-          messages.status === 'CanLoadMore' ? (
-            <Pressable
-              accessibilityRole="button"
-              onPress={() => messages.loadMore(30)}
-              style={tailwind.style('p-3')}>
-              <Text style={{ color: colors.primary, textAlign: 'center' }}>{t.older}</Text>
-            </Pressable>
-          ) : null
-        }
+        react={writable ? toggle : undefined}
+        retry={outbox.retry}
+        read={read}
+        delivered={delivered}
+        loading={messages.status === 'LoadingFirstPage'}
+        older={messages.status === 'CanLoadMore' ? () => messages.loadMore(30) : undefined}
       />
-      {failed ? (
-        <Text
-          accessibilityRole="alert"
-          style={[tailwind.style('px-3 py-2'), { color: colors.text }]}>
-          {t.sendFailed}
-        </Text>
-      ) : null}
-      {!writable ? (
-        <Text style={[tailwind.style('p-3'), { color: colors.secondary }]}>{t.readonly}</Text>
+      {writable ? (
+        <MessageComposer
+          reply={reply}
+          cancelReply={() => setReply(null)}
+          full={outbox.drafts.length >= 20}
+          submit={outbox.enqueue}
+        />
       ) : (
-        <View
-          style={[
-            tailwind.style('border-t px-3 py-2 gap-3 items-end'),
-            { borderColor: colors.border, flexDirection: rtl ? 'row-reverse' : 'row' },
-          ]}>
-          <TextInput
-            multiline
-            maxLength={8000}
-            value={body}
-            onChangeText={setBody}
-            placeholder={t.message}
-            accessibilityLabel={t.message}
-            placeholderTextColor={colors.secondary}
-            editable={!sending}
-            style={[
-              tailwind.style('flex-1 text-base px-3 py-2 rounded-2xl'),
-              {
-                color: colors.text,
-                backgroundColor: colors.surface,
-                maxHeight: 140,
-                writingDirection: 'auto',
-              },
-            ]}
-          />
-          <Pressable
-            onPress={() => {
-              void send();
-            }}
-            disabled={disabled}
-            accessibilityRole="button"
-            accessibilityState={{ disabled, busy: sending }}
-            style={[
-              tailwind.style('px-3 py-[11px] rounded-[13px]'),
-              { backgroundColor: colors.primary, opacity: disabled ? 0.5 : 1 },
-            ]}>
-            <Text style={tailwind.style('text-white text-base')}>
-              {sending ? t.loading : t.send}
-            </Text>
-          </Pressable>
-        </View>
+        <Text style={{ padding: 16, color: colors.secondary }}>{t.readonly}</Text>
       )}
     </KeyboardAvoidingView>
   );
-}
-
-function messageKey(message: MessageRecord) {
-  return message._id;
 }

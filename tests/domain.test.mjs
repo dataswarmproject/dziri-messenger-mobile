@@ -11,6 +11,17 @@ import {
 } from '../src/dziri/message-policy.ts';
 import { createOutbox } from '../src/dziri/outbox.ts';
 import { uploadMedia, MAX_MEDIA_BYTES } from '../src/dziri/media-upload.ts';
+import { messageDirection } from '../src/dziri/typeface.ts';
+
+test('message direction follows the first strong letter independently of UI language', () => {
+  assert.equal(messageDirection('مرحبا', false), 'rtl');
+  assert.equal(messageDirection('123 👋 مرحبا Dziri', false), 'rtl');
+  assert.equal(messageDirection('Bonjour مرحبا', true), 'ltr');
+  assert.equal(messageDirection('https://dziri.app/مرحبا', true), 'ltr');
+  assert.equal(messageDirection('שלום', false), 'rtl');
+  assert.equal(messageDirection('123 👍', true), 'rtl');
+  assert.equal(messageDirection('', false), 'ltr');
+});
 
 test('deleted, encrypted and moderated media cannot render residual URLs', () => {
   const m = {

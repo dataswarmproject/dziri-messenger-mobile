@@ -36,6 +36,10 @@
   language footers. Keep conversation sender names in the header, with avatars
   beside bubbles. Place timestamp and receipt ticks together beneath each bubble;
   tapping reveals reply/react actions in the same compact row.
+- Consumer colors override the reference's Facebook blue: sent bubbles use
+  Consumer ink and controls/read receipts use Consumer rose. Keep the input pill
+  free of focus rings. Arabic drafts follow their first strong letter even in
+  EN/FR, while locale controls the interface's mirrored layout.
 - Custom messenger text uses Consumer's Inter/thmanyah Sans pairing through
   `src/dziri/typography.tsx`. Preserve the publisher OTF bytes/names/license.
   Reverse layout explicitly in Arabic; keep the layout root LTR to avoid double

@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Pressable, View, type TextInput as NativeInput } from 'react-native';
+import {
+  Platform,
+  Pressable,
+  View,
+  type TextStyle,
+  type TextInput as NativeInput,
+} from 'react-native';
 import { Text, TextInput } from './typography';
 import { IconButton } from './icons';
 import { FigmaButton } from './figma';
@@ -11,6 +17,12 @@ import type { UploadedMedia } from './media-upload';
 import { useAttachment } from './use-attachment';
 import { MediaPreview } from './media-preview';
 import { CameraCapture } from './camera';
+import { messageDirection } from './typeface';
+// RN's native outline enum omits CSS `none`; this style is only used on web.
+const browserInputStyle =
+  Platform.OS === 'web'
+    ? ({ outlineStyle: 'none', outlineWidth: 0 } as unknown as TextStyle)
+    : undefined;
 export function MessageComposer({
   reply,
   cancelReply,
@@ -30,11 +42,13 @@ export function MessageComposer({
     [tools, setTools] = useState(false),
     [emoji, setEmoji] = useState(false),
     [camera, setCamera] = useState(false),
-    [sending, setSending] = useState(false);
+    [sending, setSending] = useState(false),
+    [inputHeight, setInputHeight] = useState(44);
   const input = useRef<NativeInput>(null),
     lock = useRef(false);
   const { rtl, t } = useLocale();
   const colors = useColors();
+  const direction = messageDirection(body, rtl);
   const media = useAttachment(imagesOnly);
   useEffect(() => {
     if (reply) input.current?.focus();
@@ -61,7 +75,7 @@ export function MessageComposer({
     }
   }
   return (
-    <View style={{ backgroundColor: colors.background }}>
+    <View style={{ backgroundColor: colors.background, direction: 'ltr' }}>
       {reply ? (
         <View
           style={{
@@ -188,31 +202,65 @@ export function MessageComposer({
             minWidth: 0,
             backgroundColor: colors.surface,
             borderRadius: 18,
+            minHeight: 44,
             flexDirection: rtl ? 'row-reverse' : 'row',
             alignItems: 'flex-end',
           }}>
+          <View
+            aria-hidden
+            pointerEvents="none"
+            accessible={false}
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: rtl ? 56 : 12,
+              right: rtl ? 12 : 56,
+              opacity: 0,
+            }}>
+            <Text
+              onLayout={event =>
+                setInputHeight(
+                  Math.max(44, Math.min(120, Math.ceil(event.nativeEvent.layout.height) + 22)),
+                )
+              }
+              style={{ fontSize: 15, lineHeight: 21, writingDirection: direction }}>
+              {`${body}\u200b`}
+            </Text>
+          </View>
           <TextInput
             ref={input}
             multiline
             maxLength={8000}
             value={body}
             onChangeText={setBody}
-            placeholder="Aa"
+            placeholder={t.message}
             accessibilityLabel={t.message}
             placeholderTextColor={colors.secondary}
+            selectionColor={colors.primary}
+            cursorColor={colors.primary}
+            underlineColorAndroid="transparent"
             editable={!sending}
-            style={{
-              flex: 1,
-              minWidth: 0,
-              minHeight: 36,
-              maxHeight: 140,
-              paddingHorizontal: 12,
-              paddingVertical: 7,
-              fontSize: 15,
-              lineHeight: 21,
-              color: colors.text,
-              writingDirection: 'auto',
-            }}
+            style={[
+              {
+                flex: 1,
+                minWidth: 0,
+                height: inputHeight,
+                minHeight: 44,
+                maxHeight: 120,
+                paddingHorizontal: 12,
+                paddingVertical: 11,
+                fontSize: 15,
+                lineHeight: 21,
+                color: colors.text,
+                writingDirection: direction,
+                direction,
+                textAlign: direction === 'rtl' ? 'right' : 'left',
+                textAlignVertical: 'top',
+              },
+              browserInputStyle,
+            ]}
           />
           <FigmaButton name="emoji" label={t.emoji} onPress={() => setEmoji(value => !value)} />
         </View>

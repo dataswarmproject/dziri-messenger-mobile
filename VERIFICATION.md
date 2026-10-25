@@ -1,3 +1,23 @@
+## Consumer palette, aligned input and no focus ring — 25 October 2026
+
+Consumer's ink sent bubbles and theme-aware rose controls now replace Facebook
+blue. The main Consumer globals and Messenger CSS were inspected for the actual
+palette. The inherited staff theme is unchanged. Input and adjacent controls align
+at 44px; a hidden, accessibility-excluded text measure grows the field to 120px
+for multiline content. Arabic drafts follow their first strong letter regardless
+of interface language; the placeholder is localized and reply/send icons mirror
+with the interface. Both the native browser outline and the provisional pink
+focus border are removed at the user's request.
+
+33 client tests, typecheck, lint, runtime consistency and all three platform
+exports pass. Signed-in browser checks confirmed Arabic direction/right alignment
+in the English interface, four-line expansion to 106px, shrinking to 44px on clear,
+and no page overflow. Final focused-input inspection confirmed outline-style none,
+zero textarea and pill border widths, no shadows, and aria-hidden on the measuring
+element. Screenshots show the clean focused pill and Consumer palette. Temporary
+test drafts were cleared without sending. Physical keyboard/device acceptance and
+the wider Figma capability gaps below remain separate.
+
 ## Figma checkpoint and compact typography — 25 October 2026
 
 The consumer runtime now uses the inspected Messenger reference for the list,

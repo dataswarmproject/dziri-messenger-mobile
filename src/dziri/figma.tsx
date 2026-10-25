@@ -39,12 +39,15 @@ export function FigmaIcon({ name }: { name: FigmaIconName }) {
   const { dark } = useAppearance();
   const { rtl } = useLocale();
   const selectedGlyph = name === 'chats' || name === 'peopleActive' || name === 'discoverActive';
+  const accentGlyph = ['back', 'call', 'video', 'actions', 'emoji', 'like'].includes(name);
   return (
     <Image
       source={source}
       accessible={false}
       contentFit="contain"
-      tintColor={dark && selectedGlyph ? '#fff' : undefined}
+      tintColor={
+        accentGlyph ? messengerColors(dark).primary : dark && selectedGlyph ? '#fff' : undefined
+      }
       style={{ width, height, transform: name === 'back' && rtl ? [{ scaleX: -1 }] : undefined }}
     />
   );
@@ -80,13 +83,14 @@ export function FigmaButton({
 }
 export function messengerColors(dark: boolean) {
   return {
-    primary: dark ? '#19a3fe' : '#0584fe',
+    // Consumer globals.css: --mk-accent (rose) and --mk-ink (sent bubbles).
+    primary: dark ? '#ff375f' : '#d6164a',
     background: dark ? '#000000' : '#ffffff',
     surface: dark ? '#333333' : '#f0f0f0',
     text: dark ? '#ffffff' : '#000000',
     secondary: dark ? '#a3a3a3' : '#808080',
     border: dark ? '#252525' : '#ededed',
-    outgoing: dark ? '#19a3fe' : '#0584fe',
-    outgoingText: '#ffffff',
+    outgoing: dark ? '#f2efea' : '#1a1b17',
+    outgoingText: dark ? '#0a0b0b' : '#ffffff',
   };
 }

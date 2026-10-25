@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, Pressable } from 'react-native';
 import { Image } from 'expo-image';
+import { useLocale } from './locale';
 const sources = {
   globe: require('../../assets/icons/globe.svg'),
   logout: require('../../assets/icons/logout.svg'),
@@ -16,13 +17,18 @@ const sources = {
 };
 export type IconName = keyof typeof sources;
 export function Icon({ name, color, size = 20 }: { name: IconName; color: string; size?: number }) {
+  const { rtl } = useLocale();
   return (
     <Image
       source={sources[name]}
       tintColor={color}
       contentFit="contain"
       accessible={false}
-      style={{ width: size, height: size }}
+      style={{
+        width: size,
+        height: size,
+        transform: rtl && (name === 'send' || name === 'reply') ? [{ scaleX: -1 }] : undefined,
+      }}
     />
   );
 }

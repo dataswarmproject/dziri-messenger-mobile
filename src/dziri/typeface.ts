@@ -21,3 +21,9 @@ export function consumerTypeface({
   if (family?.startsWith('Inter-')) return family;
   return value >= 550 ? 'Inter-600-20' : value >= 450 ? 'Inter-500-24' : 'Inter-400-20';
 }
+// Follow the first strong letter, so Arabic drafts also align correctly in EN/FR.
+export function messageDirection(text: string, rtl: boolean): 'rtl' | 'ltr' {
+  const firstLetter = text.match(/\p{L}/u)?.[0];
+  if (!firstLetter) return rtl ? 'rtl' : 'ltr';
+  return /[\u0590-\u08ff\ufb1d-\ufdff\ufe70-\ufefc]/u.test(firstLetter) ? 'rtl' : 'ltr';
+}

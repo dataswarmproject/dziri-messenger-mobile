@@ -31,7 +31,8 @@ Source-derived geometry: conversation list rows 76 high, avatars 60, search fiel
 36 high/10 radius, list title 30/38, preview 14/20, participant header 52 excluding
 OS safe area, header avatar 36, message avatar 28, body 17, bubble radius 18.
 White/black canvases and incoming bubble fills (black 6% / white 20%) are Messenger
-tokens; outgoing blue is #0584fe / #19a3fe. Original shared Inbox runtime retains
+tokens. The reference's outgoing blue is superseded by the user's Consumer palette
+requirement below. Original shared Inbox runtime retains
 its independent native layout and shared palette.
 
 All reference controls must map to actual capabilities or a clear unavailable
@@ -49,6 +50,14 @@ the original sender for context.
 The user's compact typography adjustment supersedes the reference's larger text:
 page heading 24/30, names and messages 15/21, search 14/20, preview 13/18,
 and timestamp 11. Consumer typefaces and accessibility scaling remain unchanged.
+
+Consumer palette authority is `apps/dziri/app/globals.css` and its Messenger CSS:
+sent bubbles use `--mk-ink` (#1a1b17 light / #f2efea dark), with inverse text;
+controls/read ticks use `--mk-accent` (#d6164a light / #ff375f dark). Monochrome
+reference icons are tinted at runtime. The inherited staff runtime remains isolated.
+The composer uses aligned 44px controls and a 44–120px text area, a localized
+placeholder, and first-strong-letter direction for Arabic/mixed/Latin drafts.
+The final requested focus treatment has no browser outline or surrounding ring.
 
 Inspection coverage: all 15 light contexts and the dark Chat/Discover contexts
 were received. The connected Figma Starter inspection quota then stopped further

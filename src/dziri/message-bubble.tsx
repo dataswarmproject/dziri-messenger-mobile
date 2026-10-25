@@ -8,6 +8,7 @@ import type { ReactionSummary, ReplyPreview } from './api';
 import type { DeliveryState } from './message-policy';
 import { MessageActions } from './message-actions';
 import { MediaPreview, type MessageMedia } from './media-preview';
+import { messageDirection } from './typeface';
 
 export interface BubbleMessage {
   id: string;
@@ -73,6 +74,7 @@ export const MessageBubble = memo(function MessageBubble({
   const { rtl, t } = useLocale();
   const colors = useColors();
   const outgoingRight = mine !== rtl;
+  const direction = messageDirection(message.body, rtl);
   const shift = useRef(new Animated.Value(0)).current;
   const swipeAt = useRef(0);
   const pan = useMemo(
@@ -173,7 +175,8 @@ export const MessageBubble = memo(function MessageBubble({
                     color: mine ? colors.outgoingText : colors.text,
                     fontSize: 15,
                     lineHeight: 21,
-                    writingDirection: 'auto',
+                    writingDirection: direction,
+                    textAlign: direction === 'rtl' ? 'right' : 'left',
                   }}>
                   {message.body}
                 </Text>

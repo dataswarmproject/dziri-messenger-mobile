@@ -11,6 +11,9 @@ import { tailwind } from '../theme';
 
 const SupportTarget = createContext('');
 export const SupportTargetProvider = SupportTarget.Provider;
+export function useSupportCompanyId() {
+  return useContext(SupportTarget);
+}
 
 export function SupportScreen(props: NativeStackScreenProps<MessengerRoutes, 'Support'>) {
   const companyId = useContext(SupportTarget);

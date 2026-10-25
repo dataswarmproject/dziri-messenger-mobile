@@ -26,7 +26,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { tailwind } from '../theme';
 import { deploymentUrl, secureStorageKey, MAIN_DZIRI_CONVEX_URL } from './config';
 import { useLocale } from './locale';
-import { LanguageChoice, Notice, useColors } from './ui';
+import { Notice, useColors } from './ui';
 import { SignInScreen, SignUpCompletion } from './auth';
 import { InboxScreen } from './inbox';
 import { ConversationScreen } from './conversation';
@@ -36,6 +36,7 @@ import { SupportScreen, SupportTargetProvider } from './support';
 import { MessengerShell } from '../shell';
 import { activeMessengerTab, messengerScopeKey, type MessengerTab } from '../messenger-policy';
 import { CommerceScreen } from './commerce';
+import { IconButton } from './icons';
 
 const Stack = createNativeStackNavigator<MessengerRoutes>();
 const ResetSession = createContext(() => {});
@@ -106,7 +107,6 @@ function Bootstrap() {
       ) : (
         <MessengerShell>
           <Notice text={`${t.config}. ${t.configHint}`} />
-          <LanguageChoice />
         </MessengerShell>
       )}
     </SafeAreaView>
@@ -158,7 +158,6 @@ function CustomerService({ url }: { url: string }) {
           <Text style={{ color: colors.primary, textAlign: 'center' }}>{t.retry}</Text>
         </Pressable>
       ) : null}
-      <LanguageChoice />
     </MessengerShell>
   );
 }
@@ -295,11 +294,12 @@ function UserNavigator() {
             <Stack.Screen
               name="Chats"
               options={{
+                headerShown: false,
                 title:
                   tab === 'friends'
                     ? t.friendsTab
-                    : tab === 'customers'
-                      ? t.customersTab
+                    : tab === 'marketplace'
+                      ? t.marketplaceTab
                       : t.teamView,
               }}>
               {props => (
@@ -352,17 +352,13 @@ function SignOut() {
     }
   };
   return (
-    <Pressable
-      accessibilityRole="button"
-      disabled={busy}
-      onPress={() => {
-        void exit();
-      }}
-      style={tailwind.style('p-3')}>
-      <Text style={{ color: colors.primary }}>
-        {failed ? t.retry : busy ? t.loading : t.signOut}
-      </Text>
-    </Pressable>
+    <IconButton
+      name="logout"
+      label={failed ? t.retry : t.signOut}
+      color={colors.text}
+      busy={busy}
+      onPress={() => void exit()}
+    />
   );
 }
 

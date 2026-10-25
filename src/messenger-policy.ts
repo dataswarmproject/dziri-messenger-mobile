@@ -1,14 +1,14 @@
-export type MessengerTab = 'friends' | 'customers' | 'staff';
+export type MessengerTab = 'friends' | 'marketplace' | 'staff';
 export interface MessengerCapabilities {
   staff: boolean;
-  customers: boolean;
+  marketplace: boolean;
   businesses: { id: string; name: string; role: string }[];
   stores: { id: string; name: string }[];
 }
 
 export function messengerTabs(state?: MessengerCapabilities | null): MessengerTab[] {
   const tabs: MessengerTab[] = ['friends'];
-  if (state?.customers && state.stores.length) tabs.push('customers');
+  if (state?.marketplace) tabs.push('marketplace');
   if (state?.staff && state.businesses.length) tabs.push('staff');
   return tabs;
 }
@@ -21,7 +21,7 @@ export function messengerScopeKey(userId: string, tab: MessengerTab, state: Mess
   const scope =
     tab === 'staff'
       ? state.businesses.map(b => `${b.id}:${b.role}`)
-      : tab === 'customers'
+      : tab === 'marketplace'
         ? state.stores.map(s => s.id)
         : [];
   return JSON.stringify([userId, tab, scope.sort()]);

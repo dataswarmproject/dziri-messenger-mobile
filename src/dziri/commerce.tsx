@@ -12,7 +12,12 @@ import { Notice, useColors } from './ui';
 import { createTextSender } from './text-sender';
 
 export function CommerceScreen(props: NativeStackScreenProps<MessengerRoutes, 'Commerce'>) {
-  return <Commerce key={props.route.params.conversationId} {...props} />;
+  return (
+    <Commerce
+      key={`${props.route.params.conversationId}:${props.route.params.storeId ?? 'buyer'}`}
+      {...props}
+    />
+  );
 }
 
 function Commerce({ route, navigation }: NativeStackScreenProps<MessengerRoutes, 'Commerce'>) {

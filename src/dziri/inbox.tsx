@@ -5,73 +5,139 @@ import { Image } from 'expo-image';
 import { FlashList } from '@shopify/flash-list';
 import { useQuery } from 'convex/react';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { tailwind } from '../theme';
-import { dziriApi, type ThreadSummary } from './api';
-import { LanguageChoice, Notice, useColors } from './ui';
+import { dziriApi } from './api';
+import { Notice, useColors } from './ui';
 import { useLocale } from './locale';
+import { useSupportCompanyId } from './support';
+import { Icon, IconButton } from './icons';
 import type { MessengerRoutes } from './routes';
 import type { MessengerTab } from '../messenger-policy';
 
-const InboxRow = memo(function InboxRow({
-  thread,
+type Row = {
+  id: string;
+  kind: 'thread' | 'commerce';
+  title: string;
+  preview: string;
+  image?: string;
+  at: number;
+  unread: number;
+  context?: string;
+  storeId?: string;
+};
+const ConversationRow = memo(function ConversationRow({
+  row,
   open,
 }: {
-  thread: ThreadSummary;
-  open: (id: string) => void;
+  row: Row;
+  open: (row: Row) => void;
 }) {
   const colors = useColors();
-  const { t, rtl } = useLocale();
-  const title = thread.title || thread.otherUser?.name || thread.otherUser?.handle || t.unknown;
-  const image = thread.avatarUrl || thread.otherUser?.image;
+  const { rtl, locale, t } = useLocale();
+  const date = new Date(row.at),
+    now = new Date();
+  const time =
+    row.preview && row.at > 0
+      ? date.toLocaleString(
+          locale,
+          date.toDateString() === now.toDateString()
+            ? { hour: '2-digit', minute: '2-digit' }
+            : { month: 'short', day: 'numeric' },
+        )
+      : '';
+  const initials = row.title
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map(s => s[0])
+    .join('');
   return (
     <Pressable
-      onPress={() => open(thread._id)}
       accessibilityRole="button"
-      accessibilityLabel={title}
-      style={[
-        tailwind.style('px-3 py-3 gap-3 items-center border-b'),
-        {
-          flexDirection: rtl ? 'row-reverse' : 'row',
-          borderColor: colors.border,
-        },
-      ]}>
-      {image ? (
-        <Image source={{ uri: image }} style={tailwind.style('w-10 h-10 rounded-full')} />
+      accessibilityLabel={row.title}
+      onPress={() => open(row)}
+      style={({ pressed }) => ({
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        minHeight: 84,
+        flexDirection: rtl ? 'row-reverse' : 'row',
+        alignItems: 'center',
+        gap: 12,
+        borderBottomWidth: 1,
+        borderColor: colors.border,
+        backgroundColor: pressed ? colors.surface : colors.background,
+      })}>
+      {row.image ? (
+        <Image source={{ uri: row.image }} style={{ width: 48, height: 48, borderRadius: 24 }} />
       ) : (
         <View
-          style={[
-            tailwind.style('w-10 h-10 rounded-full items-center justify-center'),
-            { backgroundColor: colors.surface },
-          ]}>
-          <Text style={{ color: colors.text }}>{title.slice(0, 1)}</Text>
-        </View>
-      )}
-      <View style={tailwind.style('flex-1 gap-1')}>
-        <Text
-          numberOfLines={1}
-          style={[
-            tailwind.style('text-base font-inter-medium-24'),
-            { color: colors.text, textAlign: rtl ? 'right' : 'left' },
-          ]}>
-          {title}
-        </Text>
-        <Text
-          numberOfLines={1}
-          style={[
-            tailwind.style('text-sm'),
-            { color: colors.secondary, writingDirection: 'auto' },
-          ]}>
-          {thread.encryption === 'e2ee' ? t.encryptionUnavailable : thread.lastMessagePreview || ''}
-        </Text>
-      </View>
-      {thread.unreadCount > 0 ? (
-        <View
-          style={[tailwind.style('rounded-full px-2 py-1'), { backgroundColor: colors.primary }]}>
-          <Text style={tailwind.style('text-xs text-white')}>
-            {thread.unreadCount > 99 ? '99+' : thread.unreadCount}
+          style={{
+            width: 48,
+            height: 48,
+            borderRadius: 24,
+            backgroundColor: colors.surface,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text style={{ fontSize: 16, fontWeight: '600', color: colors.secondary }}>
+            {initials}
           </Text>
         </View>
-      ) : null}
+      )}
+      <View style={{ flex: 1, minWidth: 0, gap: 4 }}>
+        <View style={{ flexDirection: rtl ? 'row-reverse' : 'row', alignItems: 'center', gap: 8 }}>
+          <Text
+            numberOfLines={1}
+            style={{
+              flex: 1,
+              minWidth: 0,
+              fontSize: 16,
+              fontWeight: '600',
+              color: colors.text,
+              textAlign: rtl ? 'right' : 'left',
+            }}>
+            {row.title}
+          </Text>
+          {time ? <Text style={{ fontSize: 11, color: colors.secondary }}>{time}</Text> : null}
+        </View>
+        {row.context ? (
+          <Text
+            numberOfLines={1}
+            style={{ fontSize: 12, color: colors.secondary, textAlign: rtl ? 'right' : 'left' }}>
+            {row.context}
+          </Text>
+        ) : null}
+        <View style={{ flexDirection: rtl ? 'row-reverse' : 'row', alignItems: 'center', gap: 8 }}>
+          <Text
+            numberOfLines={1}
+            style={{
+              flex: 1,
+              minWidth: 0,
+              fontSize: 14,
+              lineHeight: 20,
+              color: colors.secondary,
+              textAlign: rtl ? 'right' : 'left',
+              writingDirection: 'auto',
+            }}>
+            {row.preview || t.noMessages}
+          </Text>
+          {row.unread > 0 ? (
+            <View
+              style={{
+                minWidth: 20,
+                paddingHorizontal: 6,
+                height: 20,
+                borderRadius: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: colors.primary,
+              }}>
+              <Text style={{ fontSize: 11, fontWeight: '600', color: '#fff' }}>
+                {row.unread > 99 ? '99+' : row.unread}
+              </Text>
+            </View>
+          ) : null}
+        </View>
+      </View>
     </Pressable>
   );
 });
@@ -84,101 +150,107 @@ export function InboxScreen({
   lane: MessengerTab;
   openSupportInbox: () => void;
 }) {
-  const threads = useQuery(dziriApi.laneThreads, lane === 'customers' ? 'skip' : { lane });
-  const commerce = useQuery(dziriApi.commerce, lane === 'staff' ? 'skip' : { lane });
-  const { t } = useLocale();
+  const threads = useQuery(dziriApi.laneThreads, lane === 'marketplace' ? 'skip' : { lane });
+  const commerce = useQuery(dziriApi.commerce, lane === 'marketplace' ? { lane } : 'skip');
+  const { t, rtl } = useLocale();
   const colors = useColors();
+  const supportCompany = useSupportCompanyId();
   const [search, setSearch] = useState('');
   const open = useCallback(
-    (threadId: string) => navigation.navigate('Conversation', { threadId }),
+    (row: Row) => {
+      if (row.kind === 'commerce')
+        navigation.navigate('Commerce', { conversationId: row.id, storeId: row.storeId });
+      else navigation.navigate('Conversation', { threadId: row.id });
+    },
     [navigation],
   );
-  if (
-    (lane !== 'customers' && threads === undefined) ||
-    (lane !== 'staff' && commerce === undefined)
-  )
+  if (lane === 'marketplace' ? commerce === undefined : threads === undefined)
     return <Notice text={t.loading} busy />;
+  const rows: Row[] =
+    lane === 'marketplace'
+      ? (commerce ?? []).map(row => ({
+          id: row._id,
+          kind: 'commerce',
+          title: row.title,
+          preview: row.lastMessagePreview,
+          image: row.avatarUrl,
+          at: row.lastMessageAt,
+          unread: 0,
+          context: `${row.side === 'selling' ? t.selling : t.buying} · ${row.context}`,
+          storeId: row.storeId,
+        }))
+      : (threads ?? []).map(thread => ({
+          id: thread._id,
+          kind: 'thread',
+          title: thread.title || thread.otherUser?.name || thread.otherUser?.handle || t.unknown,
+          image: thread.avatarUrl || thread.otherUser?.image,
+          preview:
+            thread.encryption === 'e2ee'
+              ? t.encryptionUnavailable
+              : (thread.lastMessagePreview ?? ''),
+          at: thread.lastMessageAt,
+          unread: thread.unreadCount,
+        }));
   const filter = search.trim().toLocaleLowerCase();
-  const visible = filter
-    ? (threads ?? []).filter(thread =>
-        `${thread.title ?? ''} ${thread.otherUser?.name ?? ''} ${thread.otherUser?.handle ?? ''}`
-          .toLocaleLowerCase()
-          .includes(filter),
-      )
-    : (threads ?? []);
-  const shopRows = (commerce ?? []).filter(row =>
-    `${row.title} ${row.context}`.toLocaleLowerCase().includes(filter),
+  const visible = rows.filter(row =>
+    `${row.title} ${row.context ?? ''}`.toLocaleLowerCase().includes(filter),
   );
-  const rows = [
-    ...visible.map(thread => ({
-      id: thread._id,
-      at: thread.lastMessageAt,
-      thread,
-      commerce: null,
-    })),
-    ...shopRows.map(row => ({ id: row._id, at: row.lastMessageAt, thread: null, commerce: row })),
-  ].sort((a, b) => b.at - a.at);
   return (
-    <View style={[tailwind.style('flex-1'), { backgroundColor: colors.background }]}>
-      {lane !== 'customers' ? (
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => (lane === 'staff' ? openSupportInbox() : navigation.navigate('Support'))}
-          style={tailwind.style('p-4')}>
-          <Text style={{ color: colors.primary }}>
-            {lane === 'staff' ? t.supportQueues : t.support}
-          </Text>
-        </Pressable>
-      ) : null}
-      <TextInput
-        value={search}
-        onChangeText={setSearch}
-        placeholder={t.chats}
-        accessibilityLabel={t.chats}
-        placeholderTextColor={colors.secondary}
-        style={[
-          tailwind.style('px-3 py-3 mx-3 my-2 rounded-[13px] text-base'),
-          { color: colors.text, backgroundColor: colors.surface },
-        ]}
-      />
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      <View
+        style={{
+          paddingHorizontal: 16,
+          paddingVertical: 12,
+          flexDirection: rtl ? 'row-reverse' : 'row',
+          alignItems: 'center',
+          gap: 8,
+        }}>
+        <View
+          style={{
+            flex: 1,
+            minWidth: 0,
+            minHeight: 44,
+            paddingHorizontal: 12,
+            borderRadius: 12,
+            backgroundColor: colors.surface,
+            flexDirection: rtl ? 'row-reverse' : 'row',
+            alignItems: 'center',
+            gap: 8,
+          }}>
+          <Icon name="search" color={colors.secondary} size={18} />
+          <TextInput
+            value={search}
+            onChangeText={setSearch}
+            placeholder={t.searchConversations}
+            accessibilityLabel={t.searchConversations}
+            placeholderTextColor={colors.secondary}
+            style={{ flex: 1, minWidth: 0, fontSize: 14, paddingVertical: 12, color: colors.text }}
+          />
+        </View>
+        {lane === 'staff' || (lane === 'friends' && supportCompany) ? (
+          <IconButton
+            name="support"
+            label={lane === 'staff' ? t.supportQueues : t.support}
+            color={colors.secondary}
+            onPress={() => (lane === 'staff' ? openSupportInbox() : navigation.navigate('Support'))}
+          />
+        ) : null}
+      </View>
       <FlashList
-        data={rows}
-        renderItem={({ item }) =>
-          item.thread ? (
-            <InboxRow thread={item.thread} open={open} />
-          ) : item.commerce ? (
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={item.commerce.title}
-              onPress={() =>
-                navigation.navigate('Commerce', {
-                  conversationId: item.id,
-                  storeId: item.commerce?.storeId,
-                })
-              }
-              style={[tailwind.style('p-4 border-b gap-1'), { borderColor: colors.border }]}>
-              <Text style={{ color: colors.text, fontSize: 16 }}>{item.commerce.title}</Text>
-              {lane === 'customers' ? (
-                <Text style={{ color: colors.secondary }}>{item.commerce.context}</Text>
-              ) : null}
-              <Text numberOfLines={1} style={{ color: colors.secondary }}>
-                {item.commerce.lastMessagePreview}
-              </Text>
-            </Pressable>
-          ) : null
-        }
-        keyExtractor={item => item.id}
+        data={visible}
+        renderItem={({ item }) => <ConversationRow row={item} open={open} />}
+        keyExtractor={row => row.id}
         ListEmptyComponent={
-          <Text style={[tailwind.style('p-6 text-center'), { color: colors.secondary }]}>
+          <Text
+            style={{ padding: 32, textAlign: 'center', color: colors.secondary, lineHeight: 22 }}>
             {lane === 'friends'
               ? t.friendsEmpty
-              : lane === 'customers'
-                ? t.customersEmpty
+              : lane === 'marketplace'
+                ? t.marketplaceEmpty
                 : t.staffEmpty}
           </Text>
         }
       />
-      <LanguageChoice />
     </View>
   );
 }

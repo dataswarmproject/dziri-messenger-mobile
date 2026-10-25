@@ -1,9 +1,11 @@
 # Dziri Messenger implementation rules
 
-- One messenger has Friends (always), Customers (published products in an active
-  store with current message access), and Staff & agents (active Dziri Business ownership or an invited
+- One messenger has Friends and Marketplace (all active signed-in users),
+  and Staff & agents (active Dziri Business ownership or an invited
   non-viewer membership). These tabs use live authenticated server eligibility;
-  unknown state grants no business tabs. Revocation resets the selected tab and
+  unknown state grants no tabs. Marketplace combines buying/selling conversations
+  with canonical store permissions and explicit seller context; product publication
+  is not required to retain existing conversations. Revocation resets the selected tab and
   its open business conversation. No account-type chooser or client role grants.
 - `src/messenger.tsx` injects the isolated Inbox runtime into the signed-in shell.
   It is reachable only from the eligible Staff & agents tab. Rails still checks
@@ -26,6 +28,8 @@
 - Theme colors come from `config/dziri-theme.json`, shared with Dziri Inbox.
   Theme changes must not change native spacing, geometry or typography.
 - Only use the ringed logo in `assets/dziri-ring.*`; do not mirror it for RTL.
+- Language selection is a globe menu in the shared header; sign out is an accessible icon.
+  Do not repeat tab titles as list-page headers or show language links below every screen.
 - Custom messenger text uses Consumer's Inter/thmanyah Sans pairing through
   `src/dziri/typography.tsx`. Preserve the publisher OTF bytes/names/license.
   Reverse layout explicitly in Arabic; keep the layout root LTR to avoid double

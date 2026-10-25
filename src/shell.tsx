@@ -3,7 +3,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from './dziri/typography';
 import { Image } from 'expo-image';
 import { useLocale } from './dziri/locale';
-import { useColors } from './dziri/ui';
+import { LanguageMenu, useColors } from './dziri/ui';
 import { messengerTabs, type MessengerCapabilities, type MessengerTab } from './messenger-policy';
 
 export function MessengerShell({
@@ -21,7 +21,7 @@ export function MessengerShell({
 }) {
   const { t, rtl } = useLocale();
   const colors = useColors();
-  const labels = { friends: t.friendsTab, customers: t.customersTab, staff: t.teamView };
+  const labels = { friends: t.friendsTab, marketplace: t.marketplaceTab, staff: t.teamView };
   return (
     <View style={{ flex: 1, backgroundColor: colors.background, direction: 'ltr' }}>
       <View
@@ -41,15 +41,18 @@ export function MessengerShell({
             source={require('../assets/dziri-ring.svg')}
             contentFit="contain"
             tintColor={colors.text}
-            style={{ width: 38, height: 38 }}
+            style={{ width: 32, height: 32 }}
           />
           <Text
             numberOfLines={1}
-            style={{ flexShrink: 1, color: colors.text, fontSize: 18, fontWeight: '600' }}>
+            style={{ flexShrink: 1, color: colors.text, fontSize: 17, fontWeight: '600' }}>
             {t.app}
           </Text>
         </View>
-        {account}
+        <View style={{ flexDirection: rtl ? 'row-reverse' : 'row', alignItems: 'center' }}>
+          <LanguageMenu />
+          {account}
+        </View>
       </View>
       {capabilities && select ? (
         <View style={{ borderBottomWidth: 1, borderColor: colors.border }}>

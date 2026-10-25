@@ -14,6 +14,7 @@ const queries = [
   ['messaging/messenger:capabilities', {}, null],
   ['messaging/messenger:listThreads', { lane: 'friends' }, []],
   ['messaging/messenger:listThreads', { lane: 'staff' }, []],
+  ['messaging/messenger:listCommerce', { lane: 'marketplace' }, []],
   ['messaging/messenger:listCommerce', { lane: 'friends' }, []],
   ['messaging/messenger:listCommerce', { lane: 'customers' }, []],
 ];
@@ -21,7 +22,8 @@ let failed = false;
 for (const [name, args, expected] of queries) {
   try {
     const result = await client.query(makeFunctionReference(name), args);
-    if (JSON.stringify(result) !== JSON.stringify(expected)) throw new Error('Unexpected anonymous response');
+    if (JSON.stringify(result) !== JSON.stringify(expected))
+      throw new Error('Unexpected anonymous response');
     console.log(`PASS ${name} ${JSON.stringify(args)}`);
   } catch {
     failed = true;

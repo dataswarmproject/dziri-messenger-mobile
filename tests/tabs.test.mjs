@@ -23,35 +23,40 @@ test('Staff credentials cannot be restored under another Dziri user or Inbox ori
 
 const business = { id: 'company', name: 'Business', role: 'editor' };
 const store = { id: 'shop', name: 'Shop' };
-test('Friends is always present; business tabs require confirmed server eligibility', () => {
+test('Marketplace is available without a shop; Staff still requires business eligibility', () => {
   for (const value of [
     undefined,
     null,
-    { staff: false, customers: false, businesses: [], stores: [] },
+    { staff: false, marketplace: false, businesses: [], stores: [] },
   ])
     assert.deepEqual(messengerTabs(value), ['friends']);
   assert.deepEqual(
-    messengerTabs({ staff: true, customers: false, businesses: [business], stores: [] }),
+    messengerTabs({ staff: true, marketplace: false, businesses: [business], stores: [] }),
     ['friends', 'staff'],
   );
   assert.deepEqual(
-    messengerTabs({ staff: true, customers: true, businesses: [business], stores: [store] }),
-    ['friends', 'customers', 'staff'],
+    messengerTabs({ staff: true, marketplace: true, businesses: [business], stores: [store] }),
+    ['friends', 'marketplace', 'staff'],
   );
-  assert.deepEqual(messengerTabs({ staff: true, customers: true, businesses: [], stores: [] }), [
+  assert.deepEqual(messengerTabs({ staff: true, marketplace: true, businesses: [], stores: [] }), [
     'friends',
+    'marketplace',
+  ]);
+  assert.deepEqual(messengerTabs({ staff: false, marketplace: true, businesses: [], stores: [] }), [
+    'friends',
+    'marketplace',
   ]);
 });
 test('Revocation or an unknown account state immediately falls back to Friends', () => {
-  assert.equal(activeMessengerTab('customers', null), 'friends');
+  assert.equal(activeMessengerTab('marketplace', null), 'friends');
   assert.equal(
-    activeMessengerTab('staff', { staff: false, customers: false, businesses: [], stores: [] }),
+    activeMessengerTab('staff', { staff: false, marketplace: false, businesses: [], stores: [] }),
     'friends',
   );
   assert.equal(
     activeMessengerTab('staff', {
       staff: true,
-      customers: false,
+      marketplace: false,
       businesses: [business],
       stores: [],
     }),
@@ -59,7 +64,7 @@ test('Revocation or an unknown account state immediately falls back to Friends',
   );
 });
 test('Account or tenant changes invalidate an open business conversation', () => {
-  const state = { staff: true, customers: true, businesses: [business], stores: [store] };
+  const state = { staff: true, marketplace: true, businesses: [business], stores: [store] };
   assert.notEqual(
     messengerScopeKey('one', 'staff', state),
     messengerScopeKey('two', 'staff', state),
@@ -69,7 +74,7 @@ test('Account or tenant changes invalidate an open business conversation', () =>
     messengerScopeKey('one', 'staff', { ...state, businesses: [] }),
   );
   assert.notEqual(
-    messengerScopeKey('one', 'customers', state),
-    messengerScopeKey('one', 'customers', { ...state, stores: [] }),
+    messengerScopeKey('one', 'marketplace', state),
+    messengerScopeKey('one', 'marketplace', { ...state, stores: [] }),
   );
 });

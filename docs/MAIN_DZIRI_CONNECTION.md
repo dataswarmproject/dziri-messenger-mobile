@@ -13,9 +13,10 @@ Password recovery uses Consumer's `reset` and `reset-verification` flows with
 12–128 character policy and server breach checks. Recovery requires an account's
 verified phone; the request response does not disclose whether the account exists.
 
-Friends, Customers and Staff & agents render only for a signed-in, available
-profile after server capabilities load. Business membership and product publication
-remain server authority. Chats and read cursors use canonical Dziri IDs and reactive
+Friends, Marketplace and Staff & agents render only for a signed-in, available
+profile after server capabilities load. Marketplace combines buying and selling for all active signed-in users.
+Store message permissions and business membership remain server authority.
+A conversation appears once and carries explicit seller scope when needed. Chats and read cursors use canonical Dziri IDs and reactive
 queries; changing data in either app updates subscribers of that same backend.
 Changes to platform UI code still require building that platform.
 

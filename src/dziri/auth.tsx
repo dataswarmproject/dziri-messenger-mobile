@@ -10,13 +10,13 @@ import {
 } from 'react-native';
 import { useMutation } from 'convex/react';
 import { Text, TextInput } from './typography';
-import { Image } from 'expo-image';
 import { useAuthActions } from '@convex-dev/auth/react';
 import { tailwind } from '../theme';
-import { LanguageChoice, useColors } from './ui';
+import { useColors } from './ui';
 import { useLocale } from './locale';
 import { authRequest, authErrorReason, type AuthFlow } from './auth-request';
 import { dziriApi } from './api';
+import { IconButton } from './icons';
 
 export function SignUpCompletion({
   complete,
@@ -57,15 +57,15 @@ export function SignUpCompletion({
             style={tailwind.style('p-3')}>
             <Text style={{ color: colors.primary }}>{t.retry}</Text>
           </Pressable>
-          <Pressable
-            accessibilityRole="button"
+          <IconButton
+            name="logout"
+            label={t.signOut}
+            color={colors.text}
             onPress={() => {
               setFailed(false);
               void cancel().catch(() => setFailed(true));
             }}
-            style={tailwind.style('p-3')}>
-            <Text style={{ color: colors.primary }}>{t.signOut}</Text>
-          </Pressable>
+          />
         </>
       ) : (
         <>
@@ -198,20 +198,13 @@ export function SignInScreen({
         }}>
         <View
           style={[tailwind.style('gap-4'), { width: '100%', maxWidth: 420, alignSelf: 'center' }]}>
-          <Image
-            source={require('../../assets/dziri-ring.svg')}
-            tintColor={colors.text}
-            accessibilityLabel={t.app}
-            style={tailwind.style('h-20 w-20 self-center')}
-            contentFit="contain"
-          />
           <Text
             accessibilityRole="header"
             style={[
               tailwind.style('text-xl font-inter-medium-24 text-center'),
               { color: colors.text },
             ]}>
-            {signup ? t.signUp : recovery ? t.forgotPassword : t.app}
+            {signup ? t.signUp : recovery ? t.forgotPassword : t.signIn}
           </Text>
           <Text style={[tailwind.style('text-base text-center'), { color: colors.secondary }]}>
             {signup ? t.signupHint : recovery ? t.resetHint : t.loginHint}
@@ -425,7 +418,6 @@ export function SignInScreen({
               {link(t.backToLogin, () => changeFlow('signIn'))}
             </>
           )}
-          <LanguageChoice />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

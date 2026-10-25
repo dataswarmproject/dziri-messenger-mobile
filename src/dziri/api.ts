@@ -5,6 +5,8 @@ import type { MessengerCapabilities } from '../messenger-policy';
 export interface CommerceSummary {
   _id: string;
   storeId?: string;
+  side: 'buying' | 'selling';
+  avatarUrl?: string;
   title: string;
   context: string;
   lastMessagePreview: string;
@@ -69,7 +71,7 @@ export const dziriApi = {
   laneThreads: makeFunctionReference<'query', { lane: 'friends' | 'staff' }, ThreadSummary[]>(
     'messaging/messenger:listThreads',
   ),
-  commerce: makeFunctionReference<'query', { lane: 'friends' | 'customers' }, CommerceSummary[]>(
+  commerce: makeFunctionReference<'query', { lane: 'marketplace' }, CommerceSummary[]>(
     'messaging/messenger:listCommerce',
   ),
   commerceDetail: makeFunctionReference<

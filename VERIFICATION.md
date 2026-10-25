@@ -1,3 +1,26 @@
+## Marketplace and conversation layout — 25 October 2026
+
+Friends and Marketplace now appear for all active signed-in accounts. Marketplace
+combines buyer and seller conversations, with counterparty names, shop context
+and explicit seller scope. Staff & agents remains business-membership gated.
+The shared header contains a globe language menu and sign-out icon; repeated
+list headings, support text blocks and language footers were removed. Conversation
+rows share avatar, title, timestamp and preview alignment. Consumer fonts and
+the transparent ring artwork remain unchanged.
+
+Verification: 75 backend tests and 27 client tests passed, along with full backend
+and client typechecks, client lint, brand/runtime consistency and all three platform
+exports. Main Convex deployment completed with no schema/index changes; seven
+anonymous read-only connection probes passed, including legacy commerce lanes.
+An existing user signed in manually in the refreshed preview. Browser checks
+confirmed actual Friends and Marketplace data, search filtering, EN/FR/AR selection,
+Arabic mirroring and no page overflow at 320 px. The UI was also inspected at 390 px.
+No message was sent, account created, password changed or SMS requested.
+
+The current list window is bounded, not full-history pagination. Native device
+acceptance and real two-account exchange remain unverified. Earlier navigation
+and duplicate-logo descriptions below are historical and superseded by this entry.
+
 ## Main database and account screens — 25 October 2026
 
 The current client defaults to main Dziri (`dashing-orca-24`), with shared Consumer

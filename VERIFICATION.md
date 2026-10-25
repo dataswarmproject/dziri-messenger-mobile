@@ -1,3 +1,35 @@
+## Figma checkpoint and compact typography — 25 October 2026
+
+The consumer runtime now uses the inspected Messenger reference for the list,
+conversation, composer and related screens, while retaining canonical Dziri data,
+fonts, domain tabs and the unchanged ring logo. This is an implementation checkpoint;
+the reference coverage and remaining capability gaps are recorded in
+`docs/design/FIGMA_MESSENGER_IMPLEMENTATION.md`.
+
+The latest requested typography scale is 24/30 for the Chats heading, 15/21 for
+conversation names and messages, 14/20 for search, and 13/18 for list previews.
+Sender names are no longer repeated above bubbles or in tap details. Timestamp
+and receipt ticks share a compact row beneath the bubble; tapping expands the
+date and shows reply/react actions in that row. Avatars and contextual quote names
+are retained. Accessibility font scaling remains enabled.
+
+Current checks: 32 client tests, consumer typecheck, lint, consistency guard and
+web/Android/iOS exports pass. The main backend has 84 passing tests, a successful
+full typechecked deployment of the media wrapper and own mute preference, and
+seven passing anonymous read-only connection probes. No schema/index changes.
+
+Signed-in browser verification at 384 CSS px confirmed the 24px computed heading,
+no page overflow, smaller English/Arabic text, avatars beside bubbles, no repeated
+sender labels, and the combined timestamp/tick/action row. Reply selection and
+reaction-picker navigation were exercised without sending. No console errors were
+reported during the final check. The static preview requires signing in after a
+full refresh. Camera/microphone, story publication, real media exchange and native
+device acceptance remain unverified; builds and fixtures do not qualify them.
+
+The shared monorepo source push remains held to avoid rebuilding unrelated web
+changes. Its legacy brand guard reports existing unapproved assets outside this
+scope; Messenger's ring/native-runtime consistency guard passes.
+
 ## Marketplace and conversation layout — 25 October 2026
 
 Friends and Marketplace now appear for all active signed-in accounts. Marketplace

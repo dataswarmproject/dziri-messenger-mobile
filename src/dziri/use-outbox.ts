@@ -21,5 +21,10 @@ export function useOutbox(
     [transmit],
   );
   useEffect(() => outbox.acknowledge(confirmed), [outbox, confirmed]);
-  return { drafts, enqueue: outbox.enqueue, retry: outbox.retry };
+  return {
+    drafts,
+    enqueue: outbox.enqueue,
+    enqueueMedia: outbox.enqueueMedia,
+    retry: outbox.retry,
+  };
 }

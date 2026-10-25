@@ -25,11 +25,17 @@
   account APIs, Redux store, private notes, Firebase subscriptions or Sentry setup.
 - Dziri owns identity, thread/message IDs, access policies and receipts. Use the
   existing authenticated functions; never add a client-supplied authorization userId.
-- Theme colors come from `config/dziri-theme.json`, shared with Dziri Inbox.
-  Theme changes must not change native spacing, geometry or typography.
+- The consumer runtime follows the inspected Messenger Figma reference recorded in
+  `docs/design/FIGMA_MESSENGER_IMPLEMENTATION.md`, with Consumer fonts and Dziri
+  domain navigation. Its appearance tokens live in `src/dziri/figma.tsx`.
+  The inherited staff runtime retains `config/dziri-theme.json`, shared with Inbox,
+  and its original native spacing, geometry and typography.
 - Only use the ringed logo in `assets/dziri-ring.*`; do not mirror it for RTL.
-- Language selection is a globe menu in the shared header; sign out is an accessible icon.
-  Do not repeat tab titles as list-page headers or show language links below every screen.
+- Language selection is a globe menu and sign out an accessible icon in Settings
+  after login (the public header keeps its globe). Avoid repeated headings and
+  language footers. Keep conversation sender names in the header, with avatars
+  beside bubbles. Place timestamp and receipt ticks together beneath each bubble;
+  tapping reveals reply/react actions in the same compact row.
 - Custom messenger text uses Consumer's Inter/thmanyah Sans pairing through
   `src/dziri/typography.tsx`. Preserve the publisher OTF bytes/names/license.
   Reverse layout explicitly in Arabic; keep the layout root LTR to avoid double

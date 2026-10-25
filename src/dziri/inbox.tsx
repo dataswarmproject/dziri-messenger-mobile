@@ -9,9 +9,12 @@ import { dziriApi } from './api';
 import { Notice, useColors } from './ui';
 import { useLocale } from './locale';
 import { useSupportCompanyId } from './support';
-import { Icon, IconButton } from './icons';
+import { IconButton } from './icons';
+import { FigmaButton, FigmaIcon } from './figma';
 import type { MessengerRoutes } from './routes';
 import type { MessengerTab } from '../messenger-policy';
+import { StoriesStrip } from './stories-strip';
+import { StoryComposer } from './story-composer';
 
 type Row = {
   id: string;
@@ -57,23 +60,21 @@ const ConversationRow = memo(function ConversationRow({
       onPress={() => open(row)}
       style={({ pressed }) => ({
         paddingHorizontal: 16,
-        paddingVertical: 14,
-        minHeight: 84,
+        paddingVertical: 8,
+        minHeight: row.context ? 84 : 76,
         flexDirection: rtl ? 'row-reverse' : 'row',
         alignItems: 'center',
         gap: 12,
-        borderBottomWidth: 1,
-        borderColor: colors.border,
         backgroundColor: pressed ? colors.surface : colors.background,
       })}>
       {row.image ? (
-        <Image source={{ uri: row.image }} style={{ width: 48, height: 48, borderRadius: 24 }} />
+        <Image source={{ uri: row.image }} style={{ width: 60, height: 60, borderRadius: 30 }} />
       ) : (
         <View
           style={{
-            width: 48,
-            height: 48,
-            borderRadius: 24,
+            width: 60,
+            height: 60,
+            borderRadius: 30,
             backgroundColor: colors.surface,
             alignItems: 'center',
             justifyContent: 'center',
@@ -83,21 +84,21 @@ const ConversationRow = memo(function ConversationRow({
           </Text>
         </View>
       )}
-      <View style={{ flex: 1, minWidth: 0, gap: 4 }}>
+      <View style={{ flex: 1, minWidth: 0, gap: 0 }}>
         <View style={{ flexDirection: rtl ? 'row-reverse' : 'row', alignItems: 'center', gap: 8 }}>
           <Text
             numberOfLines={1}
             style={{
               flex: 1,
               minWidth: 0,
-              fontSize: 16,
-              fontWeight: '600',
+              fontSize: 15,
+              lineHeight: 21,
+              fontWeight: row.unread ? '700' : '500',
               color: colors.text,
               textAlign: rtl ? 'right' : 'left',
             }}>
             {row.title}
           </Text>
-          {time ? <Text style={{ fontSize: 11, color: colors.secondary }}>{time}</Text> : null}
         </View>
         {row.context ? (
           <Text
@@ -112,13 +113,14 @@ const ConversationRow = memo(function ConversationRow({
             style={{
               flex: 1,
               minWidth: 0,
-              fontSize: 14,
-              lineHeight: 20,
+              fontSize: 13,
+              lineHeight: 18,
               color: colors.secondary,
               textAlign: rtl ? 'right' : 'left',
               writingDirection: 'auto',
             }}>
             {row.preview || t.noMessages}
+            {time ? ` · ${time}` : ''}
           </Text>
           {row.unread > 0 ? (
             <View
@@ -152,10 +154,12 @@ export function InboxScreen({
 }) {
   const threads = useQuery(dziriApi.laneThreads, lane === 'marketplace' ? 'skip' : { lane });
   const commerce = useQuery(dziriApi.commerce, lane === 'marketplace' ? { lane } : 'skip');
+  const me = useQuery(dziriApi.me, {});
   const { t, rtl } = useLocale();
   const colors = useColors();
   const supportCompany = useSupportCompanyId();
   const [search, setSearch] = useState('');
+  const [cameraStory, setCameraStory] = useState(false);
   const open = useCallback(
     (row: Row) => {
       if (row.kind === 'commerce')
@@ -199,8 +203,43 @@ export function InboxScreen({
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <View
         style={{
+          height: 64,
           paddingHorizontal: 16,
-          paddingVertical: 12,
+          gap: 12,
+          alignItems: 'center',
+          flexDirection: rtl ? 'row-reverse' : 'row',
+        }}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t.settings}
+          onPress={() => navigation.navigate('Settings')}>
+          {me?.image ? (
+            <Image source={{ uri: me.image }} style={{ width: 40, height: 40, borderRadius: 20 }} />
+          ) : (
+            <Image
+              source={require('../../assets/dziri-ring.svg')}
+              style={{ width: 40, height: 40 }}
+            />
+          )}
+        </Pressable>
+        <Text
+          accessibilityRole="header"
+          numberOfLines={1}
+          style={{ flex: 1, fontSize: 24, lineHeight: 30, fontWeight: '700', color: colors.text }}>
+          {lane === 'friends' ? t.chats : lane === 'marketplace' ? t.marketplaceTab : t.teamView}
+        </Text>
+        <FigmaButton name="cameraTop" label={t.camera} onPress={() => setCameraStory(true)} />
+        <FigmaButton
+          name="newMessage"
+          label={t.newMessage}
+          onPress={() => navigation.navigate('People', { mode: 'new' })}
+        />
+      </View>
+      <View
+        style={{
+          paddingHorizontal: 16,
+          paddingTop: 4,
+          paddingBottom: 8,
           flexDirection: rtl ? 'row-reverse' : 'row',
           alignItems: 'center',
           gap: 8,
@@ -209,22 +248,29 @@ export function InboxScreen({
           style={{
             flex: 1,
             minWidth: 0,
-            minHeight: 44,
-            paddingHorizontal: 12,
-            borderRadius: 12,
+            height: 36,
+            paddingHorizontal: 8,
+            borderRadius: 10,
             backgroundColor: colors.surface,
             flexDirection: rtl ? 'row-reverse' : 'row',
             alignItems: 'center',
             gap: 8,
           }}>
-          <Icon name="search" color={colors.secondary} size={18} />
+          <FigmaIcon name="search" />
           <TextInput
             value={search}
             onChangeText={setSearch}
             placeholder={t.searchConversations}
             accessibilityLabel={t.searchConversations}
             placeholderTextColor={colors.secondary}
-            style={{ flex: 1, minWidth: 0, fontSize: 14, paddingVertical: 12, color: colors.text }}
+            style={{
+              flex: 1,
+              minWidth: 0,
+              fontSize: 14,
+              lineHeight: 20,
+              paddingVertical: 6,
+              color: colors.text,
+            }}
           />
         </View>
         {lane === 'staff' || (lane === 'friends' && supportCompany) ? (
@@ -236,6 +282,8 @@ export function InboxScreen({
           />
         ) : null}
       </View>
+      {cameraStory ? <StoryComposer initialCamera close={() => setCameraStory(false)} /> : null}
+      {lane === 'friends' && !search.trim() ? <StoriesStrip /> : null}
       <FlashList
         data={visible}
         renderItem={({ item }) => <ConversationRow row={item} open={open} />}
@@ -243,11 +291,13 @@ export function InboxScreen({
         ListEmptyComponent={
           <Text
             style={{ padding: 32, textAlign: 'center', color: colors.secondary, lineHeight: 22 }}>
-            {lane === 'friends'
-              ? t.friendsEmpty
-              : lane === 'marketplace'
-                ? t.marketplaceEmpty
-                : t.staffEmpty}
+            {filter
+              ? t.noResults
+              : lane === 'friends'
+                ? t.friendsEmpty
+                : lane === 'marketplace'
+                  ? t.marketplaceEmpty
+                  : t.staffEmpty}
           </Text>
         }
       />

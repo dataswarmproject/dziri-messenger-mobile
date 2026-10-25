@@ -5,11 +5,14 @@ import CustomerApp from './dziri/app';
 import TeamApp from './inbox/app';
 import { LocaleProvider } from './dziri/locale';
 import { supportLink } from './access';
+import { MessengerAppearance } from './dziri/appearance';
 
 export default function Messenger() {
   return (
     <LocaleProvider>
-      <MessengerRuntime />
+      <MessengerAppearance>
+        <MessengerRuntime />
+      </MessengerAppearance>
     </LocaleProvider>
   );
 }

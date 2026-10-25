@@ -12,6 +12,7 @@ import { MessageList } from './message-list';
 import { MessageComposer } from './message-composer';
 import type { BubbleMessage } from './message-bubble';
 import { deliveryState } from './message-policy';
+import { ChatHeader } from './chat-header';
 
 export function CommerceScreen(props: NativeStackScreenProps<MessengerRoutes, 'Commerce'>) {
   return (
@@ -43,6 +44,7 @@ function Commerce({ route, navigation }: NativeStackScreenProps<MessengerRoutes,
         content: draft.body,
         clientMessageId: draft.id,
         ...(draft.reply ? { parentMessageId: draft.reply.id } : {}),
+        ...(draft.media ? { imageStorageIds: [draft.media.storageId] } : {}),
       }),
     [send, scope],
   );
@@ -71,8 +73,10 @@ function Commerce({ route, navigation }: NativeStackScreenProps<MessengerRoutes,
       react({ messageId: message.id, emoji, ...(storeId ? { storeId } : {}) }),
     [react, storeId],
   );
-  if (detail === null || me === null) return <Notice text={t.failed} />;
-  if (!detail || !me || !messages) return <Notice text={t.loading} busy />;
+  if (detail === null || me === null)
+    return <Notice text={t.failed} onBack={() => navigation.goBack()} />;
+  if (!detail || !me || !messages)
+    return <Notice text={t.loading} busy onBack={() => navigation.goBack()} />;
   const rows: BubbleMessage[] = [
     ...outbox.drafts
       .filter(draft => !confirmed.includes(draft.id))
@@ -87,6 +91,7 @@ function Commerce({ route, navigation }: NativeStackScreenProps<MessengerRoutes,
         reactions: [],
         status: draft.status,
         local: true,
+        media: draft.media,
       })),
     ...messages.map(message => {
       const reactions = new Map<string, ReactionSummary>();
@@ -105,7 +110,16 @@ function Commerce({ route, navigation }: NativeStackScreenProps<MessengerRoutes,
         senderId: message.senderId,
         name: message.senderName,
         image: message.senderImage,
-        body: message.deletedAt !== undefined ? t.deleted : message.content,
+        body:
+          message.deletedAt !== undefined
+            ? t.deleted
+            : message.imageUrls?.length && message.content === '[Image]'
+              ? ''
+              : message.content,
+        media:
+          message.deletedAt === undefined && message.imageUrls?.[0]
+            ? { type: 'image' as const, uri: message.imageUrls[0] }
+            : undefined,
         createdAt: message.createdAt,
         deleted: message.deletedAt !== undefined,
         reactions: [...reactions.values()],
@@ -128,6 +142,11 @@ function Commerce({ route, navigation }: NativeStackScreenProps<MessengerRoutes,
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: colors.background }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <ChatHeader
+        name={detail.otherName}
+        back={() => navigation.goBack()}
+        details={() => navigation.navigate('Details', { conversationId, storeId })}
+      />
       <MessageList
         messages={rows}
         myId={me._id}
@@ -148,6 +167,8 @@ function Commerce({ route, navigation }: NativeStackScreenProps<MessengerRoutes,
         reply={reply}
         cancelReply={() => setReply(null)}
         submit={outbox.enqueue}
+        submitMedia={outbox.enqueueMedia}
+        imagesOnly
         full={outbox.drafts.length >= 20}
       />
     </KeyboardAvoidingView>

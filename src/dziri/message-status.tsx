@@ -14,7 +14,7 @@ export function MessageStatus({ state, info }: { state: DeliveryState; info: () 
     <View
       accessibilityRole="image"
       accessibilityLabel={label}
-      style={{ minHeight: 24, justifyContent: 'center', paddingHorizontal: 4 }}>
+      style={{ height: 22, justifyContent: 'center', flexShrink: 0 }}>
       <Icon
         name={state === 'read' || state === 'delivered' ? 'doubleCheck' : 'check'}
         size={16}

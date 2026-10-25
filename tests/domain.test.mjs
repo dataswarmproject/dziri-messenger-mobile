@@ -7,8 +7,70 @@ import {
   messageText,
   storedReceipt,
   deliveryState,
+  displayMedia,
 } from '../src/dziri/message-policy.ts';
 import { createOutbox } from '../src/dziri/outbox.ts';
+import { uploadMedia, MAX_MEDIA_BYTES } from '../src/dziri/media-upload.ts';
+
+test('deleted, encrypted and moderated media cannot render residual URLs', () => {
+  const m = {
+    type: 'image',
+    mediaUrl: 'https://example.com/image.png',
+    senderId: 'user',
+    createdAt: 1,
+  };
+  assert.equal(displayMedia(m).type, 'image');
+  for (const patch of [
+    { deletedAt: 2 },
+    { ciphertext: 'opaque' },
+    { moderationStatus: 'blocked' },
+    { moderationStatus: 'blurred' },
+  ])
+    assert.equal(displayMedia({ ...m, ...patch }), undefined);
+});
+test('media preparation rejects oversized blobs before asking the server for an upload URL', async t => {
+  let requested = 0;
+  t.mock.method(globalThis, 'fetch', async () => ({
+    blob: async () => ({ size: MAX_MEDIA_BYTES + 1 }),
+  }));
+  await assert.rejects(
+    uploadMedia({ uri: 'blob:local', type: 'image', mime: 'image/png' }, async () => {
+      requested++;
+      return 'https://example.com/upload';
+    }),
+  );
+  assert.equal(requested, 0);
+});
+test('media retry retains the uploaded object, reply target and one send identifier', async () => {
+  const calls = [];
+  let state = [];
+  const outbox = createOutbox(
+    async draft => {
+      calls.push(draft);
+      throw new Error('uncertain');
+    },
+    () => 'media-key',
+    v => (state = v),
+  );
+  outbox.enqueueMedia(
+    {
+      uri: 'file:local',
+      type: 'image',
+      mime: 'image/png',
+      storageId: 'canonical-storage',
+      size: 10,
+    },
+    'caption',
+    { id: 'parent', deleted: false },
+  );
+  await new Promise(resolve => setImmediate(resolve));
+  outbox.retry('media-key');
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(state[0].status, 'failed');
+  assert.deepEqual(calls[1].media, calls[0].media);
+  assert.equal(calls[1].id, calls[0].id);
+  assert.equal(calls[1].reply.id, 'parent');
+});
 
 test('double ticks need real delivery; blue ticks need shared reads from every original recipient', () => {
   assert.equal(deliveryState(100), 'sent');

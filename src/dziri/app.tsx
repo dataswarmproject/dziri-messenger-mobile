@@ -8,7 +8,7 @@ import React, {
   useState,
   type ReactNode,
 } from 'react';
-import { Platform, Pressable, View, useColorScheme } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 import { Text } from './typography';
 import { consumerFonts } from './fonts';
 import { consumerTypeface } from './typeface';
@@ -37,6 +37,10 @@ import { MessengerShell } from '../shell';
 import { activeMessengerTab, messengerScopeKey, type MessengerTab } from '../messenger-policy';
 import { CommerceScreen } from './commerce';
 import { IconButton } from './icons';
+import { useAppearance } from './appearance';
+import { SettingsScreen } from './settings';
+import { PeopleScreen } from './people';
+import { DetailsScreen } from './details';
 
 const Stack = createNativeStackNavigator<MessengerRoutes>();
 const ResetSession = createContext(() => {});
@@ -83,7 +87,7 @@ export default function DziriApp({
 function Bootstrap() {
   const { t } = useLocale();
   const colors = useColors();
-  const dark = useColorScheme() === 'dark';
+  const { dark } = useAppearance();
   const [fontsLoaded, fontError] = useFonts(consumerFonts);
   const url = deploymentUrl(
     process.env.EXPO_PUBLIC_CONVEX_URL ??
@@ -226,10 +230,11 @@ function UserNavigator() {
   const capabilities = useQuery(dziriApi.capabilities, {});
   const [selected, setSelected] = useState<MessengerTab>('friends');
   const [supportInbox, setSupportInbox] = useState<string | null>(null);
+  const [immersive, setImmersive] = useState(false);
   const renderTeam = useContext(TeamRuntime);
   const { t, rtl } = useLocale();
   const colors = useColors();
-  const dark = useColorScheme() === 'dark';
+  const { dark } = useAppearance();
   // Resolve on render, so revocation cannot leave a stale tab or detail mounted.
   const tab = activeMessengerTab(selected, capabilities);
   useEffect(() => {
@@ -253,10 +258,12 @@ function UserNavigator() {
   return (
     <MessengerShell
       capabilities={capabilities}
+      immersive={immersive}
       selected={tab}
       select={next => {
         setSelected(next);
         setSupportInbox(null);
+        setImmersive(false);
       }}
       account={<SignOut />}>
       {tab === 'staff' && supportInbox === messengerScopeKey(me._id, tab, capabilities) ? (
@@ -272,6 +279,9 @@ function UserNavigator() {
       ) : (
         <NavigationContainer
           key={messengerScopeKey(me._id, tab, capabilities)}
+          onStateChange={state =>
+            setImmersive((state?.routes[state.index ?? 0]?.name ?? 'Chats') !== 'Chats')
+          }
           theme={{
             ...base,
             colors: {
@@ -286,6 +296,7 @@ function UserNavigator() {
           }}>
           <Stack.Navigator
             screenOptions={{
+              headerShown: false,
               headerTintColor: colors.text,
               headerStyle: { backgroundColor: colors.surface },
               headerTitleStyle: { fontFamily: consumerTypeface({ rtl, weight: '600' }) },
@@ -317,12 +328,21 @@ function UserNavigator() {
               component={ConversationScreen}
               options={{ title: t.unknown }}
             />
-            <Stack.Screen name="Support" component={SupportScreen} options={{ title: t.support }} />
+            <Stack.Screen
+              name="Support"
+              component={SupportScreen}
+              options={{ headerShown: true, title: t.support }}
+            />
             <Stack.Screen
               name="Commerce"
               component={CommerceScreen}
               options={{ title: t.unknown }}
             />
+            <Stack.Screen name="Settings">
+              {props => <SettingsScreen {...props} account={<SignOut />} />}
+            </Stack.Screen>
+            <Stack.Screen name="People" component={PeopleScreen} />
+            <Stack.Screen name="Details" component={DetailsScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       )}

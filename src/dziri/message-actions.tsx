@@ -1,54 +1,77 @@
 import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { Text } from './typography';
-import { IconButton } from './icons';
+import { Icon } from './icons';
 import { useLocale } from './locale';
 import { useColors } from './ui';
+import { MessageStatus } from './message-status';
+import type { DeliveryState } from './message-policy';
 export function MessageActions({
   at,
   reply,
   react,
   retry,
   busy,
+  expanded,
+  status,
+  info,
 }: {
   at: number;
   reply?: () => void;
   react?: (emoji: string) => void;
   retry?: () => void;
   busy?: boolean;
+  expanded: boolean;
+  status?: DeliveryState;
+  info: () => void;
 }) {
   const { t, locale, rtl } = useLocale();
   const colors = useColors();
   const [picker, setPicker] = useState(false);
   return (
-    <View style={{ gap: 4, alignSelf: 'stretch' }}>
+    <View style={{ gap: 2, maxWidth: '100%' }}>
       <View
         style={{
           flexDirection: rtl ? 'row-reverse' : 'row',
           alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: 4,
+          gap: 2,
+          maxWidth: '100%',
         }}>
         <Text style={{ color: colors.secondary, fontSize: 11, flexShrink: 1 }}>
           {new Date(at).toLocaleString(locale, {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
+            ...(expanded ? ({ month: 'short', day: 'numeric', year: 'numeric' } as const) : {}),
             hour: '2-digit',
             minute: '2-digit',
           })}
         </Text>
+        {status ? <MessageStatus state={status} info={info} /> : null}
         {reply ? (
-          <IconButton name="reply" label={t.reply} color={colors.secondary} onPress={reply} />
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t.reply}
+            onPress={reply}
+            hitSlop={6}
+            style={{ width: 32, height: 32, alignItems: 'center', justifyContent: 'center' }}>
+            <Icon name="reply" color={colors.secondary} size={18} />
+          </Pressable>
         ) : null}
         {react ? (
-          <IconButton
-            name="smile"
-            label={t.react}
-            color={colors.secondary}
-            busy={busy}
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t.react}
+            accessibilityState={{ disabled: busy, expanded: picker }}
+            disabled={busy}
+            hitSlop={6}
             onPress={() => setPicker(value => !value)}
-          />
+            style={{
+              width: 32,
+              height: 32,
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: busy ? 0.55 : 1,
+            }}>
+            <Icon name="smile" color={colors.secondary} size={18} />
+          </Pressable>
         ) : null}
         {retry ? (
           <Pressable

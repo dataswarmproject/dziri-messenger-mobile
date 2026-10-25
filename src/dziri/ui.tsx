@@ -1,30 +1,38 @@
 import React, { useState } from 'react';
-import {
-  ActivityIndicator,
-  Modal,
-  Pressable,
-  StyleSheet,
-  View,
-  useColorScheme,
-} from 'react-native';
+import { ActivityIndicator, Modal, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from './typography';
 import { tailwind } from '../theme';
-import { colorsFor } from './theme';
+import { messengerColors } from './figma';
+import { useAppearance } from './appearance';
 import { useLocale, type Locale } from './locale';
 import { Icon, IconButton } from './icons';
 
 export function useColors() {
-  return colorsFor(useColorScheme() === 'dark');
+  return messengerColors(useAppearance().dark);
 }
-export function Notice({ text, busy = false }: { text: string; busy?: boolean }) {
+export function Notice({
+  text,
+  busy = false,
+  onBack,
+}: {
+  text: string;
+  busy?: boolean;
+  onBack?: () => void;
+}) {
   const colors = useColors();
+  const { t } = useLocale();
   return (
     <View
       style={[
         tailwind.style('flex-1 items-center justify-center px-6 gap-3'),
         { backgroundColor: colors.background },
       ]}>
+      {onBack ? (
+        <View style={{ position: 'absolute', top: 4, left: 8 }}>
+          <IconButton name="close" label={t.back} color={colors.primary} onPress={onBack} />
+        </View>
+      ) : null}
       {busy ? <ActivityIndicator color={colors.primary} /> : null}
       <Text
         accessibilityRole="text"

@@ -1,9 +1,11 @@
 import type { ReplyPreview } from './api';
+import type { UploadedMedia } from './media-upload';
 export interface OutgoingDraft {
   id: string;
   body: string;
   createdAt: number;
   reply?: ReplyPreview;
+  media?: UploadedMedia;
   status: 'pending' | 'sent' | 'failed';
 }
 // Retry the same immutable command, including its reply target and idempotency key.
@@ -38,6 +40,13 @@ export function createOutbox(
       if (!body || body.length > 8000 || drafts.size >= 20) return false;
       const id = makeId();
       drafts.set(id, { id, body, createdAt: now(), reply, status: 'pending' });
+      void dispatch(id);
+      return true;
+    },
+    enqueueMedia(media: UploadedMedia, text: string, reply?: ReplyPreview) {
+      if (drafts.size >= 20 || text.trim().length > 8000) return false;
+      const id = makeId();
+      drafts.set(id, { id, body: text.trim(), media, reply, createdAt: now(), status: 'pending' });
       void dispatch(id);
       return true;
     },

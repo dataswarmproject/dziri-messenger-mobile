@@ -6,8 +6,8 @@ import { useLocale } from './locale';
 import { useColors } from './ui';
 import type { ReactionSummary, ReplyPreview } from './api';
 import type { DeliveryState } from './message-policy';
-import { MessageStatus } from './message-status';
 import { MessageActions } from './message-actions';
+import { MediaPreview, type MessageMedia } from './media-preview';
 
 export interface BubbleMessage {
   id: string;
@@ -21,6 +21,7 @@ export interface BubbleMessage {
   reactions: ReactionSummary[];
   status?: DeliveryState;
   local?: boolean;
+  media?: MessageMedia;
 }
 export function ReplyQuote({
   reply,
@@ -103,28 +104,27 @@ export const MessageBubble = memo(function MessageBubble({
     .map(word => word[0])
     .join('');
   return (
-    <View style={{ paddingHorizontal: 12, paddingVertical: 6 }}>
+    <View style={{ paddingHorizontal: 12, paddingVertical: 3 }}>
       <Animated.View
         {...pan.panHandlers}
         style={{
           transform: [{ translateX: shift }],
           flexDirection: outgoingRight ? 'row-reverse' : 'row',
-          alignItems: 'flex-start',
-          gap: 8,
+          alignItems: 'flex-end',
+          gap: 6,
         }}>
         {message.image ? (
           <Image
             source={{ uri: message.image }}
             accessible={false}
-            style={{ width: 32, height: 32, borderRadius: 16, marginTop: 22 }}
+            style={{ width: 28, height: 28, borderRadius: 14 }}
           />
         ) : (
           <View
             style={{
-              width: 32,
-              height: 32,
-              borderRadius: 16,
-              marginTop: 22,
+              width: 28,
+              height: 28,
+              borderRadius: 14,
               backgroundColor: colors.surface,
               alignItems: 'center',
               justifyContent: 'center',
@@ -134,45 +134,52 @@ export const MessageBubble = memo(function MessageBubble({
         )}
         <View
           style={{
-            maxWidth: '80%',
+            maxWidth: '86%',
             minWidth: 0,
             alignItems: outgoingRight ? 'flex-end' : 'flex-start',
             gap: 4,
           }}>
-          <Text
-            numberOfLines={1}
-            style={{ color: colors.secondary, fontSize: 11, paddingHorizontal: 4 }}>
-            {message.name}
-          </Text>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={`${t.messageActions}: ${message.body.slice(0, 100)}`}
-            accessibilityHint={reply ? t.swipeReply : undefined}
-            accessibilityState={{ expanded: selected }}
-            onPress={() => {
-              if (Date.now() - swipeAt.current > 300) select();
-            }}
-            onLongPress={select}
-            style={({ pressed }) => ({
-              borderRadius: 18,
-              paddingHorizontal: 12,
-              paddingVertical: 10,
-              backgroundColor: mine ? colors.outgoing : colors.surface,
-              opacity: pressed ? 0.85 : 1,
+          <View
+            style={{
+              flexDirection: outgoingRight ? 'row-reverse' : 'row',
+              alignItems: 'flex-end',
               maxWidth: '100%',
-            })}>
-            {message.reply ? <ReplyQuote reply={message.reply} outgoing={mine} /> : null}
-            <Text
-              selectable
-              style={{
-                color: mine ? colors.outgoingText : colors.text,
-                fontSize: 16,
-                lineHeight: 23,
-                writingDirection: 'auto',
-              }}>
-              {message.body}
-            </Text>
-          </Pressable>
+              gap: 3,
+            }}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={`${t.messageActions}: ${message.body.slice(0, 100)}`}
+              accessibilityHint={reply ? t.swipeReply : undefined}
+              accessibilityState={{ expanded: selected }}
+              onPress={() => {
+                if (Date.now() - swipeAt.current > 300) select();
+              }}
+              onLongPress={select}
+              style={({ pressed }) => ({
+                borderRadius: 18,
+                paddingHorizontal: 12,
+                paddingVertical: 7,
+                backgroundColor: mine ? colors.outgoing : colors.surface,
+                opacity: pressed ? 0.85 : 1,
+                maxWidth: '100%',
+                flexShrink: 1,
+              })}>
+              {message.reply ? <ReplyQuote reply={message.reply} outgoing={mine} /> : null}
+              {message.media ? <MediaPreview media={message.media} /> : null}
+              {message.body ? (
+                <Text
+                  selectable
+                  style={{
+                    color: mine ? colors.outgoingText : colors.text,
+                    fontSize: 15,
+                    lineHeight: 21,
+                    writingDirection: 'auto',
+                  }}>
+                  {message.body}
+                </Text>
+              ) : null}
+            </Pressable>
+          </View>
           {message.reactions.length && !message.deleted ? (
             <View style={{ flexDirection: rtl ? 'row-reverse' : 'row', flexWrap: 'wrap', gap: 4 }}>
               {message.reactions.map(reaction => (
@@ -199,25 +206,25 @@ export const MessageBubble = memo(function MessageBubble({
               ))}
             </View>
           ) : null}
-          {message.status ? <MessageStatus state={message.status} info={select} /> : null}
-          {selected ? (
-            <>
-              {message.status === 'failed' ? (
-                <Text accessibilityRole="alert" style={{ color: colors.secondary, fontSize: 12 }}>
-                  {t.deliveryInfo}
-                </Text>
-              ) : null}
-              <MessageActions
-                at={message.createdAt}
-                reply={reply}
-                react={react}
-                retry={retry}
-                busy={busy}
-              />
-            </>
-          ) : null}
         </View>
       </Animated.View>
+      <View style={{ marginHorizontal: 34, alignItems: outgoingRight ? 'flex-end' : 'flex-start' }}>
+        {selected && message.status === 'failed' ? (
+          <Text accessibilityRole="alert" style={{ color: colors.secondary, fontSize: 12 }}>
+            {t.deliveryInfo}
+          </Text>
+        ) : null}
+        <MessageActions
+          at={message.createdAt}
+          expanded={selected}
+          status={message.status}
+          info={select}
+          reply={selected ? reply : undefined}
+          react={selected ? react : undefined}
+          retry={selected ? retry : undefined}
+          busy={busy}
+        />
+      </View>
     </View>
   );
 });

@@ -24,6 +24,30 @@ const config: ExpoConfig = {
     'expo-image',
     'expo-secure-store',
     [
+      'expo-camera',
+      {
+        cameraPermission: 'Allow Dziri Messenger to take photos you choose to send.',
+        microphonePermission: 'Allow Dziri Messenger to record a voice message.',
+        recordAudioAndroid: true,
+      },
+    ],
+    [
+      'expo-image-picker',
+      {
+        photosPermission: 'Allow Dziri Messenger to select photos you choose to send.',
+        cameraPermission: 'Allow Dziri Messenger to take a photo.',
+        microphonePermission: false,
+      },
+    ],
+    [
+      'expo-audio',
+      {
+        microphonePermission: 'Allow Dziri Messenger to record a voice message.',
+        enableBackgroundRecording: false,
+      },
+    ],
+    'expo-video',
+    [
       'expo-localization',
       { supportedLocales: { ios: ['en', 'fr', 'ar'], android: ['en', 'fr', 'ar'] } },
     ],

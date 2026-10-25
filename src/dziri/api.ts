@@ -30,6 +30,7 @@ export interface CommerceMessage {
   parentSenderName?: string;
   parentDeleted?: boolean;
   reactions: { emoji: string; userId: string }[];
+  imageUrls?: string[];
 }
 
 export interface ReplyPreview {
@@ -42,6 +43,36 @@ export interface ReactionSummary {
   emoji: string;
   count: number;
   mine: boolean;
+}
+export interface ChatPerson {
+  userId: string;
+  name?: string;
+  handle?: string;
+  image?: string;
+  isOnline: boolean;
+}
+export interface StoryRecord {
+  _id: string;
+  authorId: string;
+  authorName?: string;
+  authorHandle?: string;
+  authorImage?: string;
+  type: string;
+  mediaUrl?: string;
+  mediaThumbUrl?: string;
+  mediaDurationMs?: number;
+  body?: string;
+  backgroundHex?: string;
+  expiresAt: number;
+  createdAt: number;
+  iHaveViewed: boolean;
+  moderationStatus: string;
+}
+export interface MessengerPreferences {
+  activityStatus: boolean;
+  lastSeen: boolean;
+  readReceipts: boolean;
+  typingIndicators: boolean;
 }
 
 // Narrow public contract for the existing backend, not another backend/schema.
@@ -70,6 +101,7 @@ export interface ThreadDetail {
   isReadOnly: boolean;
   myRole: string;
   peerReadAt?: number;
+  mutedUntil?: number;
   peerDeliveredAt?: number;
   deliveryReceiptsEnabled: boolean;
   recipientReceipts: { joinedAt: number; readAt?: number; deliveredAt?: number }[];
@@ -85,6 +117,10 @@ export interface MessageRecord {
   replyToMessageId?: string;
   replyPreview?: ReplyPreview;
   reactionSummary: ReactionSummary[];
+  mediaUrl?: string;
+  mediaMime?: string;
+  mediaDurationMs?: number;
+  moderationStatus?: string;
   type: string;
   body?: string;
   ciphertext?: string;
@@ -93,6 +129,68 @@ export interface MessageRecord {
 }
 
 export const dziriApi = {
+  stories: makeFunctionReference<'query', Record<string, never>, StoryRecord[]>(
+    'messaging/stories:listFollowing',
+  ),
+  storyView: makeFunctionReference<'mutation', { storyId: string }, null>(
+    'messaging/stories:recordView',
+  ),
+  storyCreate: makeFunctionReference<
+    'mutation',
+    {
+      type: 'photo' | 'video' | 'text' | 'voice';
+      body?: string;
+      mediaStorageId?: string;
+      mediaDurationMs?: number;
+      audience: 'followers';
+    },
+    string
+  >('messaging/stories:create'),
+  uploadUrl: makeFunctionReference<'mutation', Record<string, never>, string>(
+    'messaging/storage:generateUploadUrl',
+  ),
+  sendMedia: makeFunctionReference<
+    'mutation',
+    {
+      threadId: string;
+      clientMessageId: string;
+      type: 'image' | 'video' | 'voice' | 'file' | 'sticker' | 'gif';
+      mediaStorageId: string;
+      mediaMime: string;
+      mediaSizeBytes?: number;
+      mediaDurationMs?: number;
+      mediaWidth?: number;
+      mediaHeight?: number;
+      body?: string;
+      replyToMessageId?: string;
+    },
+    string
+  >('messaging/messenger:sendMedia'),
+  suggestions: makeFunctionReference<'query', Record<string, never>, ChatPerson[]>(
+    'messaging/discovery:suggestedPeopleToMessage',
+  ),
+  searchPeople: makeFunctionReference<'query', { q: string }, ChatPerson[]>(
+    'messaging/discovery:searchUsersForChat',
+  ),
+  createDm: makeFunctionReference<'mutation', { otherUserId: string }, string>(
+    'messaging/threads:createDm',
+  ),
+  createGroup: makeFunctionReference<
+    'mutation',
+    { title: string; memberUserIds: string[] },
+    string
+  >('messaging/threads:createGroup'),
+  presence: makeFunctionReference<
+    'query',
+    { userIds: string[]; threadId?: string },
+    { userId: string; status: string; lastSeenAt: number; settings?: MessengerPreferences }[]
+  >('messaging/presence:getPresence'),
+  savePreferences: makeFunctionReference<'mutation', Partial<MessengerPreferences>, null>(
+    'messaging/presence:updateSettings',
+  ),
+  muteThread: makeFunctionReference<'mutation', { threadId: string; untilMs: number }, null>(
+    'messaging/threads:setMuted',
+  ),
   acceptTerms: makeFunctionReference<'mutation', { source: string }, unknown>(
     'core/id/cndp:acceptTerms',
   ),
@@ -123,6 +221,7 @@ export const dziriApi = {
       content: string;
       clientMessageId: string;
       parentMessageId?: string;
+      imageStorageIds?: string[];
     },
     number
   >('marketplaceMessages:sendMessage'),

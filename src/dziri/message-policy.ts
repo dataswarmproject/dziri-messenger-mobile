@@ -1,4 +1,5 @@
 import type { MessageRecord, ThreadDetail } from './api';
+import type { MessageMedia } from './media-preview';
 
 export function canSendText(thread: ThreadDetail): boolean {
   return (
@@ -23,6 +24,32 @@ export function storedReceipt(message: MessageRecord, myId: string, peerReadAt?:
 }
 
 export type DeliveryState = 'pending' | 'sent' | 'delivered' | 'read' | 'failed';
+export function displayMedia(message: MessageRecord): MessageMedia | undefined {
+  if (
+    message.deletedAt !== undefined ||
+    message.ciphertext ||
+    message.moderationStatus === 'blocked' ||
+    message.moderationStatus === 'blurred' ||
+    !message.mediaUrl
+  )
+    return undefined;
+  const type = message.type;
+  if (
+    type === 'image' ||
+    type === 'video' ||
+    type === 'voice' ||
+    type === 'sticker' ||
+    type === 'gif' ||
+    type === 'file'
+  )
+    return {
+      uri: message.mediaUrl,
+      type,
+      mime: message.mediaMime,
+      duration: message.mediaDurationMs,
+    };
+  return undefined;
+}
 // Match Consumer's receipt semantics: group ticks require every original recipient.
 export function deliveryState(
   createdAt: number,

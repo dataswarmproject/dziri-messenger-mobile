@@ -4,7 +4,7 @@ import { useConvexConnectionState, useMutation, usePaginatedQuery, useQuery } fr
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Text } from './typography';
 import { dziriApi, type ReplyPreview } from './api';
-import { canSendText, messageText, deliveryState } from './message-policy';
+import { canSendText, messageText, deliveryState, displayMedia } from './message-policy';
 import { useLocale } from './locale';
 import { Notice, useColors } from './ui';
 import type { MessengerRoutes } from './routes';
@@ -14,6 +14,7 @@ import { MessageComposer } from './message-composer';
 import type { BubbleMessage } from './message-bubble';
 import { useOutbox } from './use-outbox';
 import type { OutgoingDraft } from './outbox';
+import { ChatHeader } from './chat-header';
 
 export function ConversationScreen(props: NativeStackScreenProps<MessengerRoutes, 'Conversation'>) {
   return <Conversation key={props.route.params.threadId} {...props} />;
@@ -33,18 +34,33 @@ function Conversation({
     { initialNumItems: 30 },
   );
   const send = useMutation(dziriApi.sendText);
+  const sendMedia = useMutation(dziriApi.sendMedia);
   const markRead = useMutation(dziriApi.markRead);
   const markDelivered = useMutation(dziriApi.markDelivered);
   const react = useMutation(dziriApi.toggleReaction);
   const transmit = useCallback(
     (draft: OutgoingDraft) =>
-      send({
-        threadId,
-        body: draft.body,
-        clientMessageId: draft.id,
-        ...(draft.reply ? { replyToMessageId: draft.reply.id } : {}),
-      }),
-    [send, threadId],
+      draft.media
+        ? sendMedia({
+            threadId,
+            clientMessageId: draft.id,
+            type: draft.media.type,
+            mediaStorageId: draft.media.storageId,
+            mediaMime: draft.media.mime,
+            mediaSizeBytes: draft.media.size,
+            mediaDurationMs: draft.media.duration,
+            mediaWidth: draft.media.width,
+            mediaHeight: draft.media.height,
+            body: draft.body || undefined,
+            ...(draft.reply ? { replyToMessageId: draft.reply.id } : {}),
+          })
+        : send({
+            threadId,
+            body: draft.body,
+            clientMessageId: draft.id,
+            ...(draft.reply ? { replyToMessageId: draft.reply.id } : {}),
+          }),
+    [send, sendMedia, threadId],
   );
   const confirmed = useMemo(
     () =>
@@ -86,9 +102,11 @@ function Conversation({
     (message: BubbleMessage, emoji: string) => react({ threadId, messageId: message.id, emoji }),
     [react, threadId],
   );
-  if (thread === undefined || me === undefined) return <Notice text={t.loading} busy />;
-  if (!thread || !me) return <Notice text={t.unavailable} />;
-  if (thread.encryption === 'e2ee') return <Notice text={t.encryptionUnavailable} />;
+  if (thread === undefined || me === undefined)
+    return <Notice text={t.loading} busy onBack={() => navigation.goBack()} />;
+  if (!thread || !me) return <Notice text={t.unavailable} onBack={() => navigation.goBack()} />;
+  if (thread.encryption === 'e2ee')
+    return <Notice text={t.encryptionUnavailable} onBack={() => navigation.goBack()} />;
   const writable = canSendText(thread);
   const rows: BubbleMessage[] = [
     ...outbox.drafts
@@ -104,13 +122,15 @@ function Conversation({
         reactions: [],
         status: draft.status,
         local: true,
+        media: draft.media,
       })),
     ...messages.results.map(message => ({
       id: message._id,
       senderId: message.senderId,
       name: message.senderName || (message.senderId === me._id ? me.name || t.you : t.unknown),
       image: message.senderImage,
-      body: messageText(message, t),
+      body: displayMedia(message) ? (message.body ?? '') : messageText(message, t),
+      media: displayMedia(message),
       createdAt: message.createdAt,
       deleted: message.deletedAt !== undefined,
       reply: message.replyPreview,
@@ -131,6 +151,12 @@ function Conversation({
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : 0}
       style={{ flex: 1, backgroundColor: colors.background }}>
+      <ChatHeader
+        name={thread.title || t.unknown}
+        image={thread.avatarUrl}
+        back={() => navigation.goBack()}
+        details={() => navigation.navigate('Details', { threadId })}
+      />
       {thread.type === 'support' ? <SupportConnection threadId={threadId} /> : null}
       {!isWebSocketConnected ? (
         <Text
@@ -166,6 +192,7 @@ function Conversation({
           cancelReply={() => setReply(null)}
           full={outbox.drafts.length >= 20}
           submit={outbox.enqueue}
+          submitMedia={outbox.enqueueMedia}
         />
       ) : (
         <Text style={{ padding: 16, color: colors.secondary }}>{t.readonly}</Text>

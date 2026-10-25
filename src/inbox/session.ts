@@ -1,13 +1,14 @@
 import { Platform } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import { inboxSessionScope } from './session-key';
 import { secureStorageKey } from '../dziri/config';
 import type { Session } from './client';
 
 // Web previews keep credentials in memory. Native sessions use the OS vault.
 let writes = Promise.resolve();
-export function saveSession(origin: string, session: Session | null) {
+export function saveSession(origin: string, session: Session | null, identityScope = '') {
   if (Platform.OS === 'web') return Promise.resolve();
-  const key = secureStorageKey(`inbox:${origin}`);
+  const key = secureStorageKey(inboxSessionScope(origin, identityScope));
   writes = writes
     .catch(() => {})
     .then(() =>
@@ -17,9 +18,11 @@ export function saveSession(origin: string, session: Session | null) {
     );
   return writes;
 }
-export async function loadSession(origin: string): Promise<Session | null> {
+export async function loadSession(origin: string, identityScope = ''): Promise<Session | null> {
   if (Platform.OS === 'web') return null;
-  const value = await SecureStore.getItemAsync(secureStorageKey(`inbox:${origin}`));
+  const value = await SecureStore.getItemAsync(
+    secureStorageKey(inboxSessionScope(origin, identityScope)),
+  );
   if (!value) return null;
   const session = JSON.parse(value);
   return typeof session['access-token'] === 'string' &&

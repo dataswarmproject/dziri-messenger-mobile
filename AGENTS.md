@@ -1,9 +1,13 @@
 # Dziri Messenger implementation rules
 
-- The product serves customers, staff and agents, per the owner's clarification.
-  `src/messenger.tsx` selects the customer (`src/dziri/`) or team (`src/inbox/`)
-  runtime. A view selection never grants roles. Staff/agent access comes only
-  from current active server-returned workspace membership.
+- One messenger has Friends (always), Customers (published products in an active
+  store with current message access), and Staff & agents (active Dziri Business ownership or an invited
+  non-viewer membership). These tabs use live authenticated server eligibility;
+  unknown state grants no business tabs. Revocation resets the selected tab and
+  its open business conversation. No account-type chooser or client role grants.
+- `src/messenger.tsx` injects the isolated Inbox runtime into the signed-in shell.
+  It is reachable only from the eligible Staff & agents tab. Rails still checks
+  its own active staff membership; a Dziri tab never issues Rails credentials.
 - Team mode uses the existing Rails sessions, account APIs and Action Cable.
   Customer mode uses canonical Dziri identity/messages and the existing consent
   bridge to support. Keep credentials and caches isolated between runtimes;
@@ -22,6 +26,10 @@
 - Theme colors come from `config/dziri-theme.json`, shared with Dziri Inbox.
   Theme changes must not change native spacing, geometry or typography.
 - Only use the ringed logo in `assets/dziri-ring.*`; do not mirror it for RTL.
+- Custom messenger text uses Consumer's Inter/thmanyah Sans pairing through
+  `src/dziri/typography.tsx`. Preserve the publisher OTF bytes/names/license.
+  Reverse layout explicitly in Arabic; keep the layout root LTR to avoid double
+  mirroring, and use the locale-aware Text/TextInput wrappers for text direction.
 - Keep tokens in SecureStore on native. Do not persist message bodies in ordinary
   AsyncStorage. Do not claim working E2EE based on a thread flag.
 - Run domain tests, changed-file lint, typecheck and bundling after changes.

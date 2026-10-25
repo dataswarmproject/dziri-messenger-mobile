@@ -1,9 +1,23 @@
 # Dziri Messenger: customers, staff and agents
 
-The app now opens with **Customer** and **Staff & agents** views. Both modes are
-mounted from `src/messenger.tsx` and can return to the chooser. The chosen view
-does not determine permissions: Inbox uses active server-returned agent/admin
-memberships, and the customer backend derives the authenticated Dziri user.
+The app opens one signed-in shell: **Friends | Customers | Staff & agents**.
+Friends is always present. Customers appears for a currently accessible active
+shop with a published product (including a previously published sold-out item).
+Staff & agents appears for current non-viewer Dziri Business members, including
+owners and invited employees. Unknown eligibility exposes only Friends.
+The shell subscribes to `messaging/messenger:capabilities`; it never grants roles.
+Revocation remounts the affected business navigation and closes stale details.
+
+Friends includes personal threads and the user's buyer conversations. Customers
+uses the canonical marketplace conversation/message APIs with explicit seller
+store context and idempotent sends. Staff shows business workspace threads and
+can open the isolated Inbox client for its separately authorized support queues.
+Native Inbox credentials are scoped to the canonical Dziri user and origin.
+
+This consolidation is prepared locally. Its new backend module is isolated at
+`E:/CodexWorktrees/messenger-tabs/tawasool-mmogram/convex/messaging/messenger.ts`
+against the current release source. Deploy that contract before releasing the
+consolidated client; the shared live deployment does not yet expose it.
 
 Customers retain their existing Dziri login, private chats and canonical message
 IDs. The support screen checks the existing `inbox/service:supportAvailability`,
@@ -21,14 +35,14 @@ Opening a link never starts a conversation or grants consent automatically.
 The custom app scheme is configured; HTTPS universal/app-link OS association
 still requires device and domain verification.
 
-The customer backend was freshly checked on 19 October 2026 and still reports
-disabled deployments due to plan limits. Live customer/support synchronization
-cannot be accepted until that backend and the separately gated bridge are restored.
-No billing change or production activation was performed.
+The configured preview identity endpoint was reachable on 25 October 2026; the new tab API was not
+deployed. This supersedes the earlier disabled-backend observation. The support
+bridge still needs separate readiness/consent checks; no bridge activation or
+billing change is part of this consolidation.
 
 ## Team companion checkpoint
 
-The current default app connects to the existing **dziri-inbox** Rails service.
+The optional support-queue client connects to the existing **dziri-inbox** Rails service.
 The web dashboard and mobile use the same staff accounts, workspaces,
 conversation IDs, messages, assignments, status and read state. Action Cable
 refreshes the mobile queries after web changes; foreground/reconnect refresh

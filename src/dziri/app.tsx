@@ -7,7 +7,10 @@ import React, {
   useState,
   type ReactNode,
 } from 'react';
-import { Platform, Pressable, Text, View, useColorScheme } from 'react-native';
+import { Platform, Pressable, View, useColorScheme } from 'react-native';
+import { Text } from './typography';
+import { consumerFonts } from './fonts';
+import { consumerTypeface } from './typeface';
 import { ConvexReactClient, useConvexAuth, useQuery } from 'convex/react';
 import { ConvexHttpClient } from 'convex/browser';
 import { ConvexAuthProvider, useAuthActions } from '@convex-dev/auth/react';
@@ -29,9 +32,13 @@ import { ConversationScreen } from './conversation';
 import { dziriApi } from './api';
 import type { MessengerRoutes } from './routes';
 import { SupportScreen, SupportTargetProvider } from './support';
+import { MessengerShell } from '../shell';
+import { activeMessengerTab, messengerScopeKey, type MessengerTab } from '../messenger-policy';
+import { CommerceScreen } from './commerce';
 
 const Stack = createNativeStackNavigator<MessengerRoutes>();
 const ResetSession = createContext(() => {});
+const TeamRuntime = createContext<(userId: string) => ReactNode>(() => null);
 const previewStorage = new Map<string, string>();
 const storage =
   Platform.OS === 'web'
@@ -52,34 +59,30 @@ const storage =
       };
 
 export default function DziriApp({
-  onExit,
+  renderTeam,
   supportCompanyId = '',
 }: {
-  onExit?: () => void;
+  renderTeam: (userId: string) => ReactNode;
   supportCompanyId?: string;
 }) {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <SupportTargetProvider value={supportCompanyId}>
-          <Bootstrap onExit={onExit} />
+          <TeamRuntime.Provider value={renderTeam}>
+            <Bootstrap />
+          </TeamRuntime.Provider>
         </SupportTargetProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }
 
-function Bootstrap({ onExit }: { onExit?: () => void }) {
+function Bootstrap() {
   const { t } = useLocale();
   const colors = useColors();
   const dark = useColorScheme() === 'dark';
-  const [fontsLoaded, fontError] = useFonts({
-    'Inter-400-20': require('../assets/fonts/Inter-400-20.ttf'),
-    'Inter-420-20': require('../assets/fonts/Inter-420-20.ttf'),
-    'Inter-500-24': require('../assets/fonts/Inter-500-24.ttf'),
-    'Inter-580-24': require('../assets/fonts/Inter-580-24.ttf'),
-    'Inter-600-20': require('../assets/fonts/Inter-600-20.ttf'),
-  });
+  const [fontsLoaded, fontError] = useFonts(consumerFonts);
   const url = deploymentUrl(
     process.env.EXPO_PUBLIC_CONVEX_URL ?? Constants.expoConfig?.extra?.convexUrl ?? '',
     __DEV__,
@@ -87,22 +90,21 @@ function Bootstrap({ onExit }: { onExit?: () => void }) {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={{ flex: 1, backgroundColor: colors.background }}>
       <StatusBar style={dark ? 'light' : 'dark'} />
-      {onExit ? (
-        <Pressable accessibilityRole="button" onPress={onExit} style={tailwind.style('p-3')}>
-          <Text style={{ color: colors.text }}>{t.switchView}</Text>
-        </Pressable>
-      ) : null}
       {fontError ? (
-        <Notice text={t.failed} />
+        <MessengerShell>
+          <Notice text={t.failed} />
+        </MessengerShell>
       ) : !fontsLoaded ? (
-        <Notice text={t.loading} busy />
+        <MessengerShell>
+          <Notice text={t.loading} busy />
+        </MessengerShell>
       ) : url ? (
         <CustomerService url={url} />
       ) : (
-        <View style={{ flex: 1 }}>
+        <MessengerShell>
           <Notice text={`${t.config}. ${t.configHint}`} />
           <LanguageChoice />
-        </View>
+        </MessengerShell>
       )}
     </SafeAreaView>
   );
@@ -140,9 +142,9 @@ function CustomerService({ url }: { url: string }) {
   }, [url, attempt]);
   if (state === 'ready') return <ConnectedApp url={url} />;
   return (
-    <View style={{ flex: 1 }}>
+    <MessengerShell>
       <Notice
-        text={state === 'checking' ? t.loading : t.customerUnavailable}
+        text={state === 'checking' ? t.loading : t.messengerUnavailable}
         busy={state === 'checking'}
       />
       {state === 'unavailable' ? (
@@ -154,7 +156,7 @@ function CustomerService({ url }: { url: string }) {
         </Pressable>
       ) : null}
       <LanguageChoice />
-    </View>
+    </MessengerShell>
   );
 }
 
@@ -191,58 +193,126 @@ function SessionRuntime({ url, reset }: { url: string; reset: () => void }) {
 function AuthGate() {
   const { isLoading, isAuthenticated } = useConvexAuth();
   const { t } = useLocale();
-  if (isLoading) return <Notice text={t.loading} busy />;
-  return isAuthenticated ? <UserNavigator /> : <SignInScreen />;
+  if (isLoading)
+    return (
+      <MessengerShell>
+        <Notice text={t.loading} busy />
+      </MessengerShell>
+    );
+  return isAuthenticated ? (
+    <UserNavigator />
+  ) : (
+    <MessengerShell>
+      <SignInScreen />
+    </MessengerShell>
+  );
 }
 
 function UserNavigator() {
   const me = useQuery(dziriApi.me, {});
-  const { t } = useLocale();
+  const capabilities = useQuery(dziriApi.capabilities, {});
+  const [selected, setSelected] = useState<MessengerTab>('friends');
+  const [supportInbox, setSupportInbox] = useState<string | null>(null);
+  const renderTeam = useContext(TeamRuntime);
+  const { t, rtl } = useLocale();
   const colors = useColors();
   const dark = useColorScheme() === 'dark';
-  if (me === undefined) return <Notice text={t.loading} busy />;
-  if (!me)
+  // Resolve on render, so revocation cannot leave a stale tab or detail mounted.
+  const tab = activeMessengerTab(selected, capabilities);
+  useEffect(() => {
+    if (tab !== selected) setSelected(tab);
+    setSupportInbox(null);
+  }, [tab, selected, capabilities]);
+  if (me === undefined || capabilities === undefined)
     return (
-      <View style={{ flex: 1 }}>
+      <MessengerShell>
+        <Notice text={t.loading} busy />
+      </MessengerShell>
+    );
+  if (!me || !capabilities)
+    return (
+      <MessengerShell>
         <Notice text={t.noProfile} />
         <SignOut />
-      </View>
+      </MessengerShell>
     );
   const base = dark ? DarkTheme : DefaultTheme;
   return (
-    <NavigationContainer
-      key={me._id}
-      theme={{
-        ...base,
-        colors: {
-          ...base.colors,
-          primary: colors.primary,
-          background: colors.background,
-          card: colors.surface,
-          text: colors.text,
-          border: colors.border,
-          notification: colors.primary,
-        },
-      }}>
-      <Stack.Navigator
-        screenOptions={{
-          headerTintColor: colors.text,
-          headerStyle: { backgroundColor: colors.surface },
-          contentStyle: { backgroundColor: colors.background },
-        }}>
-        <Stack.Screen
-          name="Chats"
-          component={InboxScreen}
-          options={{ title: t.chats, headerRight: () => <SignOut /> }}
-        />
-        <Stack.Screen
-          name="Conversation"
-          component={ConversationScreen}
-          options={{ title: t.unknown }}
-        />
-        <Stack.Screen name="Support" component={SupportScreen} options={{ title: t.support }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <MessengerShell
+      capabilities={capabilities}
+      selected={tab}
+      select={next => {
+        setSelected(next);
+        setSupportInbox(null);
+      }}
+      account={<SignOut />}>
+      {tab === 'staff' && supportInbox === messengerScopeKey(me._id, tab, capabilities) ? (
+        <View style={{ flex: 1 }}>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => setSupportInbox(null)}
+            style={tailwind.style('p-3')}>
+            <Text style={{ color: colors.primary }}>{t.backToTeam}</Text>
+          </Pressable>
+          {renderTeam(me._id)}
+        </View>
+      ) : (
+        <NavigationContainer
+          key={messengerScopeKey(me._id, tab, capabilities)}
+          theme={{
+            ...base,
+            colors: {
+              ...base.colors,
+              primary: colors.primary,
+              background: colors.background,
+              card: colors.surface,
+              text: colors.text,
+              border: colors.border,
+              notification: colors.primary,
+            },
+          }}>
+          <Stack.Navigator
+            screenOptions={{
+              headerTintColor: colors.text,
+              headerStyle: { backgroundColor: colors.surface },
+              headerTitleStyle: { fontFamily: consumerTypeface({ rtl, weight: '600' }) },
+              contentStyle: { backgroundColor: colors.background },
+            }}>
+            <Stack.Screen
+              name="Chats"
+              options={{
+                title:
+                  tab === 'friends'
+                    ? t.friendsTab
+                    : tab === 'customers'
+                      ? t.customersTab
+                      : t.teamView,
+              }}>
+              {props => (
+                <InboxScreen
+                  {...props}
+                  lane={tab}
+                  openSupportInbox={() =>
+                    setSupportInbox(messengerScopeKey(me._id, tab, capabilities))
+                  }
+                />
+              )}
+            </Stack.Screen>
+            <Stack.Screen
+              name="Conversation"
+              component={ConversationScreen}
+              options={{ title: t.unknown }}
+            />
+            <Stack.Screen name="Support" component={SupportScreen} options={{ title: t.support }} />
+            <Stack.Screen
+              name="Commerce"
+              component={CommerceScreen}
+              options={{ title: t.unknown }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      )}
+    </MessengerShell>
   );
 }
 
@@ -286,13 +356,13 @@ function Recovery({ retry }: { retry: () => void }) {
   const { t } = useLocale();
   const colors = useColors();
   return (
-    <View style={{ flex: 1 }}>
+    <MessengerShell>
       <Notice text={t.failed} />
       <Pressable accessibilityRole="button" onPress={retry} style={tailwind.style('p-3')}>
         <Text style={{ color: colors.primary, textAlign: 'center' }}>{t.retry}</Text>
       </Pressable>
       <SignOut />
-    </View>
+    </MessengerShell>
   );
 }
 

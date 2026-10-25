@@ -4,7 +4,8 @@
   "include": [
     "App.tsx",
     "src/messenger.tsx",
-    "src/entry.tsx",
+    "src/shell.tsx",
+    "src/messenger-policy.ts",
     "src/access.ts",
     "app.config.ts",
     "reanimatedConfig.ts",

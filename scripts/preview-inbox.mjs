@@ -37,6 +37,7 @@ const types = {
   '.png': 'image/png',
   '.svg': 'image/svg+xml',
   '.ttf': 'font/ttf',
+  '.otf': 'font/otf',
 };
 const server = http.createServer(async (request, response) => {
   const path = new URL(request.url, 'http://localhost').pathname;

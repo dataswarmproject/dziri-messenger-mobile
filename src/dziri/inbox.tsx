@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import { Text, TextInput } from './typography';
 import { Image } from 'expo-image';
 import { FlashList } from '@shopify/flash-list';
 import { useQuery } from 'convex/react';
@@ -9,6 +10,7 @@ import { dziriApi, type ThreadSummary } from './api';
 import { LanguageChoice, Notice, useColors } from './ui';
 import { useLocale } from './locale';
 import type { MessengerRoutes } from './routes';
+import type { MessengerTab } from '../messenger-policy';
 
 const InboxRow = memo(function InboxRow({
   thread,
@@ -74,8 +76,16 @@ const InboxRow = memo(function InboxRow({
   );
 });
 
-export function InboxScreen({ navigation }: NativeStackScreenProps<MessengerRoutes, 'Chats'>) {
-  const threads = useQuery(dziriApi.threads, {});
+export function InboxScreen({
+  navigation,
+  lane,
+  openSupportInbox,
+}: NativeStackScreenProps<MessengerRoutes, 'Chats'> & {
+  lane: MessengerTab;
+  openSupportInbox: () => void;
+}) {
+  const threads = useQuery(dziriApi.laneThreads, lane === 'customers' ? 'skip' : { lane });
+  const commerce = useQuery(dziriApi.commerce, lane === 'staff' ? 'skip' : { lane });
   const { t } = useLocale();
   const colors = useColors();
   const [search, setSearch] = useState('');
@@ -83,27 +93,43 @@ export function InboxScreen({ navigation }: NativeStackScreenProps<MessengerRout
     (threadId: string) => navigation.navigate('Conversation', { threadId }),
     [navigation],
   );
-  const renderItem = useCallback(
-    ({ item }: { item: ThreadSummary }) => <InboxRow thread={item} open={open} />,
-    [open],
-  );
-  if (threads === undefined) return <Notice text={t.loading} busy />;
+  if (
+    (lane !== 'customers' && threads === undefined) ||
+    (lane !== 'staff' && commerce === undefined)
+  )
+    return <Notice text={t.loading} busy />;
   const filter = search.trim().toLocaleLowerCase();
   const visible = filter
-    ? threads.filter(thread =>
+    ? (threads ?? []).filter(thread =>
         `${thread.title ?? ''} ${thread.otherUser?.name ?? ''} ${thread.otherUser?.handle ?? ''}`
           .toLocaleLowerCase()
           .includes(filter),
       )
-    : threads;
+    : (threads ?? []);
+  const shopRows = (commerce ?? []).filter(row =>
+    `${row.title} ${row.context}`.toLocaleLowerCase().includes(filter),
+  );
+  const rows = [
+    ...visible.map(thread => ({
+      id: thread._id,
+      at: thread.lastMessageAt,
+      thread,
+      commerce: null,
+    })),
+    ...shopRows.map(row => ({ id: row._id, at: row.lastMessageAt, thread: null, commerce: row })),
+  ].sort((a, b) => b.at - a.at);
   return (
     <View style={[tailwind.style('flex-1'), { backgroundColor: colors.background }]}>
-      <Pressable
-        accessibilityRole="button"
-        onPress={() => navigation.navigate('Support')}
-        style={tailwind.style('p-4')}>
-        <Text style={{ color: colors.primary }}>{t.support}</Text>
-      </Pressable>
+      {lane !== 'customers' ? (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => (lane === 'staff' ? openSupportInbox() : navigation.navigate('Support'))}
+          style={tailwind.style('p-4')}>
+          <Text style={{ color: colors.primary }}>
+            {lane === 'staff' ? t.supportQueues : t.support}
+          </Text>
+        </Pressable>
+      ) : null}
       <TextInput
         value={search}
         onChangeText={setSearch}
@@ -116,20 +142,43 @@ export function InboxScreen({ navigation }: NativeStackScreenProps<MessengerRout
         ]}
       />
       <FlashList
-        data={visible}
-        renderItem={renderItem}
-        keyExtractor={threadKey}
+        data={rows}
+        renderItem={({ item }) =>
+          item.thread ? (
+            <InboxRow thread={item.thread} open={open} />
+          ) : item.commerce ? (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={item.commerce.title}
+              onPress={() =>
+                navigation.navigate('Commerce', {
+                  conversationId: item.id,
+                  storeId: item.commerce?.storeId,
+                })
+              }
+              style={[tailwind.style('p-4 border-b gap-1'), { borderColor: colors.border }]}>
+              <Text style={{ color: colors.text, fontSize: 16 }}>{item.commerce.title}</Text>
+              {lane === 'customers' ? (
+                <Text style={{ color: colors.secondary }}>{item.commerce.context}</Text>
+              ) : null}
+              <Text numberOfLines={1} style={{ color: colors.secondary }}>
+                {item.commerce.lastMessagePreview}
+              </Text>
+            </Pressable>
+          ) : null
+        }
+        keyExtractor={item => item.id}
         ListEmptyComponent={
           <Text style={[tailwind.style('p-6 text-center'), { color: colors.secondary }]}>
-            {t.empty}
+            {lane === 'friends'
+              ? t.friendsEmpty
+              : lane === 'customers'
+                ? t.customersEmpty
+                : t.staffEmpty}
           </Text>
         }
       />
       <LanguageChoice />
     </View>
   );
-}
-
-function threadKey(thread: ThreadSummary) {
-  return thread._id;
 }

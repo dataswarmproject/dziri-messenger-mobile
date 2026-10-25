@@ -1,13 +1,6 @@
 import React, { useRef, useState } from 'react';
-import {
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, View } from 'react-native';
+import { Text, TextInput } from './typography';
 import { Image } from 'expo-image';
 import { useAuthActions } from '@convex-dev/auth/react';
 import { tailwind } from '../theme';
@@ -39,7 +32,12 @@ export function SignInScreen() {
   };
   const inputStyle = [
     tailwind.style('border rounded-[13px] px-3 py-3 text-base'),
-    { color: colors.text, borderColor: colors.border, backgroundColor: colors.surface },
+    {
+      color: colors.text,
+      borderColor: colors.border,
+      backgroundColor: colors.surface,
+      textAlign: rtl ? ('right' as const) : ('left' as const),
+    },
   ];
 
   return (
@@ -49,9 +47,11 @@ export function SignInScreen() {
         tailwind.style('flex-1 justify-center px-6'),
         { backgroundColor: colors.background },
       ]}>
-      <View style={tailwind.style('gap-4')}>
+      <View
+        style={[tailwind.style('gap-4'), { width: '100%', maxWidth: 420, alignSelf: 'center' }]}>
         <Image
-          source={require('../../assets/dziri-ring.png')}
+          source={require('../../assets/dziri-ring.svg')}
+          tintColor={colors.text}
           accessibilityLabel={t.app}
           style={tailwind.style('h-20 w-20 self-center')}
           contentFit="contain"

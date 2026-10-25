@@ -7,11 +7,11 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
-  TextInput,
   View,
   type ViewToken,
 } from 'react-native';
+import { Text, TextInput } from '../dziri/typography';
+import { consumerFonts } from '../dziri/fonts';
 import Constants from 'expo-constants';
 import { useFonts } from 'expo-font';
 import { Image } from 'expo-image';
@@ -91,12 +91,15 @@ function Action({
   );
 }
 
-export default function InboxApp({ onExit }: { onExit?: () => void }) {
+export default function InboxApp({
+  onExit,
+  identityScope = '',
+}: {
+  onExit?: () => void;
+  identityScope?: string;
+}) {
   const { t } = useLocale();
-  const [fonts, fontError] = useFonts({
-    'Inter-400-20': require('../assets/fonts/Inter-400-20.ttf'),
-    'Inter-600-20': require('../assets/fonts/Inter-600-20.ttf'),
-  });
+  const [fonts, fontError] = useFonts(consumerFonts);
   return (
     <GestureHandlerRootView style={styles.fill}>
       <SafeAreaProvider>
@@ -110,7 +113,7 @@ export default function InboxApp({ onExit }: { onExit?: () => void }) {
           {fontError ? (
             <Text style={styles.error}>Unable to load fonts.</Text>
           ) : fonts ? (
-            <Connection />
+            <Connection key={identityScope} identityScope={identityScope} />
           ) : (
             <ActivityIndicator color={colors.primary} />
           )}
@@ -120,7 +123,7 @@ export default function InboxApp({ onExit }: { onExit?: () => void }) {
   );
 }
 
-function Connection() {
+function Connection({ identityScope }: { identityScope: string }) {
   const [origin, setOrigin] = useState(
     process.env.EXPO_PUBLIC_INBOX_URL ?? Constants.expoConfig?.extra?.inboxUrl ?? '',
   );
@@ -152,7 +155,7 @@ function Connection() {
     const normalized = inboxOrigin(originValue, __DEV__ || localPreview);
     const next = new InboxClient(normalized, fetch, localPreview ? '/inbox-api' : normalized);
     next.onSession = session => {
-      void saveSession(normalized, session).catch(() =>
+      void saveSession(normalized, session, identityScope).catch(() =>
         setError('Session could not be saved securely.'),
       );
     };
@@ -162,7 +165,7 @@ function Connection() {
         setClient(null);
         next.dispose();
         current.current = null;
-        void saveSession(normalized, null);
+        void saveSession(normalized, null, identityScope);
       }
     };
     current.current?.dispose();
@@ -177,7 +180,7 @@ function Connection() {
     async function restore() {
       try {
         const normalized = inboxOrigin(origin, __DEV__ || proxy);
-        const stored = await loadSession(normalized);
+        const stored = await loadSession(normalized, identityScope);
         if (!stored || canceled) return;
         const next = create(normalized);
         next.setSession(stored);
@@ -229,7 +232,7 @@ function Connection() {
       current.current = null;
       setClient(null);
       setProfile(null);
-      await saveSession(active.origin, null);
+      await saveSession(active.origin, null, identityScope);
     }
   }
   if (!ready) return <ActivityIndicator color={colors.primary} />;
@@ -295,7 +298,8 @@ function Login({
       keyboardShouldPersistTaps="handled">
       <View style={{ width: '100%', maxWidth: 420, alignSelf: 'center', gap: 18 }}>
         <Image
-          source={require('../../assets/dziri-ring.png')}
+          source={require('../../assets/dziri-ring.svg')}
+          tintColor={colors.text}
           style={{ width: 76, height: 76 }}
           contentFit="contain"
         />

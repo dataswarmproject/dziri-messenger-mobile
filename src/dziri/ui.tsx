@@ -1,5 +1,6 @@
 import React from 'react';
-import { ActivityIndicator, Pressable, Text, View, useColorScheme } from 'react-native';
+import { ActivityIndicator, Pressable, View, useColorScheme } from 'react-native';
+import { Text } from './typography';
 import { tailwind } from '../theme';
 import { colorsFor } from './theme';
 import { useLocale, type Locale } from './locale';

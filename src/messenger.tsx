@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Linking, StyleSheet } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { Linking } from 'react-native';
 import Constants from 'expo-constants';
 import CustomerApp from './dziri/app';
 import TeamApp from './inbox/app';
 import { LocaleProvider } from './dziri/locale';
-import { colorsFor } from './dziri/theme';
 import { supportLink } from './access';
-import { EntryScreen } from './entry';
-
-const colors = colorsFor(true);
-const styles = StyleSheet.create({
-  fill: { flex: 1, backgroundColor: colors.background },
-});
 
 export default function Messenger() {
   return (
@@ -23,7 +15,6 @@ export default function Messenger() {
 }
 
 function MessengerRuntime() {
-  const [view, setView] = useState<'customer' | 'team' | null>(null);
   const [companyId, setCompanyId] = useState<string>(
     process.env.EXPO_PUBLIC_SUPPORT_COMPANY_ID ??
       Constants.expoConfig?.extra?.supportCompanyId ??
@@ -35,7 +26,6 @@ function MessengerRuntime() {
       const target = supportLink(value);
       if (!mounted || !target) return;
       setCompanyId(target.companyId);
-      setView('customer');
     }
     void Linking.getInitialURL()
       .then(open)
@@ -46,15 +36,11 @@ function MessengerRuntime() {
       subscription.remove();
     };
   }, []);
-  // Changing views remounts the client/provider. Credentials never cross runtimes.
-  if (view === 'customer')
-    return <CustomerApp supportCompanyId={companyId} onExit={() => setView(null)} />;
-  if (view === 'team') return <TeamApp onExit={() => setView(null)} />;
+  // The root owns the separate staff client; personal code never imports its credentials.
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.fill}>
-        <EntryScreen choose={setView} />
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <CustomerApp
+      supportCompanyId={companyId}
+      renderTeam={userId => <TeamApp key={userId} identityScope={userId} />}
+    />
   );
 }

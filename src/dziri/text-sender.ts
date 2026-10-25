@@ -5,15 +5,12 @@ export interface TextSend {
 }
 
 /** In-memory retry boundary for this slice; persistence is a separate outbox task. */
-export function createTextSender(
-  mutate: (args: TextSend) => Promise<string>,
-  makeId: () => string,
-) {
+export function createTextSender<T>(mutate: (args: TextSend) => Promise<T>, makeId: () => string) {
   let pending: TextSend | undefined;
   let sending = false;
 
   return {
-    async send(threadId: string, text: string): Promise<string> {
+    async send(threadId: string, text: string): Promise<T> {
       if (sending) throw new Error('Send in progress');
       const body = text.trim();
       // Existing messaging/messages:sendText enforces 8000 JS string characters.

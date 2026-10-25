@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, type ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { Platform } from 'react-native';
 import { getLocales } from 'expo-localization';
 
 const en = {
@@ -9,6 +10,16 @@ const en = {
   loginHint: 'Use your existing Dziri account',
   loginFailed: 'Unable to sign in. Check your details and connection.',
   chats: 'Chats',
+  friendsTab: 'Friends',
+  customersTab: 'Customers',
+  commerceSendFailed:
+    'Delivery could not be confirmed. Check the conversation before sending again.',
+  friendsEmpty: 'Your personal and shop conversations will appear here.',
+  customersEmpty: 'Customer conversations for your published products will appear here.',
+  staffEmpty: 'Your business workspace conversations will appear here.',
+  supportQueues: 'Support queues',
+  backToTeam: 'Back to team conversations',
+  messengerUnavailable: 'Messaging is currently unavailable. Please try again later.',
   signOut: 'Sign out',
   empty: 'No conversations yet.',
   loading: 'Loading…',
@@ -63,6 +74,15 @@ const fr: typeof en = {
   loginHint: 'Utilisez votre compte Dziri existant',
   loginFailed: 'Connexion impossible. Vérifiez vos identifiants et votre connexion.',
   chats: 'Discussions',
+  friendsTab: 'Amis',
+  customersTab: 'Clients',
+  commerceSendFailed: 'Envoi non confirmé. Vérifiez la conversation avant de renvoyer.',
+  friendsEmpty: 'Vos conversations personnelles et avec les boutiques apparaîtront ici.',
+  customersEmpty: 'Les conversations clients de vos produits publiés apparaîtront ici.',
+  staffEmpty: 'Les conversations de votre espace professionnel apparaîtront ici.',
+  supportQueues: 'Files de support',
+  backToTeam: 'Retour aux conversations de l’équipe',
+  messengerUnavailable: 'La messagerie est actuellement indisponible. Réessayez plus tard.',
   signOut: 'Se déconnecter',
   empty: 'Aucune discussion pour le moment.',
   loading: 'Chargement…',
@@ -117,6 +137,15 @@ const ar: typeof en = {
   loginHint: 'استخدم حساب دزيري الحالي',
   loginFailed: 'تعذر تسجيل الدخول. تحقق من بياناتك واتصالك.',
   chats: 'المحادثات',
+  friendsTab: 'الأصدقاء',
+  customersTab: 'العملاء',
+  commerceSendFailed: 'تعذر تأكيد الإرسال. تحقق من المحادثة قبل الإرسال مجدداً.',
+  friendsEmpty: 'ستظهر هنا محادثاتك الشخصية ومحادثاتك مع المتاجر.',
+  customersEmpty: 'ستظهر هنا محادثات العملاء الخاصة بمنتجاتك المنشورة.',
+  staffEmpty: 'ستظهر هنا محادثات مساحة عملك.',
+  supportQueues: 'محادثات الدعم',
+  backToTeam: 'العودة إلى محادثات الفريق',
+  messengerUnavailable: 'المراسلة غير متاحة حالياً. يرجى المحاولة لاحقاً.',
   signOut: 'تسجيل الخروج',
   empty: 'لا توجد محادثات بعد.',
   loading: 'جارٍ التحميل…',
@@ -173,6 +202,11 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     const language = getLocales()[0]?.languageCode;
     return language === 'ar' || language === 'fr' ? language : 'en';
   });
+  useEffect(() => {
+    if (Platform.OS !== 'web') return;
+    document.documentElement.lang = locale;
+    document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
+  }, [locale]);
   return <LocaleContext.Provider value={{ locale, setLocale }}>{children}</LocaleContext.Provider>;
 }
 

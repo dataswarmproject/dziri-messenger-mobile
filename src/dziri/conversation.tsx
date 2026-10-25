@@ -4,11 +4,10 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
-  Text,
-  TextInput,
   View,
   type ViewToken,
 } from 'react-native';
+import { Text, TextInput } from './typography';
 import { FlashList } from '@shopify/flash-list';
 import { useConvexConnectionState, useMutation, usePaginatedQuery, useQuery } from 'convex/react';
 import { randomUUID } from 'expo-crypto';

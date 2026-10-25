@@ -37,10 +37,14 @@ const layoutChanges = execFileSync(
 assert.equal(layoutChanges, '', `Upstream native layouts/fonts changed: ${layoutChanges}`);
 const entry = readFileSync(resolve(root, 'App.tsx'), 'utf8');
 assert.doesNotMatch(entry, /from ['"].*(sentry|store|src\/app)/i);
-assert.match(entry, /src\/messenger/, 'Default entry must offer customer and team views');
+assert.match(entry, /src\/messenger/, 'Default entry must use the consolidated messenger');
 const launcher = readFileSync(resolve(root, 'src/messenger.tsx'), 'utf8');
 assert.match(launcher, /from ['"]\.\/dziri\/app['"]/);
 assert.match(launcher, /from ['"]\.\/inbox\/app['"]/);
+assert.doesNotMatch(launcher, /EntryScreen|setView/, 'Separate entry modes must not return');
+const personal = readFileSync(resolve(root, 'src/dziri/app.tsx'), 'utf8');
+assert.match(personal, /dziriApi\.capabilities/, 'Business tabs require authenticated server eligibility');
+assert.match(personal, /activeMessengerTab/, 'Revocation must fall back to Friends');
 for (const file of readdirSync(resolve(root, 'src/dziri'), { recursive: true }).filter(name =>
   /\.tsx?$/.test(String(name)),
 )) {

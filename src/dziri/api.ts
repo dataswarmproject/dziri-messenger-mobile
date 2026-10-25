@@ -1,5 +1,23 @@
 import { makeFunctionReference, type PaginationResult } from 'convex/server';
 import type { PaginationOptions } from 'convex/server';
+import type { MessengerCapabilities } from '../messenger-policy';
+
+export interface CommerceSummary {
+  _id: string;
+  storeId?: string;
+  title: string;
+  context: string;
+  lastMessagePreview: string;
+  lastMessageAt: number;
+}
+
+export interface CommerceMessage {
+  _id: string;
+  senderId: string;
+  content: string;
+  createdAt: number;
+  deletedAt?: number;
+}
 
 // Narrow public contract for the existing backend, not another backend/schema.
 // IDs stay canonical strings; all access is enforced by the authenticated server.
@@ -42,6 +60,35 @@ export interface MessageRecord {
 }
 
 export const dziriApi = {
+  capabilities: makeFunctionReference<'query', Record<string, never>, MessengerCapabilities | null>(
+    'messaging/messenger:capabilities',
+  ),
+  laneThreads: makeFunctionReference<'query', { lane: 'friends' | 'staff' }, ThreadSummary[]>(
+    'messaging/messenger:listThreads',
+  ),
+  commerce: makeFunctionReference<'query', { lane: 'friends' | 'customers' }, CommerceSummary[]>(
+    'messaging/messenger:listCommerce',
+  ),
+  commerceDetail: makeFunctionReference<
+    'query',
+    { conversationId: string; storeId?: string },
+    { otherName: string; storeName: string } | null
+  >('marketplaceMessages:getConversation'),
+  commerceMessages: makeFunctionReference<
+    'query',
+    { conversationId: string; storeId?: string; limit: number },
+    CommerceMessage[]
+  >('marketplaceMessages:listMessages'),
+  commerceSend: makeFunctionReference<
+    'mutation',
+    { conversationId: string; storeId?: string; content: string; clientMessageId: string },
+    number
+  >('marketplaceMessages:sendMessage'),
+  commerceRead: makeFunctionReference<
+    'mutation',
+    { conversationId: string; storeId?: string },
+    null
+  >('marketplaceMessages:markConversationAsRead'),
   supportAvailability: makeFunctionReference<
     'query',
     { companyId: string },
@@ -67,19 +114,19 @@ export const dziriApi = {
     'messaging/threads:listMyThreads',
   ),
   thread: makeFunctionReference<'query', { threadId: string }, ThreadDetail | null>(
-    'messaging/threads:getThread',
+    'messaging/messenger:thread',
   ),
   messages: makeFunctionReference<
     'query',
     { threadId: string; paginationOpts: PaginationOptions },
     PaginationResult<MessageRecord>
-  >('messaging/messages:listMessages'),
+  >('messaging/messenger:messages'),
   sendText: makeFunctionReference<
     'mutation',
     { threadId: string; body: string; clientMessageId: string },
     string
-  >('messaging/messages:sendText'),
+  >('messaging/messenger:sendText'),
   markRead: makeFunctionReference<'mutation', { threadId: string; messageId: string }, null>(
-    'messaging/threads:markRead',
+    'messaging/messenger:markRead',
   ),
 };

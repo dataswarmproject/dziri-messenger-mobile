@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useRef, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import { Text } from './typography';
 import { useMutation, useQuery } from 'convex/react';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { dziriApi } from './api';

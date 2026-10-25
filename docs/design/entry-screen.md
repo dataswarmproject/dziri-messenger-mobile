@@ -1,28 +1,34 @@
-# Messenger entry design
+# Consolidated messenger navigation
 
-Scope: the customer/team chooser only. User-authorized redesign on 19 October
-2026. Existing sign-in, permissions, routing, provider isolation and service
-availability behavior remain unchanged.
+The 25 October 2026 owner clarification replaces the account-type chooser with
+one signed-in shell. Friends is always visible. Customers requires a published
+product in an active shop with current message access. Staff & agents requires
+current owner/admin/editor membership of an active Dziri Business profile;
+invited staff are included per the owner's explicit answer.
 
-This is a Dziri adaptation, not an exact Geist reproduction. Retain the existing
-Inter assets, approved ring mark and current Inbox theme tokens. The referenced
-Inbox chat restored the original Chatwoot palette during this task; the shared
-snapshot therefore carries blue accents and standard charcoal surfaces. The layout uses a
-two-column desktop composition and a single scrollable column below 900px.
-French/Arabic labels remain localized; Arabic reverses layout and directional
-arrows but never mirrors the logo. System font fallback covers Arabic glyphs.
+Sold-out products carrying a publication timestamp retain Customers. Drafts,
+suspension, archival, revocation, ambiguous grants and guest accounts do not
+unlock business tabs. Unpublishing the last eligible product removes Customers.
+These are navigation rules; canonical conversation permissions still apply.
 
-The logo PNG has opaque black pixels. `mixBlendMode: screen` composites that
-black against the page rather than altering the canonical artwork. No asset is
-traced, redrawn or replaced; this is rendering transparency, not a new PNG with
-an alpha channel. Original SVG/PNG hashes remain authoritative. Native blend
-rendering still needs device verification.
+One authenticated backend query drives the tabs. Capability loss falls back to
+Friends during rendering. A changed tenant scope remounts the navigator and
+closes stale business details. Buyers keep their shop conversations in Friends.
+Seller conversations carry explicit store context and existing send retry IDs.
+Native support-queue credentials are scoped to the Dziri user and origin.
 
-Compact language buttons announce selection. Entry cards keep their original
-one-press destinations, show pointer/pressed feedback and a theme-accent keyboard-focus
-border. The screen uses real product choices, without invented activity,
-connectivity claims, metrics or inactive links. No motion is introduced.
+Header and both sign-in screens use the existing approved transparent
+assets/dziri-ring.svg with theme-aware tint. Its embedded PNG has actual alpha
+(0..255, transparent corners); the canonical bytes/hashes are unchanged. No
+background tile, generated logo or blend-mode approximation is used. Arabic
+reverses layout and input alignment, never the ring orientation.
 
-Project-adapted dimensions: 1080px content maximum, 900px responsive breakpoint,
-24px narrow-screen gutters, 16px entry-card corners. These are local design
-choices, not claimed measurements from an external reference.
+This is a Dziri adaptation using the shared Inbox palette. Custom app text now
+matches Consumer's Inter/thmanyah Sans pairing. Original thmanyah v1.003 OTF
+files are bundled unchanged for all platforms. Upstream native screens/fonts
+remain unchanged. Locale-aware text/input wrappers set direction, alignment and
+weight consistently; a left-to-right layout root prevents double mirroring of
+the explicitly reversed Arabic rows. Document language/direction follow the
+selected locale on web. The personal login is bounded to 420px and fits
+a 390px viewport. Device visuals remain unverified. See VERIFICATION.md for the
+coordinated backend rollout gate; this checkpoint is not a live business-tab claim.

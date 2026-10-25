@@ -1,4 +1,39 @@
-# Entry screen redesign
+# Consolidated messenger and transparent logo — 25 October 2026
+
+Prepared one shell with Friends always visible and server-derived Customers and
+Staff & agents tabs. Tests cover unknown state, revocation, tenant changes and
+per-user staff credential namespaces. Buyers keep shop conversations in Friends;
+seller replies use explicit store scope and the existing retry identifier.
+
+The existing canonical SVG is genuinely transparent (alpha 0..255, corner alpha
+zero). Header and both sign-in screens now use it with theme-aware tint. Original
+SVG/PNG hashes remain unchanged. Browser inspection confirms no background tile
+in English and Arabic at desktop and 390px width.
+
+Custom typography now uses Consumer's Inter/thmanyah Sans pairing. The unchanged
+OTF faces are v1.003, with matching family/version/glyph names to Consumer's WOFF2
+files. Browser checks confirm the thmanyah family is loaded, Arabic document
+language/direction, right-aligned form fields, right-side Friends tab, and no
+horizontal overflow at 390px. Fonts are bundled with the publisher license.
+
+Local client: typecheck, lint and 23 tests passed. All-platform bundle export and
+ring/runtime/theme guards passed. No physical-device acceptance is claimed.
+The dependency audit reports 6 high and 3 moderate existing advisories; no runtime
+dependency or lockfile was added by this change.
+
+Backend: 8 isolated tests pass against current origin/master (583c5601a), covering
+publication, sold-out continuity, invited staff, store linkage, revocation,
+suspension, guests and ambiguous/false-owner grants. The new module has no errors
+in the scoped typecheck, but the full backend graph fails on missing installed
+dependencies and unrelated existing errors (including nullable launch relay
+state in http.ts). The old dirty main checkout was not used for a deployment.
+The configured preview identity endpoint (`honorable-moose-964`) is reachable;
+its new tab API is absent. This is not production account-flow proof. The
+consolidation remains a local checkpoint pending a qualified backend rollout.
+
+Earlier checkpoints below are historical.
+
+## Entry screen redesign — 19 October 2026
 
 The customer/team entry now has a responsive two-column desktop layout,
 single-column mobile layout, compact language controls, visible keyboard focus,

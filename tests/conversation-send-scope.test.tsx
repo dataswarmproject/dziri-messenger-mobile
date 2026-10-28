@@ -8,6 +8,7 @@ const state = vi.hoisted(() => ({
   key: 'v1:' + 'a'.repeat(64),
   supported: true,
   writable: true,
+  scopeAvailable: true,
   discard: vi.fn(async () => true),
   queued: [] as any[],
   composer: undefined as any,
@@ -30,7 +31,9 @@ vi.mock('convex/react', () => ({
             myRole: 'member',
             canSend: state.writable,
             encryption: 'server',
-            writeContext: { expectedActorId: state.actor, authorityKey: state.key },
+            writeContext: state.scopeAvailable
+              ? { expectedActorId: state.actor, authorityKey: state.key }
+              : undefined,
           }
         : { features: { personalWriteScope: state.supported ? 1 : 0 } };
   },
@@ -73,7 +76,7 @@ vi.mock('../src/dziri/message-composer', () => ({
     const [id] = React.useState(() => ++state.next);
     state.composerId = id;
     state.composer = props;
-    return null;
+    return <div data-testid="mock-composer" />;
   },
 }));
 vi.mock('../src/dziri/message-list', () => ({
@@ -96,6 +99,7 @@ beforeEach(() => {
   state.key = 'v1:' + 'a'.repeat(64);
   state.supported = true;
   state.writable = true;
+  state.scopeAvailable = true;
   state.discard.mockClear();
   state.drafts = [];
   state.composer = undefined;
@@ -203,6 +207,7 @@ test('actual DM keeps pending request intent held through denial/restoration and
   await render();
   expect(state.composer.review.body).toBe(original.body);
   state.writable = true;
+  state.scopeAvailable = true;
   state.key = 'v1:' + 'c'.repeat(64);
   await render();
   expect(state.list.messages[0].held).toBe(true);
@@ -211,5 +216,33 @@ test('actual DM keeps pending request intent held through denial/restoration and
   expect(original.personalScope.commandContext.authorityKey).toBe(
     captured.commandContext.authorityKey,
   );
+  expect(state.wire).not.toHaveBeenCalled();
+});
+
+test('the family schedule closed shape holds native intent through reopening without an unbound send', async () => {
+  await render();
+  const captured = state.queued[4];
+  const original = {
+    id: 'scheduled-command',
+    body: 'Retained scheduled draft',
+    createdAt: 1,
+    status: 'failed',
+    personalScope: captured,
+  };
+  state.drafts = [original];
+  state.writable = false;
+  state.scopeAvailable = false;
+  await render();
+  expect(host.querySelector('[data-testid="mock-composer"]')).toBeNull();
+  await act(async () => state.list.review(state.list.messages[0]));
+  expect(state.composer.unavailable).toBe(true);
+  expect(state.list.messages[0].held).toBe(true);
+  state.writable = true;
+  state.scopeAvailable = true;
+  state.key = 'v1:' + 'd'.repeat(64);
+  await render();
+  expect(state.list.messages[0].held).toBe(true);
+  await expect(state.queued[0](original)).rejects.toThrow('Messaging access changed');
+  expect(original.personalScope).toEqual(captured);
   expect(state.wire).not.toHaveBeenCalled();
 });

@@ -1,0 +1,132 @@
+{
+  "checkpoint": "family-time-20261028",
+  "at": "2026-10-28T11:59:52.684Z",
+  "goal": "active; full original required scope preserved",
+  "previousGoalTurn": "progress: captured moderation transport, expiry and source backup",
+  "previousReceiptSha256": "56b78da5a450b8c1904b885749215edf2617900fdb88f3124dc6ba93ad105af8",
+  "sourceBase": {
+    "previous": "cecb6ad0e36670c703bb372ce0b552ffb047ff4d",
+    "candidate": "7d3ff7b61247c6213ca858f99d2f38fa5dbbfd55",
+    "native": "1582a3af374b2937cd569b8ba479ae4b93532ac3"
+  },
+  "qualification": {
+    "initialRed": { "failed": 35, "passed": 1 },
+    "timezoneBaseline": {
+      "exactPreviousParentalControls": true,
+      "host": "UTC",
+      "legacySendIncorrectlySucceeded": true
+    },
+    "backend": {
+      "cases": 1509,
+      "files": 95,
+      "newScheduleCases": 65,
+      "workers": 4,
+      "normalLogging": true,
+      "status": 0
+    },
+    "alternateTimezone": {
+      "host": "America/New_York",
+      "cases": 21,
+      "status": 0
+    },
+    "consumerContracts": { "cases": 23, "files": 2, "status": 0 },
+    "nativeContracts": {
+      "cases": 15,
+      "files": 3,
+      "status": 0,
+      "firstNewAssertionCorrected": "Read-only native conversation hides the composer until local review is opened; no application fix required"
+    },
+    "officialCodegenTypes": {
+      "runningDeploymentModified": false,
+      "status": 0,
+      "selection": "dev:honorable-moose-964"
+    },
+    "finalBackendTypes": {
+      "source": "final backend working tree",
+      "status": 0
+    },
+    "deploymentHold": { "cases": 8, "status": 0 },
+    "webBuilds": "No web app affected by this new source delta; prior release qualification and actual last-successful deployment comparisons remain separate"
+  },
+  "schema": {
+    "addedOptionalPrivateField": "parentalControls.scheduleNextAt",
+    "newTables": false,
+    "published": false
+  },
+  "policy": {
+    "timezone": "Africa/Algiers; same existing repository regional clock",
+    "schoolRuleUnchanged": true,
+    "officialSchoolCalendarClaim": false,
+    "guardianAndAgeAuthorityQualified": false,
+    "actualScheduleRolloutRun": false,
+    "internalRolloutPageLimit": 50,
+    "clientApplicationSourcesUnchanged": true,
+    "olderOptionalSendAPIRetryBehaviorPreserved": true
+  },
+  "preservation": {
+    "at": "2026-10-28T11:56:44.361Z",
+    "originalPaths": 316,
+    "originalSourcePreserved": true,
+    "originalIndexEmpty": true,
+    "originalAllowedBookkeepingOnly": true,
+    "nativeRecordedInputs": 41,
+    "nativePreservedInputs": 40,
+    "nativeRecordedRuntimePaths": 13,
+    "nativeApplicationSourceUnchanged": true,
+    "ownedNativeTest": "tests/conversation-send-scope.test.tsx",
+    "ownedNativeTestBefore": "24cc436edf9aaf2d4f1babe733925c04837462b635154fbe931c98f7218c941e",
+    "ownedNativeTestAfter": "e3a8bfc3eb1fbed28221659f415a83d61b6b1a597dd7e2183098beb3cdb9921d",
+    "failures": []
+  },
+  "sources": {
+    "convex/_generated/api.d.ts": "963adbb53e11a69ed306d6b205119bc0d5987b20b58748b19964e39260050919",
+    "convex/messaging/families.ts": "0b36e475bae6ac45eabbccef5a932a49e6ac6bf0e17a79cf40f0d3c66a7c72de",
+    "convex/messaging/familySchedule.ts": "d1a680991cac3cad56d2ef3e4bc1981b6d4fdc6029f303367d086854e7d728a2",
+    "convex/messaging/familySchedulePolicy.ts": "cbdf0b354db760179fcbbfd0ea1e44f3cf213bf99880db3dc9bd614f6cdbe153",
+    "convex/messaging/parentalControls.ts": "62bdcc9a189aedef12d7ac5d315dacee127e8b5abcd0f40f4fb9857997f6decb",
+    "convex/messaging/sendScope.ts": "9a70a11816500c05c82c67823bd80989bd226bb20a16bfc0ce6ce10b274a4815",
+    "convex/messaging/threads.ts": "a755091f32af146c6f22215bcaf0959017011760e466bd4926ec78c6c1963772",
+    "convex/schema.ts": "bb6203808989e087485532cbbd496de5d40c5360614b92ca4726238b6cfc0553",
+    "tests/activation/messenger-family-schedule-policy.test.ts": "4a38fc2ca17d6096c405ef1d5f4104bc163189edd3289641baa7ea92baf2ccb1",
+    "tests/activation/messenger-family-time.test.ts": "d541cc22dfe8438093ed2fbafbb72d151ae291ceb7a5a672bd9de358b532eb56",
+    "tests/feed-ui/messenger-personal-send-scope.test.tsx": "684150faa5859c140ac422a0e3708bddee1c7e7fe5fd5da2cd010d77ca347c08"
+  },
+  "nativeSources": {
+    "tests/conversation-send-scope.test.tsx": "e3a8bfc3eb1fbed28221659f415a83d61b6b1a597dd7e2183098beb3cdb9921d"
+  },
+  "evidence": {
+    "alternate-timezone.log": "98aedc2bc298f025f35d93a3b2a8a5bb060b1c1bb50a71f7026674d3d5574ec0",
+    "backend-final-result.json": "620407ed1979435451020482a759f028a1efa25a435e4172a58cd5bafbcda9b0",
+    "backend-final.log": "1030cbb4c2bf8741ff4daca65eff7bb12ace9f6e381aea9778cdb0c191b66bbd",
+    "backend-result.json": "ac78a641264af0eb7d221f89ad5723c218a96fab6814169310e6dd1d67708b5d",
+    "backend.log": "a4c213e7d207c70081b1a5276bcf9810432a3677dc4d83408df138c87eae255a",
+    "baseline-loaded.txt": "6770147bc375071b5810e145a9607c58524699294fa61b193229d903a012c8ac",
+    "boundaries.log": "ac967c14bd91cad3313eca901091aef56dd4eeeb4daa8d47c4a2f630d2060fbe",
+    "build-impact.json": "74a2ead54114a3917ccb3af1a16a37506866e42640fecaed10d12fb95de3ca79",
+    "codegen-result.json": "851641f38d537fc4838e547ac55db1e42ab82ad8411f159bbb76dfe4c7222e77",
+    "codegen.log": "b331ea72047c7150c6eb73f9d233d6b46a0cded6030700e9d72e83ae4d402a05",
+    "commit.log": "74710f4816ea040cbbe9df8b161f980ea98650221ce74b99f72d4a29ca600b1f",
+    "consumer-contract.log": "0ad3dba1b620ebd85c096017ef848deef851426c453aad0eaea9568a10945bdf",
+    "deployment-hold.log": "82adcab5cb0643fcd185ab661f7c0bda20f73c085a95a3def06639b135b22769",
+    "focused.log": "0ca4c2b0415e9e3968dc858417a938f6fcbbeb66e899671074464750199c26dd",
+    "green-first.log": "ef79a851ed1fbdf5fb9a840320fed0c30bcb28048cd1637f84f0b4550a1c94e9",
+    "native-contract-final.log": "bc6ff10265215ebde679ee79944a1ea43f1a95795019a67b15641a91f378f5b1",
+    "native-contract.log": "8d001874066b0845540b9a6b9043652e77e700915b9b8dc07cd7334f92395ebb",
+    "parentalControls-baseline.ts": "593ba31a9a5e719a70535ea573b9e64a317a23accb4fcdfb373edc92fd7e73e8",
+    "preservation-final.json": "eb8f784ee9849715ac50a24932d1d0e921ccdf3e25bd43f830aa5d268c6540c2",
+    "red.log": "79f433542fc7973e86111828e7c0dcac2d08de5305acd40801244507245fb1f6",
+    "timezone-baseline.log": "f089acd31532258526f02e4171c379cd97ec8e2327ed345e254b9d52c6646936",
+    "types-final-result.json": "dfc2043927493b589cabf237d43769ee39002241edf6fdb79639abe281877aa4",
+    "types-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "holds": {
+    "sourceBackupAuthorized": true,
+    "automaticVercelDeployment": false,
+    "manualDeployment": false,
+    "backendPublication": false,
+    "realMessagesOrFamilyActions": false,
+    "personalPush": "hard-disabled",
+    "newAPK": false
+  },
+  "remaining": "Guardian/enrollment/age authority, authorized real schedule initialization and reactive client/device proof, other thread policies and producers, all original feature/security/recovery/release/APK acceptance remain required"
+}

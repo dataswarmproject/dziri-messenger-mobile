@@ -1,0 +1,15 @@
+# Support text message bridge — 2026-10-28
+
+Canonical customer and mapped staff text now execute through the signed bridge worker. Immutable message versions and current actor/member/contact/company/tenant/generation checks prevent historical adoption, changed-intent retries, stale acknowledgements and remote-ID replacement. Explicit new-message links preserve the consent generation; edits do not opt old history into sharing.
+
+A bounded signed HTTP callback uses the actual Rails webhook headers, positive remote identifiers, current connection-generation key and encrypted per-tenant secret. Current verified staff mapping plus real active thread membership is required; there is no implicit join or legacy promotion. Incoming replies, author edits and removals use the same canonical message rules as Consumer/DM, with atomic birth-origin links and no echo. Local edits of Inbox-born messages still forward. Private notes/internal events leave no customer history, preview or delivery metadata. Exact byte verification rejects BOM normalization. Equal revision/changed content, duplicate delivery, rotation races and pending local edits are covered.
+
+Local qualification: 184 focused cases, 1,857 selected backend cases across 112 files, 14 Consumer and 13 standalone support UI cases, eight deployment-hold checks, and fresh official generation/full backend types. All final evidence is pinned to exact source hashes and qualified commits in the receipt. Earlier failures and superseded intermediate type analysis remain recorded; a zero exit with a failed-typecheck marker was not accepted. Normal logging, four backend workers and the documented 15-second cold fixture budget remain.
+
+This is synthetic gateway/canonical HTTP proof, not live Rails, actual two-account or phone acceptance. Consumer/DM runtime and native Chatwoot layout/credentials are unchanged, and all eight web impact decisions skip. Previous successful web/mobile builds remain separate evidence. No deployment baseline changed.
+
+W04 / SC44 / F12 remain open. Actual tenant/staff sync/setup and native handoff must still establish fresh external mappings. Support exact public receipts/private unread and both adapters, bridge media/reply metadata and legacy reconciliation, Marketplace, remote erasure/retention/owner lifecycle and authorized interoperability remain required before activation. No support unread/read-delivery completion is claimed. Every original feature/policy/security/client/device/recovery/release/signed-APK gate remains active. Prior dependency findings are unresolved.
+
+Local and GitHub master source backup is authorized. Deployment/schema publication/providers/real-account actions stay held for billing and separate authorization. Automatic dispatch remains off, personal push hard-disabled and dependent background calling held. No environment settings changed or new APK was produced. The original 316-path source/index, concurrent primary bridge/schema, prior build artifacts and native runtime are preserved.
+
+Receipt SHA-256: `aee2f5a23863e85965bffc236b30aaada66758ac7b13691a24a2c5b0d64384bc`.

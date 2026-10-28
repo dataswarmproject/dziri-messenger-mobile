@@ -1,0 +1,122 @@
+{
+  "checkpoint": "support-messages-20261028",
+  "at": "2026-10-28T17:53:03.926Z",
+  "previousReceiptSha256": "99006d0972b6c275e826b0e6603ef89ef1c27c363d7a49da348d36ada49a7d53",
+  "goal": "active; complete original approved scope retained",
+  "qualifiedSource": {
+    "platform": "08de64ebceb55642123a86fb0181bf3528463a36",
+    "standalone": "9d050766eb62e9cada9925e381291b54690d7de6"
+  },
+  "inputs": {
+    "at": "2026-10-28T17:46:31.734Z",
+    "root": "E:\\CodexWorktrees\\messenger-master-integration-20261028\\tawasool-mmogram",
+    "base": "5c6b18e9782a1909127538e3fb3a50023480baa0",
+    "sources": {
+      "convex/_generated/api.d.ts": "3c47134fd4df9560986ea3fae2562673c46b9a0ed7fb8e08ab97d037b0ef48fe",
+      "convex/http.ts": "3881af763aa17d2dc31903de1fea8d496d36f59822eeceb593b2d4d418378322",
+      "convex/inbox/dispatch.ts": "7fd5aed05673006174cd9ba65199b5e1c89b11aaac65cf7bf7b6029bb922500e",
+      "convex/inbox/jobs.ts": "e9fea87916f6bacac885dbbab8562ed72864ea183093508e5a6d29f62b37dbe4",
+      "convex/inbox/outbox.ts": "9bf64ab3301d91dbd3fa8676f9fc8cab2605bd609ee0bd2b70afce95f68404ea",
+      "convex/inbox/schema.ts": "552b4592f36daaea3cdc7f86498fa4cf834535b4026b2354ff0c8fed0e71ea61",
+      "convex/messaging/currentAccess.ts": "08fafec1e282aa0c570f2abde8a0a8e3deca7bb75df97fceb580effa7533fc36",
+      "convex/messaging/messages.ts": "6403c951a95b771de240ae9b4732145fbd9d73bf94ca317e3a81e46edc7990df",
+      "convex/inbox/messageState.ts": "5bb1899cdde8d8f9b2b565c5685713b7774d9d1325ba0ccd5eee3a0a44c8fcd3",
+      "convex/inbox/staffAuthority.ts": "e9311b24d4640833647ddd0140d70304ab88cde8e369cc434c8452cebb57e852",
+      "convex/inbox/webhook.ts": "78e43e3e2234adf30117dcadce54faaadf134bf92c602a93f01d941d3bbcc57d",
+      "convex/inbox/webhookHttp.ts": "5b707be932e78ff8e4d891d26a53f424962032241d5a6f9fa8497f77c01e631f",
+      "tests/activation/inbox-canonical-writers.test.ts": "ebbe429c4296c23c5ababe9738ab78641f25752059280952d5dd9bc6837eba9b",
+      "tests/activation/inbox-message-dispatch.test.ts": "99327a998d03a5355a178b2a1f56e9ab2cd537f11850109b5e78d72652b4779c",
+      "tests/activation/inbox-message-webhook.test.ts": "e71c99da852e17280b45686587c2d5b4421397226df5458d3f572f5cfca84a12",
+      "tests/helpers/inbox-bridge-fixture.ts": "c5e911e8954a6f26a5960ec4751fe385b016e6f6d5ec34291797859bd5853f04"
+    },
+    "nativeBase": "9d050766eb62e9cada9925e381291b54690d7de6"
+  },
+  "evidence": {
+    "backend-final-result.json": "a9fdbcc293afccc3c24bfc0fcc06434a749e2ac6e7366618f717aa24e9481902",
+    "backend-final.log": "c1d63cc22d150c3daffc9d2bc2b292eb9c0a954cce1698d3831a70b24b358433",
+    "backend-matrix-result.json": "53c92befdd58e414592e0eb2d25215d7a2a03f87139b0b62a35014af7f203f3d",
+    "backend-matrix.log": "aae1f7de0fe98f22b558d399175b89a3fef0527b39ee692219b1f87fc269c6c9",
+    "build-impact.json": "130deb7f4773a046c88d0b659afd9e3a9d4dc6e2ed6a327e8ae4865ca2e6a248",
+    "canonical-writers-green-first.log": "599d6aba6fb152befd986aa8f73f3241f4ada1a5065a36a7f87300a4a6257ab5",
+    "canonical-writers-red.log": "8c0a62f282418eb38583c323ef7032556cc3f508c74221d1f29dd550a90ff8c2",
+    "codegen-superseded.json": "c4fa74c889879b0b68a819b6ceb580fd033fd59f3691e564e17542ea51db7fc0",
+    "codegen-types-result.json": "58837723d4b10060043769a7f8e0863f0295a093312a70e5dd3185ab638f9e85",
+    "codegen-types.log": "fb80e4f431ba07c62f9603eb5f06a9eae5027a99b8437de94ac55e59f77466bb",
+    "consumer-support-final-result.json": "51de98a173faf68f7b9b8f58b8270cab8e0b647726f59bf33f6a572aaa6afa02",
+    "consumer-support-final.log": "6dca2e1b57602173b614921fa78412561e024dfb5b9c329ce312d47147811373",
+    "consumer-support.log": "0e538b7b403f59c04b8b7c9820e9ed2c0b4bb36f2a51c10323b227a54090512d",
+    "deployment-hold-correct.log": "9a25d0803447e0646e0ab66bbe21fb3eac9fa7d27af52012ff228fe618e91a34",
+    "deployment-hold-final-result.json": "9c880e331e49ce5d6330ca418377e26c363b9fb20503479fb6af61e0cd86df1d",
+    "deployment-hold-final.log": "7ded82434361cd94ba871b7766f96f8c9b1bd755adbd6dac9c61d9f7c344fbac",
+    "deployment-hold.log": "78c9118d35c8fb04df73bce1353d5d39bf694947703f153ebab308ffdc77a37b",
+    "focused-final-result.json": "ea8b1b9c89e03dc9e978101494730437e531a2208666bdf971cf2c326f8614c1",
+    "focused-final.log": "a16d5c1be82cfedcba5d377235c94ca9a8ab0da37276a9b527552424e1e5cbbd",
+    "message-dispatch-first.log": "971f6b18fcd54cb62af74fc884c7475ff931ea7a16352e7f2d013a563490d7f9",
+    "message-dispatch-green.log": "18b025d691321cb032288687ff76b5449e2424fd3071cd20cabed6cc094d82ba",
+    "message-dispatch-red.log": "aa604651d91c97e16791126e2816a160079586f4f3af08f1f265c6c12043dac9",
+    "message-webhook-red.log": "1ed6fe2ae7bde0ce64fe68ab23dd138e42e1e05925c0804fd71b5e2f4680cbf1",
+    "message-webhook-review-red.log": "b7186fc06d4f7892266671f8c7ba6a37ac632aa2916f5985b86a61e86b6d63ae",
+    "messages-first-integrated.log": "4e4c192b59612b81d79c2bb49294b3aa7e7793c424ec5c783b267214139d3820",
+    "messages-race-green.log": "445c25944006a9fc2dfdc35953a97fdffa7398f720800614247bc65198ee6385",
+    "messages-race-red.log": "2b89250b0267ddc1c04d1fb513bf4ae7b06d15c16c47bd0c71aac83f14046c89",
+    "messages-review-green.log": "9bf5bb24e57b493daa92d93b08bfa80b66c776e2b466d3c590ee7d8cf3dca9d5",
+    "native-support-final-result.json": "05ebedf27578907d6e8880bb079cf92f44f98fa60c32294a0e3d189d47f32d79",
+    "native-support-final.log": "6c7838c07783198bf8cc58c6cdf0f4733aea7638ead259b0624a6f0db59086c1",
+    "native-support.log": "53631c3f2e4e97d218a6be7bf717149447676865e8d1aba03ba9680db98fba54",
+    "official-codegen-final-result.json": "938559f9228eadb24e82c96755c3728fa0da99019f1749f00ad070d9dea3e172",
+    "official-codegen-final.log": "ed4d0ab2405a5eaff4bce36f8eaa16770bd83ea3619a53698056d594d5cc54a4",
+    "preservation.json": "212e0c2b4d2586b323d92ea4bc140507eff9423974bf8ccbbbc15fb9ea624d5f",
+    "qualification-inputs-final.json": "c1352b613fe6107a38501e65decc1813a55856d65b3a0e4901597d71f47b2d64",
+    "review.md": "10640d8e0b74b261685ddeb429501d85469a8b0bcd57be6383dbae3afd8c518c",
+    "types-initial.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "webhook-exact-bytes-red.log": "84e3ff870ac596243dce2fb676d3c7942478e0285d03084299fe2d857976d090"
+  },
+  "preservation": {
+    "originalPaths": 316,
+    "originalSourcePreserved": true,
+    "originalIndexEmpty": true,
+    "concurrentPrimaryBridgeAndSchemaPreserved": true,
+    "consumerAndNativeRuntimeUnchanged": true,
+    "nativeStaffLayoutUnchanged": true,
+    "priorArtifactsPreserved": true
+  },
+  "qualification": {
+    "focused": { "tests": 184, "files": 8 },
+    "backend": { "tests": 1857, "files": 112 },
+    "consumer": { "tests": 14, "files": 1 },
+    "standalone": { "tests": 13, "files": 1 },
+    "officialGenerationAndFullTypes": {
+      "args": [
+        "node_modules/convex/bin/main.js",
+        "codegen",
+        "--typecheck",
+        "enable"
+      ],
+      "cwd": "E:\\CodexWorktrees\\messenger-master-integration-20261028\\tawasool-mmogram",
+      "status": 0,
+      "startedAt": "2026-10-28T17:46:43.654Z",
+      "finishedAt": "2026-10-28T17:50:08.654Z"
+    },
+    "deploymentHolds": 8,
+    "clientBuilds": "Runtime unchanged; all eight impact decisions skip. Prior web/mobile builds remain recorded separately.",
+    "proof": "Synthetic canonical clients, signed fake gateway and actual in-test HTTP endpoint. No live/provider/physical qualification."
+  },
+  "remaining": [
+    "support exact receipts/private unread and adapters",
+    "tenant/staff acknowledged setup and native handoff",
+    "media/reply metadata and legacy reconciliation",
+    "Marketplace bridge",
+    "remote erasure/retention/owner lifecycle",
+    "entire original functional/security/client/device/recovery/release/signed APK backlog"
+  ],
+  "holds": {
+    "deployment": true,
+    "schemaPublication": true,
+    "providers": true,
+    "realAccounts": true,
+    "personalPush": "HARD_DISABLED",
+    "backgroundNotificationsAndCalls": true,
+    "sourceMasterBackup": "Authorized; master only"
+  },
+  "artifactRoot": "D:/codex-artifacts/dziri-support-messages-20261028"
+}

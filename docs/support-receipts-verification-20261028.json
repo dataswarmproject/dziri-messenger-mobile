@@ -1,0 +1,854 @@
+{
+  "checkpoint": "support-receipts-20261028",
+  "at": "2026-10-28T19:26:33.113Z",
+  "previousReceiptSha256": "aee2f5a23863e85965bffc236b30aaada66758ac7b13691a24a2c5b0d64384bc",
+  "goal": "active; full approved backlog retained",
+  "qualifiedSource": {
+    "platform": "18c8cdaccc99a308039d90ffa021d21bfb479dca",
+    "standalone": "9420d33270f2ff0ffe0fcca6b2ec7ec28819ec1a"
+  },
+  "inputs": {
+    "at": "2026-10-28T19:06:47.889Z",
+    "frames": [
+      {
+        "root": "E:\\CodexWorktrees\\messenger-master-integration-20261028\\tawasool-mmogram",
+        "base": "c433c16d9d5afd419611533fd1276b6a5da3e6bb",
+        "sources": {
+          "apps/dziri/app/(main)/messages/[threadId]/page.tsx": "a5c2a1b06196bedc7a97e85858051b27ddd27d8b63549994579bfb189e54d2f3",
+          "apps/dziri/components/messaging/receipt-api.ts": "152b2c262c9acfd0adcc254d7981a4879529131605c1efde7d65e5ae0dff6430",
+          "apps/dziri/components/messaging/receipt-message-bubble.tsx": "66bcd419874ac504b1257c9d6284bf6f74aaf9441bca2c0c30769552484d3f1e",
+          "convex/_generated/api.d.ts": "696b16ad833c0e1c292d3b9a1290d42dcd58665a08a2db10bf3f5224b945d1ab",
+          "convex/inbox/dispatch.ts": "96d775674d9d084e5e964a85e6a9b44465da63c98f849f8808b0daaa27d942b2",
+          "convex/inbox/jobs.ts": "b2a488d599b27f518ec62bb25571314009d74e24cb8faa81a3e6ba07f99437af",
+          "convex/inbox/webhook.ts": "12c59afcb7f7cd43a895adaa3ffa0fa13d0be40ffd4336bba00874dbced6a9b7",
+          "convex/messaging/messenger.ts": "23346c77ee4571007e079e6cdadccb56185d9355c6b98fadd4baebb1d546bf3e",
+          "convex/messaging/receipts.ts": "a4f3fa5e4865f781564daae2df2da3c843dd2dcbd6bf13314124bc32952cf92f",
+          "convex/messaging/unread.ts": "a1495aecaaae643457eed4eb9752a1e21108c9484f5e187af8de40aa564894ea",
+          "convex/messaging/unreadModel.ts": "54d75fbb46ac6fc0a85d6ed6483e6c55193df20cd9770c47140b785f883e5b6e",
+          "convex/schema.ts": "6686d021d46544952524e3daabb11e8da53954285c025b4d35e30c8b1846d2c0",
+          "packages/shared/src/messenger-receipts.ts": "41e66d3fe2a00d03485148336b0ee5db7ed6404e3fa6798ee066f1e4a1f012c7",
+          "packages/ui/src/messaging/use-message-receipts.ts": "c965763f2604cc3e584924daff9d51012308cec5cc5e31b84cb240552e7a744b",
+          "tests/activation/inbox-message-webhook.test.ts": "202dc78f7c02671be95094d3a0997744aeca33a25ff5221ee205d0c8cac6a7cc",
+          "tests/feed-ui/messenger-call-readiness.test.tsx": "93beb4bc2663f37618c6fe4b910d453ac584fc4560435ebdc2bc54e40d0daec6",
+          "tests/feed-ui/messenger-receipt-adapter.test.tsx": "bb4b71cc39f6339fd984a8a757d3d854c268616da2bc3d0d3da388460ba60e8f",
+          "tests/feed-ui/messenger-receipt-observer.test.tsx": "09c85e67cf9d9d341a4e8507767705149a44fcfd3b1669b43f35bf20eb82edef",
+          "convex/inbox/receiptOutbox.ts": "e507c9d7e05b4712d849305deaa5ffc0c28dc94db89db3e7759d7588341d221d",
+          "convex/inbox/receiptPolicy.ts": "0abf2d12ccf06097acdc683bd2f38f01ee20f4efdb85b99a567d9cc1261e3c75",
+          "tests/activation/inbox-exact-receipts.test.ts": "3667e1c612def0e82778ebacf417b15b550f8b88d50218d2eda377fe14ca4fa2"
+        }
+      },
+      {
+        "root": "D:/projects/dziri-messenger-mobile",
+        "base": "5ab762fccf2c17864ad6deedd1d4940af8534396",
+        "sources": {
+          "src/dziri/api.ts": "f5f29e8b97b56e46b2c4c09b91cc1e01c00daac0319cad81463e37974aa96506",
+          "src/dziri/conversation.tsx": "dc8969d8e04142dd62dfc84963a79e6a160c361aad93f9be457dcb59d57afd40",
+          "src/dziri/message-list.tsx": "ecb9adaf27ada9a2dbd065e610862e02ddc72953151c43f5f419702672c934de",
+          "src/dziri/message-receipts.generated.ts": "4d084243483702bcd2a611fd650c8695abb81a8834fde1d9e3c7b6558c384fe3",
+          "src/dziri/receipt-message-bubble.tsx": "5a593aed3b547a95d491edbb291c357fbca69931d4fd50106a7b60499080a8da",
+          "src/dziri/use-receipts.ts": "020fe1cbcf57940075e5bed8975390f954461119e307fcd78d5ad299d7a0fbd1",
+          "src/messenger-policy.ts": "af660cb1dbbcbba64d207e6308f14f69cdcf537969eca8e89ba0f5d922c04b13",
+          "tests/conversation-send-scope.test.tsx": "72de19c3cb51ac9c4002c7e7b0eb1fd453d488d9106967a6f05f15a173122e12",
+          "tests/exact-receipts.test.tsx": "386ee7ad700b066dd2482224e047a22c8921b1c729e89d53dcc11bb95f95ecb9",
+          "docs/message-receipts-contract.json": "5f553babf7165cdaa251ee16ad02bedb824d5bae29d6e4c8aee13aabec07a1bd"
+        }
+      }
+    ],
+    "externalSource": {
+      "root": "D:/projects/dziri-inbox",
+      "head": "ec54fd0c2ff11937a1e14c3ed88b29954b795e59",
+      "files": {
+        "app/services/dziri/bridge_gateway.rb": "2690e3d69edbbe32f5d4950f9413ea0590c059bc715937ebc467ba3021750c3b",
+        "app/listeners/webhook_listener.rb": "9e56480c982fa42d7155cd2092954055b71ff357649ea0513fe865b50dfb2a81",
+        "lib/webhooks/trigger.rb": "02aa511a3b6fe4c6350acaceb4dc5f065bd2cbdb35ac051360da1054d96749f8",
+        "app/models/message.rb": "5c15e51c4e3c84257133d96601398c6f9603a0b9099a5a3351d9aa18aabbdd31"
+      }
+    },
+    "finalizedAt": "2026-10-28T19:25:06.492Z",
+    "allSevenBuildsCompleted": true
+  },
+  "evidence": {
+    "backend-final-result.json": "87fdb0ee5f05a4822139363f9848ebd8eb2c6bc13fec74c87c1f886b5914b0fc",
+    "backend-final.log": "9344da88990622bd60df4d57c9d14063e43b9c328476761e6a3d55f491a96075",
+    "browser-proof.json": "eeff7d6b83d5e3340e36bc240b095ec83c46f4e10df54f33e9009457a1de5ae0",
+    "browser-proof.png": "e956f6df06326823a066c7086e21f9909d3c9899f85c6675824ffbfdc2116a63",
+    "browser-state.txt": "c033c0aae3d5ce1afb71a43ca3388d84b7a3187e075606db7b09c3ba07839efc",
+    "build-impact.json": "7a62eaaadf287a655441d2a79ff52a5b400bffa3e54d4ca87edf4320b8899b29",
+    "build-matrix-final.json": "4d7695d4122562211a1a3a5ea81696f0d9d3ddf5a9a40c465c72447890087e9f",
+    "build-path-preparation.json": "aba7b1db4ecaf52aa033a15a3701a581eb0c5506f56b75bfc25b2f65e3bda597",
+    "build-runtime-repair.json": "c93c08738d7d10ace55f634f0656d2743c35e30272154d492e2c989feb7db833",
+    "circles-build-result.json": "88579ed8a62465a7f7b66f3faf84bccf5e4d5481c57d55d185fa6b6e8c14635f",
+    "circles-build.log": "186969491a385574e61094f7db264e8e40cfa742fc1a17eac2412f88d7d2165c",
+    "consumer-context-green.log": "6ac86c4213436c0de79201cbb7b7facb6d1f22963f95a766530d37068fe02e2b",
+    "consumer-receipt-green.log": "0dbbcbab4593fa7d47dbdf04b1bea4fc88d799d98c54731f22740573d1a9e838",
+    "consumer-receipt-red.log": "ab3bd9cdf19ced5a8e9511c9ccd76c022b25c7297af460be673d0d3e336f821b",
+    "consumer-screen-capability.log": "aafc9b0cd6c75fe8284047934eb8368ac06ff0ba45e7bbb3c269604b353bb9bd",
+    "consumer-ui-final-result.json": "a793f20638d31878e2dad9670956ffba8a7185df2687fcae92ed72a764ebe910",
+    "consumer-ui-final.log": "f08040e70b2fb2821054d3dac88afe22f14fe87d0e6254f704a03548a12b2b43",
+    "dependency-audit-result.json": "75c160bf4690db9de7203ccf1fd5f1cc3ab01ed66d2dd2e14191ac5495190621",
+    "dependency-audit.json": "b2f48eb3fb1eac04bde27079354ada1ee461a796d146c21928b3bb307a21ea24",
+    "deployment-holds-result.json": "9b82fd203e7a89c077875f1b6394fa0a64ac71dd16678c99d97db00724bd06c9",
+    "deployment-holds.log": "4238dfde13c49cd47d076aaca0fd752425f8fb3db7cf29e248b795ffc544cafe",
+    "dziri-build-result.json": "991497679fda9a20fa6c5edde71c172313b8ac17d58b918cd4bebd22c9830c1c",
+    "dziri-build.log": "dc52813c8c70466f3d8a9ccc6fa293f360fdfcaab9cdae82db4ac477db0a9cec",
+    "dziri-business-build-result.json": "71788cf9fab47876e88bcbf245176d9afed7de9ff3ba0aa519afa28ea85ab10b",
+    "dziri-business-build.log": "c083838d7e8d1baac58db2aef986b472b84a8712224de9b7b877b929857974d3",
+    "dziri-console-build-result.json": "70d3ac55e597a5c08527d24f74cf235c0434bfa8aecf443b81aa05c95f564310",
+    "dziri-console-build.log": "15bcb61d3b3dc1f6ed5add8d1514d21e769e562783a56e707c9f7d3f1aaf201a",
+    "dziri-flexy-build-result.json": "b80fcd7eaf53d7fb918e32b7966bf27bbc137a6916456d912f4879c1698b51be",
+    "dziri-flexy-build.log": "339e2c9e801481d65b95b8ab7b7a3c7eb30a8f9ec4eb1a06872312627187c805",
+    "dziri-runtime-build-result.json": "5d4898d6eb68a1c3d649167b3b78d11de975168eeb1e2d859fd385de80a41091",
+    "dziri-runtime-build.log": "1c9e9457d602ae6deb3b93db440e0ce4bd75d67b65f40825cf8e15296b351b64",
+    "dziri-shop-build-result.json": "db9dfd606d9a2356bd9352680fd0d66696e473e8282f417f28700b5948df64f6",
+    "dziri-shop-build.log": "c897b91baf4d9bf0358af94fe3db707a5c6382da9507a049a4ac3f9df8fc7899",
+    "echo-backend-final-result.json": "3032c97445622c3236921d90e49fc05384bccc232c64bc5e69ed42c0d83e616d",
+    "echo-backend-final.log": "588838aadca69759032931545673237ab715d275341bb3f3096bfde7683d14a7",
+    "echo-official-codegen-final-result.json": "fcf1e85b385ab7682b83ff9aa2654f789aa7c53767be205a365b647a7db3b3ab",
+    "echo-official-codegen-final.log": "ed4d0ab2405a5eaff4bce36f8eaa16770bd83ea3619a53698056d594d5cc54a4",
+    "finalization-diagnostic.json": "9309ac89a4c023720817410109da7f960c491d1692ceab6ab9632009708f179e",
+    "id-build-result.json": "b3c10b25d32c79f7a58f3bbf5ebb7f314b4264ded0fbf98bc7d7ee70058e8e71",
+    "id-build.log": "bd25a66991e2e5712c75cb3ad7c26d958b23bf97831fcdef3bf417a4fecb43ac",
+    "native-android-export-result.json": "06e807d4320886cd8ca2319c0dc8667fd1b850ff20fe743757e810a99a01efb1",
+    "native-android-export.log": "3e37a71a665bfd698d9e9e9586e38db765b84f5fff1ad143ef087bc77c3bf3b1",
+    "native-consistency-result.json": "594ed354a83daa2e66b1fc6d0236aedfc26f5825011ced2cc4e35b6784cedf1d",
+    "native-consistency.log": "630b7cb0387d13642f1a343fb43bd7c0f7604f6bf68ae6b0be1de0f0d4e4601c",
+    "native-context-green.log": "58c7824dbd9ebba2b86ccd01cc6d1ad14e8261f9952c58d953225fb08d2251d4",
+    "native-domain-final-result.json": "4c311a11fd66c708d7244e7870edce12cd2bcab3f48d799576718f4827d762dd",
+    "native-domain-final.log": "b2b64dad5160f911dc0b173a1ab950877321a3427c85c723d322eff74537239a",
+    "native-ios-export-result.json": "5e839ee40ffbd6fbe95408176ffe3280cd49ea952f4be7a6acdc0972a282aecb",
+    "native-ios-export.log": "0ff144edd03e7d2d4b94a52b645859efb4dc8ac4ef45587436033235d0c69b9e",
+    "native-lint-result.json": "90822e4495aa4023ff3b44281e5681499d9e0f19cd3b7d5a422d04805df2a83e",
+    "native-lint.log": "641841bccee2246bf36738cb74a054d196bf00d9572f94c10c9351204d28afbc",
+    "native-pnpm-audit-result.json": "77e061cc5e4a853e4be126a0699c3fb2dee76faa8a1d0c32606f6ae28719bb4b",
+    "native-pnpm-audit.json": "1c8e60caec0375aa6097b7ae85f2d3b4a21fd80f6642d52f21dfe8625f6476f3",
+    "native-pnpm-audit.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-receipt-green.log": "32dc1aa81f8fb4e4784894c17d1222498a6602184827a1094278372e345006e1",
+    "native-receipt-red.log": "660486ed2b589825f6b382e13a39842fb84b3dfab8a474bd37c702530ea9a8bf",
+    "native-screen-capability.log": "46f61c790a9412b50fc414e69c7a048ca2374b109cb97909b2648b53ac7039d8",
+    "native-source-commit-result.json": "135295cdc02fdedbcbeb31192a1ab4d9868e6c369a77ee73bb7cd934b0c04ad1",
+    "native-source-commit.log": "1a240cbeb5b75abb8e1f4cbc1e9ad91f1150446a3f5325f0a39e6494b306749b",
+    "native-types-result.json": "82608cfebf62efe61ed59cf00fc0cd0d4ba80370aecdc8fbc8627461f0e872c4",
+    "native-types.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-ui-final-result.json": "fb289a7a2f6356226cbaa4a77e547a7db54b96c37f0959faa979b1c90a454ab1",
+    "native-ui-final.log": "1dcb7ba31ecc11718b917b73656910606d4bc7a0ff29f768d26d53c2f2cd0ee2",
+    "official-codegen-final-result.json": "71e1604cec9aaf1f9c0d2b2da0d188be6f4ad7ffbcfa53c730139e4bfb035f0e",
+    "official-codegen-final.log": "7304a6eb8269491d6e4b53ebe9226af3554fecbcef1294161b1ec3443e2bf073",
+    "platform-source-commit-result.json": "02f6ca67596c7129918228ee412d2219edb1af054aedba1124ee978bff95e18c",
+    "platform-source-commit.log": "a92545ab7cad4a57722fe370ee72f6f8976ebfdf498c6404620a0ea77bbb7ea7",
+    "preservation-final.json": "ba9203dbbe04532e50a7395eab49851efe3003387113f3622f3c44d7ad9d9b0e",
+    "preservation.json": "34ff6843531daea725cf416fc732cc26a14df26151cd7667a49f34f44bf0dff6",
+    "qualification-inputs-final.json": "45e3175445e030b29f386a2da08585412efe5007408d542fd6e3582205092d07",
+    "qualification-inputs-pending-builds.json": "1b4eb428cd4cb1adbf37bfbc92ab5dfa6dde4f1528b3c4498b7dabeffc799a1c",
+    "receipt-contract-result.json": "42702671d54af82c1616e480cda9177c6182eb22443ebeefaee88ba3800fdc51",
+    "receipt-contract.log": "1a89e8fb96aaf90a92d102b2e2c7fded8f30db7a9183795f5e6786590c5a0867",
+    "receipt-echo-green.log": "73fc12e7eac82e1a936e0ce9c5710c81cc67377c669f2c484037baa692b7e811",
+    "receipt-echo-red.log": "f13452b8b010b816b9e876910d16f3e7d85bf4a5ba2e3ff2ff43f3823849ceee",
+    "receipt-review-green.log": "cebe10a16cb0f93fd4231cf71d5d0cc01452f41b03886bd91df1b0e71d6c02ce",
+    "receipt-review-red.log": "a509ebc70739eeee1f4c4575fb188b6894d8b8ec6b011ab8fb6880417d6470a5",
+    "receipt-transport-first.log": "614e67546685eadd9a54b11360af7d1c7c29d9c53ae9bd0e1bfd676b968642f2",
+    "receipt-transport-red.log": "5f6c15aab24bfd71fa7103f5455b646e9ebc950f29ff5453597c1ccd3f51cf4c",
+    "receipts-first.log": "f50e74afb4872ac90d1fbc5cb434d9909ffca7cf2ac47774586ff4366a97f2aa",
+    "receipts-red.log": "5e8547a8c68d23628f490c6c9e847f6400c6fcb69d3cbc14c77b3c93cf64ff7d",
+    "receipts-scope-green.log": "c15af56520f7a2d922fcc52fbf438c3c8a9f6c64b61f4dd4adc543f8f0da45f6",
+    "review.md": "781c01b38e3bf053ccf86403c7aa28a8aa8396e20e1ea219923ed989bc224f39"
+  },
+  "preservation": {
+    "at": "2026-10-28T19:25:06.493Z",
+    "originalPaths": 316,
+    "originalSourcePreserved": true,
+    "originalIndexEmpty": true,
+    "concurrentPrimaryBridgeAndSchemaPreserved": true,
+    "nativeStaffLayoutAndBrandingUnchanged": true,
+    "dependencyManifestsAndLocksUnchanged": true,
+    "previousBuildTargetsRetained": true,
+    "previousBuildIdsUnchanged": true,
+    "allSevenBuildsCompleted": true,
+    "compilerFilesRestored": true,
+    "deploymentHolds": 8
+  },
+  "qualification": {
+    "backend": { "tests": 1872, "files": 113, "stage": "echo-backend-final" },
+    "consumer": { "tests": 261, "files": 34 },
+    "nativeUi": { "tests": 164, "files": 28 },
+    "nativeDomain": 58,
+    "officialGenerationAndFullTypes": {
+      "args": [
+        "node_modules/convex/bin/main.js",
+        "codegen",
+        "--typecheck",
+        "enable"
+      ],
+      "cwd": "E:\\CodexWorktrees\\messenger-master-integration-20261028\\tawasool-mmogram",
+      "status": 0,
+      "startedAt": "2026-10-28T18:51:54.465Z",
+      "finishedAt": "2026-10-28T18:57:57.068Z"
+    },
+    "webBuilds": {
+      "builds": {
+        "dziri": {
+          "app": "dziri",
+          "command": "npm run build",
+          "status": 0,
+          "compilerFilesRestored": true,
+          "startedAt": "2026-10-28T18:45:22.453Z",
+          "finishedAt": "2026-10-28T18:58:25.710Z",
+          "output": "D:\\codex-artifacts\\dziri-support-receipts-20261028\\dziri-next-runtime",
+          "deployed": false,
+          "sourceConfigs": [
+            {
+              "name": "tsconfig.json",
+              "sha256": "c7d462468d820bbe96b909e40061fc5c8e1feede0ba9bac7ea53f00c168bb130"
+            },
+            {
+              "name": "next-env.d.ts",
+              "sha256": "be500b66dcfc04983b70a746d22c3dfce7db24e50edf32a594cedaae16dfe5ed"
+            }
+          ],
+          "buildIdSha256": "562fbc85176164e4730c6809a6f3c49622c69d807bd31f8cdb06ec204dad05f5"
+        },
+        "dziri-business": {
+          "app": "dziri-business",
+          "command": "npm run build",
+          "status": 0,
+          "compilerFilesRestored": true,
+          "startedAt": "2026-10-28T18:58:25.828Z",
+          "finishedAt": "2026-10-28T19:06:32.626Z",
+          "output": "D:\\codex-artifacts\\dziri-support-receipts-20261028\\dziri-business-next",
+          "deployed": false,
+          "sourceConfigs": [
+            {
+              "name": "tsconfig.json",
+              "sha256": "7184d65dcc49d2769b6d0cac81fc47f52f2c04cc7a13cd321e690f35423238f3"
+            },
+            {
+              "name": "next-env.d.ts",
+              "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+            }
+          ],
+          "buildIdSha256": "610648c7445794b5817f7f7bd1bcbad50b9951f5dbdd1cd0acb47b9dd1da187b"
+        },
+        "dziri-console": {
+          "app": "dziri-console",
+          "command": "npm run build",
+          "status": 0,
+          "compilerFilesRestored": true,
+          "startedAt": "2026-10-28T19:06:32.653Z",
+          "finishedAt": "2026-10-28T19:13:23.744Z",
+          "output": "D:\\codex-artifacts\\dziri-support-receipts-20261028\\dziri-console-next",
+          "deployed": false,
+          "sourceConfigs": [
+            {
+              "name": "tsconfig.json",
+              "sha256": "74194ea2f5c90f837a8ff6ddf1103d3281eb69037afbe2cbed358688180b486e"
+            },
+            {
+              "name": "next-env.d.ts",
+              "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+            }
+          ],
+          "buildIdSha256": "474c8ed622bbc01f35c242befe80d72df976dfa34048912f3191604db9b8ab8e"
+        },
+        "dziri-shop": {
+          "app": "dziri-shop",
+          "command": "npm run build",
+          "status": 0,
+          "compilerFilesRestored": true,
+          "startedAt": "2026-10-28T19:13:23.789Z",
+          "finishedAt": "2026-10-28T19:16:58.367Z",
+          "output": "D:\\codex-artifacts\\dziri-support-receipts-20261028\\dziri-shop-next",
+          "deployed": false,
+          "sourceConfigs": [
+            {
+              "name": "tsconfig.json",
+              "sha256": "fd53d1c7362e9e74a5b1399cf7028e10bde35aa77e34fa2daaed4515aba4330e"
+            },
+            {
+              "name": "next-env.d.ts",
+              "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+            }
+          ],
+          "buildIdSha256": "6a890ed74cdf0e073b53642597e37d746579f43d83b0157943c10c395a63634c"
+        },
+        "circles": {
+          "app": "circles",
+          "command": "npm run build",
+          "status": 0,
+          "compilerFilesRestored": true,
+          "startedAt": "2026-10-28T19:16:58.415Z",
+          "finishedAt": "2026-10-28T19:17:13.358Z",
+          "output": "D:\\codex-artifacts\\dziri-support-receipts-20261028\\circles-next",
+          "deployed": false,
+          "sourceConfigs": [
+            {
+              "name": "tsconfig.json",
+              "sha256": "ed7e3efd98a97cc68e8c54821a69d51680aa2f46785b73af6503d10f75289236"
+            },
+            {
+              "name": "next-env.d.ts",
+              "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+            }
+          ],
+          "buildIdSha256": "3b9788aa3ae6681da48be9f0e766f33e326f3245558b76e61a7c8a2841caba58"
+        },
+        "id": {
+          "app": "id",
+          "command": "npm run build",
+          "status": 0,
+          "compilerFilesRestored": true,
+          "startedAt": "2026-10-28T19:17:13.364Z",
+          "finishedAt": "2026-10-28T19:20:30.944Z",
+          "output": "D:\\codex-artifacts\\dziri-support-receipts-20261028\\id-next",
+          "deployed": false,
+          "sourceConfigs": [
+            {
+              "name": "tsconfig.json",
+              "sha256": "ed7e3efd98a97cc68e8c54821a69d51680aa2f46785b73af6503d10f75289236"
+            },
+            {
+              "name": "next-env.d.ts",
+              "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+            }
+          ],
+          "buildIdSha256": "5716eb010cfd722f0a18b4e1fd50acb323e5b551d3a1f69537962e268ab6c574"
+        },
+        "dziri-flexy": {
+          "app": "dziri-flexy",
+          "command": "npm run build",
+          "status": 0,
+          "compilerFilesRestored": true,
+          "startedAt": "2026-10-28T19:20:30.949Z",
+          "finishedAt": "2026-10-28T19:23:57.033Z",
+          "output": "D:\\codex-artifacts\\dziri-support-receipts-20261028\\dziri-flexy-next",
+          "deployed": false,
+          "sourceConfigs": [
+            {
+              "name": "tsconfig.json",
+              "sha256": "ed7e3efd98a97cc68e8c54821a69d51680aa2f46785b73af6503d10f75289236"
+            },
+            {
+              "name": "next-env.d.ts",
+              "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+            }
+          ],
+          "buildIdSha256": "283ca6f6e3aa956967ab831b5e51c1076140b223f10ebac669a84eb4984793f3"
+        }
+      },
+      "consoleBudgets": {
+        "status": "passed",
+        "evidence": "local production-build manifest and file sizes; not live transfer timings",
+        "measurements": [
+          {
+            "route": "/dashboard/store-mapping/page",
+            "initialChunks": 17,
+            "rawBytes": 907120,
+            "gzipBytes": 281204,
+            "budgetBytes": 307200,
+            "featureGzipBytes": 13391,
+            "featureBudgetBytes": 20480
+          },
+          {
+            "route": "/monitor/alerts/page",
+            "initialChunks": 14,
+            "rawBytes": 800075,
+            "gzipBytes": 249708,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/[...path]/page",
+            "initialChunks": 14,
+            "rawBytes": 792178,
+            "gzipBytes": 246165,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/consumer/circles/architecture/page",
+            "initialChunks": 13,
+            "rawBytes": 775800,
+            "gzipBytes": 240325,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/consumer/activity/page",
+            "initialChunks": 14,
+            "rawBytes": 797056,
+            "gzipBytes": 249018,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/consumer/creators/page",
+            "initialChunks": 14,
+            "rawBytes": 802240,
+            "gzipBytes": 250478,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/consumer/circles/page",
+            "initialChunks": 13,
+            "rawBytes": 802365,
+            "gzipBytes": 249875,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/consumer/content/page",
+            "initialChunks": 13,
+            "rawBytes": 807942,
+            "gzipBytes": 251481,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/consumer/feed/page",
+            "initialChunks": 13,
+            "rawBytes": 799618,
+            "gzipBytes": 248881,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/consumer/messaging/page",
+            "initialChunks": 13,
+            "rawBytes": 801538,
+            "gzipBytes": 249577,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/consumer/missions/page",
+            "initialChunks": 14,
+            "rawBytes": 800827,
+            "gzipBytes": 249785,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/consumer/marketplace/page",
+            "initialChunks": 14,
+            "rawBytes": 802052,
+            "gzipBytes": 250159,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/consumer/social/page",
+            "initialChunks": 13,
+            "rawBytes": 798331,
+            "gzipBytes": 248445,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/consumer/tv/page",
+            "initialChunks": 13,
+            "rawBytes": 798046,
+            "gzipBytes": 248365,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/delivery/page",
+            "initialChunks": 13,
+            "rawBytes": 803805,
+            "gzipBytes": 249930,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/finance/page",
+            "initialChunks": 14,
+            "rawBytes": 805338,
+            "gzipBytes": 251408,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/consumer/wallets/page",
+            "initialChunks": 13,
+            "rawBytes": 804778,
+            "gzipBytes": 250328,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/evidence/page",
+            "initialChunks": 13,
+            "rawBytes": 800142,
+            "gzipBytes": 249029,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/consumer/users/page",
+            "initialChunks": 14,
+            "rawBytes": 797114,
+            "gzipBytes": 248802,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/governance/coverage/page",
+            "initialChunks": 14,
+            "rawBytes": 792178,
+            "gzipBytes": 246165,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/evidence/audit/page",
+            "initialChunks": 13,
+            "rawBytes": 805827,
+            "gzipBytes": 250397,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/governance/page",
+            "initialChunks": 13,
+            "rawBytes": 796817,
+            "gzipBytes": 247690,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/governance/metrics/page",
+            "initialChunks": 14,
+            "rawBytes": 799493,
+            "gzipBytes": 249759,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/incidents/page",
+            "initialChunks": 14,
+            "rawBytes": 798805,
+            "gzipBytes": 249297,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/page",
+            "initialChunks": 14,
+            "rawBytes": 800899,
+            "gzipBytes": 250015,
+            "budgetBytes": 256000
+          },
+          {
+            "route": "/monitor/sms-gateway/page",
+            "initialChunks": 14,
+            "rawBytes": 785382,
+            "gzipBytes": 244129,
+            "budgetBytes": 256000
+          }
+        ],
+        "deferred": [
+          {
+            "feature": "GitHub event journal",
+            "chunk": "static/chunks/1184.22148c0d396f0345.js",
+            "gzipBytes": 5277
+          },
+          {
+            "feature": "submission reward inspection",
+            "chunk": "static/chunks/1410.62f76787dea7cbc6.js",
+            "gzipBytes": 1454
+          },
+          {
+            "feature": "Commerce source inspection",
+            "chunk": "static/chunks/1605.457797957c572944.js",
+            "gzipBytes": 8050
+          },
+          {
+            "feature": "collection inspection",
+            "chunk": "static/chunks/1732.6eede9c7a5f1424a.js",
+            "gzipBytes": 1479
+          },
+          {
+            "feature": "Operator directory",
+            "chunk": "static/chunks/276.2d2c676b8bc91e5e.js",
+            "gzipBytes": 1348
+          },
+          {
+            "feature": "GitHub recovery",
+            "chunk": "static/chunks/29.719ce4228717a7c7.js",
+            "gzipBytes": 6660
+          },
+          {
+            "feature": "Users account inspection",
+            "chunk": "static/chunks/3133.bb29489db782a01e.js",
+            "gzipBytes": 1333
+          },
+          {
+            "feature": "messaging relations",
+            "chunk": "static/chunks/3178.a3d419deb5d00596.js",
+            "gzipBytes": 1820
+          },
+          {
+            "feature": "GitHub exact investigation",
+            "chunk": "static/chunks/3442.eb51c3e0b1b42dfb.js",
+            "gzipBytes": 2209
+          },
+          {
+            "feature": "campaign funding inspection",
+            "chunk": "static/chunks/3589.0eeb050ec226c79f.js",
+            "gzipBytes": 1824
+          },
+          {
+            "feature": "Vercel delivery evidence",
+            "chunk": "static/chunks/3691.f976f3c2ae24165a.js",
+            "gzipBytes": 7789
+          },
+          {
+            "feature": "Vercel signed event journal",
+            "chunk": "static/chunks/4050.ab7ea22892eb3347.js",
+            "gzipBytes": 6046
+          },
+          {
+            "feature": "incident inspection",
+            "chunk": "static/chunks/4078.f6ab09d4735fd2b9.js",
+            "gzipBytes": 2353
+          },
+          {
+            "feature": "Circle relations",
+            "chunk": "static/chunks/4193.6123a1306d569b43.js",
+            "gzipBytes": 1978
+          },
+          {
+            "feature": "Vercel missed-event recovery",
+            "chunk": "static/chunks/4237.6c3c7c8c95de691d.js",
+            "gzipBytes": 7141
+          },
+          {
+            "feature": "Vercel build investigation",
+            "chunk": "static/chunks/425.bdeae486f9b0575c.js",
+            "gzipBytes": 5595
+          },
+          {
+            "feature": "alert investigation",
+            "chunk": "static/chunks/4465.f6bfe5049533ac27.js",
+            "gzipBytes": 2309
+          },
+          {
+            "feature": "Users activity timeline",
+            "chunk": "static/chunks/4506.8d5e2e0ce32cd0b3.js",
+            "gzipBytes": 2570
+          },
+          {
+            "feature": "messaging inspection",
+            "chunk": "static/chunks/4640.e51e51a116c092d0.js",
+            "gzipBytes": 1737
+          },
+          {
+            "feature": "Wallet source inspection",
+            "chunk": "static/chunks/4645.45dfb37cb23eda7c.js",
+            "gzipBytes": 3052
+          },
+          {
+            "feature": "Original audit inspection",
+            "chunk": "static/chunks/4655.6cec22356b670947.js",
+            "gzipBytes": 1740
+          },
+          {
+            "feature": "social timeline",
+            "chunk": "static/chunks/4733.aef0aa7afce20a30.js",
+            "gzipBytes": 1640
+          },
+          {
+            "feature": "mapping operational reports",
+            "chunk": "static/chunks/4861.f4c22debd6f0e577.js",
+            "gzipBytes": 7554
+          },
+          {
+            "feature": "financial inspection",
+            "chunk": "static/chunks/5766.3654d3600cb336b5.js",
+            "gzipBytes": 2242
+          },
+          {
+            "feature": "alert command",
+            "chunk": "static/chunks/5856.b9ebeb4bf79f0d37.js",
+            "gzipBytes": 2157
+          },
+          {
+            "feature": "incident inspection",
+            "chunk": "static/chunks/5856.b9ebeb4bf79f0d37.js",
+            "gzipBytes": 2157
+          },
+          {
+            "feature": "Circle inspection",
+            "chunk": "static/chunks/6421.2896ed4bf8a405b5.js",
+            "gzipBytes": 1622
+          },
+          {
+            "feature": "Creator source inspection",
+            "chunk": "static/chunks/646.e63330bf078623c7.js",
+            "gzipBytes": 10781
+          },
+          {
+            "feature": "data source investigation",
+            "chunk": "static/chunks/6600.2630084fe693b86e.js",
+            "gzipBytes": 753
+          },
+          {
+            "feature": "alert investigation",
+            "chunk": "static/chunks/6846.92e7ec5c72e40058.js",
+            "gzipBytes": 5748
+          },
+          {
+            "feature": "GitHub provider and collector health",
+            "chunk": "static/chunks/6917.f65eb8ee15250cec.js",
+            "gzipBytes": 7897
+          },
+          {
+            "feature": "social inspection",
+            "chunk": "static/chunks/7067.c08a1f9a5ca30c1d.js",
+            "gzipBytes": 1803
+          },
+          {
+            "feature": "campaign inspection",
+            "chunk": "static/chunks/7117.f25260af173ba97b.js",
+            "gzipBytes": 6407
+          },
+          {
+            "feature": "Feed slot inspection",
+            "chunk": "static/chunks/7348.dd85f6267308529e.js",
+            "gzipBytes": 1833
+          },
+          {
+            "feature": "mapping private review workspace",
+            "chunk": "static/chunks/7524.199cd1d40e0f9a9c.js",
+            "gzipBytes": 1287
+          },
+          {
+            "feature": "content inspection",
+            "chunk": "static/chunks/7959.2e424864ce500551.js",
+            "gzipBytes": 2891
+          },
+          {
+            "feature": "Content report directory",
+            "chunk": "static/chunks/8959.4bb60bbf8b485280.js",
+            "gzipBytes": 6254
+          },
+          {
+            "feature": "Content report inspection",
+            "chunk": "static/chunks/8959.4bb60bbf8b485280.js",
+            "gzipBytes": 6254
+          },
+          {
+            "feature": "Content report decision",
+            "chunk": "static/chunks/8959.4bb60bbf8b485280.js",
+            "gzipBytes": 6254
+          },
+          {
+            "feature": "case alert dependency",
+            "chunk": "static/chunks/8992.423055a5b83a8152.js",
+            "gzipBytes": 943
+          },
+          {
+            "feature": "media inspection",
+            "chunk": "static/chunks/9660.8d81d61fc9efbe7b.js",
+            "gzipBytes": 1462
+          },
+          {
+            "feature": "campaign case creation",
+            "chunk": "static/chunks/9781.155e5698292c30ff.js",
+            "gzipBytes": 6474
+          },
+          {
+            "feature": "campaign inspection",
+            "chunk": "static/chunks/9781.155e5698292c30ff.js",
+            "gzipBytes": 6474
+          },
+          {
+            "feature": "campaign funding inspection",
+            "chunk": "static/chunks/9781.155e5698292c30ff.js",
+            "gzipBytes": 6474
+          },
+          {
+            "feature": "metric definition",
+            "chunk": "static/chunks/9792.d31ffbf041fa3adf.js",
+            "gzipBytes": 1116
+          },
+          {
+            "feature": "metric definition",
+            "chunk": "static/chunks/9792.d31ffbf041fa3adf.js",
+            "gzipBytes": 1116
+          },
+          {
+            "feature": "incident inspection",
+            "chunk": "static/chunks/9872.56704ca23f0f2750.js",
+            "gzipBytes": 2315
+          },
+          {
+            "feature": "incident command",
+            "chunk": "static/chunks/9872.56704ca23f0f2750.js",
+            "gzipBytes": 2315
+          },
+          {
+            "feature": "campaign inspection",
+            "chunk": "static/chunks/9872.56704ca23f0f2750.js",
+            "gzipBytes": 2315
+          },
+          {
+            "feature": "campaign funding inspection",
+            "chunk": "static/chunks/9872.56704ca23f0f2750.js",
+            "gzipBytes": 2315
+          },
+          {
+            "feature": "Operator directory",
+            "chunk": "static/chunks/app/dashboard/operators/page-d3231d06a837374b.js",
+            "gzipBytes": 6588
+          }
+        ]
+      },
+      "nativeExports": ["android", "ios"],
+      "scope": "Normal local production builds and native exports only; no deployment or APK"
+    },
+    "nativeExports": ["android", "ios"],
+    "deploymentHolds": 8,
+    "browser": {
+      "sources": {
+        "packages/ui/src/messaging/use-message-receipts.ts": "c965763f2604cc3e584924daff9d51012308cec5cc5e31b84cb240552e7a744b",
+        "packages/shared/src/messenger-receipts.ts": "41e66d3fe2a00d03485148336b0ee5db7ed6404e3fa6798ee066f1e4a1f012c7"
+      },
+      "newContextReads": 2,
+      "oldContextReads": 0,
+      "at": "2026-10-28T18:31:54.9372030Z",
+      "url": "http://127.0.0.1:3928/",
+      "scope": "Actual shared React receipt hook with real browser visibility and Arabic synthetic messages; no account/network writes",
+      "exactObservedIds": ["synthetic-staff-1", "synthetic-staff-2"],
+      "screenshot": "browser-proof.png"
+    },
+    "scope": "Local/synthetic proof and exports only; no physical or production qualification"
+  },
+  "dependencyAudits": {
+    "root": {
+      "scope": "Read-only root npm audit; parsed JSON after npm configuration warning",
+      "vulnerabilities": {
+        "info": 0,
+        "low": 18,
+        "moderate": 62,
+        "high": 23,
+        "critical": 2,
+        "total": 105
+      },
+      "rawReport": "dependency-audit.json",
+      "wrapperExit": 1,
+      "note": "Wrapper JSON conversion failed on warning text; report metadata read successfully offline; no dependency changed",
+      "at": "2026-10-28T18:36:43.8753373Z"
+    },
+    "nativeProduction": {
+      "startedAt": "2026-10-28T18:37:04.8974097Z",
+      "vulnerabilities": {
+        "info": 0,
+        "low": 1,
+        "moderate": 3,
+        "high": 4,
+        "critical": 0
+      },
+      "finishedAt": "2026-10-28T18:37:07.7560442Z",
+      "scope": "Native pnpm lockfile; no install or dependency changes",
+      "status": 1,
+      "command": "pnpm audit --prod --json"
+    },
+    "disposition": "Required release work; unchanged dependencies, no suppression"
+  },
+  "remaining": [
+    "tenant/staff acknowledged setup and native handoff",
+    "actual staff exact viewport producer",
+    "bridge media/reply metadata and legacy reconciliation",
+    "Marketplace bridge",
+    "remote erasure/retention/owner lifecycle",
+    "entire original functional/security/family/client/device/recovery/release/signed APK backlog"
+  ],
+  "holds": {
+    "deployments": true,
+    "schemaPublication": true,
+    "providers": true,
+    "realAccountActions": true,
+    "supportTransport": "DEFAULT_OFF",
+    "personalPush": "HARD_DISABLED",
+    "backgroundNotificationsAndCalls": true,
+    "sourceMasterBackup": "Authorized; master only"
+  },
+  "artifactRoot": "D:/codex-artifacts/dziri-support-receipts-20261028"
+}

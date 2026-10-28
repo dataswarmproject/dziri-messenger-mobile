@@ -1,0 +1,393 @@
+{
+  "checkpoint": "staff-clients-20261028",
+  "at": "2026-10-28T21:40:43.759Z",
+  "previousReceiptSha256": "55f033cccc36739fdd41ead3f03bd170f894217a0fd607c520f6a0ace249453f",
+  "goal": "active; entire original92feature/45screen/14flow and acceptance scope retained",
+  "qualifiedSource": {
+    "platform": "9b14e6ee9fe68c8db683d526b978826fa5a3716f",
+    "standalone": "4d7179217aedad90724b71ab841d4704fed6dd18",
+    "sourceGroups": [
+      {
+        "group": "platform-contract",
+        "head": "29edc5b41908fbfe6133aa80bff40232fa8b236a"
+      },
+      {
+        "group": "platform-administration",
+        "head": "a84d53458061329ed6eaa5a4070c9e4e499b1b7b"
+      },
+      {
+        "group": "platform-consumer",
+        "head": "9b14e6ee9fe68c8db683d526b978826fa5a3716f"
+      },
+      {
+        "group": "native-contract",
+        "head": "c62885ea1eb3a6c43b76be429e11abbdfa96fcd8"
+      },
+      {
+        "group": "native-ui",
+        "head": "4d7179217aedad90724b71ab841d4704fed6dd18"
+      }
+    ]
+  },
+  "inputs": {
+    "at": "2026-10-28T21:14:11.233Z",
+    "base": "0e420a90d0b0c8797fcbce386e1b10319206b66f",
+    "nativeBase": "8c9b3c8ba8b69ff3c7a010a460694dac79f1357c",
+    "sources": {
+      "apps/dziri/components/messaging/conversation-list-panel.tsx": "10a83f5bb4d3878b5022abfad0637a2527474628b0989cfdbb6b461d70b2ede3",
+      "convex/inbox/administration.ts": "db573b8c3c02f123f9b8b22d467a88474c9d1ab46a7f131eec6c66e0e9640388",
+      "convex/inbox/administrationPolicy.ts": "4c6857697b24ce0a062dcf15808d7cec282154b635984a4b1f2ab7fc3b0e4488",
+      "convex/messaging/messenger.ts": "056fb80b7f5adf0db76e75fcb504bbd4b3cb0bdc2c7d0ce82a60a87cc4d9e85f",
+      "packages/shared/package.json": "cef8f69fed1dfbf06f61c7173b47a713f817a041910caa151be463a7560392cb",
+      "packages/ui/package.json": "0ab5bb6deb0ff48c8a816abf78e21fbc2b9ef258756af5226f8669a5f031ff9f",
+      "tests/feed-ui/messenger-inbox.test.tsx": "7adcf00f962697140a3a38f050596ed961e54ef83cb4cb909e380a5ec63f40d9",
+      "tests/feed-ui/vitest.config.ts": "9e63c7710e5dceffad7158bf5165b9bd54d42b00c75e17fea52862c968342553",
+      "apps/dziri/app/(main)/messages/team/page.tsx": "5de1a11fda393e04849ea0031b6f7e564ae8b43c6dd7cb430264052787d8bf11",
+      "apps/dziri/components/messaging/staff-setup.module.css": "7b1f41d10de9fffab9aab2b67b0e1491b870056469e42012396b796ca1fa7730",
+      "apps/dziri/components/messaging/staff-setup.tsx": "0c349cba8cb1376a3a750522d20bcbb604e0e7f8457f0f4b597b1df29b5e2c3d",
+      "packages/shared/src/messenger-staff.ts": "bb74117d0a2460987fed5667ca253b3d8f4922394f3c22bc91c05ee84f0a80c1",
+      "packages/ui/src/messaging/use-staff-setup.ts": "2db577c34749f4e2ea68e44bc343934a76b0090bac56e819a834f496b3d4a01a",
+      "tests/activation/inbox-administration-confirmation.test.ts": "299dd2fe26c03663fac3523ce8b46103d6e23322dac2b3deb53c3caed5da1d2b",
+      "tests/feed-ui/messenger-staff.test.tsx": "3d0bc72adf0b2b9bd6abffe750226cf4442e3772a27c0b0de70b2cb16e6cb00c"
+    },
+    "nativeSources": {
+      "package.json": "782c48aedff4c195e84fef103ee9d3e2f8a5d16e2da7ef583916ac001145412b",
+      "src/dziri/app.tsx": "c4a57559e767cba23afa7e9e06a250739afa59261026b1db39af45f98f07b633",
+      "src/dziri/inbox.tsx": "7b7e54504efeb1bd8caadb92cbacbc0cdcb3974f789d85c06455c9d0f920cd23",
+      "src/dziri/routes.ts": "9364171173702d354540ecd22e070f659a464351666114063704905ec2be5010",
+      "src/messenger-policy.ts": "58c201084fc02f45b708f443e790542553c95f7f9d139078d81cec4f92420ce5",
+      "docs/messenger-staff-contract.json": "a2d0975235af4c86e3bc1de480d7579fe82d55c9d8527e4a8404fd98888f916d",
+      "scripts/sync-messenger-staff.mjs": "80cebba7dd9895b76c40c2b893a2c98702cabe8f5ac5c9b654f0d1045fee7dde",
+      "src/dziri/messenger-staff.generated.ts": "516c5edb4b60bf5fcb2fad62fcb6bee9ad66b27ecb98274f6948420db628b38e",
+      "src/dziri/staff-setup.tsx": "af4a781ed1d70d8f39fa3611637819d624543a3ee2a0ba4ed7c983e5a86cdcf7",
+      "src/dziri/use-staff-setup.generated.ts": "74f6325b5543e3d132ed279ac8310122d1a9c4db2c4aefc006562d773577707f",
+      "tests/staff-setup.test.tsx": "af6fa8a44931cc6f8a2b13756a8e1b8cdf651af46b16da97ede38ec1876d6b86"
+    },
+    "compilerFiles": "Normal build-generated route metadata is separately snapshotted and restored by the build coordinator",
+    "buildSupersession": "The first Consumer compilation began before the keyboard-focus correction. It is historical only; require a fresh final Consumer build of the captured source.",
+    "finalizedAt": "2026-10-28T21:38:21.964Z",
+    "externalSource": {
+      "root": "D:/projects/dziri-inbox",
+      "head": "ec54fd0c2ff11937a1e14c3ed88b29954b795e59",
+      "files": {
+        "app/services/dziri/bridge_gateway.rb": "2690e3d69edbbe32f5d4950f9413ea0590c059bc715937ebc467ba3021750c3b",
+        "app/listeners/webhook_listener.rb": "9e56480c982fa42d7155cd2092954055b71ff357649ea0513fe865b50dfb2a81",
+        "lib/webhooks/trigger.rb": "02aa511a3b6fe4c6350acaceb4dc5f065bd2cbdb35ac051360da1054d96749f8",
+        "app/models/message.rb": "5c15e51c4e3c84257133d96601398c6f9603a0b9099a5a3351d9aa18aabbdd31",
+        "app/models/concerns/sso_authenticatable.rb": "f8cb5c34cafc8a61d00abd3074c012e98add1b0a76d9274e3f43fdf17325fe62",
+        "app/controllers/devise_overrides/sessions_controller.rb": "d0b719104b43fa6857c24f39f2154c692c4ddcf99f1e9fec2d164644ea32be52"
+      }
+    },
+    "previousReceiptSha256": "55f033cccc36739fdd41ead3f03bd170f894217a0fd607c520f6a0ace249453f",
+    "clientRuntime": "Actual Consumer/native staff setup and shared administrative contract changed; isolated native Chatwoot staff runtime unchanged"
+  },
+  "evidence": {
+    "backend-final-result.json": "002b817cef12d9f655bb9d23d9aafae364ad695daccce7fd040fd7e1e55be730",
+    "backend-final.log": "b39b839e21f8fcc7553a41680835e182c33a019f4c558dfe4e0aa470885d3357",
+    "browser-ar-320-dark.png": "eb1b4bad801b3b5daa9b29c00845c661d9b482e03305c4ab9113c2b7f0ff6662",
+    "browser-ar-320-linked.png": "b2a13f5091943442dca6942180bee4fc4c4c60d677b845fee79795f1beb5d067",
+    "browser-ar-430-offline.png": "094a19d19dc4e93ab747c12183ef88fa78e6629329470a1b8b5721523b31a48d",
+    "browser-ar-offline-ax.txt": "0b8fc4d45e3e42d673aef9bcf560002c4565983323572d3573766da11ea8293a",
+    "browser-ar-stop-dialog.png": "95f182e8fb4ebd510601e3fff8e9b7d604b8fdfacbf496239013beba73d69bdb",
+    "browser-en-375-light-correct.png": "a1962411affa47f229ec0c0b854088eaf452a2dc164820e6d78352643b6f6a64",
+    "browser-final-ar-320.png": "85a246d688e1143986f999ff0b40a2a6939d285a3597635203f82a0a5e4e1ab1",
+    "browser-focus-cancel-ax.txt": "f876bbec5344989540c23be187497740381f797ab259ec513f3eb2c09c667897",
+    "browser-focus-escape-ax.txt": "f876bbec5344989540c23be187497740381f797ab259ec513f3eb2c09c667897",
+    "browser-fr-980-employee-light.png": "a62dd644dad1cd7aa3d365772f576d4b698f9e364f6913a3de867423749fd196",
+    "browser-fr-980-light.png": "d1e1962b272aee7a3c3fd4856e76c29d6e08d6ae09f91544310546e23d4de5d6",
+    "browser-fr-employee-ax.txt": "ff6a800363039be1ebda21333572164462fa5f88ca8df166d773deee28d07606",
+    "browser-proof.json": "c1a98bb8751d60043afa67f0afecb590511fb6878ec6c97eea52b5083e18e875",
+    "build-impact.json": "06b2ae17785f5c46527eccde4fcbbf5600e6eef3d521c4ec9850950a57023631",
+    "build-matrix-final.json": "c74202febf52ec197625dbfeddb3f0740e71cf8aca8130fdad14cc8887e70928",
+    "build-path-preparation.json": "5e2ede64a4d2b891e231eeb894f91aab7bd3c2e896557c9b3193a7a452b8065c",
+    "circles-build-result.json": "43a5e1ee89a1ee95366219028b463f1bc79266eeeebf16c9a23b8d5b1992dc9e",
+    "circles-build.log": "d8c86353dee44d894c8c0834031549605a444bbb4e644a04efaec916ec072b9a",
+    "confirmation-first.log": "93d1418898e72daea381f404492e92aac2fa86a1e9cf084cd95f565a6db72218",
+    "confirmation-green.log": "940e4fa79259d1f258ea9dbcfdfde6f951f9f458a77192fb1958089030c70664",
+    "confirmation-red.log": "78a4c8c7fe238fae2cd2e28fbb8a381c7f476cf8c58d10322c64679d93103f97",
+    "consumer-final-build-preparation.json": "9634d8cb2e85fa46b0776afd485269a8bbbe89a777618f7b370d96583d7aa9bf",
+    "consumer-final-cache-copy.json": "cf6d299a29db21548e4947117ead15cf15934fbe22f7b5e073f6cc164e6e4b7c",
+    "consumer-ui-final-result.json": "e3927d310a807bc46b4260858e8e93d8b3a1c1f034d2ddfdaeaeeb0e3082476e",
+    "consumer-ui-final.log": "25c44ca1af35c70521806aab8aac4cbc2d455c2572379fed83a9e4d4bc95fe16",
+    "deployment-holds-result.json": "06ae23e178296fe76a54321f4536211ef9ab8816f1b0538369310922571bef04",
+    "deployment-holds.log": "265b24d53708793b82695593eba594e3bc8cf8e97997d05fe1fe9690a9c45b83",
+    "dziri-build-result.json": "cf15215dfa46221466b31d16fdcd28de0afebda6d86a59a0899098833d302a3e",
+    "dziri-build.log": "a86f7e2854c79f19221bc2076e9b07a5f84bcec4b255d8773d28f5b718aebd4e",
+    "dziri-business-build-result.json": "c8aa6ffb64c3362ddbf9f7ae3f434c11f7e4da2eeb5984e59abfebfdf1cd483e",
+    "dziri-business-build.log": "b5ca0625c58a1f68c7118fea3b1e0f7e8d9c70ddf5b749781cd075a6c9c25868",
+    "dziri-console-build-result.json": "196bdd972527ed0cfe8d819bed5474b816893b93c724b8357e6ac73243a55d97",
+    "dziri-console-build.log": "0260f53ce1d62a02a24ee89de2063fa0913597c28b6cabc940aa10d667607e89",
+    "dziri-final-build-result.json": "be0d7b49b8e8ce0394363e7040444e861d61e508142a6556e3236355c7a799d8",
+    "dziri-final-build.log": "2ffb4aafd0940e0c20976064160a1cb66c8c0dfd9cccda79cce0da4b213d0cc4",
+    "dziri-flexy-build-result.json": "7c5d768a2e682df8a435d8ab84c5f1d1f96d124bb61c6ae6372581590fe115ac",
+    "dziri-flexy-build.log": "2e41cdee93ba39db1bf0c16ca96ac6b0fda5668696cccf6dde31a584ea8c1ff3",
+    "dziri-shop-build-result.json": "5128dd3c74615ad42693b2d94e0891d3cab0126cf65e80f1ec2ae1456a23e210",
+    "dziri-shop-build.log": "76bd988ce7ffe49ea94680cd4aa1f29c80d25587fb0aeebbeb1b29a923b6815c",
+    "final-format.log": "2c9a37315dc2e73d37b7a39d4bf48e724051af288ef25ac085d15dfb8dbe1e7b",
+    "focus-consumer-ui-final-result.json": "1397489e3312b07f019ba2983773acf2aa68f9d1137986bd8e8ae0b8fb26f2f0",
+    "focus-consumer-ui-final.log": "6fe2bb98060dbb0bae229e2a2ae777ac7cda085f68a13b509338094aedbe2dd0",
+    "focus-green.log": "f3aca656e59805c440b933594c6d9eed4b4c33d311eec2390950821412ce64c3",
+    "focus-red.log": "b0fd4d464aa2132dd828ffcdeb51da21479178744829421ad0cbcf82e0fc9a35",
+    "format-first.log": "fb60d958b9d1ab7b147c9c26325a37cb5ffd7d9d4f1109b6944ed23d0c8858bd",
+    "gesture-green.log": "53819ff87b818ad1ca7901245378c69c22e17e9d0fe13bf3c95c5aaa2c2ccf8a",
+    "gesture-red.log": "af18304ea0b81b488f8c3eded07a1035631ec75f9fe1f10cb50b8c8a07f48535",
+    "id-build-result.json": "26e3644421d19cb0846d70954c8873ec60d742f7c87fa4563133205dceacea2e",
+    "id-build.log": "d14173548a567edce20cbe5d80492bb38837d044a67338bdb979afdfe2288534",
+    "native-android-export-result.json": "55fe601a5e3866640152182e6b7de38940f88ce6c209838e151527fda1a78e8b",
+    "native-android-export.log": "7d7b569b3a6480f7dd43db6c587dc7886608bd93ec0201c4481b920e1fa268b2",
+    "native-consistency-result.json": "26087078b18b5446ba489085dd8d68ec8b2e65f634b22291d249f277eff23832",
+    "native-consistency.log": "630b7cb0387d13642f1a343fb43bd7c0f7604f6bf68ae6b0be1de0f0d4e4601c",
+    "native-contract-source-commit-result.json": "6feb33191d179b22f669b0621d137f355710e2f97305964e88295f0070b3daaa",
+    "native-contract-source-commit.log": "fb5c2e9aa0fb57b6c91c753354c96c9018531bb6127da9e6163d157b3412f563",
+    "native-export-manifest.json": "b8aaab5fadfaa8e83a7f42ff7039210c1f9ae14ed633b7b4dcce498d48f7eb23",
+    "native-final-format.log": "72889c4ce08eb99aa800cf6436e24373aa64e4cba0e8dbf450c68259e4219930",
+    "native-first.log": "c5e6d7f778f88b7947f5868727421259f142cdb23b59219b6d444de7f03d2bc4",
+    "native-format-first.log": "f6ad34d6484a06f6a7182de19051f63f705e8c4654a448d1081e8b80571b9afc",
+    "native-gesture-green.log": "22deb0224c233dfb1b1591a7f36c10486e4c8613c8d454fd24ff4f24c774070b",
+    "native-ios-export-result.json": "89c95d89a7f218e549b8b1d74aabbc03a4bb693b93fbdb3e803f0b1455e6cdaa",
+    "native-ios-export.log": "e0ea17ba026563a775190e1388e866ed23d02bc3c0eccdb45f157a5a2ea2a9be",
+    "native-lint-result.json": "826c9c574e343522c17ecf52c916a9b55ebedfd34006d3d02462307d20300b42",
+    "native-lint.log": "89414af1a1ed5e62558bc5d53673c1cf088934ce6ba2650708a4fa75cb2ee00e",
+    "native-red.log": "bc099cd160d0b92a6225e4fcb5335114e56f4e36e528069f29e78d8dfafc0106",
+    "native-review.log": "a00827379dfd22434ad76544373f27f2d84628c4c9d0e5ad91fa5e369521f5f1",
+    "native-routes.log": "2c86fed8a0c6c450bd67e086bbc121d0487f40098c626cd5239cf122e6ceda38",
+    "native-types-first.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-types-result.json": "482135ce467e36dc1724ec51dafde6134a4073a69fa9dcc163d986266fe72a40",
+    "native-types.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-ui-final-result.json": "089945ec35cd7f191a8ca8e2c98e080d6c588d7c3641c27d32252453e1959990",
+    "native-ui-final.log": "fd6cdc0c4420572ca6444d9c607f5d5b90ef62d69d4b3f824e4390bf0ba2feeb",
+    "native-ui-source-commit-result.json": "48993025a36147e2b1f215d019070be61faa66602218ac0d810c07976c844701",
+    "native-ui-source-commit.log": "bc033753bda3b6a3142a7b00e1c9388c184f88726a33a23e0ba019e40ff2d980",
+    "native-wired.log": "a1024854c8aecfe0cf79df04b24443961996d835f0c6f724a3a886bbef35a424",
+    "official-codegen-final-result.json": "d2fd7a104bdfeade55cb9a23738e3a904788de137ad1ebd0f1702192f8337926",
+    "official-codegen-final.log": "ed4d0ab2405a5eaff4bce36f8eaa16770bd83ea3619a53698056d594d5cc54a4",
+    "platform-administration-source-commit-result.json": "f8025decdc392b25ce91eedbfa56ee7ccfea87a5fe68da9f6d61670f44225607",
+    "platform-administration-source-commit.log": "4859840165ec8a831fef66c8332e030a589a3a084f84af2757d4fd43405d49aa",
+    "platform-consumer-source-commit-result.json": "11f4b55ec8d418c0ca258154911f7d1bbe088a41b7eca9dbfe0c2ca432596bd9",
+    "platform-consumer-source-commit.log": "7c455379e0368413086add609dc2a29ae3cb454cb193fae8a20a202a18e195e5",
+    "platform-contract-source-commit-result.json": "b336c7f6aaae4c5e81cd2424574e37d93bd1195a50db0eb7c79ebc537a3dd676",
+    "platform-contract-source-commit.log": "f1739694c27591769462b3c64708068d9d6adf4b9eb90225b75fb5d7655c6eeb",
+    "preservation.json": "c2dfeafcce85e7a464af85e7033aabf7a8752e78b34b7d38c78943fec32f1950",
+    "qualification-inputs-final.json": "60a134e3f2fc1b85676bc85efff923df2cca89677a99189b86661fd9efdc61c6",
+    "qualification-source-snapshot.json": "8a606803a15ac7f535feaea36c79daa63187b888c56b520781d11c2b0b2884b2",
+    "review.md": "160e8a44f47a73276cd5f62e05d499261a1a56d6b53f660f117cb925a9a1de47",
+    "staff-contract-result.json": "9c7739e2d3abed1d96dfa59f7b68eb4879ff05fec0bbe675e81871e95b50b3e9",
+    "staff-contract.log": "d11ce388017b489d308008d7db294c4d3d83e6d3fa03e4158605312113cba1ff",
+    "web-first.log": "a673a23e8c45445f252041b83905945f9c096d75d9ecad53d3ecf9c9d825b901",
+    "web-red.log": "822781ed9cc7da20ad45e8072c85c54adab634105eb2d092c8ce50e61a2ffbe1",
+    "web-review.log": "738380c722d5e476141ff6f2de0e92e6647d213d41476c3ceee6b617fed688c3",
+    "web-routes.log": "791d59e17bb3e2b999c3545aecf21a3b97ee0f0798a411bdf7d12b95330b78dc",
+    "web-wired.log": "294e65a71a39de4802ef32788e1cd21d6dd2037e4e177f592ede805fb9a013b8"
+  },
+  "preservation": {
+    "originalPaths": 316,
+    "originalSourcePreserved": true,
+    "originalIndexEmpty": true,
+    "primaryBridgeAndSchemaPreserved": true,
+    "previousReceiptCopiesPreserved": 4,
+    "priorBuildTargetsAndIdsRetained": true,
+    "initialConsumerOutputRetained": true,
+    "nativeStaffLayoutCredentialsFontsUnchanged": true,
+    "brandAssetsUnchanged": true,
+    "dependencySectionsAndLocksUnchanged": true,
+    "packageExportsAndNativeScriptsChanged": true,
+    "deploymentHolds": 8
+  },
+  "qualification": {
+    "backend": { "tests": 1898, "files": 115 },
+    "consumerUI": { "tests": 276, "files": 35, "staffTests": 14 },
+    "nativeUI": { "tests": 174, "files": 29, "staffTests": 10 },
+    "newBackendConfirmationCases": 5,
+    "officialGenerationAndFullTypes": {
+      "cwd": "E:\\CodexWorktrees\\messenger-master-integration-20261028\\tawasool-mmogram",
+      "args": [
+        "node_modules/convex/bin/main.js",
+        "codegen",
+        "--typecheck",
+        "enable"
+      ],
+      "status": 0,
+      "startedAt": "2026-10-28T20:47:45.913Z",
+      "finishedAt": "2026-10-28T20:52:21.895Z"
+    },
+    "nativeTypesLintConsistencyAndContract": true,
+    "deploymentHoldCases": 8,
+    "webBuilds": {
+      "dziri": {
+        "app": "dziri",
+        "command": "npm run build",
+        "status": 0,
+        "compilerFilesRestored": true,
+        "startedAt": "2026-10-28T21:32:34.471Z",
+        "finishedAt": "2026-10-28T21:37:44.972Z",
+        "output": "D:\\codex-artifacts\\dziri-staff-clients-20261028\\dziri-next-final",
+        "deployed": false,
+        "sourceConfigs": [
+          {
+            "name": "tsconfig.json",
+            "sha256": "c7d462468d820bbe96b909e40061fc5c8e1feede0ba9bac7ea53f00c168bb130"
+          },
+          {
+            "name": "next-env.d.ts",
+            "sha256": "be500b66dcfc04983b70a746d22c3dfce7db24e50edf32a594cedaae16dfe5ed"
+          }
+        ],
+        "buildIdSha256": "9a240f57343d8780119a60e2900d01269565b0286d34526ec23fc70f3d9e43e1"
+      },
+      "dziri-business": {
+        "app": "dziri-business",
+        "command": "npm run build",
+        "status": 0,
+        "compilerFilesRestored": true,
+        "startedAt": "2026-10-28T21:13:26.327Z",
+        "finishedAt": "2026-10-28T21:17:41.175Z",
+        "output": "D:\\codex-artifacts\\dziri-staff-clients-20261028\\dziri-business-next",
+        "deployed": false,
+        "sourceConfigs": [
+          {
+            "name": "tsconfig.json",
+            "sha256": "7184d65dcc49d2769b6d0cac81fc47f52f2c04cc7a13cd321e690f35423238f3"
+          },
+          {
+            "name": "next-env.d.ts",
+            "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+          }
+        ],
+        "buildIdSha256": "cd70beaf06e366751873cc32091772f935d8e8cc27cc287c3cf138c22ff98d0b"
+      },
+      "dziri-console": {
+        "app": "dziri-console",
+        "command": "npm run build",
+        "status": 0,
+        "compilerFilesRestored": true,
+        "startedAt": "2026-10-28T21:17:41.193Z",
+        "finishedAt": "2026-10-28T21:21:58.004Z",
+        "output": "D:\\codex-artifacts\\dziri-staff-clients-20261028\\dziri-console-next",
+        "deployed": false,
+        "sourceConfigs": [
+          {
+            "name": "tsconfig.json",
+            "sha256": "74194ea2f5c90f837a8ff6ddf1103d3281eb69037afbe2cbed358688180b486e"
+          },
+          {
+            "name": "next-env.d.ts",
+            "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+          }
+        ],
+        "buildIdSha256": "f99c170090259341b522fb0d5d53701c597e5b50dc94ce64eb910c280e92e27a"
+      },
+      "dziri-shop": {
+        "app": "dziri-shop",
+        "command": "npm run build",
+        "status": 0,
+        "compilerFilesRestored": true,
+        "startedAt": "2026-10-28T21:21:58.020Z",
+        "finishedAt": "2026-10-28T21:25:25.001Z",
+        "output": "D:\\codex-artifacts\\dziri-staff-clients-20261028\\dziri-shop-next",
+        "deployed": false,
+        "sourceConfigs": [
+          {
+            "name": "tsconfig.json",
+            "sha256": "fd53d1c7362e9e74a5b1399cf7028e10bde35aa77e34fa2daaed4515aba4330e"
+          },
+          {
+            "name": "next-env.d.ts",
+            "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+          }
+        ],
+        "buildIdSha256": "67f3e9a6369dc697e4b48eeb9030c1243fbc669363966c70fb6da83d4fef3eec"
+      },
+      "circles": {
+        "app": "circles",
+        "command": "npm run build",
+        "status": 0,
+        "compilerFilesRestored": true,
+        "startedAt": "2026-10-28T21:25:25.025Z",
+        "finishedAt": "2026-10-28T21:25:39.659Z",
+        "output": "D:\\codex-artifacts\\dziri-staff-clients-20261028\\circles-next",
+        "deployed": false,
+        "sourceConfigs": [
+          {
+            "name": "tsconfig.json",
+            "sha256": "ed7e3efd98a97cc68e8c54821a69d51680aa2f46785b73af6503d10f75289236"
+          },
+          {
+            "name": "next-env.d.ts",
+            "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+          }
+        ],
+        "buildIdSha256": "839960827ac76c9ce89bb22f5911f7dbe0918381ad891651466b3febbc66f4a0"
+      },
+      "id": {
+        "app": "id",
+        "command": "npm run build",
+        "status": 0,
+        "compilerFilesRestored": true,
+        "startedAt": "2026-10-28T21:25:39.665Z",
+        "finishedAt": "2026-10-28T21:28:58.939Z",
+        "output": "D:\\codex-artifacts\\dziri-staff-clients-20261028\\id-next",
+        "deployed": false,
+        "sourceConfigs": [
+          {
+            "name": "tsconfig.json",
+            "sha256": "ed7e3efd98a97cc68e8c54821a69d51680aa2f46785b73af6503d10f75289236"
+          },
+          {
+            "name": "next-env.d.ts",
+            "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+          }
+        ],
+        "buildIdSha256": "42dd2772e61bb81acfbfcdadc7bc38bb432c85f0ab433c064214e92f6763df87"
+      },
+      "dziri-flexy": {
+        "app": "dziri-flexy",
+        "command": "npm run build",
+        "status": 0,
+        "compilerFilesRestored": true,
+        "startedAt": "2026-10-28T21:28:58.943Z",
+        "finishedAt": "2026-10-28T21:32:34.324Z",
+        "output": "D:\\codex-artifacts\\dziri-staff-clients-20261028\\dziri-flexy-next",
+        "deployed": false,
+        "sourceConfigs": [
+          {
+            "name": "tsconfig.json",
+            "sha256": "ed7e3efd98a97cc68e8c54821a69d51680aa2f46785b73af6503d10f75289236"
+          },
+          {
+            "name": "next-env.d.ts",
+            "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+          }
+        ],
+        "buildIdSha256": "4910c0743b0d6de212ddb19e22e14f9232ee1dab356cf794a9b2b1b2329c452c"
+      }
+    },
+    "consoleRouteBudgets": 26,
+    "nativeExports": ["android", "ios"],
+    "browser": "Actual Consumer setup/controller with synthetic data, local fonts and current module CSS;1280x720 browser with320/375/430/980 content widths; Cancel/Escape focus verified; not phone/full-viewport/live provider acceptance"
+  },
+  "superseded": {
+    "firstConsumerBuild": "Succeeded before the focus restoration correction; retained but excluded from final matrix",
+    "firstConsumerUICount": 275,
+    "firstLightFixture": "browser-fr-980-light.png is dark and explicitly excluded from light-mode evidence",
+    "realRegression": "Cancel lost keyboard focus; red test reproduced it, final14staff/276Consumer checks and browser verify return focus"
+  },
+  "remaining": [
+    "actual identity-bound native/web staff session handoff",
+    "explicit canonical staff conversation data grants and exact viewport producer",
+    "automatic offboarding and owner/tenant migration",
+    "remote erasure and retention",
+    "support media/replies/legacy reconciliation and Marketplace",
+    "dependency remediation and entire original family/security/privacy/client/device/recovery/release/signed-APK scope"
+  ],
+  "holds": {
+    "deployments": true,
+    "schemaPublication": true,
+    "providers": true,
+    "realAccountActions": true,
+    "operatorDispatch": "DEFAULT_OFF",
+    "personalPush": "HARD_DISABLED",
+    "dependentBackgroundNotificationsAndCalls": true,
+    "masterBackup": "Authorized after local qualification; master only"
+  },
+  "artifactRoot": "D:/codex-artifacts/dziri-staff-clients-20261028"
+}

@@ -31,3 +31,5 @@ Test signed fake gateway traffic with synthetic identities. Operator dispatch an
 push stay disabled; no environment edits, deployment/schema publication, real staff
 grant, user communication or new APK. Only verified local/GitHub master backup is
 authorized. Original workspaces, old receipts and build outputs stay preserved.
+
+Step 3 local client wiring is now qualified in [staff-clients-20261028.md](staff-clients-20261028.md). This supersedes the earlier no-client-controls status only; steps 4–5, real interoperability and the full original acceptance remain required. No staff-session/viewport capability is advertised by the administrative setup feature.

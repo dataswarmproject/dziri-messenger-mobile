@@ -1,0 +1,98 @@
+{
+  "checkpoint": "trusted-follow-20261028",
+  "at": "2026-10-28T10:55:05.535Z",
+  "goal": "active; full original remaining scope retained",
+  "previousReceiptSha256": "a02ae7add763400daa4af97d3eebd61c21f845865c21cb68f5f5d00525420869",
+  "sourceBase": {
+    "candidate": "edf38eac2ee562455fa9bc119c974b354253489e",
+    "native": "97893b48b51ccd3512502b3907f3ce33b9afcf14"
+  },
+  "qualification": {
+    "initialFocused": { "cases": 24, "failed": 19, "passed": 5 },
+    "separateClosedPrecedenceRed": { "failed": 1 },
+    "focusedFinal": { "cases": 35, "status": 0 },
+    "prechangeBaseline": {
+      "existingFailuresReproduced": 8,
+      "files": 3,
+      "exactModules": [
+        "convex/userFollows.ts",
+        "convex/messaging/familyContact.ts"
+      ],
+      "sourceBase": "edf38eac2ee562455fa9bc119c974b354253489e",
+      "workingSourceMutated": false
+    },
+    "selectedBackend": {
+      "cases": 1298,
+      "files": 87,
+      "status": 0,
+      "workers": 4,
+      "normalLogging": true
+    },
+    "consumerContract": { "cases": 27, "files": 3, "status": 0 },
+    "nativeContract": { "cases": 14, "files": 3, "status": 0 },
+    "officialCodegenTypes": {
+      "selection": "dev:honorable-moose-964",
+      "status": 0,
+      "runningDeploymentModified": false
+    }
+  },
+  "preservation": {
+    "originalSourceAndIndex": true,
+    "originalPaths": 316,
+    "nativeRuntime": true,
+    "nativePaths": 41,
+    "receiptAndUnreadEpochs": true,
+    "noNewSchemaFieldOrTable": true,
+    "noProductionRecommendationOrExperimentChanges": true
+  },
+  "sources": {
+    "convex/messaging/familyContact.ts": "28b4a545e9ab15de7765e965ca9a740a9dcbb01700464208bb60b7aad4577a46",
+    "convex/messaging/trustedFollowAuthority.ts": "d3cd326cdc28a4b9a50d66b9ac1eb82e04ca1855dc452dabc7eb00dda1518770",
+    "convex/userFollows.ts": "77f3a49ed20109dbac3665bf7e6dfeaddd03b29d058438919f764ca2f3cf87fe",
+    "convex/_generated/api.d.ts": "f7f3f9c8071e6eac024bf149290e44c1e523a84a698410d9c477d92db22eabf0",
+    "tests/activation/messenger-trusted-follow-scope.test.ts": "f3f98883e69c8c39e2857c07c5c1f55332bd9c5dbab91eba90835b5d0c76af11",
+    "tests/activation/follower-radius-safety.test.ts": "d8e339631e297baf69aeb4bb04da9287ed801416e3e90a85d1968acfbb5f4dba",
+    "tests/activation/friend-suggestion-experiment.test.ts": "c8f755464d9c1892b4b73ae0838a6642bf7c41e58442a2ab762dec8cb840b184",
+    "tests/activation/consumer-activity-notifications.test.ts": "3c335d034d790ff5aa698c9889c665410d336664583a9b21a3feb81b2bcaee83"
+  },
+  "evidence": {
+    "red.log": "ea0de17e85cdefa19a890f3817a04a0ea602a33cbfac4360d9a890fdfa794e5c",
+    "green-first.log": "0af4d879c2d177a597b8d59b1f83722381e42cc32c9fa4e34832b015f04d8bef",
+    "green-boundaries.log": "b2bfb60b0aa6db6ea6211b9156303b19ec269669eca4ccb99661481cd831b43c",
+    "closed-precedence-red.log": "30b81e395ef42835762c1e48b61ab8fef5f80bcd6082fa89379c374fa19f23e9",
+    "focused-final.log": "7cc947475e37f25cec2d98b1f220e99bff3ff2c4c18de3f6f6184bf3e0e69e05",
+    "baseline-existing.log": "f1327b3686962fab6cfabae38ef8c31ee7e2611e8d78940ef348a5071557ac89",
+    "baseline-loads.json": "ab0ec3747a237b5393e4b735bc1b6077a00f87cd4a5de3371a2d79dc426133cb",
+    "baseline.config.mjs": "ca4d565037468925ca7339660ab0e672e07f146d54b68bb0c645444ee843b5a5",
+    "convex-userFollows.ts.baseline": "7530180eac8db37e3412ca268ff90a75cb97d04ce2cccf95973f80a19666b6aa",
+    "convex-messaging-familyContact.ts.baseline": "4bdb6a2b8e02e918cd641d39895ce61d656091e2870b236b9f8581c76874a89b",
+    "fixture-before-hashes.json": "31e860fbf244d58a1283c1f00da0aae7e7a35733113dcc12e1f796b2c3d67d81",
+    "backend-initial.log": "9400afa0ce73a599f37f35b388d5980b008a5dd99a5753a110539c5828b92153",
+    "backend-initial-result.json": "007b76a95b97ac954c7de44fa7ebc298f1f9886182baf15976b48507456f795e",
+    "fixture-green-first.log": "f759f79bb617c0154c13e8af0e800c082346cd51b9d927faee405fd96e309231",
+    "backend.log": "14b6b60c6fb2e7f93826354b62bed95645658e1ab25a98952bbfe235cd8703e9",
+    "backend-result.json": "78386b83e400fac705ba41fac9996da490cffbce18c0f1aad922d9d4201858ff",
+    "consumer-contract.log": "c21993a8c4e868f49cf9bb028973653b55d7aa2966143ae972f67f1fc91719a5",
+    "native-contract.log": "7f5a1caf24f36638a1c99cfd707a4928c3f03180728ac78b8dcc09029f0527ea",
+    "codegen.log": "b331ea72047c7150c6eb73f9d233d6b46a0cded6030700e9d72e83ae4d402a05",
+    "codegen-result.json": "d3cb88e11d6a2430c5863ff1feb0493d5d4d66beef22fbe74e6bf6e3c82f0f6f",
+    "build-impact.json": "2b52c3d73eddd5c0d6395f14ec504400b0702ccb00652b222cdb0de96a93dc22"
+  },
+  "holds": {
+    "automaticVercelDeployment": false,
+    "backendPublication": false,
+    "realAccountActions": false,
+    "providerActivation": false,
+    "personalPush": "hard-disabled",
+    "newApk": false,
+    "githubSourceBackupAuthorized": true
+  },
+  "remaining": [
+    "Full original remaining-goal.md feature and acceptance scope",
+    "Family enrollment invitation/age/guardian authority release blocker",
+    "Time-window/age and frozen/read-only operational transitions",
+    "Other producers and non-send captured account/grant commands",
+    "Actual authorized two-client/device/moderation/privacy/recovery acceptance",
+    "Billing and separately approved publication; affected release qualification; signed APK"
+  ]
+}

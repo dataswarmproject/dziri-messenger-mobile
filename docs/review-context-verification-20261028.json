@@ -1,0 +1,147 @@
+{
+  "checkpoint": "review-context-20261028",
+  "at": "2026-10-28T11:34:35.112Z",
+  "goal": "active; entire original required scope retained",
+  "previousReceiptSha256": "627d9182eed0b4410f1f97af6c4635b7193538c73dc33c459ae6edc6150881e7",
+  "sourceBase": {
+    "previous": "4a917ac54af79a2c635ed52ea9292b627bc5b194",
+    "backend": "bc44b6b3dfd06cbe72887c2af860a05d73970633",
+    "console": "3e9c86d0b851ecd896bf46603fcf57112c711ff1",
+    "standalone": "4fdf950671b7039a680c08441e9360f057e4af90"
+  },
+  "qualification": {
+    "focusedCapturedReviewCases": 45,
+    "backend": {
+      "cases": 1444,
+      "files": 93,
+      "status": 0,
+      "workers": 4,
+      "normalLogging": true
+    },
+    "consoleUI": { "cases": 952, "files": 82, "reportCases": 29, "status": 0 },
+    "officialCodegenTypes": {
+      "status": 0,
+      "selection": "dev:honorable-moose-964",
+      "runningDeploymentModified": false
+    },
+    "normalConsoleBuild": {
+      "nodePath": "canonical workspace dependencies; cross-drive output",
+      "status": 0,
+      "deployed": false,
+      "buildId": "kxJ9O4OWItMOmAYNFfwMr",
+      "budgetRoutes": 26,
+      "sourceMap": {
+        "map": "page-d10c885d91f0bda3.js.map",
+        "source": "webpack://_N_E/./app/dashboard/moderation/messages/page.tsx",
+        "exactNormalizedSourceMatch": true,
+        "sourceSha256": "d21c9acb7ca5b10408e62ef93064973467b439ccb4a030a89618681a81ff5b2c",
+        "embeddedSha256": "d21c9acb7ca5b10408e62ef93064973467b439ccb4a030a89618681a81ff5b2c"
+      },
+      "compilerFilesExact": true,
+      "firstAttempt": "Compilation and types passed; cross-drive page-data dependency lookup failed. Repeated normal build using NODE_PATH for canonical workspace dependencies."
+    },
+    "prechangeBaseline": {
+      "existingFailure": "One-millisecond outside/server clock mismatch in distant-expiry fixture",
+      "previousOperatorSourceLoaded": true,
+      "productionSchedulerUnchanged": true
+    },
+    "browser": {
+      "fixtureOnly": true,
+      "backendConnected": false,
+      "mutationTransportDisabled": true,
+      "activityPreserved": true,
+      "accountSwitchRetiredReview": true,
+      "frenchSourceLocalized": true,
+      "beforeExpiry": {
+        "viewport": 375,
+        "dir": "rtl",
+        "draftAndAcknowledgement": true,
+        "horizontalOverflow": false
+      },
+      "afterElapsedExpiry": {
+        "direction": "rtl",
+        "hasDraft": false,
+        "hasEvidence": false,
+        "scrollWidth": 375,
+        "text": "← الإشراف\nبلاغات الرسائل\n\nانتهت صلاحية المراجعة. اطلب تجديد الصلاحية.",
+        "viewport": 375
+      }
+    }
+  },
+  "preservation": {
+    "at": "2026-10-28T11:34:35.544Z",
+    "originalPaths": 316,
+    "originalAllowedBookkeepingOnly": true,
+    "originalIndexEmpty": true,
+    "nativePaths": 41,
+    "nativeRuntimeUnchanged": true,
+    "failures": []
+  },
+  "schema": {
+    "addedOptionalTechnicalField": "users.moderationReviewRevision",
+    "newTables": false,
+    "published": false
+  },
+  "compatibility": {
+    "olderOptionalAPIArguments": true,
+    "currentPermissionAlwaysRequired": true,
+    "immutableDecisionPayloadUnchanged": true,
+    "consumerAndNativeRuntimeUnchanged": true
+  },
+  "sources": {
+    "apps/dziri-console/app/dashboard/moderation/messages/page.tsx": "d21c9acb7ca5b10408e62ef93064973467b439ccb4a030a89618681a81ff5b2c",
+    "convex/_generated/api.d.ts": "62efa8f98ff01a3ca5db51c3320424323e8b9199525fab0d677f45ea78f1ede2",
+    "convex/admin.ts": "155222ee89a1c03eb49fc1cac9a98d863f05f8e49b224171482a9b934b0d6b75",
+    "convex/messaging/messenger.ts": "a1dff535ab81ae4bed182463f74c40697e87d5f35ebae2a5c6a734c595fac944",
+    "convex/schema.ts": "0e9a3197b3458dc972b169f105d673fc80969698bd8c6f7f6a3667317b73bad4",
+    "convex/superadmin/messageReports.ts": "cbdc691ffbdf4ff4461f67efba1a5f65f0810292e3f55ea84ed23b7f9a4812d4",
+    "convex/superadmin/messageReviewAuthority.ts": "22510e68b5731f468194915ae947834cc1fc59580fd9f1d77dfdd7de6226c3eb",
+    "convex/superadmin/operators.ts": "00b88c0366c9b39994f7322a72e7ae40fdb6e3e7ef4de1d44bca50a179c58d88",
+    "convex/superadmin/unity.ts": "ee2e6449c5798a372a0865c9adf688a72a2a593e454080ce4e5f93067683b415",
+    "tests/activation/messenger-review-context.test.ts": "6167477a732b499ef854060960f355936a57e501c6cb7ae6a075f2ca85124b61",
+    "tests/console-monitoring/access-expiry.test.ts": "fdb9c6d8e9330b5a152488affe725b1177b0624b45af5db251ce98f193cf99a0",
+    "tests/console-ui/message-reports.test.tsx": "f409cad289d77e6039dc4570ae771a11b7d11be747211daa0da06d7c8d11b970"
+  },
+  "evidence": {
+    "backend-boundaries.log": "63b655c2503c64952203c38825784e913f3cd02f177a9f6127ba7ccaf8eb0224",
+    "backend-commit.log": "de2aef198269ba1e26cd1251eeb69848cfd4d7d5a4a13f3c2ea748fa49555fd8",
+    "backend-expanded-result.json": "bb02017362c8639d673f209ade1690a84b7965b3693d2991073880981dea1618",
+    "backend-expanded.log": "c8ac84ca86b5d8307b6166003e7e53a010ce9cd2946554629eea6ceef28531b6",
+    "backend-extra.log": "061d3eb8a615dca51f38db80e394b07f5a7d6903fe191f85169d50310e32d825",
+    "backend-final-result.json": "42baf3f1e05a98a4a438650b7ad317d2d7551e0b3ec2546af773a8ce89bb9f2e",
+    "backend-final.log": "cd08ccfde4dab69e9cea8d272d9c4eab5d29e862f0304daded5ca2cec34f0ad2",
+    "backend-green-first.log": "0a8095e95448826f5d4bfedd59e835f1a4dea8d44b885a107aefaefbf2da58da",
+    "backend-red.log": "a071e8247f81c16ef32c0f2a0c5e71adbcf148827f4410b9ebe18441b4fec610",
+    "build-impact.json": "d44e48cb368448bebcc884c6384dcab8654908c71b0564da48aa99eeeac29c1d",
+    "codegen-result.json": "8ad86a96af2dbc632b10ebffef675420feec01c9c2abd0c6855fd715e6c0c497",
+    "codegen.log": "b331ea72047c7150c6eb73f9d233d6b46a0cded6030700e9d72e83ae4d402a05",
+    "console-build-final-result.json": "9ea430cdbf96205d794f685878f8981763db20329aba2f42857a8878e75bad89",
+    "console-build-final.log": "cc0b1503a61cf942b1edc64364a4aa0ce3ee6e2a30ee047f6fec757d97d471c3",
+    "console-build-result.json": "3ce4d9668340e8794cfc553fafb09c49ebd0cf597b7f172702e76acee97e7c82",
+    "console-build.log": "84f8d55c5d6b53af21bdd3e0ae54edbf5a8b56ff86c4252891a3b87fee44b220",
+    "console-commit.log": "168515d9ee7afafb6a92ebf937c05c4a34e902f70d0adb692a96f63f250e07a5",
+    "console-ui-result.json": "3ccffa80b5f919d2bf6f179a50d593d410deb141ae575a8f2bdfc2a6c7971a6d",
+    "console-ui.log": "64b7a9cc0549a65ade9853d21e4c10c897a57b7459e034c815779206b1864b65",
+    "deployment-hold.log": "3803dcb146faa02de1a9ee203e6a8d5929c65966c1b3d41c01d28bbb32d6276c",
+    "expiry-baseline-result.json": "c4e49de6137d9532874d86f3627ec1135b3c904ac2b13fe7251efd5791326bc3",
+    "expiry-baseline.log": "ac28d50f9c77ac5ff618bbb00abd46e5282be25ce368a0ae5b0871a607c24f5c",
+    "preservation.json": "d4a76ade2d2bb5d9fb3c685e07595626d373c3644c54358ab0f085915964d7cc",
+    "report-build-source.json": "4ce03ee87fdbdb539b58de2638acffd4863123bddfddf76406950fac894d3746",
+    "ui-green-first.log": "960b852b5fa0652d6bef3603e7bf5a9f7cb18a4823844e505cceb222b980bf85",
+    "ui-green.log": "18d60596f7cb6a7184b82ffe69c66f341f474e9e13e4325450e014019d87d069",
+    "ui-red.log": "a43cf6c904705fa02857c9838446512865d6c8b45ddb8066aa68e7f2ba52b502",
+    "browser/observations.json": "b10e29f9412de395688b59f9aa4538e9a8f9ecb17d04c2bc42c7052660f0cc53",
+    "browser/activity-preserved.png": "8bf163422ef6dfb746fe72dd7d8394ea988e46cf47409a78d9c1b42ad3d16de2",
+    "browser/arabic-before-expiry-375.png": "d3619f5e97b4f77feda1382abfb948e5781b317d11fe65049534c0d3171305b3",
+    "browser/arabic-expired-375.png": "02b0b67a418bca351eab6e764859e0c34ac23ad77c114f3847bca4d31bac4f18"
+  },
+  "holds": {
+    "allEightAutomaticVercelDeployments": false,
+    "manualDeployment": false,
+    "backendPublication": false,
+    "personalPush": "hard-disabled",
+    "realAccountOrModerationActions": false,
+    "newAPK": false
+  },
+  "remaining": "See remaining-goal.md; live moderation/appeals/revocation, other mutation and policy families, family authority, original feature/security/device/recovery/build/release/APK gates remain required"
+}

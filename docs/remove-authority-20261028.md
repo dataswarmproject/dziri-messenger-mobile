@@ -1,0 +1,15 @@
+# Direct-chat removal authority — 2026-10-28
+
+Direct-chat removal for everyone is now author-only, regardless of an internal owner/admin/moderator membership label. Canonical DM creation gives both participants an owner role; the old generic moderation check therefore allowed a recipient to remove the other author's message. Three regression cases reproduced the actual loss of body and addition of deletion/unread-visibility fields. The fix tests the real thread type and reuses the already validated current membership instead of querying that membership again.
+
+Existing shared-conversation moderation is preserved for group/channel/community owner, admin and moderator roles; ordinary members remain denied. The DM author's own removal still works. Existing participant roles, membership/receipt epochs, command hashes, API arguments, return shape and client affordances remain unchanged. This matches both apps' existing author-only DM removal controls and closes a direct API bypass; it does not add group moderator UI or implement per-user self-hide semantics.
+
+The 17 focused cases use canonical DM creation and text sending, then synthetic role/thread states for the shared-conversation permission matrix. Initial result: three failed, fourteen passed. Final result: seventeen passed. Broader local qualification: 1,611 backend tests across 98 files, 242 Consumer messaging UI tests across 33 files, 147 standalone UI tests across 27 files, full backend TypeScript and eight deployment-hold checks. Failed recipient removal leaves the full canonical message unchanged; authors and permitted shared-conversation moderators retain their previous removal result. This is synthetic policy/client-regression evidence, not live or physical acceptance.
+
+The unchanged build-impact helper reports no affected app for this backend-only delta against f74f0ae2d. Consumer and native runtime files are unchanged, so web/native builds were not repeated. Earlier normal web/native outputs remain their separately qualified checkpoint, and actual last-successful deployed-SHA reconciliation stays held.
+
+The original 316-path worktree snapshot and its empty index are preserved. The four missing support-bridge endpoints and required canonical consent/writer/receipt/privacy/staff-isolation adaptation remain open in support-bridge-integration-20261028.md. Next is implementation of that required bridge work; this permission correction does not claim the support journey works.
+
+M04 / SC15–SC18 / F04 gains this tested author-only DM boundary. Captured action identity, self-hide semantics, remaining policy reversals, group/moderator UI and actual two-client/native recovery, support integration, guardian/age policy, private Story/durable recovery, media/calling/security/privacy and every original release/APK gate remain required. The full goal stays active. Source backup is authorized; all deployment, backend/schema publication and live account actions remain held. Personal push stays hard-disabled. No new APK was produced.
+
+Receipt SHA-256: `bd1b2c3a5e53015eb54c3efe7a8dbe3aff8fdd89ece70c141ae96b50bf1eec17`.

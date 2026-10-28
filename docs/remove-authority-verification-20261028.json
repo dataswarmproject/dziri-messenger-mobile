@@ -1,0 +1,88 @@
+{
+  "checkpoint": "remove-authority-20261028",
+  "at": "2026-10-28T13:55:45.933Z",
+  "previousGoalTurn": "progress: canonical action access correction, required support endpoint audit and source backup",
+  "previousReceiptSha256": "8d986eb73d9ea5978826ae22482ab048aec271b137916993c2a9b2c39cb1f250",
+  "sourceBase": {
+    "platform": "f74f0ae2d9fed0b9e540843de399ec051c977a1d",
+    "standalone": "e1ac26028438067955a4596d6c254eeb3e39cf23"
+  },
+  "goal": "active; full original scope and all actual acceptance gates preserved",
+  "qualification": {
+    "initialRed": { "failed": 3, "passed": 14 },
+    "focused": { "cases": 17, "files": 1 },
+    "backend": { "cases": 1611, "files": 98 },
+    "consumerMessagingUI": { "cases": 242, "files": 33 },
+    "standaloneUI": { "cases": 147, "files": 27 },
+    "backendTypes": {
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "--project",
+        "convex/tsconfig.json",
+        "--noEmit"
+      ],
+      "cwd": "E:\\CodexWorktrees\\messenger-master-integration-20261028\\tawasool-mmogram",
+      "status": 0,
+      "startedAt": "2026-10-28T13:49:55.509Z",
+      "finishedAt": "2026-10-28T13:52:44.086Z"
+    },
+    "deploymentHoldChecks": 8,
+    "buildsRepeated": false,
+    "buildReason": "No web/native runtime affected; actual successful-deployment comparison remains held",
+    "physicalOrLiveAcceptance": false
+  },
+  "sources": {
+    "convex/messaging/messages.ts": "2f669ae4140ad1e1481335ada7d08c0db722c738ea6ddeaa8cfb83106cba63ff",
+    "tests/activation/messenger-remove-authority.test.ts": "020ad890a582444465868e01690b77fea9e37db30dd480df413c383882c8ea15"
+  },
+  "evidence": {
+    "backend-final-result.json": "614b4637e5654a2b7719d6cc694c37b5ae9c3da5266745b0da8ad17fcfa033f6",
+    "backend-final.log": "78b9a4e2d2b529aac6c97b0a419fa197f5b5bda20849c6d32e69c3aaefe43cd7",
+    "backend-types-result.json": "f907ce7374311ef6ad679dcebec6318dc32a524a65c7845f5b6ec5a02ede3197",
+    "backend-types.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "build-impact.json": "6b4acbcd365713c5a48cd86dcefb4af2881b36c70363cb7c802b417d76c8ef05",
+    "consumer-ui-result.json": "2849fb8fec8e04d23836e8c48b42fad9949805a05a54ec91b36352a1629f92ef",
+    "consumer-ui.log": "2a4985eb27a8cda443c3a02a0d7ec00f302e2fad11c89be9eee86cf7e477985c",
+    "deployment-hold-result.json": "62e6c22b3f6c2177a4cb41fe464f06d9553e5e35b4ad29921d1982988efd1c2a",
+    "deployment-hold.log": "bc2a9d6bd1f90bd42b29652042fa3ee7a74afc96c0ff41ca965675f88f2ccccb",
+    "green-result.json": "79f6fb3b5a46d115861b747981ce65a85e910b11c2aeec0456dbc722384acf5e",
+    "green.log": "79ff9caf42ca7cd50cf3edb956ced657f8e8588395fbedb3a327ac2b9149b428",
+    "messages-baseline.ts": "e1a1fcb95b47dd2d09a02e4b1180c85413a41c2b39e6ff7e25312fa85c798010",
+    "native-ui-result.json": "62338cf581a7fb674e982db729d017f4f1b89a41677e43ce35be434febec44dc",
+    "native-ui.log": "4343e998c438da60296f0c0ae47189cf7613be2dd65fd6e47ef227b7138fc8c1",
+    "preservation.json": "7c6acd9bf2b015798cc7e06153ed59f74f8a76b5cd24e2e859e83a5dbd86af56",
+    "red-result.json": "629312ccacf740df615b5a445b986b5e88880498c7f85d1c0a9659f14cdb5b5a",
+    "red.log": "bffdd8cb0d1c02d73a17cdf7f1f51075169e35e96bafce101bca206d2ce0587a",
+    "review.md": "b889174f4c2d7cb8038a20d6bfdb5948abe9f38e79a2f69d41c939f572aee535",
+    "source-delta.patch": "a180ff6a7223c2c8d594370d8315c224eb54993721b44d0af4a36460a9823028"
+  },
+  "preservation": {
+    "originalPaths": 316,
+    "originalSourcePreserved": true,
+    "originalIndexEmpty": true,
+    "nativeApplicationRuntimeUnchanged": true,
+    "nativeRuntimeBase": "e1ac26028438067955a4596d6c254eeb3e39cf23",
+    "previousQualifiedNativeInputHashesChecked": 6,
+    "failures": []
+  },
+  "holds": {
+    "sourceBackupAuthorized": true,
+    "automaticDeploymentEnabled": false,
+    "projectHolds": [
+      "dziri",
+      "dziri-business",
+      "dziri-console",
+      "dziri-shop",
+      "circles",
+      "id",
+      "dziri-flexy",
+      "dcod"
+    ],
+    "manualDeployment": false,
+    "backendPublication": false,
+    "realMessagesOrModeration": false,
+    "personalPush": "hard-disabled",
+    "newAPK": false
+  },
+  "remaining": "Implement the required support bridge; captured action scopes, self-hide semantics, group/moderator UI, other policy and all original feature/security/privacy/device/recovery/release/APK acceptance remain open"
+}

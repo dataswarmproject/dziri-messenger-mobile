@@ -18,6 +18,7 @@ export function ReceiptMessageBubble({
           threadId: receiptScope.threadId,
           expectedActorId: receiptScope.actorId,
           messageId: props.message.id,
+          ...(receiptScope.authorityKey ? { authorityKey: receiptScope.authorityKey } : {}),
         }
       : 'skip',
   );

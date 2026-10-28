@@ -136,6 +136,37 @@ const reads = () =>
       call => call[0] as unknown as { kind: string; messageIds: string[]; expectedActorId: string },
     )
     .filter(call => call.kind === 'read');
+test('native support receipt queries carry the captured connection authority', async () => {
+  const authorityKey = 'v1:' + 'a'.repeat(64);
+  await act(async () =>
+    root.render(
+      <ReceiptMessageBubble
+        {...({
+          mine: true,
+          message: { id: 'out', senderId: 'alice', createdAt: 1 },
+          status: 'sent',
+        } as never)}
+        receiptScope={{ ...initial, authorityKey } as never}
+        receiptVisible
+      />,
+    ),
+  );
+  expect(state.queries.at(-1)?.args).toMatchObject({ authorityKey });
+});
+test('a retired native visibility callback cannot read after a same-account support consent change', async () => {
+  await render({ ...initial, authorityKey: 'v1:' + 'a'.repeat(64) } as ReceiptScope);
+  const oldCallback = visible;
+  await render({ ...initial, authorityKey: 'v1:' + 'b'.repeat(64) } as ReceiptScope);
+  await act(async () => oldCallback(['same']));
+  await tick(700);
+  expect(reads()).toEqual([]);
+  await act(async () => visible(['same']));
+  await tick(500);
+  expect(reads().at(-1)).toMatchObject({
+    authorityKey: 'v1:' + 'b'.repeat(64),
+    messageIds: ['same'],
+  });
+});
 
 test('native StrictMode only reads exact viewable incoming IDs after dwell', async () => {
   await render();

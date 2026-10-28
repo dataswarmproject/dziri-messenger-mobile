@@ -21,6 +21,7 @@ export type ReceiptScope = {
   epoch: number;
   revision: number;
   readGeneration: number;
+  authorityKey?: string;
 };
 export type ReceiptSummary = ReceiptScope & {
   tracked: boolean;
@@ -33,6 +34,7 @@ export type ReceiptCommand = {
   epoch: number;
   revision: number;
   readGeneration: number;
+  authorityKey?: string;
   kind: 'read' | 'delivered';
   messageIds: string[];
 };
@@ -212,6 +214,7 @@ export function receiptScopeKey(scope?: ReceiptScope | null) {
         scope.epoch,
         scope.revision,
         scope.readGeneration,
+        ...(scope.authorityKey ? [scope.authorityKey] : []),
       ])
     : '';
 }
@@ -260,6 +263,7 @@ export function createReceiptObserver(send: (command: ReceiptCommand) => Promise
       epoch: scope.epoch,
       revision: scope.revision,
       readGeneration: scope.readGeneration,
+      ...(scope.authorityKey ? { authorityKey: scope.authorityKey } : {}),
       kind,
       messageIds,
     };
@@ -304,7 +308,14 @@ export function createReceiptObserver(send: (command: ReceiptCommand) => Promise
     configure(next: ReceiptScope | null, enabled: boolean) {
       if (disposed) return;
       const identity = (s: ReceiptScope | null) =>
-        s ? JSON.stringify([s.actorId, s.threadId, s.epoch]) : '';
+        s
+          ? JSON.stringify([
+              s.actorId,
+              s.threadId,
+              s.epoch,
+              ...(s.authorityKey ? [s.authorityKey] : []),
+            ])
+          : '';
       const changed = identity(scope) !== identity(next),
         revision = receiptScopeKey(scope) !== receiptScopeKey(next);
       const nextActive = !!next && enabled;

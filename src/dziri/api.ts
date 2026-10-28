@@ -219,7 +219,7 @@ export const dziriApi = {
   ),
   receiptState: makeFunctionReference<
     'query',
-    { threadId: string; expectedActorId: string; messageId: string },
+    { threadId: string; expectedActorId: string; messageId: string; authorityKey?: string },
     'sent' | 'delivered' | 'read' | null
   >('messaging/receipts:state'),
   registerPushToken: makeFunctionReference<

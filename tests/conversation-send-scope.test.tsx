@@ -9,6 +9,9 @@ const state = vi.hoisted(() => ({
   supported: true,
   writable: true,
   scopeAvailable: true,
+  threadType: 'group',
+  supportReceipts: false,
+  receiptSupported: undefined as boolean | undefined,
   discard: vi.fn(async () => true),
   queued: [] as any[],
   composer: undefined as any,
@@ -27,7 +30,7 @@ vi.mock('convex/react', () => ({
       : name === 'messaging/messenger:thread'
         ? {
             _id: 'chat',
-            type: 'group',
+            type: state.threadType,
             myRole: 'member',
             canSend: state.writable,
             encryption: 'server',
@@ -35,7 +38,13 @@ vi.mock('convex/react', () => ({
               ? { expectedActorId: state.actor, authorityKey: state.key }
               : undefined,
           }
-        : { features: { personalWriteScope: state.supported ? 1 : 0 } };
+        : {
+            features: {
+              personalWriteScope: state.supported ? 1 : 0,
+              exactReceipts: 1,
+              supportReceipts: state.supportReceipts ? 1 : 0,
+            },
+          };
   },
   useMutation: (ref: any) => (args: any) => state.wire(getFunctionName(ref), args),
   usePaginatedQuery: () => ({
@@ -63,7 +72,12 @@ vi.mock('../src/dziri/typography', () => ({
 }));
 vi.mock('../src/dziri/locale', () => ({ useLocale: () => ({ locale: 'en', t: {} }) }));
 vi.mock('../src/dziri/ui', () => ({ Notice: () => null, useColors: () => ({}) }));
-vi.mock('../src/dziri/use-receipts', () => ({ useReceiptScope: () => ({}) }));
+vi.mock('../src/dziri/use-receipts', () => ({
+  useReceiptScope: (_actor: string, _thread: string, supported: boolean) => {
+    state.receiptSupported = supported;
+    return {};
+  },
+}));
 vi.mock('../src/dziri/use-typing', () => ({ useTyping: () => ({ people: [] }) }));
 vi.mock('../src/dziri/use-outbox', () => ({
   useOutbox: (...args: any[]) => {
@@ -100,6 +114,9 @@ beforeEach(() => {
   state.supported = true;
   state.writable = true;
   state.scopeAvailable = true;
+  state.threadType = 'group';
+  state.supportReceipts = false;
+  state.receiptSupported = undefined;
   state.discard.mockClear();
   state.drafts = [];
   state.composer = undefined;
@@ -120,6 +137,13 @@ const render = () =>
       />,
     ),
   );
+for (const advertised of [true, false])
+  test(`actual standalone support screen gates exact observations on its capability: ${advertised}`, async () => {
+    state.threadType = 'support';
+    state.supportReceipts = advertised;
+    await render();
+    expect(state.receiptSupported).toBe(advertised);
+  });
 test('actual conversation carries captured text and media scope and confirms only its own messages', async () => {
   await render();
   const scope = state.queued[4];

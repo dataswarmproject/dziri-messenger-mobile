@@ -98,7 +98,12 @@ export function useReceiptObserver(
   const key = receiptScopeKey(adapter?.scope),
     ids = JSON.stringify(incoming);
   const identity = adapter?.scope
-    ? JSON.stringify([adapter.scope.actorId, adapter.scope.threadId, adapter.scope.epoch])
+    ? JSON.stringify([
+        adapter.scope.actorId,
+        adapter.scope.threadId,
+        adapter.scope.epoch,
+        ...(adapter.scope.authorityKey ? [adapter.scope.authorityKey] : []),
+      ])
     : '';
   const previousIdentity = useRef(identity);
   useLayoutEffect(() => {

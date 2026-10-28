@@ -125,7 +125,8 @@ function Conversation({
     threadId,
     capabilities?.features?.exactReceipts === 1 &&
       !!thread &&
-      ['dm', 'group'].includes(thread.type) &&
+      (['dm', 'group'].includes(thread.type) ||
+        (thread.type === 'support' && capabilities?.features?.supportReceipts === 1)) &&
       thread.encryption !== 'e2ee' &&
       !thread.request,
     isWebSocketConnected,

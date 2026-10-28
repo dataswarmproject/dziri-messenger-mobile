@@ -6,20 +6,28 @@ import type { Session } from './client';
 
 // Web previews keep credentials in memory. Native sessions use the OS vault.
 let writes = Promise.resolve();
-export function saveSession(origin: string, session: Session | null, identityScope = '') {
+export function saveSession(
+  origin: string,
+  session: Session | null,
+  identityScope = '',
+  allowed: () => boolean = () => true,
+) {
   if (Platform.OS === 'web') return Promise.resolve();
   const key = secureStorageKey(inboxSessionScope(origin, identityScope));
   writes = writes
     .catch(() => {})
     .then(() =>
-      session
-        ? SecureStore.setItemAsync(key, JSON.stringify(session))
-        : SecureStore.deleteItemAsync(key),
+      !allowed()
+        ? undefined
+        : session
+          ? SecureStore.setItemAsync(key, JSON.stringify(session))
+          : SecureStore.deleteItemAsync(key),
     );
   return writes;
 }
 export async function loadSession(origin: string, identityScope = ''): Promise<Session | null> {
   if (Platform.OS === 'web') return null;
+  await writes.catch(() => {});
   const value = await SecureStore.getItemAsync(
     secureStorageKey(inboxSessionScope(origin, identityScope)),
   );

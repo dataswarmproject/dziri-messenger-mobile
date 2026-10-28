@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import { Text, TextInput } from '../dziri/typography';
 import { consumerFonts } from '../dziri/fonts';
-import Constants from 'expo-constants';
 import { useFonts } from 'expo-font';
 import { Image } from 'expo-image';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -20,7 +19,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { colorsFor } from '../dziri/theme';
 import {
-  InboxClient,
+  type InboxClient,
   InboxError,
   inboxOrigin,
   mergeMessages,
@@ -28,7 +27,12 @@ import {
   type Message,
   type Profile,
 } from './client';
-import { loadSession, saveSession } from './session';
+import { useStaffSession } from './use-staff-session';
+import {
+  staffWorkspaceKey,
+  staffCopy,
+  type StaffWorkspace,
+} from '../dziri/messenger-staff.generated';
 import { subscribeInbox } from './live';
 import { staffRole } from '../access';
 import { useLocale } from '../dziri/locale';
@@ -93,10 +97,10 @@ function Action({
 
 export default function InboxApp({
   onExit,
-  identityScope = '',
+  workspace,
 }: {
   onExit?: () => void;
-  identityScope?: string;
+  workspace: StaffWorkspace;
 }) {
   const { t } = useLocale();
   const [fonts, fontError] = useFonts(consumerFonts);
@@ -113,7 +117,7 @@ export default function InboxApp({
           {fontError ? (
             <Text style={styles.error}>Unable to load fonts.</Text>
           ) : fonts ? (
-            <Connection key={identityScope} identityScope={identityScope} />
+            <Connection key={staffWorkspaceKey(workspace)} workspace={workspace} />
           ) : (
             <ActivityIndicator color={colors.primary} />
           )}
@@ -123,131 +127,44 @@ export default function InboxApp({
   );
 }
 
-function Connection({ identityScope }: { identityScope: string }) {
-  const [origin, setOrigin] = useState(
-    process.env.EXPO_PUBLIC_INBOX_URL ?? Constants.expoConfig?.extra?.inboxUrl ?? '',
-  );
-  const [proxy, setProxy] = useState(false);
-  const [ready, setReady] = useState(Platform.OS !== 'web');
-  const [client, setClient] = useState<InboxClient | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [error, setError] = useState('');
-  const [busy, setBusy] = useState(false);
-  const current = useRef<InboxClient | null>(null);
-
+function Connection({ workspace }: { workspace: StaffWorkspace }) {
+  const [proxy, setProxy] = useState(false),
+    [ready, setReady] = useState(Platform.OS !== 'web');
   useEffect(() => {
     if (Platform.OS !== 'web') return;
-    fetch('/runtime-config.json', { credentials: 'omit' })
-      .then(response => {
-        if (!response.ok) throw new Error('No local proxy');
-        return response.json();
-      })
-      .then(config => {
-        setOrigin(config.inboxUrl);
-        setProxy(true);
+    let active = true;
+    void fetch('/runtime-config.json', { credentials: 'omit' })
+      .then(async response => {
+        if (!response.ok) return;
+        const config = await response.json();
+        if (active && inboxOrigin(config.inboxUrl) === workspace.origin) setProxy(true);
       })
       .catch(() => {})
-      .finally(() => setReady(true));
-  }, []);
-
-  function create(originValue: string) {
-    const localPreview = Platform.OS === 'web' && proxy;
-    const normalized = inboxOrigin(originValue, __DEV__ || localPreview);
-    const next = new InboxClient(normalized, fetch, localPreview ? '/inbox-api' : normalized);
-    next.onSession = session => {
-      void saveSession(normalized, session, identityScope).catch(() =>
-        setError('Session could not be saved securely.'),
-      );
-    };
-    next.onUnauthorized = () => {
-      if (current.current === next) {
-        setProfile(null);
-        setClient(null);
-        next.dispose();
-        current.current = null;
-        void saveSession(normalized, null, identityScope);
-      }
-    };
-    current.current?.dispose();
-    current.current = next;
-    setClient(next);
-    return next;
-  }
-
-  useEffect(() => {
-    if (!ready || !origin) return;
-    let canceled = false;
-    async function restore() {
-      try {
-        const normalized = inboxOrigin(origin, __DEV__ || proxy);
-        const stored = await loadSession(normalized, identityScope);
-        if (!stored || canceled) return;
-        const next = create(normalized);
-        next.setSession(stored);
-        const me = await next.profile();
-        if (!canceled) setProfile(me);
-      } catch {
-        if (!canceled) setError('Sign in to reconnect to Dziri Inbox.');
-      }
-    }
-    void restore();
+      .finally(() => {
+        if (active) setReady(true);
+      });
     return () => {
-      canceled = true;
+      active = false;
     };
-    // Connection origin is locked by the local proxy or chosen at sign-in.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready]);
-  useEffect(() => () => current.current?.dispose(), []);
-
-  async function login(email: string, password: string, mfa?: { token: string; code: string }) {
-    setBusy(true);
-    setError('');
-    try {
-      const active = mfa && client ? client : create(origin);
-      const result = await active.login(
-        mfa ? { mfa_token: mfa.token, otp_code: mfa.code } : { email, password },
-      );
-      if (result.mfa_setup_required)
-        throw new Error('Complete security setup in the web dashboard before signing in.');
-      if (result.mfa_required && result.mfa_token) return result.mfa_token;
-      setProfile(result.data ?? null);
-    } catch (issue) {
-      setError(issue instanceof Error ? issue.message : 'Unable to sign in.');
-    } finally {
-      setBusy(false);
-    }
-  }
-  async function logout() {
-    const active = current.current;
-    if (!active) return;
-    try {
-      await active.signOut();
-      setError('');
-    } catch {
-      setError(
-        'Signed out on this device. Server session could not be revoked; reconnect to revoke it in web settings.',
-      );
-    } finally {
-      active.dispose();
-      current.current = null;
-      setClient(null);
-      setProfile(null);
-      await saveSession(active.origin, null, identityScope);
-    }
-  }
+  }, [workspace.origin]);
   if (!ready) return <ActivityIndicator color={colors.primary} />;
+  return <SessionConnection key={String(proxy)} workspace={workspace} proxy={proxy} />;
+}
+function SessionConnection({ workspace, proxy }: { workspace: StaffWorkspace; proxy: boolean }) {
+  const { locale } = useLocale();
+  const { client, profile, error, busy, login, logout } = useStaffSession(workspace, proxy, locale);
   return profile && client ? (
     <Accounts
-      key={`${client.origin}:${profile.id}`}
+      key={workspace.authorityKey}
       client={client}
       profile={profile}
       logout={logout}
+      error={error}
     />
   ) : (
     <Login
-      origin={origin}
-      setOrigin={setOrigin}
-      locked={proxy}
+      origin={workspace.origin}
+      initialEmail={workspace.email}
       login={login}
       busy={busy}
       error={error}
@@ -257,15 +174,13 @@ function Connection({ identityScope }: { identityScope: string }) {
 
 function Login({
   origin,
-  setOrigin,
-  locked,
+  initialEmail,
   login,
   busy,
   error,
 }: {
   origin: string;
-  setOrigin: (url: string) => void;
-  locked: boolean;
+  initialEmail: string;
   login: (
     email: string,
     password: string,
@@ -274,11 +189,13 @@ function Login({
   busy: boolean;
   error: string;
 }) {
-  const [email, setEmail] = useState('');
+  const email = initialEmail;
   const [password, setPassword] = useState('');
   const [mfa, setMfa] = useState('');
   const [code, setCode] = useState('');
   const lock = useRef(false);
+  const { locale } = useLocale(),
+    copy = staffCopy(locale);
   async function submit() {
     if (lock.current) return;
     lock.current = true;
@@ -311,8 +228,7 @@ function Login({
         <TextInput
           accessibilityLabel="Inbox address"
           value={origin}
-          onChangeText={setOrigin}
-          editable={!locked && !mfa}
+          editable={false}
           autoCapitalize="none"
           keyboardType="url"
           style={styles.input}
@@ -330,14 +246,23 @@ function Login({
               autoComplete="one-time-code"
               style={styles.input}
             />
+            <Action
+              label={copy.restartSignIn}
+              disabled={busy}
+              onPress={() => {
+                setMfa('');
+                setCode('');
+                setPassword('');
+              }}
+            />
           </>
         ) : (
           <>
             <Text style={styles.text}>Email</Text>
             <TextInput
               accessibilityLabel="Email"
+              editable={false}
               value={email}
-              onChangeText={setEmail}
               autoCapitalize="none"
               keyboardType="email-address"
               autoComplete="email"
@@ -374,10 +299,12 @@ function Accounts({
   client,
   profile,
   logout,
+  error,
 }: {
   client: InboxClient;
   profile: Profile;
   logout: () => void;
+  error: string;
 }) {
   const available = profile.accounts.filter(account => staffRole(account) !== null);
   const [accountId, setAccountId] = useState(
@@ -390,6 +317,11 @@ function Accounts({
         <Text style={styles.title}>Dziri Inbox</Text>
         <Action label="Sign out" onPress={logout} />
       </View>
+      {error ? (
+        <Text accessibilityRole="alert" style={styles.error}>
+          {error}
+        </Text>
+      ) : null}
       <ScrollView
         horizontal
         style={{ flexGrow: 0 }}
@@ -442,7 +374,7 @@ function Workspace({
       timer = setTimeout(() => setRevision(value => value + 1), 120);
     };
     const disconnect = subscribeInbox(
-      Platform.OS === 'web' ? window.location.origin : client.origin,
+      Platform.OS === 'web' && client.proxied ? window.location.origin : client.origin,
       profile,
       account,
       refresh,

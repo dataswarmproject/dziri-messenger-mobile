@@ -1,4 +1,12 @@
+import { validStaffWorkspace, type StaffWorkspace } from '../dziri/messenger-staff.generated.ts';
+import { boundStaffProfile, boundStaffSession } from './workspace-policy.ts';
 export type Session = { 'access-token': string; client: string; uid: string };
+type LoginResult = {
+  data?: Profile;
+  mfa_required?: boolean;
+  mfa_token?: string;
+  mfa_setup_required?: boolean;
+};
 export type Account = { id: number; name: string; role: string; status: string };
 export type Profile = {
   id: number;
@@ -73,28 +81,53 @@ export class InboxClient {
   private closed = false;
   private sequence = 0;
   private rotatedAt = 0;
+  private validated = false;
+  private readonly workspace: StaffWorkspace;
   readonly origin: string;
+  readonly proxied: boolean;
   private fetcher: typeof fetch;
   private base: string;
   onSession?: (session: Session) => void;
   onUnauthorized?: () => void;
 
-  constructor(origin: string, fetcher: typeof fetch = fetch, base = origin) {
-    this.origin = origin;
+  constructor(workspace: StaffWorkspace, fetcher: typeof fetch = fetch, base = workspace.origin) {
+    if (
+      !validStaffWorkspace(workspace, workspace.actorId, workspace.companyId) ||
+      (base !== workspace.origin && base !== '/inbox-api')
+    )
+      throw new Error('Staff workspace unavailable');
+    this.workspace = Object.freeze({ ...workspace });
+    this.origin = workspace.origin;
+    this.proxied = base === '/inbox-api';
     this.fetcher = fetcher.bind(globalThis);
     this.base = base;
   }
   setSession(session: Session) {
-    this.session = session;
+    this.session = boundStaffSession(this.workspace, session);
+    this.validated = false;
   }
   dispose() {
     this.closed = true;
     this.pending.forEach(controller => controller.abort());
     this.pending.clear();
     this.session = null;
+    this.validated = false;
   }
   private async request<T>(path: string, method = 'GET', body?: unknown): Promise<T> {
     if (this.closed) throw new Error('Inbox session is closed');
+    const target = new URL(path, 'https://staff.invalid');
+    if (
+      target.origin !== 'https://staff.invalid' ||
+      target.pathname !== path.split('?')[0] ||
+      target.hash
+    )
+      throw new Error('Invalid staff request path');
+    for (const match of path.matchAll(/\/(?:accounts|conversations)\/([^/?]+)/g))
+      if (!/^[1-9]\d*$/.test(match[1]) || !Number.isSafeInteger(Number(match[1])))
+        throw new Error('Invalid staff record identity');
+    const account = path.match(/^\/api\/v1\/accounts\/([^/]+)\//);
+    if (account && (!this.validated || account[1] !== String(this.workspace.accountId)))
+      throw new Error('Staff workspace is not verified');
     const sequence = ++this.sequence;
     const controller = new AbortController();
     this.pending.add(controller);
@@ -113,15 +146,31 @@ export class InboxClient {
         ...(body === undefined ? {} : { body: JSON.stringify(body) }),
       });
       if (this.closed) throw new Error('Inbox session is closed');
-      if (response.status === 401) this.onUnauthorized?.();
+      if (response.status === 401 || response.status === 403) {
+        this.dispose();
+        this.onUnauthorized?.();
+      }
       if (!response.ok) throw new InboxError(response.status);
       const token = response.headers.get('access-token');
       const client = response.headers.get('client');
       const uid = response.headers.get('uid');
+      if ((token || client || uid) && !(token && client && uid)) {
+        this.dispose();
+        this.onUnauthorized?.();
+        throw new Error('Incomplete staff session.');
+      }
       if (token && client && uid && sequence >= this.rotatedAt) {
+        let next: Session;
+        try {
+          next = boundStaffSession(this.workspace, { 'access-token': token, client, uid });
+        } catch {
+          this.dispose();
+          this.onUnauthorized?.();
+          throw new Error('Staff session changed.');
+        }
         this.rotatedAt = sequence;
-        this.session = { 'access-token': token, client, uid };
-        this.onSession?.(this.session);
+        this.session = next;
+        if (this.validated) this.onSession?.(this.session);
       }
       const text = await response.text();
       return JSON.parse(text || 'null');
@@ -132,21 +181,48 @@ export class InboxClient {
   }
   async login(
     credentials: { email: string; password: string } | { mfa_token: string; otp_code: string },
-  ) {
+  ): Promise<LoginResult> {
+    if ('email' in credentials && credentials.email.trim().toLowerCase() !== this.workspace.email)
+      throw new Error('Use the staff identity linked in Dziri.');
     const result = await this.request<{
       data?: Profile;
       mfa_required?: boolean;
       mfa_token?: string;
       mfa_setup_required?: boolean;
     }>('/auth/sign_in', 'POST', credentials);
-    if (result.mfa_required || result.mfa_setup_required) return result;
+    if (result.mfa_setup_required === true) return { mfa_setup_required: true };
+    if (result.mfa_required === true) {
+      if (
+        typeof result.mfa_token !== 'string' ||
+        !result.mfa_token ||
+        result.mfa_token.length > 4096 ||
+        /[\u0000-\u001f\u007f]/.test(result.mfa_token)
+      )
+        throw new Error('Invalid staff verification challenge.');
+      return { mfa_required: true, mfa_token: result.mfa_token };
+    }
     if (!result.data || !this.session) throw new Error('Inbox did not return a staff session.');
-    return result;
+    return { ...result, data: await this.profile() };
   }
-  profile() {
-    return this.request<Profile>('/api/v1/profile');
+  async profile() {
+    this.validated = false;
+    const raw = await this.request<unknown>('/api/v1/profile');
+    let profile: Profile;
+    try {
+      profile = boundStaffProfile(this.workspace, raw);
+    } catch {
+      this.dispose();
+      this.onUnauthorized?.();
+      throw new Error('Staff access changed.');
+    }
+    if (!this.session) throw new Error('Inbox did not return a staff session.');
+    this.validated = true;
+    this.onSession?.(this.session);
+    return profile;
   }
   signOut() {
+    this.validated = false;
+    this.pending.forEach(controller => controller.abort());
     return this.request('/auth/sign_out', 'DELETE');
   }
   conversations(account: number, page: number, status: string) {

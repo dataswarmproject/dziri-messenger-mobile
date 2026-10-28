@@ -56,7 +56,9 @@ import { StaffSetupScreen } from './staff-setup';
 
 const Stack = createNativeStackNavigator<MessengerRoutes>();
 const ResetSession = createContext(() => {});
-const TeamRuntime = createContext<(userId: string) => ReactNode>(() => null);
+const TeamRuntime = createContext<
+  (input: import('./messenger-staff.generated').StaffEntryProps) => ReactNode
+>(() => null);
 const storage =
   Platform.OS === 'web'
     ? createWebSessionStorage(() => window.sessionStorage)
@@ -71,7 +73,7 @@ export default function DziriApp({
   renderTeam,
   supportCompanyId = '',
 }: {
-  renderTeam: (userId: string) => ReactNode;
+  renderTeam: (input: import('./messenger-staff.generated').StaffEntryProps) => ReactNode;
   supportCompanyId?: string;
 }) {
   return (
@@ -277,7 +279,11 @@ function UserNavigator() {
               style={tailwind.style('p-3')}>
               <Text style={{ color: colors.primary }}>{t.backToTeam}</Text>
             </Pressable>
-            {renderTeam(me._id)}
+            {renderTeam({
+              actorId: me._id,
+              businesses: capabilities.businesses,
+              supported: capabilities.features?.staffWorkspaceScope === 1,
+            })}
           </View>
         ) : (
           <NavigationContainer

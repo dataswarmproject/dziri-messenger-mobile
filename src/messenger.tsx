@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Linking } from 'react-native';
 import Constants from 'expo-constants';
 import CustomerApp from './dziri/app';
-import TeamApp from './inbox/app';
+import StaffWorkspaceEntry from './inbox/workspace-entry';
 import { LocaleProvider } from './dziri/locale';
 import { supportLink } from './access';
 import { MessengerAppearance } from './dziri/appearance';
@@ -43,7 +43,7 @@ function MessengerRuntime() {
   return (
     <CustomerApp
       supportCompanyId={companyId}
-      renderTeam={userId => <TeamApp key={userId} identityScope={userId} />}
+      renderTeam={input => <StaffWorkspaceEntry {...input} />}
     />
   );
 }

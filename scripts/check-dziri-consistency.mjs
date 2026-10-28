@@ -45,7 +45,11 @@ assert.doesNotMatch(entry, /from ['"].*(sentry|store|src\/app)/i);
 assert.match(entry, /src\/messenger/, 'Default entry must use the consolidated messenger');
 const launcher = readFileSync(resolve(root, 'src/messenger.tsx'), 'utf8');
 assert.match(launcher, /from ['"]\.\/dziri\/app['"]/);
-assert.match(launcher, /from ['"]\.\/inbox\/app['"]/);
+assert.match(launcher, /from ['"]\.\/inbox\/workspace-entry['"]/);
+const staffEntry = readFileSync(resolve(root, 'src/inbox/workspace-entry.tsx'), 'utf8');
+assert.match(staffEntry, /from ['"]\.\/app['"]/);
+assert.match(staffEntry, /validStaffWorkspace/);
+assert.match(staffEntry, /inbox\/workspace:current/);
 assert.doesNotMatch(launcher, /EntryScreen|setView/, 'Separate entry modes must not return');
 const personal = readFileSync(resolve(root, 'src/dziri/app.tsx'), 'utf8');
 assert.match(

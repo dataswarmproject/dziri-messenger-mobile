@@ -7,7 +7,7 @@
     "preweb": "node scripts/sync-inbox.mjs",
     "sync:inbox": "node scripts/sync-inbox.mjs",
     "sync:inbox:watch": "node scripts/sync-inbox.mjs --watch",
-    "bundle:inbox": "node scripts/sync-message-actions.mjs && node scripts/sync-message-receipts.mjs && node scripts/sync-message-writes.mjs && node scripts/sync-message-history.mjs && node scripts/sync-message-presentation.mjs && node scripts/sync-message-media.mjs && node scripts/sync-messenger-safety.mjs && node scripts/sync-messenger-stories.mjs && node scripts/sync-messenger-support.mjs && node scripts/sync-push-registration.mjs && node scripts/check-messenger-design.mjs && node scripts/sync-inbox.mjs && expo export --platform all --output-dir dist-inbox",
+    "bundle:inbox": "node scripts/sync-message-actions.mjs && node scripts/sync-message-receipts.mjs && node scripts/sync-message-writes.mjs && node scripts/sync-message-history.mjs && node scripts/sync-message-presentation.mjs && node scripts/sync-message-media.mjs && node scripts/sync-messenger-safety.mjs && node scripts/sync-messenger-stories.mjs && node scripts/sync-messenger-support.mjs && node scripts/sync-messenger-staff.mjs && node scripts/sync-push-registration.mjs && node scripts/check-messenger-design.mjs && node scripts/sync-inbox.mjs && expo export --platform all --output-dir dist-inbox",
     "preview:inbox": "node scripts/preview-inbox.mjs",
     "start": "node scripts/dev-inbox.mjs --dev-client",
     "web": "node scripts/dev-inbox.mjs --web",
@@ -26,7 +26,8 @@
     "bundle:ios": "expo export --platform ios --output-dir dist-ios",
     "check:connection": "node scripts/check-dziri-connection.mjs",
     "check:design": "node scripts/check-messenger-design.mjs",
-    "check:support": "node scripts/sync-messenger-support.mjs"
+    "check:support": "node scripts/sync-messenger-support.mjs",
+    "check:staff": "node scripts/sync-messenger-staff.mjs"
   },
   "dependencies": {
     "@convex-dev/auth": "0.0.95",

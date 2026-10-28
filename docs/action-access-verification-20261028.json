@@ -1,0 +1,112 @@
+{
+  "checkpoint": "action-access-20261028",
+  "at": "2026-10-28T13:38:41.164Z",
+  "previousGoalTurn": "progress: captured Story replies and recovery, both clients, all affected builds and source backup",
+  "previousReceiptSha256": "de6c837624a72a79b162ac2d04acd9a32c2ce1393165c662316a04e57c4bfc78",
+  "sourceBase": {
+    "platform": "a2c48f86dccbc6adacd54bcb6efb68ae60a00db5",
+    "standalone": "7b37032ee9cc9278bc1598a8faa4f1224678fb6e"
+  },
+  "goal": "active; entire original feature/screen/flow/security/device/release scope retained",
+  "qualification": {
+    "initialRed": { "cases": 44, "failed": 28, "passed": 16 },
+    "newActionCases": 47,
+    "backend": { "cases": 1594, "files": 97 },
+    "consumerMessagingUI": { "cases": 242, "files": 33 },
+    "standaloneUI": { "cases": 147, "files": 27 },
+    "backendTypes": {
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "--project",
+        "convex/tsconfig.json",
+        "--noEmit"
+      ],
+      "cwd": "E:\\CodexWorktrees\\messenger-master-integration-20261028\\tawasool-mmogram",
+      "status": 0,
+      "startedAt": "2026-10-28T13:27:44.099Z",
+      "finishedAt": "2026-10-28T13:30:42.489Z"
+    },
+    "privacyPreservation": {
+      "cases": 3,
+      "exactPriorSourceVerified": true,
+      "firstClockAndFieldShapeAssertionsFailedOnPriorSource": true,
+      "correctedRecordChecksPassOnPriorAndCurrentSource": true
+    },
+    "deploymentHoldChecks": 8,
+    "webAndNativeBuildsRepeated": false,
+    "buildReason": "No affected web app/runtime delta; all native application source remains at the prior qualified checkpoint. Actual deployed-SHA reconciliation remains held."
+  },
+  "apiAudit": {
+    "literalReferences": 77,
+    "reviewedRegisteredKinds": 73,
+    "missingModules": 4,
+    "scope": "Static endpoint existence and reviewed registration kind only. Does not establish argument compatibility, permission, live deployment, runtime or device acceptance.",
+    "supportBridgeComplete": false
+  },
+  "sources": {
+    "convex/messaging/messages.ts": "e1a1fcb95b47dd2d09a02e4b1180c85413a41c2b39e6ff7e25312fa85c798010",
+    "tests/activation/messenger-action-access.test.ts": "13f872ec85d6abf44a7bf963122cfad90a685d6c212bea750d599ff7eceebae5"
+  },
+  "evidence": {
+    "backend-final-result.json": "61a53e42077d327b545e52796b945f71208d57381179591b77eb5ceb6bdf1ed9",
+    "backend-final.log": "b5c11f4faa1fb656397577493c32f64037ee14b6ea45bae22379d0799105b40c",
+    "backend-initial-result.json": "dfa3f2180364e8dc676be606a33f0fcd458f1308befd37f2002d7780cebd14d5",
+    "backend-initial.log": "3bef24358e2bc8891eda883f580e3906850bf27c99a074b126289449fb153f66",
+    "backend-types-result.json": "cc154309fa24b479809a4b3684ec4f023a14ad513a25985ef5f76d1ee9d32d96",
+    "backend-types.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline-loaded.txt": "1168411aa6576f73c861d15770800c26a48aa47e4bebc34342a1ef7698009093",
+    "build-impact.json": "ae5956d69cc352bbef3f4b60742a495fbc7dd3060aa2efa133f8946518525437",
+    "consumer-ui-result.json": "af014517489c4678c76e4c4df543af2a25ddea6d8dfc0217fc40bea7f6183d34",
+    "consumer-ui.log": "485e8047700255b2b6554a2a18943e076e3b0b59d77f2577902cee07de941b1c",
+    "deployment-hold-result.json": "89a4487d0c2aaa503218facf069e0d0f0f34e2c6912c0e69f235d20a7053c157",
+    "deployment-hold.log": "4addadac865e9ec506cd234b8c2da6740eb6476db1eb30676286cab9df8538c5",
+    "green-result.json": "4c54416c11dd312e66268b4369901b7ac0574b317f12de66c57a217e3a45d55a",
+    "green.log": "50a92783436f16d59ce5028e3372ff19ce61fabd491280de7c9bc5ede11e4a14",
+    "messages-baseline.ts": "e0540cbc6777f03c3a3c09d56d9b41a8c969513a356bc0f5d65431fb6fa7722f",
+    "native-ui-result.json": "bea3143102aac1faa975174df9efe8d89cd27b49fcad106336fa06210b196694",
+    "native-ui.log": "96e0b6b9c45ef9452d36879944f48deb8190fcb1aa259354a35edf51dfac65b0",
+    "preservation.json": "09f70892036cfecd748c77a72cee44ace4cd0221c70e74ed25802ec42da072c2",
+    "privacy-baseline-final-result.json": "79ca7bfa40e5f9068d1668e7fddfbf87e9b8e2c4906a535db06810e0297505f2",
+    "privacy-baseline-final.log": "86c37664c5f8fea2441b9ffd6fa1e6ee980f16279744c9b61c9c0317684b0a1a",
+    "privacy-baseline-green-result.json": "f197acac576e5374883af1ada63d64144dabcc9c72062961f5a458cdd5ffb0e0",
+    "privacy-baseline-green.log": "216e513f2b3df2e46e48f69c31bf0e43a381b120e1a2391decdd339245f90b80",
+    "privacy-baseline-red-result.json": "de2135541b1e78831ae79efd42a09c97ab0123fd426212acb2878882bf087513",
+    "privacy-baseline-red.log": "0b2dc04b473d45364ae7f6560dd262b5d553e4053f5120a65007ab671ee29f96",
+    "privacy-original-test.ts": "1ccf3f9e99be9f870f09ebf77c343887986a3a3ebffaf0ef9e0e4c759b6c4d51",
+    "red-result.json": "67492cc51ea970e007abd9b0f1d3166b0e66f1c6cbe672e104c4eeb7833ca45e",
+    "red.log": "eed00e6332220b724f1de937b4e9c0643ba0312b70780e43533df108b704dc0f",
+    "review.md": "4cec10d75292858b983c1acd04bdbb5c33d373f16a2d17e8ee8ea517a649be18",
+    "support-bridge-endpoint-audit.json": "8fd6bf29921e0a06def025cf68d254fa6c0188ef0e903ba0b5f32b83a90c1ecc",
+    "support-bridge-source-inventory.json": "9eb6e695ebbd147930c662024c20fccbae8bb29edf1fc61396d174271c22efe0"
+  },
+  "preservation": {
+    "originalSourcePaths": 316,
+    "originalSourcePreserved": true,
+    "originalIndexEmpty": true,
+    "nativeApplicationRuntimeUnchanged": true,
+    "nativeRuntimeBase": "7b37032ee9cc9278bc1598a8faa4f1224678fb6e",
+    "previousOwnedNativeInputHashesChecked": 6,
+    "primaryBridgeInputsReadOnlyAndUnchanged": 8,
+    "failures": []
+  },
+  "holds": {
+    "sourceBackupAuthorized": true,
+    "automaticDeploymentEnabled": false,
+    "projectHolds": [
+      "dziri",
+      "dziri-business",
+      "dziri-console",
+      "dziri-shop",
+      "circles",
+      "id",
+      "dziri-flexy",
+      "dcod"
+    ],
+    "manualDeployment": false,
+    "backendPublication": false,
+    "realMessagesReportsOrModeration": false,
+    "personalPush": "hard-disabled",
+    "newAPK": false
+  },
+  "remaining": "Support bridge schema/writer/consent integration and actual interoperability; captured action/account scopes and remaining policy reversals; guardian/enrollment/age, durable Story recovery/private audience lifecycle and all original actual-client/device/media/calling/security/privacy/release/APK gates remain required"
+}

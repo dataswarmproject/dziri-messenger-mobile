@@ -1,0 +1,15 @@
+# Canonical message action access — 2026-10-28
+
+Direct personal history, edit, delete and reaction paths now reuse currentMembership, the same current active-account, actual thread-member and current workspace grant checks used by sends and pins. Legacy membership-row existence no longer authorizes a suspended/deleting/guest account, a suspended/archived company, a viewer/false-owner company grant or a left-at-zero membership. Public arguments and returns are unchanged; no new capability, schema or provider is introduced. Both Consumer and standalone use these canonical edit/delete endpoints.
+
+Initial regression: 28 access failures reproduced across 44 cases. After the helper change all 44 passed. Three additional tests preserve existing own-message removal in frozen, archived and blocked personal chats. Their first timestamp assertions compared the runner clock with the canonical server clock, then required a stored undefined field rather than an absent field; all three failures reproduced against the exact previous source. Corrected tests check the deletion record and absent body, and pass unchanged previous behavior. No production logic was relaxed to make these preservation tests pass.
+
+Local qualification: 1,594 selected backend tests across 97 files, including 47 new action-access cases; 242 Consumer messaging UI tests across 33 files; 147 standalone UI tests across 27 files; full backend TypeScript. Eight deployment-hold tests pass. The unchanged build-impact helper finds no affected web application for this backend-only delta against a2c48f86d. No frontend/runtime files changed and no web/native exports were repeated. Earlier normal seven-web-app and Android/iOS export evidence stays a separate checkpoint; actual deployed-SHA reconciliation remains held.
+
+The endpoint audit also found the four missing customer-support references. Their existing primary-checkout modules and required adapter work are recorded in support-bridge-integration-20261028.md, with source hashes and the 77-reference audit. That gap is required work, not a functioning integration or an optional omission. The primary checkout is read-only here and the preserved original worktree stays intact.
+
+This closes the tested current-access inconsistency for C01/C04/M02/M03/M04, SC15/SC16/SC17/SC18/SC45 and F04/F07 to this local scope. It does not bind every action to a captured UI actor/grant, resolve all thread/family policy reversals, complete support consent/bridge wiring, implement message self-hide semantics or qualify physical/live account recovery. The complete original feature, policy, security, cross-client, media, calling, private Story/recovery and release/APK scope remains active.
+
+Source commits and GitHub master backup remain authorized. Hosting deployment, backend/schema publication, providers and live account/message/moderation changes remain held. Personal push stays hard-disabled. No new APK or physical-device acceptance is claimed.
+
+Receipt SHA-256: `8d986eb73d9ea5978826ae22482ab048aec271b137916993c2a9b2c39cb1f250`.

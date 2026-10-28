@@ -1,5 +1,71 @@
 export type StaffContext = { expectedActorId: string; authorityKey: string };
 export type StaffBusiness = { id: string; name: string; role: string };
+/** Authenticated staff-only descriptor. It never contains a provider session or SSO URL. */
+export type StaffWorkspace = {
+  version: 1;
+  observationId: string;
+  actorId: string;
+  companyId: string;
+  tenantId: string;
+  origin: string;
+  remoteUserId: number;
+  accountId: number;
+  inboxId: number;
+  role: 'administrator' | 'agent';
+  email: string;
+  authorityKey: string;
+};
+export type StaffEntryProps = {
+  actorId: string;
+  businesses: StaffBusiness[];
+  supported: boolean;
+};
+export function validStaffWorkspace(
+  value: StaffWorkspace | null | undefined,
+  actorId: string,
+  companyId: string,
+): value is StaffWorkspace {
+  if (
+    !value ||
+    value.version !== 1 ||
+    !/^[A-Za-z0-9_-]{8,128}$/.test(value.observationId) ||
+    value.actorId !== actorId ||
+    value.companyId !== companyId ||
+    !value.tenantId ||
+    !/^v1:[a-f0-9]{64}$/.test(value.authorityKey) ||
+    ![value.remoteUserId, value.accountId, value.inboxId].every(
+      id => Number.isSafeInteger(id) && id > 0,
+    ) ||
+    !['agent', 'administrator'].includes(value.role) ||
+    !value.email ||
+    value.email !== value.email.trim().toLowerCase()
+  )
+    return false;
+  try {
+    const origin = new URL(value.origin);
+    return (
+      origin.protocol === 'https:' &&
+      origin.origin === value.origin &&
+      !origin.username &&
+      !origin.password
+    );
+  } catch {
+    return false;
+  }
+}
+export const staffWorkspaceKey = (value: StaffWorkspace) =>
+  JSON.stringify([
+    'staff-workspace-v1',
+    value.actorId,
+    value.companyId,
+    value.tenantId,
+    value.origin,
+    value.remoteUserId,
+    value.accountId,
+    value.inboxId,
+    value.role,
+    value.authorityKey,
+  ]);
 export type StaffJobState = 'pending' | 'processing' | 'delivered' | 'failed';
 export type StaffConfirmation = {
   actorId: string;
@@ -164,6 +230,15 @@ export function staffCopy(locale: string) {
   return locale === 'ar'
     ? {
         title: 'إدارة صندوق الفريق',
+        workspace: 'صندوق الفريق',
+        workspaceSetupRequired:
+          'أكمل إعداد صندوق الفريق واربط ملفك المؤكد من «إدارة صندوق الفريق» قبل فتحه.',
+        workspaceSecuritySetup: 'أكمل إعداد أمان حساب الفريق في صندوق الويب قبل تسجيل الدخول.',
+        restartSignIn: 'العودة لتسجيل الدخول بكلمة المرور',
+        workspaceReconnect: 'تعذر تأكيد جلسة الفريق. سجّل الدخول بالحساب المرتبط في دزيري.',
+        workspaceStorage: 'تعذر حفظ جلسة الفريق بأمان.',
+        workspaceLogout: 'تم تسجيل الخروج محليًا. تعذر تأكيد إلغاء الجلسة على الخادم.',
+        workspaceLogoutFailed: 'تعذر إكمال تسجيل الخروج بأمان. أعد المحاولة من إعدادات الحساب.',
         business: 'النشاط التجاري',
         choose: 'اختر نشاطًا تجاريًا',
         back: 'رجوع',
@@ -194,6 +269,19 @@ export function staffCopy(locale: string) {
     : locale === 'fr'
       ? {
           title: 'Gérer la messagerie d’équipe',
+          workspace: 'Messagerie d’équipe',
+          workspaceSetupRequired:
+            'Terminez la configuration et liez votre profil vérifié dans « Gérer la messagerie d’équipe » avant de l’ouvrir.',
+          workspaceSecuritySetup:
+            'Terminez la configuration de sécurité du compte dans la messagerie web avant de vous connecter.',
+          restartSignIn: 'Revenir à la connexion par mot de passe',
+          workspaceReconnect:
+            'La session d’équipe n’a pas pu être vérifiée. Connectez-vous avec le compte lié dans Dziri.',
+          workspaceStorage: 'La session d’équipe n’a pas pu être enregistrée de façon sécurisée.',
+          workspaceLogout:
+            'Déconnexion locale effectuée. La révocation sur le serveur n’a pas pu être confirmée.',
+          workspaceLogoutFailed:
+            'La déconnexion sécurisée a échoué. Réessayez depuis les paramètres du compte.',
           business: 'Entreprise',
           choose: 'Choisir une entreprise',
           back: 'Retour',
@@ -228,6 +316,18 @@ export function staffCopy(locale: string) {
         }
       : {
           title: 'Manage team inbox',
+          workspace: 'Team inbox',
+          workspaceSetupRequired:
+            'Finish setup and link your verified profile in Manage team inbox before opening this workspace.',
+          workspaceSecuritySetup:
+            'Complete your staff security setup in the web inbox before signing in.',
+          restartSignIn: 'Return to password sign-in',
+          workspaceReconnect:
+            'Your staff session could not be verified. Sign in with the account linked in Dziri.',
+          workspaceStorage: 'Your staff session could not be saved securely.',
+          workspaceLogout: 'Signed out locally. Server session revocation could not be confirmed.',
+          workspaceLogoutFailed:
+            'Secure sign out could not be completed. Try again from account settings.',
           business: 'Business',
           choose: 'Choose a business',
           back: 'Back',

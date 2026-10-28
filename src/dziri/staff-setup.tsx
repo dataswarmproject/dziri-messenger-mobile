@@ -126,6 +126,7 @@ function StaffChoices({ actorId, businesses, supported, locale }: Props) {
           <Pressable
             key={b.id}
             accessibilityRole="radio"
+            aria-checked={selected === b.id}
             accessibilityState={{ checked: selected === b.id }}
             onPress={() => setSelected(b.id)}
             style={{

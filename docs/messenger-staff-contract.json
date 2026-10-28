@@ -4,8 +4,8 @@
     {
       "source": "packages/shared/src/messenger-staff.ts",
       "target": "src/dziri/messenger-staff.generated.ts",
-      "sourceSha256": "bb74117d0a2460987fed5667ca253b3d8f4922394f3c22bc91c05ee84f0a80c1",
-      "sha256": "516c5edb4b60bf5fcb2fad62fcb6bee9ad66b27ecb98274f6948420db628b38e"
+      "sourceSha256": "9aa240bcf070350fad4c55307f761c0ef1a170ef8a6033624ee5594218688c87",
+      "sha256": "337de6ff3411ee81996beb2ee54d0da66c8c08ccc73b5dff82d0d37808087ab4"
     },
     {
       "source": "packages/ui/src/messaging/use-staff-setup.ts",

@@ -8,6 +8,7 @@ export interface MessengerCapabilities {
     supportConsent?: number;
     supportReceipts?: number;
     staffSetup?: number;
+    staffWorkspaceScope?: number;
     messageRequests?: number;
     messageReporting?: number;
     storyReplies?: number;

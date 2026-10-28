@@ -9,11 +9,27 @@ export interface StorySnapshot {
   mediaUrl?: string;
   backgroundHex?: string;
 }
+export interface StoryWriteContext {
+  expectedActorId: string;
+  authorityKey: string;
+}
+export interface StoryReplyPreparation {
+  writeContext: StoryWriteContext;
+  canSend: boolean;
+  confirmation?: {
+    messageId: string;
+    clientMessageId: string;
+    payloadHash: string;
+    commandContext: StoryWriteContext;
+  };
+}
 export interface StoryReplyCommand {
   storyId: string;
   kind: 'reply' | 'reaction';
   body: string;
   clientMessageId: string;
+  commandContext?: StoryWriteContext;
+  payloadHash?: string;
 }
 /** Preserve an immutable intent across an uncertain result; a changed intent gets a new ID. */
 export function storyReplyCommand(
@@ -22,16 +38,74 @@ export function storyReplyCommand(
   kind: StoryReplyCommand['kind'],
   body: string,
   makeId: () => string,
+  context?: StoryWriteContext,
 ): StoryReplyCommand {
   const text = body.trim();
-  if (previous?.storyId === storyId && previous.kind === kind && previous.body === text)
+  if (
+    previous?.storyId === storyId &&
+    previous.kind === kind &&
+    previous.body === text &&
+    previous.commandContext?.expectedActorId === context?.expectedActorId &&
+    previous.commandContext?.authorityKey === context?.authorityKey
+  )
     return previous;
   return Object.freeze({
     storyId,
     kind,
     body: text,
     clientMessageId: makeId(),
+    ...(context ? { commandContext: Object.freeze({ ...context }) } : {}),
   });
+}
+export function validStoryPreparation(
+  prepared: StoryReplyPreparation | null | undefined,
+  actorId: string,
+): prepared is StoryReplyPreparation {
+  return (
+    !!actorId &&
+    prepared?.writeContext?.expectedActorId === actorId &&
+    /^v1:[a-f0-9]{64}$/.test(prepared.writeContext.authorityKey) &&
+    typeof prepared.canSend === 'boolean'
+  );
+}
+export function storyReplyConfirmed(
+  command: StoryReplyCommand,
+  prepared: StoryReplyPreparation | null | undefined,
+  actorId: string,
+) {
+  const proof = prepared?.confirmation,
+    captured = command.commandContext;
+  return (
+    validStoryPreparation(prepared, actorId) &&
+    !!captured &&
+    captured.expectedActorId === actorId &&
+    !!command.payloadHash &&
+    proof?.clientMessageId === command.clientMessageId &&
+    proof.payloadHash === command.payloadHash &&
+    proof.commandContext.expectedActorId === actorId &&
+    proof.commandContext.authorityKey === captured.authorityKey
+  );
+}
+export function storyReplyAccepted(
+  command: StoryReplyCommand,
+  prepared: StoryReplyPreparation | null | undefined,
+  actorId: string,
+) {
+  const captured = command.commandContext;
+  if (
+    !captured ||
+    captured.expectedActorId !== actorId ||
+    !validStoryPreparation(prepared, actorId)
+  )
+    return false;
+  return (
+    captured.authorityKey === prepared.writeContext.authorityKey ||
+    storyReplyConfirmed(command, prepared, actorId)
+  );
+}
+/** Same fixed string tuple as the canonical server Story command hash. */
+export function storyReplyPayload(command: Pick<StoryReplyCommand, 'storyId' | 'kind' | 'body'>) {
+  return JSON.stringify(['story', command.storyId, command.kind, command.body.trim()]);
 }
 const en = {
   title: 'Story',
@@ -51,6 +125,8 @@ const en = {
   sendFailed: 'Could not send. Try again.',
   open: 'Open conversation',
   unavailable: 'Replies are unavailable in this version.',
+  held: 'Messaging access changed. Your reply is kept.',
+  replyUnavailable: 'Replies are unavailable for this conversation.',
   reaction: 'React',
   followers: 'Followers',
   public: 'Public',
@@ -78,6 +154,8 @@ const fr: typeof en = {
   sendFailed: 'Envoi impossible. Réessayez.',
   open: 'Ouvrir la conversation',
   unavailable: 'Les réponses sont indisponibles dans cette version.',
+  held: 'Votre accès a changé. Votre réponse est conservée.',
+  replyUnavailable: 'Les réponses sont indisponibles dans cette conversation.',
   reaction: 'Réagir',
   followers: 'Abonnés',
   public: 'Public',
@@ -105,6 +183,8 @@ const ar: typeof en = {
   sendFailed: 'تعذر الإرسال. حاول مجدداً.',
   open: 'فتح المحادثة',
   unavailable: 'الردود غير متاحة في هذا الإصدار.',
+  held: 'تغيّرت صلاحية المراسلة. تم الاحتفاظ بردّك.',
+  replyUnavailable: 'الردود غير متاحة لهذه المحادثة.',
   reaction: 'تفاعل',
   followers: 'المتابعون',
   public: 'عام',

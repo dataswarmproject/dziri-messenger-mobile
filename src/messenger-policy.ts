@@ -8,6 +8,7 @@ export interface MessengerCapabilities {
     messageRequests?: number;
     messageReporting?: number;
     storyReplies?: number;
+    storyWriteScope?: number;
     historyPages?: number;
     forwarding?: number;
     inboxOrganization?: number;

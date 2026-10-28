@@ -1,6 +1,10 @@
 import { makeFunctionReference, type PaginationResult } from 'convex/server';
 import type { PaginationOptions } from 'convex/server';
-import type { StorySnapshot } from './messenger-stories.generated';
+import type {
+  StorySnapshot,
+  StoryWriteContext,
+  StoryReplyPreparation,
+} from './messenger-stories.generated';
 import type { MessengerCapabilities } from '../messenger-policy';
 import type { MarketplaceWriteContext, PersonalWriteContext } from './message-writes.generated';
 import type {
@@ -349,14 +353,23 @@ export const dziriApi = {
   stories: makeFunctionReference<'query', Record<string, never>, StoryRecord[]>(
     'messaging/stories:listFollowing',
   ),
+  storyPrepare: makeFunctionReference<
+    'query',
+    {
+      storyId: string;
+      expectedActorId: string;
+      pendingCommand?: { clientMessageId: string; payloadHash: string };
+    },
+    StoryReplyPreparation | null
+  >('messaging/storyReply:prepareReply'),
   storyReply: makeFunctionReference<
     'mutation',
-    { storyId: string; body: string; clientMessageId: string },
+    { storyId: string; body: string; clientMessageId: string; commandContext: StoryWriteContext },
     string
   >('messaging/storyReply:replyToStory'),
   storyReaction: makeFunctionReference<
     'mutation',
-    { storyId: string; emoji: string; clientMessageId: string },
+    { storyId: string; emoji: string; clientMessageId: string; commandContext: StoryWriteContext },
     string
   >('messaging/storyReply:reactToStory'),
   storyView: makeFunctionReference<'mutation', { storyId: string }, null>(
@@ -400,9 +413,11 @@ export const dziriApi = {
   searchPeople: makeFunctionReference<'query', { q: string }, ChatPerson[]>(
     'messaging/discovery:searchUsersForChat',
   ),
-  createDm: makeFunctionReference<'mutation', { otherUserId: string }, string>(
-    'messaging/threads:createDm',
-  ),
+  createDm: makeFunctionReference<
+    'mutation',
+    { otherUserId: string; expectedActorId?: string },
+    string
+  >('messaging/threads:createDm'),
   createGroup: makeFunctionReference<
     'mutation',
     { title: string; memberUserIds: string[]; clientRequestId: string },

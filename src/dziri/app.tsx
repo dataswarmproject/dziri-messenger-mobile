@@ -52,6 +52,7 @@ import { WorkspaceSidebar, type WorkspaceSelection } from './workspace-sidebar';
 import { BlockedPeopleScreen } from './safety';
 import { LocalMessagesProvider, clearLocalMessageSessions } from './local-messages';
 import { StartupScreen } from './startup-screen';
+import { StaffSetupScreen } from './staff-setup';
 
 const Stack = createNativeStackNavigator<MessengerRoutes>();
 const ResetSession = createContext(() => {});
@@ -363,6 +364,7 @@ function UserNavigator() {
                     component={SupportScreen}
                     options={{ headerShown: true, title: t.support }}
                   />
+                  <Stack.Screen name="StaffSetup" component={StaffSetupScreen} />
                   <Stack.Screen
                     name="Commerce"
                     component={CommerceScreen}

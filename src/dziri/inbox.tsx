@@ -1,4 +1,5 @@
 import { safetyCopy } from './messenger-safety.generated';
+import { staffCopy } from './messenger-staff.generated';
 import { messengerMetrics as metrics } from './colors';
 import React, { memo, useCallback, useState } from 'react';
 import { Pressable, View } from 'react-native';
@@ -370,6 +371,16 @@ export function InboxScreen({
         ) : null}
       </View>
       {cameraStory ? <StoryComposer initialCamera close={() => setCameraStory(false)} /> : null}
+      {lane === 'staff' && capabilities?.features?.staffSetup === 1 ? (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => navigation.navigate('StaffSetup')}
+          style={{ minHeight: 44, paddingHorizontal: 20, justifyContent: 'center' }}>
+          <Text style={{ color: colors.text, fontSize: 14, textAlign: rtl ? 'right' : 'left' }}>
+            {staffCopy(locale).title}
+          </Text>
+        </Pressable>
+      ) : null}
       {lane !== 'marketplace' || organization ? (
         <View
           style={{

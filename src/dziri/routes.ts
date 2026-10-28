@@ -3,6 +3,7 @@ export type MessengerRoutes = {
   Requests: undefined;
   Conversation: { threadId: string; lane?: 'friends' | 'staff'; focusMessageId?: string };
   Support: undefined;
+  StaffSetup: undefined;
   Commerce: { conversationId: string; storeId?: string; focusMessageId?: string };
   Settings: undefined;
   ProfileSettings: undefined;

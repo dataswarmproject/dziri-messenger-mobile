@@ -1,0 +1,125 @@
+{
+  "checkpoint": "support-transport-20261028",
+  "at": "2026-10-28T17:06:23.094Z",
+  "previousReceiptSha256": "40f578310bb67a3b153d2437fa7928960e34abcf341ee593320b938da2c63d50",
+  "goal": "active; original complete scope retained",
+  "frames": [
+    {
+      "root": "E:\\CodexWorktrees\\messenger-master-integration-20261028\\tawasool-mmogram",
+      "base": "74fbbce4bd24d841c77842a5e49a3e95b197544f",
+      "sources": {
+        "convex/inbox/schema.ts": "c79f17048f9d004d720117f336753136f9cf47947992a3d13f02e19398ce6e9d",
+        "convex/inbox/service.ts": "9a697bf6d6464751057f0ccd768e3f04abfaa4e3e260fd77abf17916e516fdd3",
+        "tests/feed-ui/messenger-support.test.tsx": "ad820915273bc711b20f50a40d20e0bb1a20175cc9a8cde07e2a858d4a58ca3d",
+        "convex/inbox/dispatch.ts": "72b5054f9c5c1e62758c73546f15151cd1f1d70f3defe750b2d9d241d5276e51",
+        "convex/inbox/jobs.ts": "018278a6e38d6a32424e95c37e5b87db296d274be15decd62ad5ec96c195c435",
+        "convex/inbox/scheduling.ts": "6a3a7b1a5de7fe2269df49e54e78fe5a466bb2a41a81b747baae86061ce248df",
+        "convex/inbox/transport.ts": "c80ff56480223e5db63be751b2c208bc2bed50b695a15fe8bbe3535c4cf7e819",
+        "tests/activation/inbox-dispatch.test.ts": "065059852ae6b93888665501b4eedabb28f1f4142ea11fa9db94c3ccb1c1aafb",
+        "tests/activation/inbox-jobs.test.ts": "912d08692b70918822414f83ced91c5df4aa8ac16f39631e00833ae124fa1342",
+        "tests/activation/inbox-transport.test.ts": "03223021b99c3426d0a271db08dc3c9b3953985de4400624f88f0d9cda06d88d",
+        "convex/_generated/api.d.ts": "61b2f622616cf4758072e1c570e4c54390e00b0833811e93e4161e30fd93f2d0"
+      }
+    },
+    {
+      "root": "D:/projects/dziri-messenger-mobile",
+      "base": "44396b47e4491044f3acff2115427f2f00a33e28",
+      "sources": {
+        "tests/support.test.tsx": "b4f91fc9b4689d96df049cee90d8988eb57043b70a0ef6dc3f551aa787ce7266"
+      }
+    }
+  ],
+  "evidence": {
+    "automatic-flow-green-first.log": "02295f467214c8bae7071142cfa3bf871cf8b3598951170068c5af700305145a",
+    "automatic-flow-red.log": "0a49c07acf03af29dedb3c53ba2c9846c3ad67d1925d0023b812f69706e1c36c",
+    "automatic-flow-server-clock.log": "6d5ce24ae671154aab01f67877ec9bfed89b2e59629836e5f96810e0a2db401a",
+    "backend-final-result.json": "8018449bf95e2df616fa33fd158ff2fb4667f14fab25f2e663df1d48de583b5c",
+    "backend-final.log": "dd86f9e515ee6a972819515e9e4a52e262fcc3f6eb601e84c9da25ecdb292827",
+    "backend-native-contract-final-result.json": "d98ff07c453c3b6cb4d082e01110912d1af1333d02e630ae45c4c72b44286095",
+    "backend-native-contract-final.log": "43d7cefc4d8075bd807a12a347f8414d927247b868c35ebe2b7b794655acaf22",
+    "build-impact.json": "9bbabb93fc39f99347894f12674628223668511dee783aedc8da0f21c6b23e0e",
+    "codegen-read-only.json": "93613191d09f665f482a2b7569474f042c6c71001e2c32e121fe008cbd7c58ae",
+    "codegen-superseded.json": "def492beecbaf89301465fb20262ddb406b4b6a7cdc66782bc762449afc0d99a",
+    "connection-flow-final-first.log": "e673c2083d711cc17bd93e71826d551a43fda1a45e66d5a20c0a17ed18ebffcb",
+    "consumer-support-result.json": "8302cb50a0576767bf441dc32335576be903a9406bfca6d6f3dd292271513b12",
+    "consumer-support.log": "09f4c39bd5cc317bc457fc115f5e6ea8e3804c341ab5cc998b39608de7c1d11e",
+    "crash-exhaustion-red.log": "70006486a797d1598e06942932a0c08ef13703001c413b083ee36d61214657eb",
+    "deployment-hold-result.json": "b3c9d4fed04321c56d0ec5cffcd98884f8955af12c4e27e1dfd1223551a106cd",
+    "deployment-hold.log": "78f9fc82f97b078bc79cd94c826c0fe280c2f72e6a8f06840491d5992c4927bc",
+    "dispatch-red.log": "fb30f953f3c012652b24129a4e93d3d025ff1617e4961290325162d8fc32e67c",
+    "drain-command-red.log": "6a4e3855aa4bc466faf04936a0511b2fa1ac05226d472d7b0e1919041120751e",
+    "focused-final-result.json": "4569194da4b5f64937c113f6849c62b35ef9c15d5e8735f76b4960dc51648360",
+    "focused-final.log": "c3b7723cb0ccd8bbf4e52695432914f438a52861c95fcc7ad4470274dfaf82b8",
+    "focused-native-contract-final-result.json": "daf176f31d499a6163760281837fb1244ea8a50ca5d827907d6d3fec3c96e2e9",
+    "focused-native-contract-final.log": "2af2a6c1c1d3e622528ed830a7ea7804e23a803f8a2f44111fdff8d3af8fb22f",
+    "integrated-focused-result.json": "0bfd97848b2fdf3b693507005686ce15a924f149ea42e118000e0ca449cff40b",
+    "integrated-focused.log": "816c91496806ee769a20a1c4a5cec4ac31394f3f42af055cfe8fa43febd44d0f",
+    "jobs-green-first.log": "9e4fd0d409b92a57aad634dc6510d674a747f9f3f571c37b82803a321b022347",
+    "jobs-red.log": "932cdb1df7db3bdb39edc87d586be8c99034dd95c81dbb9069b71d85cc87ecb1",
+    "native-secret-contract-red.log": "c0bbe53e304e75f12ce690982a139deb6ea06af5e567799e8ac9af76308bb3ab",
+    "native-support-result.json": "d96dc10515a051c95acfefab724496037b508109e2cb7cc5616bda85b69970f1",
+    "native-support.log": "6b64b90691ce81fb9b925af356bd5fdde11a1d41022d823a877e3e138d965a0b",
+    "official-codegen-final-result.json": "579d9fb91b2a291c0f12e0c702ab388cc78ccad75ab9694f932841cdc7ed3528",
+    "official-codegen-final.log": "ed4d0ab2405a5eaff4bce36f8eaa16770bd83ea3619a53698056d594d5cc54a4",
+    "official-codegen-result.json": "cf13e9973ee6ce6ed99bad4ac79bb3459a81b16de4550d39ffd5d4780b383aa5",
+    "official-codegen.log": "2faf227ae7094158d9309cf30c343e88edd6c43bf3fb924b465f349437cb091f",
+    "preservation.json": "179899666eaa906abdbe289044222d3a9826f8d0875eecb690e2e50fc8124a40",
+    "qualification-inputs-final.json": "8f2975aca44b8bc5e020d18167ea43bc12904d19503421084f503e140d0be065",
+    "qualification-inputs.json": "0e531ce810bd9734a4c88cd44299929c0cbac7cede2c039c9dd4b1476e4f7554",
+    "review.md": "493fbf9d0154bee63ac01e197e7433d79f0e463156119ea09ee6f6be9627ea81",
+    "transport-green-first.log": "462f732fb2bd98eb62eb7a79f348ba6122408d3507743b865ff1742988940590",
+    "transport-red.log": "627edf664ffcd08d72a2a02499c743663b4f1fb3b7918d3247aa286b973951af",
+    "transport-types.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "watchdog-clock-diagnostic.log": "12a07138cf60801f905c3bdbf9a2111dc89a3168edb336eb84245fb8c578b47a",
+    "watchdog-red.log": "511aea891b883fb1fcd1814bc3c287c3a065c40d50ec92bd4c699595f4c6bd65",
+    "withdrawal-schedule-diagnostic.log": "3a04b932f439dcf3c9f72ab9538a1f5777c2fa04832691723eb3e43e63512509",
+    "worker-crash-green.log": "075a82929ec6499c61e6cd50d877dd6ace5ed988e71d4a1756aab676ff34dfb4",
+    "worker-green-first.log": "ca16009364935e6a485e3f016fd26ead4e8ffe2544ac9740e29069228b41e603",
+    "worker-watchdog-fixed.log": "5e106eef0ba2c5c0c03a74fa7a3f3bb374a0dbfa48ef82c574c0e1464e1c2f27",
+    "worker-watchdog-green.log": "89aa517dc0b153d06556c8d0aa8d47beb1ca1bc275df158cbdb0804100a06c8c",
+    "worker-watchdog-server-clock.log": "a10e3eea255519d43102c17c432b1172ab6f01fe50cb8a4a1809d41a1a57a04b"
+  },
+  "preservation": {
+    "originalPaths": 316,
+    "originalSourcePreserved": true,
+    "originalIndexEmpty": true,
+    "concurrentPrimaryBridgeAndSchemaPreserved": true,
+    "nativeRuntimeAndStaffLayoutUnchanged": true,
+    "clientRuntimeUnchanged": true,
+    "priorBuildArtifactsPreserved": true
+  },
+  "qualification": {
+    "focused": { "tests": 140, "files": 5 },
+    "backend": { "tests": 1813, "files": 109 },
+    "consumerSupport": { "tests": 14, "files": 1 },
+    "standaloneSupport": { "tests": 13, "files": 1 },
+    "officialGenerationAndFullTypes": {
+      "args": [
+        "node_modules/convex/bin/main.js",
+        "codegen",
+        "--typecheck",
+        "enable"
+      ],
+      "cwd": "E:\\CodexWorktrees\\messenger-master-integration-20261028\\tawasool-mmogram",
+      "status": 0,
+      "startedAt": "2026-10-28T16:58:56.635Z",
+      "finishedAt": "2026-10-28T17:03:42.102Z"
+    },
+    "deploymentHolds": 8,
+    "clientBuilds": "Unchanged client runtime; all eight app impact decisions skip. Prior seven normal web builds/mobile exports are recorded by the preceding receipt; none are claimed re-run for this backend/test slice.",
+    "coldFixtureBudget": "Documented 15 seconds with normal logging and four backend workers; previous baseline reproduces default-five-second cold setup failure.",
+    "dependencyAudit": "Unchanged manifests/locks; prior unresolved root 105 (two critical), native eight (four high). No security-clean/release claim.",
+    "realOrPhysicalAcceptance": false
+  },
+  "holds": {
+    "sourceBackupAuthorized": true,
+    "automaticDispatch": "default-off DZIRI_INBOX_DISPATCH_ENABLED; no value configured",
+    "deployment": false,
+    "backendPublication": false,
+    "providerActivation": false,
+    "realAccountActions": false,
+    "personalPush": "hard-disabled",
+    "newAPK": false
+  },
+  "remaining": "Finish canonical message forwarding and trusted mapped-actor callbacks with exact public receipts/private-note exclusion; tenant/staff setup and native handoff, Marketplace, remote erasure/retention/owner lifecycle, and actual authorized interoperability. All original 92-feature/45-screen/14-flow and security/client/device/recovery/release/APK gates remain required."
+}

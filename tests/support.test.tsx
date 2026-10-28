@@ -250,6 +250,10 @@ test('pending, ready and withdrawn state use the current connection and keep sto
   h.state = { ...h.state, phase: 'ready', ready: true };
   await showConnection();
   expect(host.textContent).toContain(supportCopy('en').ready);
+  h.state = { ...h.state, phase: 'unavailable', ready: false };
+  await showConnection();
+  expect(host.textContent).toContain(supportCopy('en').unavailable);
+  expect(button(supportCopy('en').stop)).not.toBeNull();
   h.state = { ...h.state, phase: 'stopped', connected: false, ready: false };
   await showConnection();
   expect(host.textContent).toContain(supportCopy('en').stopped);

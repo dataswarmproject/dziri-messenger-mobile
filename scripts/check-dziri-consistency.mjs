@@ -4,6 +4,11 @@ import { execFileSync } from 'node:child_process';
 import { resolve, dirname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
+execFileSync(
+  process.execPath,
+  [fileURLToPath(new URL('./sync-messenger-support.mjs', import.meta.url))],
+  { stdio: 'pipe' },
+);
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const upstream = 'e3c8fc5f3d0ece96ea6843e38759bc9b44e13112';
@@ -43,7 +48,11 @@ assert.match(launcher, /from ['"]\.\/dziri\/app['"]/);
 assert.match(launcher, /from ['"]\.\/inbox\/app['"]/);
 assert.doesNotMatch(launcher, /EntryScreen|setView/, 'Separate entry modes must not return');
 const personal = readFileSync(resolve(root, 'src/dziri/app.tsx'), 'utf8');
-assert.match(personal, /dziriApi\.capabilities/, 'Business tabs require authenticated server eligibility');
+assert.match(
+  personal,
+  /dziriApi\.capabilities/,
+  'Business tabs require authenticated server eligibility',
+);
 assert.match(personal, /activeMessengerTab/, 'Revocation must fall back to Friends');
 for (const file of readdirSync(resolve(root, 'src/dziri'), { recursive: true }).filter(name =>
   /\.tsx?$/.test(String(name)),

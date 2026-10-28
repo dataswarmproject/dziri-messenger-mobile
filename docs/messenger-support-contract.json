@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "source": "packages/shared/src/messenger-support.ts",
+  "sourceSha256": "1366cd9d24556bde1c887af35042fc845ae2e830a6676bf7e23094538cd31c58",
+  "sha256": "d0eaaa124976b7bc6836bff4e00aa20c2da05fe624a28dc77b9fd776258fe722"
+}

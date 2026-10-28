@@ -1,4 +1,11 @@
 import { makeFunctionReference, type PaginationResult } from 'convex/server';
+import type {
+  SupportPreparation,
+  SupportStartCommand,
+  SupportResult,
+  SupportStatus,
+  SupportContext,
+} from './messenger-support.generated';
 import type { PaginationOptions } from 'convex/server';
 import type {
   StorySnapshot,
@@ -520,22 +527,26 @@ export const dziriApi = {
   >('marketplaceMessages:toggleReaction'),
   supportAvailability: makeFunctionReference<
     'query',
-    { companyId: string },
-    { name: string; available: boolean } | null
+    {
+      companyId: string;
+      expectedActorId: string;
+      pendingCommand?: { clientCommandId: string; payloadHash: string };
+    },
+    SupportPreparation | null
   >('inbox/service:supportAvailability'),
-  startSupport: makeFunctionReference<
-    'mutation',
-    { companyId: string; consent: boolean },
-    { threadId: string; connectionId: string }
-  >('inbox/service:startSupport'),
+  startSupport: makeFunctionReference<'mutation', SupportStartCommand, SupportResult>(
+    'inbox/service:startSupport',
+  ),
   supportConnection: makeFunctionReference<
     'query',
-    { threadId: string },
-    { connectionId: string; connected: boolean; ready: boolean; orderId: string | null } | null
+    { threadId: string; expectedActorId: string },
+    SupportStatus | null
   >('inbox/service:connectionStatus'),
-  stopSharing: makeFunctionReference<'mutation', { connectionId: string }, null>(
-    'inbox/service:disconnect',
-  ),
+  stopSharing: makeFunctionReference<
+    'mutation',
+    { connectionId: string; clientCommandId: string; commandContext: SupportContext },
+    null
+  >('inbox/service:disconnect'),
   me: makeFunctionReference<
     'query',
     Record<string, never>,

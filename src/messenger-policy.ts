@@ -5,6 +5,7 @@ export interface MessengerCapabilities {
     reactionInbox?: number;
     marketplaceWriteScope?: number;
     personalWriteScope?: number;
+    supportConsent?: number;
     messageRequests?: number;
     messageReporting?: number;
     storyReplies?: number;

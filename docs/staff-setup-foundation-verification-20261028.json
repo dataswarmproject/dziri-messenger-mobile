@@ -1,0 +1,146 @@
+{
+  "checkpoint": "staff-setup-foundation-20261028",
+  "at": "2026-10-28T20:07:57.576Z",
+  "previousReceiptSha256": "d8ead1d8231c59e3f20c7b3fc1787fe5085354125c73988141bee56a822e4d04",
+  "goal": "active; original approved scope retained",
+  "qualifiedSource": {
+    "platform": "f531f3b5cf542897846a727972358f290b1864af",
+    "platformRuntimeCommit": "2cd0f8670b27de7d4604a0a70b9cf5c0b6b8d151",
+    "standalone": "4ee5395ae8b29da239fd807d6e0aa6ebb1520e19",
+    "standaloneRuntime": "Unchanged; docs only after checkpoint"
+  },
+  "inputs": {
+    "at": "2026-10-28T20:02:53.367Z",
+    "base": "6f0018883a43041c0ac8aba2d1af8283a368961f",
+    "nativeBase": "4ee5395ae8b29da239fd807d6e0aa6ebb1520e19",
+    "sources": {
+      "convex/_generated/api.d.ts": "a62d35b5a200b67c72d86abbc00415ed22120bbe564bfd71c28a4f4347638485",
+      "convex/inbox/dispatch.ts": "ca50fe2f77f8b120b32ad9435325848c204c614ab5e8309906709d8dd9753dd1",
+      "convex/inbox/jobs.ts": "6ab70c9081dec8d9d520d716599c86f76cb7c73ab3b4b428ce9feefb3e379a6a",
+      "convex/inbox/schema.ts": "da8e24037a37763e2b00d31afbeea82bb0d35e2b7499a1a0cf9f7c28ea2192a6",
+      "convex/inbox/staffAuthority.ts": "f20238642644f7bdff714ec5d62dc1e6e17b4bfc653b86e8cf024f30b4e26093",
+      "convex/inbox/administration.ts": "4ddd020f851db2058a332f58cb31059b215d682b6ba5a10ead8dc470f444f9f2",
+      "convex/inbox/administrationJobs.ts": "85050c15bf35a5ae650b72d2c829681952745cdfcffc437f9f4d445f86b10ce4",
+      "convex/inbox/administrationPolicy.ts": "8a6883c76edbe5a48dcf8121dfca724911c02a3dafb8054fa9962391ae52a0ae",
+      "tests/activation/inbox-administration.test.ts": "43b4a7a12f477d28e2119b9caa39afaa181e2cca48df4864c97fa10778df555c"
+    },
+    "externalSource": {
+      "root": "D:/projects/dziri-inbox",
+      "head": "ec54fd0c2ff11937a1e14c3ed88b29954b795e59",
+      "files": {
+        "app/services/dziri/bridge_gateway.rb": "2690e3d69edbbe32f5d4950f9413ea0590c059bc715937ebc467ba3021750c3b",
+        "app/listeners/webhook_listener.rb": "9e56480c982fa42d7155cd2092954055b71ff357649ea0513fe865b50dfb2a81",
+        "lib/webhooks/trigger.rb": "02aa511a3b6fe4c6350acaceb4dc5f065bd2cbdb35ac051360da1054d96749f8",
+        "app/models/message.rb": "5c15e51c4e3c84257133d96601398c6f9603a0b9099a5a3351d9aa18aabbdd31",
+        "app/models/concerns/sso_authenticatable.rb": "f8cb5c34cafc8a61d00abd3074c012e98add1b0a76d9274e3f43fdf17325fe62",
+        "app/controllers/devise_overrides/sessions_controller.rb": "d0b719104b43fa6857c24f39f2154c692c4ddcf99f1e9fec2d164644ea32be52"
+      }
+    },
+    "clientRuntime": "Unchanged in both clients; no new administrative capability or caller exposed"
+  },
+  "evidence": {
+    "backend-final-result.json": "5c90cf134eed2496f53a81d4c447ea9a9eb40e6e8667928fddee2924cf279689",
+    "backend-final.log": "fe1ce2d4a4d2793615f548892255d0c509f1f6cdeb0fb4a008c977ef0376a921",
+    "build-impact.json": "e9d8fa592c90b3ac043d1a94ec54a8228cf5d63bcbf99faaab30f9f9da63f7a3",
+    "consumer-support-final-result.json": "80846526a2ef0a7d38d58503f3fcc75b33e6942d63dbb5959371a6029a67ddce",
+    "consumer-support-final.log": "43d5cc87ed4c99ec8f53da6fa0d968a0a6f87f864526baf1aff4bb61b1945137",
+    "context-order-first.log": "d28e8034d48ddc4e6922ba5ff0c3f1f0d7f499c19bbe1f9ff99e75bb400cbd8e",
+    "deployment-holds-result.json": "31c943f7afd5ba7acc174554cc57671fe6dd6bac5e9a47367e7f14adc4d39ca3",
+    "deployment-holds.log": "89405427ad033fe613b8d56c8ca7dcaf8c7f2f527ee38cc1ee5c27105baeff75",
+    "final-format.log": "1cbcffaaa4a2d3f4c115962f37a2e6f1f3b6ec4b83a804638989b56e16965016",
+    "focused-first.log": "5620d06bd4dd41d0a62a792e49a0ca601a5198e47ded563408426a3cf991dd77",
+    "format.log": "e5166bb1a2e40916d376d53457e09b1a9b72973e0030be2ed10a6c1b4c44933c",
+    "native-support-final-result.json": "00269d932741a1fb5d91281126c2832ed252271963a07c0e8ac6cc8bd3a07dda",
+    "native-support-final.log": "5196e3f33ffa75d3b0c5a59637675ad518a3e0e8d78b91d3f412e99aecf45d38",
+    "official-codegen-final-result.json": "a9d965570e9db4b590ef3098b5b6034edd44b0f29e91aba5ce9980d7c61d4741",
+    "official-codegen-final.log": "ac131b911cb861201ee4b1f045f1aac25a50513c80eb7f58b94c1fa9d1b023d3",
+    "preservation.json": "4a06d53519498b9bb8fe724e9d2e3ec76c2e921c0d8d583a4a94aef52f09c210",
+    "qualification-inputs-final.json": "95725c99c3988cde94e8ef77f0530acc2a9684c1a180d9ab34ddcd7e1144d3fa",
+    "retry-green.log": "96edfc3db8bb95633f6301e842ef854c6aa6cc2e0ed938a71979cf8ad2f1d71b",
+    "retry-red.log": "99fc33ebaa90cfa359fad6af2824be37ba6b60a2f94d0329ad85bf23514e929f",
+    "review.md": "ece736fcdf5d1bb4fda2c97cd725eb1f74b23910b2cc8d87e1684f444fe3ee72",
+    "runtime-source-commit-result.json": "341235de8a54e70b072aba4b92384b41f53cce68570ddb1011e4272ae74c5a8c",
+    "runtime-source-commit.log": "12dd1a32d601ab3eed4106003d7f80399d31bb83367adab741c46517f50d1a81",
+    "staff-first.log": "2e7f220c81409950e9ac1254aedcc74bfbf3be5ea05863f0e4c4d01293111d12",
+    "staff-red.log": "e79ddc9f85db616e94ae657167dd6c22f4f785337a7b6490fadeccb7e303f6ee",
+    "tenant-first.log": "b2342bbb9600719eaf0b0cbd3affa10de67390ecdfdb938781a12c9007827fc9",
+    "tenant-red.log": "df2bdf7beb6505a3d55962ece96ce4c79a22fa1d44fcf38483b6315496148255",
+    "tenant-review-green.log": "ff494b1faa3408067154fd655208c37f77a21aefa4faf4781325d4ab89078588",
+    "tenant-review-red.log": "e7cc0df93dcf04df22332e9c5bf7f4fc38d19636614a9fbe3b0c90098815b11b",
+    "tests-source-commit-result.json": "04c8c0a653f0660b200e1894051874900686df17201457cd2cc9db9699799509",
+    "tests-source-commit.log": "e87f58e58204fd7282eeb1f4e7afaa3189d4a5128aaf30e9661738dc95adb468",
+    "type-fix-format.log": "4183b786aebe40483081b05805c5114ca720b23c966b428812bd667e7260bffa",
+    "typed-backend-final-result.json": "6c60c0243d4ed29c25dd1c22bd4237eb6e60d2d43ed73b5fd62308d913a7f3c2",
+    "typed-backend-final.log": "ed54ce9671c9400bfa5e0d8fa4e698e52ae86231dc1b76509cd0921777f0412b",
+    "typed-official-codegen-final-result.json": "22f05118e116674095145cc4f981e8e49be13b06a08086189461ac07d534b0bc",
+    "typed-official-codegen-final.log": "ed4d0ab2405a5eaff4bce36f8eaa16770bd83ea3619a53698056d594d5cc54a4"
+  },
+  "preservation": {
+    "originalPaths": 316,
+    "originalSourcePreserved": true,
+    "originalIndexEmpty": true,
+    "primaryBridgeAndSchemaPreserved": true,
+    "previousReceiptCopiesPreserved": 4,
+    "priorBuildTargetsAndIdsRetained": true,
+    "consumerBusinessNativeRuntimeUnchanged": true,
+    "staffLayoutAndBrandingUnchanged": true,
+    "dependenciesUnchanged": true,
+    "deploymentHolds": 8
+  },
+  "qualification": {
+    "newBehavioralCases": 21,
+    "backend": { "tests": 1893, "files": 114, "stage": "typed-backend-final" },
+    "consumerSupport": 14,
+    "nativeSupport": 13,
+    "deploymentHolds": 8,
+    "officialGenerationAndFullTypes": {
+      "args": [
+        "node_modules/convex/bin/main.js",
+        "codegen",
+        "--typecheck",
+        "enable"
+      ],
+      "cwd": "E:\\CodexWorktrees\\messenger-master-integration-20261028\\tawasool-mmogram",
+      "status": 0,
+      "startedAt": "2026-10-28T19:58:26.201Z",
+      "finishedAt": "2026-10-28T20:02:18.236Z"
+    },
+    "webBuilds": "All eight projects unaffected by the actual local impact tool; prior seven successful builds retained separately",
+    "scope": "Synthetic canonical clients and signed fake gateway, not live/provider/physical acceptance"
+  },
+  "superseded": {
+    "initialTypecheck": {
+      "args": [
+        "node_modules/convex/bin/main.js",
+        "codegen",
+        "--typecheck",
+        "enable"
+      ],
+      "cwd": "E:\\CodexWorktrees\\messenger-master-integration-20261028\\tawasool-mmogram",
+      "status": 1,
+      "startedAt": "2026-10-28T19:53:05.219Z",
+      "finishedAt": "2026-10-28T19:56:49.309Z"
+    },
+    "reason": "Two optional-user-ID query closure errors fixed using validated local bindings and a completion guard; separate clean typed analysis and backend rerun required"
+  },
+  "remaining": [
+    "shared localized capability-gated owner/staff setup and retry controls",
+    "staff handoff and identity-bound native session",
+    "staff exact viewport producer",
+    "automatic offboarding and owner/tenant lifecycle",
+    "remote erasure and retention",
+    "bridge media/replies/legacy reconciliation and Marketplace",
+    "entire original security/family/client/device/recovery/release/signed APK scope"
+  ],
+  "holds": {
+    "deployments": true,
+    "schemaPublication": true,
+    "providers": true,
+    "realAccountActions": true,
+    "transport": "DEFAULT_OFF",
+    "personalPush": "HARD_DISABLED",
+    "backgroundNotificationsAndCalls": true,
+    "masterBackup": "Authorized; master only"
+  },
+  "artifactRoot": "D:/codex-artifacts/dziri-staff-setup-20261028"
+}

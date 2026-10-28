@@ -1,0 +1,511 @@
+{
+  "checkpoint": "support-service-20261028",
+  "at": "2026-10-28T16:42:43.142Z",
+  "previousReceiptSha256": "a67ded3187f4e8745283d6951a55664751a3928e1ca63348773730f9a2e59b6d",
+  "sourceBase": {
+    "platform": "2c79dd25bb2ab1fc0357f202f30c22d4d3cf28c6",
+    "standalone": "f8a5b5f65e6e9272617f4d2d7cf77d520a56086f"
+  },
+  "qualifiedSource": {
+    "platform": "9406ccad8e7288419f4f06ba3a8830b51eb4cbca",
+    "standalone": "e64ea89ebd67677f5173859de3ec14a3c2254929"
+  },
+  "goal": "active; full original scope and actual acceptance gates retained",
+  "sources": {
+    ".gitignore": "98ec49fc08b2fa64c5f584abaace1eb0398cd1d57d0e0f99c6a77b9d7760d8d5",
+    "apps/dziri/app/(main)/messages/[threadId]/page.tsx": "9b40d6caa60d5df1bae33a3e9dbf80b83533afc2e49c2a3c5e7e6ca99f6b7704",
+    "apps/dziri/app/(main)/messages/support/[companyId]/page.tsx": "9e936b9613aa22928f4aee5f557f42236717813d73914076835db25a00fdd2b3",
+    "apps/dziri/components/messaging/conversation-list-panel.tsx": "12a3a5abc203a8ff2dd0dcbc0b6437a8ab71fcab826d26634a2d37e18b1f4051",
+    "apps/dziri/components/messaging/support.module.css": "218d7059da670721cd020a2d62f875d34fef6f00cf38967167e1c489521170fd",
+    "apps/dziri/components/messaging/support.tsx": "7a9ab3fde4f7c6f3c7f86e51a272ecc41ef3eb35146166a58a4f69910e2a188f",
+    "convex/_generated/api.d.ts": "57762974aa1056080f5bb619bbaabdf8ce2650b5980ef9edee0eec362ba73857",
+    "convex/accountDeletion.ts": "71fdfdb6922cee3c1e6d11af252d18d827c0bd624196f34a42c5a502752707ac",
+    "convex/dataExport.ts": "3ec07969603d3a52d85ea6e35014e94e26680ddeb21ae60ba85ad15168c8be03",
+    "convex/inbox/config.ts": "f8f7b8ef63dbc0bf2c2c9533ac917b5c5f70b9c8160b7f66d55983d5faa743e0",
+    "convex/inbox/consent.ts": "f6b253b090443b4e4f77c397a4398098d90085899098af062c56b05321c0e88a",
+    "convex/inbox/outbox.ts": "238d7b330cb75a8b21c79fbe896fbbd203139e04a951af9e9c8c156af4c0641c",
+    "convex/inbox/policy.ts": "5414532eb0f1881ece46076519f13de2b269f09141ebc3c60f8f833514a93155",
+    "convex/inbox/privacy.ts": "188ee3d52cf647da08f16903e222ddbaae73c349e8c22e8b90a29f5b6453eabf",
+    "convex/inbox/schema.ts": "1c46a6e67734eff473da8673e21156cca729c2604b048951ad01fb85f74c6a70",
+    "convex/inbox/service.ts": "31e681621c588a95ccce22abd2af1a864e652e2b7a72023d8753d5ebed44e522",
+    "convex/messaging/contactPolicy.ts": "aff15551eb1e86a57d0648ad7af8e18c6c1d0a40a7da2cbe322d32c866b947ab",
+    "convex/messaging/messages.ts": "4ef4823cc6afdc5a064fcc8fb3b67b87607e70aeb0e7f6ea44510c2d296bc37d",
+    "convex/messaging/messenger.ts": "10144e7e22af01ec6a89e6016efaa8b67938de3b14d0ae3baf67916949fabbdb",
+    "convex/messaging/sendScope.ts": "be51c43c19badbb3ca49e79db915394e4e4c0e9bea4adbe9236e9527c932933b",
+    "convex/messaging/workspaceAccess.ts": "07bd43373ff124b928ad34a9c63a104791e851f0c55bbeea12615415b48e0e0d",
+    "packages/shared/package.json": "6489da27ebcf29ae1fa0d3bee7ea4d1c3bde34e032cdde0f638e01fc1886d4ae",
+    "packages/shared/src/messenger-support.ts": "1366cd9d24556bde1c887af35042fc845ae2e830a6676bf7e23094538cd31c58",
+    "tests/activation/inbox-policy.test.ts": "a30beee17002019209ef7626f68f0a1c2d7f4ec6272251272e8a3558effb07ea",
+    "tests/activation/inbox-service.test.ts": "6e95742165ad1f1afac7daf79e4bde223b9ba1d936597fd767017db038e95ff6",
+    "tests/feed-ui/messenger-support.test.tsx": "6d7e49c75b0725b0a9cd561c8d3dd96e32d8be01a67707bd5f32e5364b93a5a8"
+  },
+  "nativeSources": {
+    "package.json": "06ab0c40d399bb210500165c1ba8b30d2776190131018946a9c9f46007e1abf0",
+    "scripts/check-dziri-consistency.mjs": "261b3ed3d1eb40806084783cbbe57029b4f877443bf6eb202748dd1a2e6a5956",
+    "scripts/sync-messenger-support.mjs": "b5d49f8a7c7cb167da983f6e10f4b2cd470039234247398b5c8225b805699a82",
+    "src/dziri/api.ts": "4e008a1188fe5abf925d749ba06a0242e9c544721a3bd9c72a6ba08d671fae9a",
+    "src/dziri/messenger-support.generated.ts": "d0eaaa124976b7bc6836bff4e00aa20c2da05fe624a28dc77b9fd776258fe722",
+    "src/dziri/support.tsx": "ea1c1e32b19e9bc8d64287a8a0d6afb8598d949219401e7566de857a3f7aac3f",
+    "src/messenger-policy.ts": "1b2687451a7220843d96baa11e859ec0604ab0003aa6cac856e63c80d8a61a6a",
+    "tests/support.test.tsx": "d6385507d4b2a9339322ee80f1c1db50500a7859564611a259aef3a32faa0aa7"
+  },
+  "evidence": {
+    "backend-contact-final-result.json": "c2cf7de2f36820b53d55564692ff579283792c68229d199ce7b4ab23e75bd504",
+    "backend-contact-final.log": "2dfe55ae954332a85d4df671256007e89557b28c19d2ebffcb966bed4d7a89b1",
+    "backend-final-result.json": "3597b24374d7b70115ae857df62884d8735079e6918fb08fdf14a1a3b0695598",
+    "backend-final.log": "3fa90ee1f2435d8fe15e4f4194541479449884d443cea1b9ccdb839a0da57f1c",
+    "backend-focused-final-result.json": "3ccffa80b5f919d2bf6f179a50d593d410deb141ae575a8f2bdfc2a6c7971a6d",
+    "backend-focused-final.log": "d4680d428fbc1717b7e1eb978206f75c6c04edc96e4ca49cce58f498fc18a673",
+    "backend-focused-v2.log": "23125f7c33f0a1acd97c091260b5d30690a8e209aa7d2a951543b29bf6c1f5a1",
+    "backend-focused-v3.log": "1611414e9b9aab25dec65dd9c5359e7abb1da4e2ddfe460334f3bb57bb7b92a3",
+    "backend-isolated-result.json": "4019a7bcfffd3cba74f9d034560d00b22d3c87d79cdbcb34097907fd2a0e6f4e",
+    "backend-isolated.log": "a8b07ca097aac63dc00e296f49cb6240d232cdf0beca3bcdab9a949d632d0a2d",
+    "backend-qualified-result.json": "7721b6c8b3e9f0710ee4fcb745a3127b96d8a08284f5196cf045d70aefa6e54e",
+    "backend-qualified.log": "c7747f7792289bbd980860975a0c4413c636b7ae47f3f69d2f8ecd5ed6f0a8bd",
+    "backend-release-final-result.json": "0828044fc65641e4f005a533eef9313b2ce1f5e310b8ba268e929b0d4242b158",
+    "backend-release-final.log": "9fbf81489fbe9cc2c8b23cda4f5949c7b4314a295d3a681504651953e24dd36f",
+    "backend-types-result.json": "bb615139868d0be1f00ab8643f074fca66740cbbfe2882525df8ac9e0dd3b9fe",
+    "backend-types-superseded.json": "057f94f7cf18bacbf710b9c40984db290609452616df24b6c7a06f918a61e207",
+    "backend-types.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline-budget-comparison-result.json": "3ccffa80b5f919d2bf6f179a50d593d410deb141ae575a8f2bdfc2a6c7971a6d",
+    "baseline-budget-comparison.log": "f5554f7f916ecdad44bdac46d3f69b836e7920dd33fc9222d3aaa9e9b295e638",
+    "baseline-overrides.log": "05d365fecea462fff1544aa611f10f8b75d8c3227658ebdcb06b017106a59331",
+    "baseline-timeout-comparison-result.json": "f569495112b1b72470ed80544db97cb43a38b796c935f5b77982e61a1c190a37",
+    "baseline-timeout-comparison.log": "fbc9facbdbd6dc18f22be38e9a9ec3e6ae3cf4d460edde74ba577187fe5682c6",
+    "build-impact.json": "da999717f22753ffed1e7f9262d55f9bf4dff2689b2d4141f53a3eae5d547a25",
+    "build-path-preparation.json": "d52660c0a2a5f4ed12515267f9a34b9061afa03e94254f9241448664d06c3274",
+    "circles-build-result.json": "796e65bdfed43c25bba791379f3c7b4af1ab6fe4188a8504d46d68846c950ad8",
+    "circles-build.log": "aaafb634512ffda78580c9e97edba6d091252ad812d265d85d804f12c6fc366d",
+    "consumer-focused-first.log": "799157f162322c9f59b252aabf65f8091b6b7435deb16c0daa3cb131e74d4489",
+    "consumer-route-final-result.json": "74da04f1ef13bfa2313d446ba4ec818826ef53ce5afa50d63759d63094e68bdc",
+    "consumer-route-final.log": "adc483dfac943e8f70ad763e2a5f697e7695bab3051809c1a2295983e30d93ce",
+    "consumer-ui-final-result.json": "6563a21ae9c311845130d0beeac262c3a0aa9659852f49cb3e57b64a51dfc9bf",
+    "consumer-ui-final.log": "2495e332ed74553789afb82b81dd047bb15d5d19244b40e5c904deddf833f882",
+    "consumer-ui-result.json": "96095db6d54340ee51ef4e690c0def75f8839fa6b62a3fa605aee8808b332524",
+    "consumer-ui.log": "8774b637facb630c536f801d97df8130010f9bcd9a1c9239b7899d9695173fe0",
+    "contact-authority-final-result.json": "3ccffa80b5f919d2bf6f179a50d593d410deb141ae575a8f2bdfc2a6c7971a6d",
+    "contact-authority-final.log": "9ead0650a87972ec9569d7660c2fafa07a0e21b99f51e82acbdc989bece9cebb",
+    "contact-authority-green-first-result.json": "3ccffa80b5f919d2bf6f179a50d593d410deb141ae575a8f2bdfc2a6c7971a6d",
+    "contact-authority-green-first.log": "3b89ca0e9cac2f974d346f28836c8dca95665f17d5eb27907d3bda2903a333aa",
+    "contact-authority-red-result.json": "f569495112b1b72470ed80544db97cb43a38b796c935f5b77982e61a1c190a37",
+    "contact-authority-red.log": "e565c53c16beb7b80c911c30873200d408bde8278bf46f0eb1106012816afcc7",
+    "dependency-audit-result.json": "32f9cf02f5a34bfb6555219c9d69df1c8e1e33e55881b63e508c3b5e74346129",
+    "dependency-audit-summary.json": "8cee9b6dccfd9753b270e8c2537808ba5b0cb4afc9937bb98576dc84cf5cfe96",
+    "dependency-audit.log": "3aa619650d7b2b9df6716027893fd6cb2ba0234c7947d628bcd697446be163e5",
+    "deployment-hold-result.json": "8e7718c2ff1b6f2f6ad6d754f6fb35fc1f8f612de9f0fdd248109f70f9ecf70a",
+    "deployment-hold.log": "baa8820a36f49ee5c30290dcf2f10f9195e63d56d9a65d72dfecbc1bf247d577",
+    "dziri-build-result.json": "195eefde1790c60cbdc68418276ea821310b4f29b11c0f28539b1002150e9713",
+    "dziri-build.log": "3982d8a74943b81b1608c978758ce2e87ed682481e69554401c5e547561192af",
+    "dziri-business-build-result.json": "28bcf8614d0c2b67d01f5efffb456215dc79728c214fb081b119a68f7df56d10",
+    "dziri-business-build.log": "2c5c5fcabef901d25de9a65c1dff47344263008ead89b8ce0c8b275387f1b0d4",
+    "dziri-console-build-result.json": "2e1d4d1a2d708f961d34ab51a3997156d4f447ede1a1549357ef64b28d761eb5",
+    "dziri-console-build.log": "b0e392bb30082f9bc6393cc2470c8e835a1c9c243f0063dcd3454b59db702cbb",
+    "dziri-flexy-build-result.json": "4ce6b0e7d5fe5990b05890764c1ddd4f6f09f434afee3c71c3a86ce9248019af",
+    "dziri-flexy-build.log": "4cc342c7dd92826e8ce944abc342ccd792c5730d5910498497463436299c08ff",
+    "dziri-shop-build-result.json": "27b69da0af35e97327666c95c9b40fd7e5f2403e97e4197c89402558b78211b7",
+    "dziri-shop-build.log": "15a95c23d8194fa4290eefe7ffc4b577f9bcb4178616d0d803ff6ef47cca3710",
+    "endpoint-audit.json": "8db5f78d8d192e0c17d3447c8bb4298697c40c925d8a6dea7cb17d3d22801c0d",
+    "final-qualification-inputs.json": "dd095672210b58338538deba71aefc5c6ec4c053b6879d20ac06d17a33bef915",
+    "first.log": "bed535b10a8240767bb26fd11c825887b6e88a0ce6d783797bc7c661ec789277",
+    "id-build-result.json": "beb8eb31cebb7bdde7421c7b3ab09f6a6fe8d70b3675688f318f5a870f5935fe",
+    "id-build.log": "90445ec0ee4db3934234af09fdebfc45c3fd6c6daf38145314a3cc080450b745",
+    "native-android-export-result.json": "ac9beb565ccc753bfa3214876f084aed018abcf52ad25ef0c58995b2b2431a00",
+    "native-android-export.log": "61f5c39a651ea8a2946b1921e8fa0f0c8aeae8a0e751304076ae4c952fb80de8",
+    "native-changed-source-lint-result.json": "3ccffa80b5f919d2bf6f179a50d593d410deb141ae575a8f2bdfc2a6c7971a6d",
+    "native-changed-source-lint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-consistency-result.json": "4926692118df2811caf83786241ee57c1a5261083657fc85a2aa888250ecd15c",
+    "native-consistency.log": "630b7cb0387d13642f1a343fb43bd7c0f7604f6bf68ae6b0be1de0f0d4e4601c",
+    "native-dependency-audit-result.json": "f569495112b1b72470ed80544db97cb43a38b796c935f5b77982e61a1c190a37",
+    "native-dependency-audit.log": "5602c85d759ac91cc45c3af34b6357515bcba77c2d917390f3d3362e29dfcb3e",
+    "native-focused-first.log": "53c6f52477019c50363ca9691c6c757a85f621ec60d275dbb13c5e37d2206693",
+    "native-ios-export-result.json": "6dae6c245d46e71fe2a6523a2fe2bf354de8403bab53667a39e2fad2259ff770",
+    "native-ios-export.log": "17da2309bda082eeae3da5659951f63cc97315939b7f90b10fed379636693fb5",
+    "native-types-final-result.json": "3ccffa80b5f919d2bf6f179a50d593d410deb141ae575a8f2bdfc2a6c7971a6d",
+    "native-types-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-types-result.json": "b8cd700c5f7a5aea7521f076ba0a739615b323e80ecde7306023acab79ac7d36",
+    "native-types.log": "9be4e4aab5e1795a345b5bd9b042ca5479ab6c60027b4f2406bc6203895f5d66",
+    "native-ui-final-result.json": "9a792137ed8940a4dcffed4eb33b46bcc810c1ff8b18985a7fdfb99b35b9dd7a",
+    "native-ui-final.log": "63e84838178367cb2aa97c83347ad26f1fbff10566111b0fecea1333d8dc9f29",
+    "native-ui-result.json": "a6ae15f4f7165282c1aec3750839b317fc873897c333b91f47bbc8ea84db8e4a",
+    "native-ui.log": "d75bf24b0e81a7970d82c53a58d8758f59cdb663e4799c401477e6d82e152209",
+    "official-codegen-final-result.json": "771ab3f68224b9ddc81722f0b344c5ec6ddc195c6ae708d1d10ab8da031fd56e",
+    "official-codegen-final.log": "ed4d0ab2405a5eaff4bce36f8eaa16770bd83ea3619a53698056d594d5cc54a4",
+    "official-codegen-result.json": "885aef7d7d404efbd0085a0fb0504314b1188f4c29ae19e47ccb3edb505490be",
+    "official-codegen.log": "7304a6eb8269491d6e4b53ebe9226af3554fecbcef1294161b1ec3443e2bf073",
+    "preservation.json": "47eff607bdd99e373c826f1e62a697589a290573cbf65007a33dc18372c385bf",
+    "review-regressions-red-result.json": "f569495112b1b72470ed80544db97cb43a38b796c935f5b77982e61a1c190a37",
+    "review-regressions-red.log": "88d6100b71080debc81485ca5561f8bd14afac30d81d4b86f0872c05b3608fe9",
+    "review.md": "25a140bce1ba2906292f71ffa7595ecec68c3c33e54d556f20cdbeaa4c0e0730",
+    "route-first-dziri-build-result.json": "b77cb868b09567e02a6b5decf976acb75e6476b310d3728ad4aeea9e936d2c9f",
+    "route-first-dziri-build.log": "8ad451236326245361a8dc63012b6b609491fde96aade5b07accbe0a420573d1",
+    "route-null-green.log": "997a48c43a523dee5ef973a3810619e763a11cc7bba2e4c10ce17f66a528b9f3",
+    "route-null-red.log": "6bd4259113e3f712c19e384b0d1a150f46d05549e3ab82833fee02f75694b14b",
+    "timeout-repro-isolated-result.json": "f569495112b1b72470ed80544db97cb43a38b796c935f5b77982e61a1c190a37",
+    "timeout-repro-isolated.log": "3993841bf3c8448449b2f987f3a694ad6b26253671bea3280c0ea13b1bd8c020",
+    "timeout-stage-diagnostic-result.json": "3ccffa80b5f919d2bf6f179a50d593d410deb141ae575a8f2bdfc2a6c7971a6d",
+    "timeout-stage-diagnostic.log": "6e8c06b0fa97c0843ff9b6bbb706b937df5f211039e583cf7b6c9788e5422f92",
+    "timeout-stage-instrumented-result.json": "3ccffa80b5f919d2bf6f179a50d593d410deb141ae575a8f2bdfc2a6c7971a6d",
+    "timeout-stage-instrumented.log": "c65577ff1cbda24d013b00174b268861f0beda20e433a0580834453abb0465f0",
+    "timeout-stages.jsonl": "33d33dd608990bda633e7561f008ae0d2cb057bcb5fc52b053c91b1ccf3a4c3f",
+    "browser/arabic-mobile.png": "09e90b16d4929c865ab36804846f9d4a55b363aea305c19ab75116181d3155a0",
+    "browser/arabic-retry.png": "13922b6ed4ef54b4a74a774a8fdad19cdd149da72b3210462a1fdcae53d78fa8",
+    "browser/english-mobile-final.png": "5368fc37b5c4e8c2e450e19c5c742c21ffc524d098af5327747a19a710e7038f",
+    "browser/english-mobile.png": "7c7d76db546588276c9fd14a07d8131c1377b956fd846efa1db683145faf136e",
+    "browser/french-desktop-final.png": "7c0b2f0fd4da38ae75f34404bf846dcac5dacb3a9bf5769c1aedecca7b97fe64",
+    "browser/french-desktop.png": "85cc96f6183796b9397fae76ed3b71b9d6e8ebf2fd894dc21cc7050364d682ba",
+    "browser/observations.json": "a7a4fe0a4438e33f538f37f52f77e0fa283204b0511f51a64b259508de1d663b",
+    "browser-current/arabic-current.png": "7413273c25d8f2fb7e818801b68b843c18da2b5669a4dc25ad65622c0225def1",
+    "browser-current/observations.json": "04e8265fcf83add3c9c7b6caecba541d323dd08daf58922be3cfc53fc7ddd60e"
+  },
+  "preservation": {
+    "originalPaths": 316,
+    "originalSourcePreserved": true,
+    "originalIndexEmpty": true,
+    "concurrentPrimaryBridgeAndSchemaPreserved": true,
+    "staffAndUpstreamNativeLayoutsUnchanged": true,
+    "allOldBuildArtifactsPreserved": true,
+    "failures": []
+  },
+  "qualification": {
+    "focused": { "cases": 91, "files": 2 },
+    "backend": { "cases": 1764, "files": 106 },
+    "consumerUI": { "cases": 256, "files": 34 },
+    "standaloneUI": { "cases": 160, "files": 28 },
+    "officialCodegenAndTypes": {
+      "args": [
+        "node_modules/convex/bin/main.js",
+        "codegen",
+        "--typecheck",
+        "enable"
+      ],
+      "cwd": "E:\\CodexWorktrees\\messenger-master-integration-20261028\\tawasool-mmogram",
+      "startedAt": "2026-10-28T15:35:10.132Z",
+      "finishedAt": "2026-10-28T15:44:33.937Z",
+      "status": 0
+    },
+    "standaloneTypes": { "status": 0 },
+    "standaloneChangedSourceLint": { "status": 0 },
+    "normalWebBuilds": [
+      {
+        "app": "dziri",
+        "command": "npm run build",
+        "status": 0,
+        "compilerFilesRestored": true,
+        "startedAt": "2026-10-28T16:06:56.431Z",
+        "finishedAt": "2026-10-28T16:20:14.640Z",
+        "output": "D:\\codex-artifacts\\dziri-support-service-20261028\\dziri-next",
+        "deployed": false,
+        "sourceConfigs": [
+          {
+            "name": "tsconfig.json",
+            "sha256": "c7d462468d820bbe96b909e40061fc5c8e1feede0ba9bac7ea53f00c168bb130"
+          },
+          {
+            "name": "next-env.d.ts",
+            "sha256": "be500b66dcfc04983b70a746d22c3dfce7db24e50edf32a594cedaae16dfe5ed"
+          }
+        ]
+      },
+      {
+        "app": "dziri-business",
+        "command": "npm run build",
+        "status": 0,
+        "compilerFilesRestored": true,
+        "startedAt": "2026-10-28T16:20:14.677Z",
+        "finishedAt": "2026-10-28T16:26:22.524Z",
+        "output": "D:\\codex-artifacts\\dziri-support-service-20261028\\dziri-business-next",
+        "deployed": false,
+        "sourceConfigs": [
+          {
+            "name": "tsconfig.json",
+            "sha256": "7184d65dcc49d2769b6d0cac81fc47f52f2c04cc7a13cd321e690f35423238f3"
+          },
+          {
+            "name": "next-env.d.ts",
+            "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+          }
+        ]
+      },
+      {
+        "app": "dziri-console",
+        "command": "npm run build",
+        "status": 0,
+        "compilerFilesRestored": true,
+        "startedAt": "2026-10-28T16:26:22.573Z",
+        "finishedAt": "2026-10-28T16:30:40.015Z",
+        "output": "D:\\codex-artifacts\\dziri-support-service-20261028\\dziri-console-next",
+        "deployed": false,
+        "sourceConfigs": [
+          {
+            "name": "tsconfig.json",
+            "sha256": "74194ea2f5c90f837a8ff6ddf1103d3281eb69037afbe2cbed358688180b486e"
+          },
+          {
+            "name": "next-env.d.ts",
+            "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+          }
+        ]
+      },
+      {
+        "app": "dziri-shop",
+        "command": "npm run build",
+        "status": 0,
+        "compilerFilesRestored": true,
+        "startedAt": "2026-10-28T16:30:40.032Z",
+        "finishedAt": "2026-10-28T16:34:25.713Z",
+        "output": "D:\\codex-artifacts\\dziri-support-service-20261028\\dziri-shop-next",
+        "deployed": false,
+        "sourceConfigs": [
+          {
+            "name": "tsconfig.json",
+            "sha256": "fd53d1c7362e9e74a5b1399cf7028e10bde35aa77e34fa2daaed4515aba4330e"
+          },
+          {
+            "name": "next-env.d.ts",
+            "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+          }
+        ]
+      },
+      {
+        "app": "circles",
+        "command": "npm run build",
+        "status": 0,
+        "compilerFilesRestored": true,
+        "startedAt": "2026-10-28T16:34:25.733Z",
+        "finishedAt": "2026-10-28T16:34:40.684Z",
+        "output": "D:\\codex-artifacts\\dziri-support-service-20261028\\circles-next",
+        "deployed": false,
+        "sourceConfigs": [
+          {
+            "name": "tsconfig.json",
+            "sha256": "ed7e3efd98a97cc68e8c54821a69d51680aa2f46785b73af6503d10f75289236"
+          },
+          {
+            "name": "next-env.d.ts",
+            "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+          }
+        ]
+      },
+      {
+        "app": "id",
+        "command": "npm run build",
+        "status": 0,
+        "compilerFilesRestored": true,
+        "startedAt": "2026-10-28T16:34:40.688Z",
+        "finishedAt": "2026-10-28T16:38:01.789Z",
+        "output": "D:\\codex-artifacts\\dziri-support-service-20261028\\id-next",
+        "deployed": false,
+        "sourceConfigs": [
+          {
+            "name": "tsconfig.json",
+            "sha256": "ed7e3efd98a97cc68e8c54821a69d51680aa2f46785b73af6503d10f75289236"
+          },
+          {
+            "name": "next-env.d.ts",
+            "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+          }
+        ]
+      },
+      {
+        "app": "dziri-flexy",
+        "command": "npm run build",
+        "status": 0,
+        "compilerFilesRestored": true,
+        "startedAt": "2026-10-28T16:38:01.795Z",
+        "finishedAt": "2026-10-28T16:42:02.133Z",
+        "output": "D:\\codex-artifacts\\dziri-support-service-20261028\\dziri-flexy-next",
+        "deployed": false,
+        "sourceConfigs": [
+          {
+            "name": "tsconfig.json",
+            "sha256": "ed7e3efd98a97cc68e8c54821a69d51680aa2f46785b73af6503d10f75289236"
+          },
+          {
+            "name": "next-env.d.ts",
+            "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0"
+          }
+        ]
+      }
+    ],
+    "nativeExports": [
+      {
+        "args": [
+          "node_modules/expo/bin/cli",
+          "export",
+          "--platform",
+          "android",
+          "--output-dir",
+          "D:/codex-artifacts/dziri-support-service-20261028/native-android"
+        ],
+        "status": 0,
+        "startedAt": "2026-10-28T15:22:45.573Z",
+        "finishedAt": "2026-10-28T15:24:13.549Z",
+        "deployed": false
+      },
+      {
+        "args": [
+          "node_modules/expo/bin/cli",
+          "export",
+          "--platform",
+          "ios",
+          "--output-dir",
+          "D:/codex-artifacts/dziri-support-service-20261028/native-ios"
+        ],
+        "status": 0,
+        "startedAt": "2026-10-28T15:24:13.551Z",
+        "finishedAt": "2026-10-28T15:24:34.855Z",
+        "deployed": false
+      }
+    ],
+    "endpointAudit": {
+      "references": 77,
+      "registered": 77,
+      "scope": "Existence/reviewed registration kind. Synthetic service/UI cases supplement argument/permission contracts; no live deployment claim."
+    },
+    "browser": {
+      "scope": "Actual support components, current module CSS, unchanged Consumer fonts/global CSS; synthetic data and callbacks only",
+      "consoleWarningsOrErrors": 0,
+      "physical": false
+    },
+    "backendSetupBudget": "15 seconds for cold fixture setup; prior source reproduces default-5-second timeout. No assertion/logging/worker relaxation.",
+    "reviewRegressions": "Two consent-limit/deletion-batch failures and four block/family/legacy-contact failures reproduced and fixed. The nullable route failure was reproduced and fixed; other earlier test/config/type failures remain in evidence.",
+    "deploymentHoldChecks": 8,
+    "dependencyAudit": {
+      "at": "2026-10-28T15:43:18.161Z",
+      "platform": {
+        "counts": {
+          "info": 0,
+          "low": 18,
+          "moderate": 62,
+          "high": 23,
+          "critical": 2,
+          "total": 105
+        },
+        "critical": [
+          {
+            "name": "dompurify",
+            "direct": false,
+            "nodes": ["node_modules/dompurify"],
+            "fixAvailable": true,
+            "advisories": [
+              {
+                "title": "DOMPurify: Permanent `ALLOWED_ATTR` pollution via `setConfig()` bypassing the hook clone-guard (incomplete fix of the 3.4.7 hook-pollution patch)",
+                "url": "https://github.com/advisories/GHSA-cmwh-pvxp-8882",
+                "range": "<=3.4.10"
+              },
+              {
+                "title": "DOMPurify: Trusted Types policy survives `clearConfig()` and can poison later `RETURN_TRUSTED_TYPE` output",
+                "url": "https://github.com/advisories/GHSA-vxr8-fq34-vvx9",
+                "range": "<3.4.9"
+              },
+              {
+                "title": "DOMPurify: IN_PLACE hook removal leaves a detached subtree executable, causing XSS",
+                "url": "https://github.com/advisories/GHSA-55q2-fjhq-7xh7",
+                "range": "<=3.4.12"
+              },
+              {
+                "title": "DOMPurify: `CUSTOM_ELEMENT_HANDLING` bypasses `afterSanitizeElements` for allowed custom elements.",
+                "url": "https://github.com/advisories/GHSA-c2j3-45gr-mqc4",
+                "range": "<=3.4.11"
+              },
+              {
+                "title": "DOMPurify: IN_PLACE returns a force-removed rawtext root whose text carries attacker markup — pure HTML reparse executes",
+                "url": "https://github.com/advisories/GHSA-6688-9rhm-gjv2",
+                "range": "<=3.4.15"
+              },
+              {
+                "title": "DOMPurify SAFE_FOR_TEMPLATES bypass: split template expressions survive in attached shadow root content on DOM output modes",
+                "url": "https://github.com/advisories/GHSA-cg2g-xh64-v4q7",
+                "range": ">=3.4.4 <=3.4.16"
+              },
+              {
+                "title": "DOMPurify IN_PLACE: hook that removes a parent or sibling leaves the detached subtree's event handlers armed (incomplete fix for GHSA-p98j-92pf-mc4p)",
+                "url": "https://github.com/advisories/GHSA-mrv2-3pqr-j5jr",
+                "range": "<=3.4.16"
+              },
+              {
+                "title": "DOMPurify: SMIL attributeName=href guard is skipped when PARSER_MEDIA_TYPE is application/xhtml+xml",
+                "url": "https://github.com/advisories/GHSA-c6gr-qvv4-5v3f",
+                "range": "<=3.4.16"
+              }
+            ]
+          },
+          {
+            "name": "next",
+            "direct": true,
+            "nodes": ["node_modules/next"],
+            "fixAvailable": {
+              "name": "next",
+              "version": "15.5.28",
+              "isSemVerMajor": false
+            },
+            "advisories": [
+              {
+                "title": "Next.js: Unauthenticated Remote Code Execution in Image Optimization API when SVG files are used",
+                "url": "https://github.com/advisories/GHSA-2464-fhr4-w9xw",
+                "range": ">=10.0.0 <=15.5.27"
+              },
+              {
+                "title": "Next.js: Denial of Service in App Router using Server Actions",
+                "url": "https://github.com/advisories/GHSA-p3m5-59mp-jv5r",
+                "range": ">=13.0.0 <=15.5.27"
+              }
+            ]
+          }
+        ]
+      },
+      "standalone": {
+        "counts": {
+          "info": 0,
+          "low": 1,
+          "moderate": 3,
+          "high": 4,
+          "critical": 0
+        },
+        "high": [
+          {
+            "module": "image-size",
+            "title": "image-size: JXL and HEIF parsers allow denial of service through infinite loops",
+            "url": "https://github.com/advisories/GHSA-5p2g-fcmc-qvqq",
+            "vulnerable": ">=1.2.0 <=2.0.2",
+            "patched": ">=2.0.3"
+          },
+          {
+            "module": "image-size",
+            "title": "image-size: ICNS parser allows denial of service through an infinite loop",
+            "url": "https://github.com/advisories/GHSA-w3rx-r6r6-pgpr",
+            "vulnerable": ">=0.6.3 <=2.0.2",
+            "patched": ">=2.0.3"
+          },
+          {
+            "module": "node-forge",
+            "title": "node-forge RSA PKCS#1 v1.5 signature verification accepts extra nested DigestAlgorithm elements",
+            "url": "https://github.com/advisories/GHSA-86w9-cpqp-85rv",
+            "vulnerable": "<=1.4.0",
+            "patched": "<0.0.0"
+          },
+          {
+            "module": "zod",
+            "title": "Zod can exhaust memory while validating oversized constrained collections",
+            "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+            "vulnerable": "<4.6.6",
+            "patched": ">=4.6.6"
+          }
+        ]
+      },
+      "scope": "Current installed/locked dependency audit only. Reachability and compatible remediation remain open. No deploy or runtime-security acceptance; no dependency change or force update in this slice."
+    },
+    "physicalOrLiveAcceptance": false
+  },
+  "holds": {
+    "sourceBackupAuthorized": true,
+    "automaticDeploymentEnabled": false,
+    "manualDeployment": false,
+    "backendPublication": false,
+    "providerActivation": false,
+    "realMessagesOrModeration": false,
+    "personalPush": "hard-disabled",
+    "newAPK": false
+  },
+  "remaining": "Adapt disabled outbox worker, signed webhook/actor-specific canonical writers, native staff configure/status/launch, Marketplace support, exact receipt/private-note/privacy/remote cleanup contracts, then authorized interoperability. All original feature/security/client/device/recovery/release/APK gates remain open."
+}

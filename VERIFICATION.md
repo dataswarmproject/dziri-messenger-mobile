@@ -1,3 +1,100 @@
+## Physical Android installation — 26 October 2026
+
+Messenger built locally and installed on the connected OPPO CPH2687 running
+Android 16. Its signed-in Profile settings screen rendered real account details.
+The APK passed package, signature, arm64 architecture and bundled-code checks;
+Android vital lint passed. See [Android device test](docs/ANDROID_DEVICE_TEST.md)
+for native configuration, evidence boundaries and build details. The mobile
+launcher name is DM; its adaptive icon uses equal foreground insets around the
+intact approved ring asset. The phone accepted the update without uninstalling;
+a signed-in conversation was visible afterwards. The phone disconnected before
+the final launcher screenshot. Compiled label/icon checks and remaining visual
+and session-restoration limits are recorded with the device evidence.
+
+## Consumer and standalone Messenger — 26 October 2026
+
+Consumer's Messages and Marketplace routes now follow the standalone design.
+Both consume the versioned `packages/shared/src/messenger-design.json` contract:
+scoped CSS for Consumer and a hash-verified snapshot here. Core fonts/sizes,
+avatars, bubble radius, composer limits, colors and switches are connected.
+The inherited Rails Inbox runtime remains separate.
+
+All 39 standalone tests, typecheck, lint, runtime consistency and web/Android/iOS
+exports pass. The signed-in standalone preview retained its session and displayed
+the same latest conversation preview as Consumer. Consumer passed 32 focused UI
+tests and 11 existing backend permission tests. Browser checks covered live
+Friends/Marketplace/Staff lanes, a conversation, Settings, desktop/phone layouts,
+and Arabic RTL. No messages were sent or privacy switches changed by verification.
+English and the temporary browser viewport were restored. Consumer's production
+build result is recorded in the monorepo's dual-surface verification receipt.
+
+Consumer remains a local integration. The Android test installation above is
+development-signed; no website, backend, store or production release was made.
+
+## Settings, People, Discover and conversation details — 26 October 2026
+
+This continuation uses the previously inspected Figma Settings, People, New
+Message, Discover and Profile layers, with compact Consumer fonts, ink/rose
+colors and explicit RTL row ordering. Settings has source-sized profile/icon
+rows and a separate privacy screen backed by the existing shared preferences.
+People has a story action, canonical contacts/search, privacy-aware presence and
+non-sending conversation shortcuts. Existing DMs are reused. Discover reads the
+existing public store directory and actual commerce conversations; storefront
+and participant profile actions open their canonical Consumer routes.
+
+Latest user refinements: controls and selected tabs are monochrome; only read
+ticks retain rose. Scroll indicators are hidden while scrolling remains enabled.
+Settings uses a compact 36×20 switch with a 16px thumb and 44px hit target. Its web
+button supports Space/Enter and explicit aria-checked. Language and account details
+live in Profile settings. The latest request places Sign out directly on the main
+Settings screen as a full-width icon row below Discover; the header contains only Back.
+Password inputs have independent visibility buttons. Web sign-in now persists
+through refreshes in per-tab sessionStorage; native remains in SecureStore.
+
+38 client tests, TypeScript, lint, the ring/runtime consistency check and all
+web/Android/iOS exports passed. New tests cover contrast/neutral controls and
+session restoration/key-specific cleanup. Anonymous live probes returned eight
+active public stores and resolved a storefront. No backend change/deployment.
+
+Signed-in checks at 384/428 CSS px verified real contact/store lists, Arabic
+contact search, local group selection validation, details search/shared media,
+the unavailable-call notice, participant profiles, existing-DM navigation and
+in-app business profiles. Public Consumer store links encountered the launch
+page, so directory/profile navigation now stays inside Messenger using canonical
+readers. The business Message action binds the existing authenticated store
+conversation mutation; verification did not invoke that write.
+
+The actual web build survived a full refresh and restored the signed-in Chats
+screen. An isolated signed-out tab verified the password eye controls, including
+independent registration password/confirmation reveal. No account was created,
+Terms accepted, SMS requested or password changed. No message, reaction, group
+or store conversation was created. Theme/language changes for layout checks were
+restored. Browser measurements confirmed 36×20 switch tracks, 44×44 hit targets,
+RTL mirroring, no horizontal page overflow, and scrollbar-width/::-webkit-scrollbar
+both none on chat/picker scrollers. Scroll offset changed from 0 to 824 with
+indicators hidden. The inherited inverted-list wheel behavior is unchanged.
+
+Screenshots and source hashes are indexed in
+`docs/design/FIGMA_CONTINUATION_20261026.json`. Native device, call transport,
+story publication and two-account acceptance remain separate.
+
+The switch visibility revision passed all 39 tests, typecheck, lint, consistency
+and web/Android/iOS exports. The off track is now #737373 with a white thumb;
+a contrast regression test covers both states in both appearances at 3:1 or more.
+The signed-in browser confirmed the rendered colors and on/off operation. Light
+and dark screenshots were saved, and light mode was restored afterward.
+
+The unified Settings icons revision passed all 38 tests, typecheck, lint,
+runtime consistency and web/Android/iOS exports. Signed-in browser inspection
+confirmed matching 20px outline glyphs within 40px neutral circles, including
+the standard doorway/outward-arrow Sign out icon. Light and dark screenshots
+were saved; light mode was restored. The refreshed preview retained sign-in.
+
+The Sign out placement revision also passed the 38 tests, typecheck, lint and
+three platform exports. The signed-in preview confirmed the row below Discover,
+no duplicate in Profile settings, and Language retained there. The existing logout
+handler is reused; verification did not sign the user out.
+
 ## Consumer palette, aligned input and no focus ring — 25 October 2026
 
 Consumer's ink sent bubbles and theme-aware rose controls now replace Facebook
@@ -253,16 +350,16 @@ E2EE claim is shown. There is no direct consumer-to-Chatwoot write path.
 
 ## Checks executed and passed
 
-| Check | Actual result |
-| --- | --- |
-| Frozen offline pnpm installation | Passed from the checked lockfile after dependency updates |
-| `pnpm test` | 10/10 domain tests passed |
-| `pnpm run typecheck:consumer` | Passed for all active consumer modules and imported theme modules |
-| `pnpm run lint` | Passed, zero reported lint errors/warnings |
-| Mobile consistency guard with `--inbox-root` | Passed ring hashes, unchanged inherited layouts/fonts, consumer identifiers and matching theme |
-| Existing backend messaging regression suite | 6/6 passed using the actual current Dziri schema/functions and isolated `convex-test` identities |
-| `expo export --platform all --output-dir dist` | Web, Android Hermes and iOS Hermes bundles passed on final source/dependency state |
-| Browser at localhost:3903 | Correct unavailable state with no configured backend; English, French and Arabic language switching verified |
+| Check                                          | Actual result                                                                                                |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Frozen offline pnpm installation               | Passed from the checked lockfile after dependency updates                                                    |
+| `pnpm test`                                    | 10/10 domain tests passed                                                                                    |
+| `pnpm run typecheck:consumer`                  | Passed for all active consumer modules and imported theme modules                                            |
+| `pnpm run lint`                                | Passed, zero reported lint errors/warnings                                                                   |
+| Mobile consistency guard with `--inbox-root`   | Passed ring hashes, unchanged inherited layouts/fonts, consumer identifiers and matching theme               |
+| Existing backend messaging regression suite    | 6/6 passed using the actual current Dziri schema/functions and isolated `convex-test` identities             |
+| `expo export --platform all --output-dir dist` | Web, Android Hermes and iOS Hermes bundles passed on final source/dependency state                           |
+| Browser at localhost:3903                      | Correct unavailable state with no configured backend; English, French and Arabic language switching verified |
 
 The backend check uses `scripts/verify-dziri-backend.mjs <source-root>`. It runs
 the existing `tests/activation/thread-header.test.ts` suite without modifying or
@@ -289,14 +386,14 @@ an incompatible consumer dependency.
 
 Remaining findings:
 
-| Package/path | Scope and remaining work |
-| --- | --- |
-| `node-forge` via Expo CLI | High; audit reports no patched version for GHSA-86w9-cpqp-85rv |
-| `braces` via Metro file map/micromatch | High; audit reports no patched version for GHSA-vfj7-8cjw-p6xm |
-| `image-size` 1.2.1 via Metro | Two high findings; patched 2.x requires a separately verified Metro/API migration |
-| `uuid` 7 via Xcode config plugin | Moderate; patched 11.x requires compatibility review |
-| `decode-uri-component` via React Navigation/query-string | Moderate; patched 0.5.x requires compatibility review |
-| `postcss-selector-parser` 6 via Tailwind | Moderate; current finding requires the patched 7.x API line |
+| Package/path                                             | Scope and remaining work                                                          |
+| -------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `node-forge` via Expo CLI                                | High; audit reports no patched version for GHSA-86w9-cpqp-85rv                    |
+| `braces` via Metro file map/micromatch                   | High; audit reports no patched version for GHSA-vfj7-8cjw-p6xm                    |
+| `image-size` 1.2.1 via Metro                             | Two high findings; patched 2.x requires a separately verified Metro/API migration |
+| `uuid` 7 via Xcode config plugin                         | Moderate; patched 11.x requires compatibility review                              |
+| `decode-uri-component` via React Navigation/query-string | Moderate; patched 0.5.x requires compatibility review                             |
+| `postcss-selector-parser` 6 via Tailwind                 | Moderate; current finding requires the patched 7.x API line                       |
 
 Audit classifications and dependency paths are scoped evidence. They do not
 prove runtime reachability or a clean security posture. Details remain in

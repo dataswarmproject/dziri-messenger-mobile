@@ -3,6 +3,7 @@ import type { MessageMedia } from './media-preview';
 
 export function canSendText(thread: ThreadDetail): boolean {
   return (
+    thread.canSend !== false &&
     !thread.isFrozen &&
     thread.encryption !== 'e2ee' &&
     !(thread.isReadOnly && thread.myRole === 'subscriber')

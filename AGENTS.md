@@ -27,24 +27,31 @@
   existing authenticated functions; never add a client-supplied authorization userId.
 - The consumer runtime follows the inspected Messenger Figma reference recorded in
   `docs/design/FIGMA_MESSENGER_IMPLEMENTATION.md`, with Consumer fonts and Dziri
-  domain navigation. Its appearance tokens live in `src/dziri/figma.tsx`.
+  domain navigation. Its appearance tokens live in `src/dziri/colors.ts`;
+  source icon geometry lives in `src/dziri/figma.tsx`.
   The inherited staff runtime retains `config/dziri-theme.json`, shared with Inbox,
   and its original native spacing, geometry and typography.
 - Only use the ringed logo in `assets/dziri-ring.*`; do not mirror it for RTL.
-- Language selection is a globe menu and sign out an accessible icon in Settings
-  after login (the public header keeps its globe). Avoid repeated headings and
+- Sign out is a row on the main Settings screen; Language remains in Profile settings.
+  the main Settings header contains only Back (the public header keeps its globe).
+  Avoid repeated headings and
   language footers. Keep conversation sender names in the header, with avatars
-  beside bubbles. Place timestamp and receipt ticks together beneath each bubble;
-  tapping reveals reply/react actions in the same compact row.
-- Consumer colors override the reference's Facebook blue: sent bubbles use
-  Consumer ink and controls/read receipts use Consumer rose. Keep the input pill
+  beside bubbles. Use centered time markers at day/five-minute boundaries;
+  tapping reveals the compact individual time with receipt ticks and reply/react.
+  Never place an inline three-dot button beneath a message. Emoji-only text with
+  1–3 complete emoji clusters is bare and larger; voice messages use one pill.
+- Consumer colors override the reference's Facebook blue: use monochrome controls
+  and Consumer ink bubbles. Only read-receipt ticks retain their rose accent.
+  Hide scroll indicators without disabling scrolling. Keep the input pill
   free of focus rings. Arabic drafts follow their first strong letter even in
   EN/FR, while locale controls the interface's mirrored layout.
 - Custom messenger text uses Consumer's Inter/thmanyah Sans pairing through
   `src/dziri/typography.tsx`. Preserve the publisher OTF bytes/names/license.
   Reverse layout explicitly in Arabic; keep the layout root LTR to avoid double
   mirroring, and use the locale-aware Text/TextInput wrappers for text direction.
-- Keep tokens in SecureStore on native. Do not persist message bodies in ordinary
+- Keep tokens in SecureStore on native and namespaced sessionStorage on web so
+  browser refreshes retain sign-in for the current tab. Never store passwords.
+  Do not persist message bodies in ordinary
   AsyncStorage. Do not claim working E2EE based on a thread flag.
 - Run domain tests, changed-file lint, typecheck and bundling after changes.
   Record real-device and backend checks separately; fixtures are not live proof.

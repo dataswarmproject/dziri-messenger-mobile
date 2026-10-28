@@ -1,0 +1,162 @@
+{
+  "checkpoint": "exact-receipts-20261027",
+  "status": "canonical-contract-prepared-clients-not-activated",
+  "goal": "active",
+  "checks": {
+    "backend": 267,
+    "newExactReceiptCases": 27,
+    "suites": 23
+  },
+  "verification": {
+    "backendTypes": "passed",
+    "format": "passed",
+    "scopedWhitespace": "passed",
+    "buildImpact": "backend-only; no web/native runtime build required",
+    "fixtureScope": "Synthetic Convex transactions; no client viewability, deployed or physical proof"
+  },
+  "sourceHashes": {
+    "convex/schema.ts": "ec810d8a9938184404038dc580f041429ad8dbc07d87517b370ce4a4a63776fc",
+    "convex/messaging/receipts.ts": "d8cba308011d4eba17049cdaad580f8b9a57621fd6709343a058a696c976f768",
+    "convex/messaging/receiptEpoch.ts": "8b92eaeab642d4db3ca0cc330c2615ea784c410dd128903e69f62a4aed2fd4b7",
+    "convex/messaging/threads.ts": "d2c24f2e536339fb92528e78ec82e52fd0519eaf60973163f4db85c0cdcaa5ac",
+    "convex/messaging/requests.ts": "66b005ad4c57f07caf4eac9f5b9c2e191d0b15742f46258c1ff2b0668481ab0b",
+    "convex/workspace/salons.ts": "615c80ff90e97c8db078b9e89d7d9555464f7d0bd10ed226aa2bfcb50d481c3a",
+    "tests/activation/messenger-exact-receipts.test.ts": "9fbc67782964ec9a1acc5d9573f093396a7439eaf2da0b147c48f3e4b3ef2283"
+  },
+  "documentHashes": {
+    "exact-receipts-20261027.md": "6d42203f61d94575f681d69273d52c8d7cc48496172fbe522a75395a3293e7d6",
+    "remaining-goal.md": "e85ac143f50adcd4e1e754f0bcd1a99b8407d2e3784e9e82b7f2e118f981e1b6",
+    "todo.md": "dbd67d1084a9c8e0e7062c847214ae7ece0247444e719d92c808c45e8d759dfa"
+  },
+  "logs": {
+    "exact-receipts-all-verified.log": {
+      "sha256": "b98cbfe56f0d672282181cdc2a8d529ef3917ac21dbf581aa757ab263b57efda",
+      "bytes": 1035
+    },
+    "exact-receipts-types.log": {
+      "sha256": "69e01b7ca2fa44c24963e7c54254dcbd7639763d159d3a14c116023391a8658a",
+      "bytes": 107
+    },
+    "exact-receipts-format-verified.log": {
+      "sha256": "b8ec334652afa9b1ba7e5c5b54de13c4acccba963b3da25d4b039533947e6846",
+      "bytes": 175
+    },
+    "exact-receipts-whitespace.log": {
+      "sha256": "c152ab3f2b7a86a711353789f01d791d6db5f7a512064bcf4f9c0f47e75508ad",
+      "bytes": 351
+    },
+    "exact-receipts-red.log": {
+      "sha256": "13b564619a28bcf7e2dd19b229f7bb09363231a81b32806d0734844c375252dd",
+      "bytes": 16687
+    },
+    "exact-receipts-epochs-red.log": {
+      "sha256": "c01eee524b0fe82de7054ac7ed008c621c6b72eaf3cfe0d71568c69b79107b72",
+      "bytes": 3078
+    }
+  },
+  "impact": {
+    "scope": "Current backend exact-receipt contract delta; not a release-baseline comparison or deployment approval",
+    "changed": [
+      "convex/schema.ts",
+      "convex/messaging/receipts.ts",
+      "convex/messaging/receiptEpoch.ts",
+      "convex/messaging/threads.ts",
+      "convex/messaging/requests.ts",
+      "convex/workspace/salons.ts",
+      "tests/activation/messenger-exact-receipts.test.ts",
+      "tasks/messenger-meta-parity/exact-receipts-20261027.md",
+      "tasks/messenger-meta-parity/remaining-goal.md",
+      "tasks/messenger-meta-parity/todo.md"
+    ],
+    "projects": [
+      {
+        "app": "apps/dziri-business",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-console",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-shop",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/circles",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/id",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-flexy",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      }
+    ]
+  },
+  "contract": {
+    "acknowledge": "1..100 exact IDs; received content only; atomic foreign-ID validation; no cursor advance",
+    "readState": "Sender-only one-message consensus; no recipient identities/private timestamps returned",
+    "consent": "Public delivery plus read preference generation, distinct from private state/at",
+    "membership": "ID, joinedAt and monotonic receiptEpoch, including same-clock request acceptance and all rejoin paths",
+    "groupBound": 1024,
+    "unsupported": [
+      "channels",
+      "E2EE",
+      "larger-group consensus"
+    ],
+    "legacyEvidence": "Private legacy rows/cursors are never backfilled as public consent"
+  },
+  "optionalSchemaMetadata": [
+    "threadMembers.receiptEpoch",
+    "messageReceipts.membershipId",
+    "messageReceipts.membershipJoinedAt",
+    "messageReceipts.membershipEpoch",
+    "messageReceipts.publicDeliveredAt",
+    "messageReceipts.publicReadGeneration"
+  ],
+  "newTableOrIndex": false,
+  "dataMigration": false,
+  "boundaries": {
+    "schemaOrFunctionsPublished": false,
+    "gitPush": false,
+    "realCommunicationsOrAccountChanges": false,
+    "pushHardDisabled": true,
+    "providerConfiguredOrTokenMinted": false,
+    "physicalOrLiveTwoClientQualified": false,
+    "consumerProducerSwitched": false,
+    "standaloneProducerSwitched": false,
+    "exactPrivateUnreadIntegrated": false,
+    "exactUiCapabilityAdvertised": false,
+    "legacyPrefixEndpointsStillInUse": true,
+    "generatedApiReferencesRefreshed": false,
+    "secureEnrollmentQualified": false
+  },
+  "unchangedNativeArtifact": {
+    "recordedSourceHashesMatched": 18,
+    "receipt": "D:/codex-artifacts/dziri-story-flows-20261027/verification.json",
+    "sha256": "42da0c9cf908b7c84a78aee959cd29ccc2fc987e1318e866fb1f6caf0f5a26b8",
+    "newApkProduced": false,
+    "cloudMetadataNotRequeriedThisSlice": true
+  },
+  "requiredGates": [
+    "Exact private unread accounting without a hidden-message prefix or uncertain zero",
+    "Integrate both client producers/renderers with focus/viewability, retry and scope cancellation",
+    "Refresh generated API references through supported read-only codegen before integration freeze",
+    "Maximal-group performance and authorized two-client/native reconnect/revocation acceptance",
+    "Review optional metadata and conservative legacy-evidence transition before backend/client release",
+    "Family enrollment/age/guardian authority and remaining required safety gates"
+  ]
+}

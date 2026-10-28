@@ -1,0 +1,167 @@
+{
+  "checkpoint": "personal-scope-foundation-20261028",
+  "at": "2026-10-28T04:11:40.129Z",
+  "goal": "active; full original remaining-goal preserved",
+  "workspaces": {
+    "consumerBackend": {
+      "branch": "digitaltrendz/messenger-tabs",
+      "head": "0925f5310d6739542f4d0434a369864df48e9c78",
+      "dirtySourceHashesAreAuthoritative": true
+    },
+    "standalone": {
+      "branch": "digitaltrendz/consolidated-messenger",
+      "head": "7d4e8e5359de2df51c89acc7548cdeac1c00d439",
+      "dirtySourceHashesAreAuthoritative": true
+    }
+  },
+  "sources": {
+    "convex/schema.ts": "ff48a8fa219d27d3dbb7f4b6f270af6c80193e004180cf1b3817afa8f7c0848b",
+    "convex/messaging/sendScope.ts": "c8ce4fe7a501c273bffd127cc5778a687fe944c0593c82e8594b687f2ee73eed",
+    "convex/messaging/commandIdentity.ts": "b45d13b2f58c75b7dce97d0859b4b765267328cabf0bcc98683adc750d771e45",
+    "convex/messaging/messages.ts": "25d24e8184fce2097b43334dc6094cb90ce370a7d6ad4ee2ebc281d49f342833",
+    "convex/messaging/groups.ts": "0c318d920655d24c6e9500190717df04999b61680f927d78d52d96726fe35a89",
+    "convex/messaging/threads.ts": "2baadc4f2ab8aa5d3053fadf47f0e34dec0983771444d97c75cb74ff339ff514",
+    "convex/messaging/messenger.ts": "7a82679f0a4a4df4d1985d92291715b6ed9fbd2006cdbffc5721bedb4475980e",
+    "tests/activation/messenger-send-scope.test.ts": "9eaa7777725cb864171729e2f22d0581012a7269d4f1ecf5a52c7537c2d4f2c0"
+  },
+  "previousReceiptSha256": "7573b443e77c7d710f8324926336fe6cabfb3f6c4eaedb81fb37dc65f536c2b6",
+  "previousRecordedDraftAndNativeSourcesUnchanged": true,
+  "unchangedSourceCoverage": "Only the previous draft receipt source list; not all checkout files",
+  "logs": [
+    {
+      "key": "missing-contract-red",
+      "passed": false,
+      "sha256": "ef357680b2c81eb5939f48ea86c0d72202f186763349a58bfb8d0daef183f175"
+    },
+    {
+      "key": "focused-17",
+      "passed": true,
+      "sha256": "e3960a48177706fe00323538b726e12c56597faae5b32f57a597ccda46b7f97e"
+    },
+    {
+      "key": "backend-353",
+      "passed": true,
+      "sha256": "8d7723a1d915aa5081d8359080cc336dac5b9603be4e1885235eefdf078e9799"
+    },
+    {
+      "key": "initial-types-failed",
+      "passed": false,
+      "sha256": "8f55c26c8b0d702cad26368a43046e9800201ea667991dc8a6e5f74e117cb5d0"
+    },
+    {
+      "key": "backend-types",
+      "passed": true,
+      "sha256": "69e01b7ca2fa44c24963e7c54254dcbd7639763d159d3a14c116023391a8658a"
+    },
+    {
+      "key": "format",
+      "passed": true,
+      "sha256": "b8ec334652afa9b1ba7e5c5b54de13c4acccba963b3da25d4b039533947e6846"
+    },
+    {
+      "key": "diff",
+      "passed": true,
+      "sha256": "330cc3e79c277dc6cb234fb06860479b8a951088d1287b1c9f9475c124a574d4"
+    }
+  ],
+  "testSelection": [
+    "tests/activation/admin-account-state.test.ts",
+    "tests/activation/business-store-messages.test.ts",
+    "tests/activation/marketplace-messenger.test.ts",
+    "tests/activation/marketplace-reaction-inbox.test.ts",
+    "tests/activation/marketplace-receipt-authority.test.ts",
+    "tests/activation/marketplace-receipt-observation.test.ts",
+    "tests/activation/marketplace-send-scope.test.ts",
+    "tests/activation/messenger-continuation.test.ts",
+    "tests/activation/messenger-exact-receipts.test.ts",
+    "tests/activation/messenger-exact-unread.test.ts",
+    "tests/activation/messenger-family-contact.test.ts",
+    "tests/activation/messenger-group-controls.test.ts",
+    "tests/activation/messenger-interactions.test.ts",
+    "tests/activation/messenger-marketplace-unread.test.ts",
+    "tests/activation/messenger-privacy.test.ts",
+    "tests/activation/messenger-public-join-access.test.ts",
+    "tests/activation/messenger-public-presence.test.ts",
+    "tests/activation/messenger-receipt-audience.test.ts",
+    "tests/activation/messenger-receipt-client-scope.test.ts",
+    "tests/activation/messenger-receipt-privacy.test.ts",
+    "tests/activation/messenger-receipts.test.ts",
+    "tests/activation/messenger-reporting.test.ts",
+    "tests/activation/messenger-requests.test.ts",
+    "tests/activation/messenger-retry-intent.test.ts",
+    "tests/activation/messenger-safety.test.ts",
+    "tests/activation/messenger-send-scope.test.ts",
+    "tests/activation/messenger-stories-safety.test.ts",
+    "tests/activation/messenger-tabs.test.ts",
+    "tests/activation/messenger-unread-privacy.test.ts",
+    "tests/activation/workspace-message-access.test.ts"
+  ],
+  "testSourceHashes": {
+    "tests/activation/admin-account-state.test.ts": "ab909870e570233abfc23d64890b79589eaf3bc6380341a8430562c94cc64351",
+    "tests/activation/business-store-messages.test.ts": "68af79b75ebe17ba7dffe2cfadc1e6a2387d131149e26edc62b314652991aa29",
+    "tests/activation/marketplace-messenger.test.ts": "8f64a23c24ac6eb5a3032b662b542eaffaa198c79d3506d702c815ed33b379d3",
+    "tests/activation/marketplace-reaction-inbox.test.ts": "e0c71e5ea2255641b347acce4486bb7002374c770356a3fff77862e5863db89b",
+    "tests/activation/marketplace-receipt-authority.test.ts": "dc1c33086801b0dabb28bf7a0e3da64acc2f30f8da31934125d1cfae362c8774",
+    "tests/activation/marketplace-receipt-observation.test.ts": "f1d4c53a836144d5cb072cafb96aee7b48993ea87848e650b997a61463dc224c",
+    "tests/activation/marketplace-send-scope.test.ts": "2bd2fa953c27922fbe10f3168e9975770c6c62fa67b5d3c59143efdbfdb71151",
+    "tests/activation/messenger-continuation.test.ts": "986e908aaf747fd6be94467662adc84c14d2f25a3824811ff8324e5dbadbdf94",
+    "tests/activation/messenger-exact-receipts.test.ts": "3c4a372ef6638699ba4c6466d3ed0152e4bc86f7128872df7aa6d56ee6165aa0",
+    "tests/activation/messenger-exact-unread.test.ts": "8aec0e4073b73fd9dd0346b3e4e8b3dc1d6f61d1c161fb5bf05f33375e4cfd40",
+    "tests/activation/messenger-family-contact.test.ts": "04f752675ae1023133e7d40f004060644ca0fc78b9f1d32c654c3c3045cb0cfe",
+    "tests/activation/messenger-group-controls.test.ts": "e1971401a69c6f2d59495824d9ae372890b3dc6cac99120238d8ec4d008e3bc8",
+    "tests/activation/messenger-interactions.test.ts": "637e3331f2c57f890be34ccbec8e15b7798ed2abac509ae09cd7f53c7e113a63",
+    "tests/activation/messenger-marketplace-unread.test.ts": "b08dfd366335e9b951751a096757f3c72584bf5caeb105b8d955c0a0fd62faaf",
+    "tests/activation/messenger-privacy.test.ts": "4f7cb547588d529baa72cd520343babcc8b03cbb70912efc5e5b0dcc53fdd7bd",
+    "tests/activation/messenger-public-join-access.test.ts": "d2f7aa30b3879b8e09be35ea7461667f144567e262e323d5c1ca4d53a0c7cb64",
+    "tests/activation/messenger-public-presence.test.ts": "ac2dd1ba716ca2c3d2b082bda8852ef72067863f545a792fd8580e3a50fe19d8",
+    "tests/activation/messenger-receipt-audience.test.ts": "fab019fc6b5f52875b67c3b80bbad6b7f933b3c25985f2e09e0c3ee4426c1fbc",
+    "tests/activation/messenger-receipt-client-scope.test.ts": "951cd519aa2fae2495fa45a530c2dabaf531130c4b132de4ecaedc5c95cd1235",
+    "tests/activation/messenger-receipt-privacy.test.ts": "fb3085fbc540e03ac6c63107f2b3539372cf20080233f51f518a6c06b45a2415",
+    "tests/activation/messenger-receipts.test.ts": "0385c963fd960c2a0ecf7b1c54b078b25319dd3bf5f473643a84622966ede2e7",
+    "tests/activation/messenger-reporting.test.ts": "4e9c161bbf82f7512b7bc2ddca7366205b28a997182b85b0675537f1072ef934",
+    "tests/activation/messenger-requests.test.ts": "4fa592d4019e148c9b3bddd2991eee6d6a84d4505589953981b8d419baf5d62c",
+    "tests/activation/messenger-retry-intent.test.ts": "605501a852afa2e7f1b36400252a5cada1b8ef1602389bfec8c3c0ea11ca90bb",
+    "tests/activation/messenger-safety.test.ts": "b71584979e3f30ae71c116bba91d17ecdb2c7f6953e8e984ade7bc026c9d670e",
+    "tests/activation/messenger-send-scope.test.ts": "9eaa7777725cb864171729e2f22d0581012a7269d4f1ecf5a52c7537c2d4f2c0",
+    "tests/activation/messenger-stories-safety.test.ts": "e13bb5481e4e1ebe2fc12d1fd1bf290bd8606ee25254aaa9a346045864192025",
+    "tests/activation/messenger-tabs.test.ts": "1072eacb2eb397c3a577baf8dd4848c654e458ef419ea9d2c7b4e3c344975a5b",
+    "tests/activation/messenger-unread-privacy.test.ts": "cf8a8d1a18104e8246f216e220ed9071534de54c6d727c8d749c0b41ad0e01e3",
+    "tests/activation/workspace-message-access.test.ts": "9a6684f1f32b9b3bd42b87550bd9c74f14ac3436080f331db0a355d7b0af341b"
+  },
+  "checkpointSha256": "47b31474eb6e7b5b89db08ab164cf2415783ca60b7eaf4681142201d2250123c",
+  "checks": {
+    "dedicatedBackendCases": 17,
+    "backendCases": 353,
+    "backendFiles": 30,
+    "backendTypes": true,
+    "format": true,
+    "changedSourceWhitespace": true,
+    "terminalResultsRecordedByAgent": true,
+    "newFrontendBuilds": false,
+    "newNativeExports": false
+  },
+  "scope": {
+    "canonicalOptionalTextAndMediaContext": true,
+    "directAndMessengerProxy": true,
+    "authenticatedActorConstraint": true,
+    "durableMembershipRoleRevision": true,
+    "membershipJoinEpochAndRowIdentity": true,
+    "workspaceCompanyAndGrantRevision": true,
+    "guardBeforeAcknowledgementAndSideEffects": true,
+    "payloadIdempotencyPreserved": true,
+    "receiptEpochsPreservedOnRoleChange": true,
+    "clientProducerAdoption": false,
+    "personalSendCapabilityAdvertised": false,
+    "restoredNativeIntentQualified": false,
+    "legacyUnboundCallersQualified": false,
+    "storyReplyBindingQualified": false,
+    "allContactFamilyThreadPolicyReversalsQualified": false,
+    "liveTwoClient": false,
+    "physicalDevice": false,
+    "actualModerator": false,
+    "newApk": false,
+    "production": false,
+    "push": "hard-disabled"
+  },
+  "remainingGoal": "tasks/messenger-meta-parity/remaining-goal.md"
+}

@@ -1,5 +1,19 @@
 export type MessengerTab = 'friends' | 'marketplace' | 'staff';
 export interface MessengerCapabilities {
+  features?: {
+    exactReceipts?: number;
+    reactionInbox?: number;
+    marketplaceWriteScope?: number;
+    personalWriteScope?: number;
+    messageRequests?: number;
+    messageReporting?: number;
+    storyReplies?: number;
+    historyPages?: number;
+    forwarding?: number;
+    inboxOrganization?: number;
+    groupManagement?: number;
+    safety?: number;
+  };
   staff: boolean;
   marketplace: boolean;
   businesses: { id: string; name: string; role: string }[];

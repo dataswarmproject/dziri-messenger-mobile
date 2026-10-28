@@ -1,0 +1,47 @@
+# Family contact enforcement — local slice
+
+Current-state review found `blockStrangerDms` only in schema/defaults/get/update; no contact path reads it. The canonical contact model already treats people a recipient follows as trusted and uses active family membership. This slice enforces that existing choice in shared backend transactions, so Consumer and standalone cannot disagree or bypass it through old threads, replies, media, reactions, invitations or signaling.
+
+## Contract and boundaries
+
+- For each participant with an active child membership and stranger-DM blocking enabled, the peer must be an active member of the same family or someone the protected participant currently follows. A stranger following the child is not sufficient. Mere conversation membership, a legacy accepted DM or a request acceptance does not override this control. Both directions and both participants are checked.
+- Unknown/ambiguous family authority fails closed. Active membership reads must use a bounded indexed lookup; retired rows cannot hide active restrictions. Removing a relationship or changing the parent setting takes effect on the next canonical operation. Existing history/report access remains available; no message history is deleted.
+- Direct-contact availability, typing and presence expose no protected contact state to an unauthorized peer. Existing request, block, membership, moderation, file-sharing and keyword policies remain in force. Cleanup/decline/report paths must remain usable.
+- Call changes concern signaling authorization only. They do not establish media transport, configure providers, activate push or qualify background calls. Unsupported group contact-policy evaluation must not silently bypass a protected participant's call rule.
+- This does not add a family enrollment or age-verification flow. The existing `families.addChild` endpoint trusts a caller-supplied birth date and upstream UI verification. That authority/consent design remains a required release blocker for family qualification and must not be called production verified. Existing bedtime/school/prayer/screen-limit behavior and post-unlock receipt privacy need their own acceptance; this slice is not all of S08.
+
+Only synthetic accounts, families, grants and messages are authorized in verification. No real parent/child settings, communications, roles or family relationships will be changed. Source/index publication remains held. Keep personal push hard-disabled and preserve all prior receipts and native packages.
+
+## Implemented locally
+
+- `familyContact.ts` checks both participants' current controls. Trust comes from an active same-family member or the protected participant's own outgoing follow. Inbound follows, existing DM membership and accepted requests do not override the parent setting. Missing policy/family authority and multiple active family memberships fail closed.
+- `familyMembers.by_user_removedAt` supports bounded current-member lookups. Existing rows need no data rewrite; retired memberships cannot hide active restrictions. The child-policy reader and parent update reuse that lookup. A suspended/inactive parent cannot read or relax a child's settings.
+- `contactPolicy.ts` and `groupPolicy.ts` apply the shared decision to legacy/new personal messaging, canonical retries, media/ciphertext, edit/reaction, Story replies, request acceptance and new group invitations. Ordinary blocked-contact history and reporting APIs remain available. This is contact-policy enforcement, not a claim that opaque encrypted content is moderated or that full family enrollment is safe.
+- `presence.ts` hides activity for unauthorized protected contacts and inactive viewers/subjects. Typing and thread availability already read the shared contact gate. Both existing UI producers consume canonical `canSend`; no Consumer or standalone UI change was needed. Consumer's message page and native `message-policy.ts` both honor `canSend === false`.
+- `callPolicy.ts` authorizes signaling creation/acceptance, current ringing/active metadata and recording-consent writes. The existing token action obtains its prerequisite through the guarded `getCall` query. Voice/video settings apply to both parties; screen-share signaling uses the video rule. Contacts-only calls remain restricted even when stranger DMs are explicitly allowed. Business role downgrade, suspended accounts, frozen/archived threads and pending requests cannot preserve a join prerequisite. Decline/leave cleanup stays available to an existing participant.
+- Protected contacts/family-only group-call policy without a qualified peer context fails closed. Full group-call relationship evaluation and media transport remain unqualified. No provider was configured or queried for availability, no token was minted, and no notification permission/registration occurred. Call comments now accurately distinguish signaling records and optional join tokens from actual media; legacy `active`/`connectedAt` fields are not connected-call evidence.
+
+## Verification
+
+Final backend run: **199 passing checks across 19 suites**, including **25 new family-contact cases**. Existing requests/reporting, retry integrity, privacy/receipts, groups, workspace revocation, Marketplace, Studio and customer-timeline suites pass. These are local synthetic transactions, not live accounts or physical-device tests.
+
+- RED `.codex/family-contact-red.log`: 11 reproduced failures for direct sends, relation direction, UI query availability, media/actions, retry/revocation, retired rows, Story/request paths, typing/presence, invitations and calls.
+- Additional RED `.codex/family-contact-expanded-red.log`: separate contacts-only call policy and suspended-parent control access failed before correction. `.codex/family-contact-presence-red.log` reproduced inactive-viewer presence exposure. `.codex/family-contact-call-role-red.log` reproduced a business viewer retaining a call join prerequisite. The token-action test rejects at `getCall` before provider variables or SDK minting are reached.
+- GREEN `.codex/family-contact-all-verified.log`: 199/199. Smaller intermediate runs are not counted again. Full backend TypeScript and formatting checks passed; frozen source/test hashes and final logs are recorded in `family-contact-verification.json`. A final test-file formatting cleanup changed no behavior.
+- `.codex/family-contact-impact.json` uses the repository's actual impact function and reports no app/runtime/dependency rebuild for all seven declared Dziri web projects. This is a local-delta analysis, not a deployed-baseline comparison or release authorization. No rebuild policy/budget changed, and no unnecessary frontend/native build or new APK was produced.
+
+No layout/font/RTL/branding/staff code changed. The previous private Story-flow APK remains the current standalone package. These server changes require a reviewed backend/index release before either installed client receives them. No schema publication, Git push, real communications, family/account updates, moderator actions or provider activation occurred.
+
+## Register delta and still-required work
+
+| Audit/plan item | Local status | Required acceptance |
+| --- | --- | --- |
+| S08 — family/teen safeguards | Current stranger-contact choice and call rules now enforced in canonical paths | Secure family enrollment/age authority, full time/prayer/screen-limit policy, Marketplace/family boundaries, guardian/age-out transitions and physical/two-account qualification |
+| I06 / M08 — requests and reporting | Acceptance cannot bypass current child controls; decline/report access preserved | Reviewed release and authorized independent moderator/account journeys |
+| C04 — typing/receipts/privacy | Current protected contact availability/typing/presence hidden consistently | Post-unlock receipt privacy and actual cross-client revocation/reconnect acceptance |
+| G / group invitations | Inviter and invited protected participant follow the same contact policy | Full group administration/ownership and multi-account/device acceptance |
+| K01 / K05 — calls | Signaling/token-read authorization checks current family/business scope | Qualified media, track controls, token expiry/revocation and actual call interruption. Already joined remote media is not evicted by these query guards; background incoming remains held with push |
+
+**Release blocker:** `families.addChild` currently authorizes the requesting parent against their own family, but trusts their supplied target account/birth date and an upstream UI KYC comment. It has no handler-enforced existing-account invitation acceptance or canonical verified-age/guardian proof. This slice does not legitimize that enrollment mechanism. A reviewed enrollment/consent/age-authority design and its implementation are required before full family safety can be accepted or this family-policy batch released. Do not add a new KYC provider, collect new sensitive identity data or change real family links to bypass this gate.
+
+Ambiguous/corrupt family records require reviewed repair; this pass performs no backfill or repair. Parent time-zone/schedule validation, post-unlock receipt privacy and encrypted-content/family-policy compatibility remain separate required checks. Historical audit statuses are unchanged; no parity percentage or S08 completion is claimed. The full goal remains active and push remains hard-disabled.

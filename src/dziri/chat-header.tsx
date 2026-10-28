@@ -1,8 +1,10 @@
+import { messengerMetrics as metrics } from './colors';
 import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { Image } from 'expo-image';
 import { Text } from './typography';
 import { FigmaButton } from './figma';
+import { IconButton } from './icons';
 import { useColors } from './ui';
 import { useLocale } from './locale';
 export function ChatHeader({
@@ -10,11 +12,13 @@ export function ChatHeader({
   image,
   back,
   details,
+  subtitle,
 }: {
   name: string;
   image?: string | null;
   back: () => void;
   details: () => void;
+  subtitle?: string;
 }) {
   const colors = useColors();
   const { t, rtl } = useLocale();
@@ -37,7 +41,7 @@ export function ChatHeader({
         <FigmaButton name="back" label={t.back} onPress={back} />
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={t.details}
+          accessibilityLabel={`${t.details}: ${name}`}
           onPress={details}
           style={{
             flex: 1,
@@ -64,21 +68,43 @@ export function ChatHeader({
           <View style={{ flex: 1, minWidth: 0 }}>
             <Text
               numberOfLines={1}
-              style={{ fontSize: 15, lineHeight: 21, fontWeight: '700', color: colors.text }}>
+              style={{
+                fontSize: metrics.message,
+                lineHeight: metrics.messageLine,
+                fontWeight: '700',
+                color: colors.text,
+              }}>
               {name}
             </Text>
             <Text
               numberOfLines={1}
-              style={{ fontSize: 13, lineHeight: 18, color: colors.secondary }}>
-              {t.app}
+              style={{
+                fontSize: metrics.preview,
+                lineHeight: metrics.previewLine,
+                color: colors.secondary,
+              }}>
+              {subtitle || t.app}
             </Text>
           </View>
         </Pressable>
-        <FigmaButton name="call" label={t.voiceCall} onPress={() => setCallInfo(value => !value)} />
+        <FigmaButton
+          compact
+          name="call"
+          label={t.voiceCall}
+          onPress={() => setCallInfo(value => !value)}
+        />
         <FigmaButton
           name="video"
+          compact
           label={t.videoCall}
           onPress={() => setCallInfo(value => !value)}
+        />
+        <IconButton
+          compact
+          name="info"
+          label={t.details}
+          color={colors.primary}
+          onPress={details}
         />
       </View>
       {callInfo ? (
@@ -87,7 +113,7 @@ export function ChatHeader({
           style={{
             paddingHorizontal: 16,
             paddingBottom: 12,
-            fontSize: 13,
+            fontSize: metrics.preview,
             color: colors.secondary,
           }}>
           {t.callUnavailable}

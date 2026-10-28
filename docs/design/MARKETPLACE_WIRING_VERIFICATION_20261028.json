@@ -1,0 +1,207 @@
+{
+  "checkpoint": "marketplace-wiring-20261028",
+  "at": "2026-10-28T01:47:19.327Z",
+  "goal": "active; full original remaining-goal retained",
+  "sources": {
+    "consumerBackend": {
+      "convex/marketplaceMessages.ts": "6071cdce7c3a1db9b2685e179ee0b0283bdd1747af90f992e62a38b6831c6f14",
+      "convex/lib/marketplaceReceiptObservation.ts": "a24b3ab8a0841dc1819073e8c94d68917a3d4aca1f78381a90e120cd84857fe4",
+      "convex/lib/marketplaceMessageViews.ts": "3c2717bf93f4ba1132c90a916735b322314e99c19cf496d67813253776e0f9d5",
+      "convex/lib/marketplaceConversationAccess.ts": "89008e82979ef22af99c56b07d4ca1a0a78d4719729f89d4854ec56960b0bea2",
+      "convex/lib/marketplaceAccess.ts": "138394b9ea5de1ddb2abd16d695548eca60622aa92e37a3b681ee2d772a95322",
+      "convex/lib/sourcingAuthority.ts": "5a669eb3664380372c3139a34f1b3efe7cbc863289f646c941f9ff9166bd4ee9",
+      "convex/messaging/commandIdentity.ts": "bcae6da93826af049970598f24065a2fdbeef8ddffbef28f79eb0e857d9ae26c",
+      "convex/companies.ts": "d1fc30331784bd3a2be2bb99a14babfe97f79b9b1f9bed7bcf9c562e46d30a8c",
+      "convex/superadmin/users.ts": "81c7cd109863a1600587055a445cdd273e761a09252f9493916a765bb2056d46",
+      "convex/superadmin/companies.ts": "8841454e981eec0021b7f5da4d6c0ea2efa6bbc41a86881b1301c589811145f2",
+      "convex/accountDeletion.ts": "75ca3d79298f87f9e9d40a489fb9e2d7c2a4059e7120b6b1dc66be5c7fc3c3e2",
+      "convex/core/id/cndp.ts": "c3ea526633b43eeab708307053694b02d57682649aac0f4afff5da9339d37e91",
+      "convex/schema.ts": "0634ce55bd33b76276f6f371d8f11e8983a5e2acf5e7ec4b8a1bbb527c286f5e",
+      "convex/_generated/api.d.ts": "2e18477a7c143b057e0dc51834d394beeea39e7a992512b9133226d7e8d924d4",
+      "convex/_generated/api.js": "f513058549831e85376f8d19cafaf2a4a770b6eb1b859fb371141f2c9dec0d70",
+      "packages/shared/src/messenger-receipts.ts": "b4967e1117ed6f69d7e0119e6c29ef7de96f9f33ef3fcac2f8835805a84bfbbb",
+      "apps/dziri/components/messaging/use-message-receipts.ts": "876afc151fa47e85fd4ffb048791d8e5a54b8eaec015445d821d9e62d4dcbc19",
+      "apps/dziri/app/(main)/marketplace/messages/[id]/page.tsx": "5910e1183f70c7167ae5ccc0a8a87c1fa58d29e4698e574843531855f8049b30",
+      "tests/activation/marketplace-receipt-authority.test.ts": "dc1c33086801b0dabb28bf7a0e3da64acc2f30f8da31934125d1cfae362c8774",
+      "tests/activation/marketplace-receipt-observation.test.ts": "f1d4c53a836144d5cb072cafb96aee7b48993ea87848e650b997a61463dc224c",
+      "tests/feed-ui/messenger-marketplace-receipts.test.tsx": "af6ca0749a349f3054f54009852ed8b6b9cbcab423fa24935798bc9744d30dee",
+      "tests/feed-ui/messenger-receipt-adapter.test.tsx": "1a1f59556bb4ea78d6dcd573824b2b1780cdf6b9f3de4908bbb1bbc1eedb8bbd"
+    },
+    "standalone": {
+      "src/dziri/commerce.tsx": "68654966a45094f15ae7f7e586cfb7df14a111102660e61ddda2c42c953ab104",
+      "src/dziri/api.ts": "a8827b62c429e9c269d95f52c215b46ed4d317a9221e9dc303795aa7e382b987",
+      "src/dziri/use-receipts.ts": "b206a86c8103a8d52939799d87fc921ededadbfdc9d4dd9194d59c23843d6699",
+      "src/dziri/message-list.tsx": "6a414c689fd5c23761f94a64586bc0708e6aa43e410f95c3a1a0962dd6133f56",
+      "src/dziri/message-receipts.generated.ts": "2f5e81e2ab4b62f383713849718010e7b1328c42ba980de9444e027f252d4681",
+      "src/messenger-policy.ts": "8e715ca2e3a49ade3dce0c37a376690b986841cc2e7eb4c643fa5c95ba43275c",
+      "docs/message-receipts-contract.json": "f5eae740a74573976214949e6682ca5383067849e8faac0c2c8b8b1912e74559",
+      "tests/exact-receipts.test.tsx": "e351d4221e9e5ec36315a93cf3f247110c6a56b81d856109205aeeac45a56b23",
+      "tests/commerce-receipts.test.tsx": "4f264edfe5d5d638d5e02954441e0481068c079dd93cad81b30e2205681615ca"
+    }
+  },
+  "logs": [
+    {
+      "key": "authority-red",
+      "sha256": "ff6e85faf094765613ae367d3246903eca666527c5f104f1ac151a92c230eea7",
+      "bytes": 9696,
+      "passed": false
+    },
+    {
+      "key": "transport-red",
+      "sha256": "902d20d70c27e76faebcb7aae83c40444dd007cceb5ef04ffb938bde473a9637",
+      "bytes": 4807,
+      "passed": false
+    },
+    {
+      "key": "native-own-side-red",
+      "sha256": "ead845f96eb86df2a6b34f3a7e795b8d6099f6ac89317063051208f46a02ddc4",
+      "bytes": 2246,
+      "passed": false
+    },
+    {
+      "key": "backend-380",
+      "sha256": "46cc7f85644372c638b2dfa2f612e4f8a5e8b19a47f700751fa24318909b5fac",
+      "bytes": 937,
+      "passed": true
+    },
+    {
+      "key": "consumer-ui-180",
+      "sha256": "be0c40fb4ffc437a0a2dcd07dafd44456f667ea0c6372ec92f2548ac11d655d8",
+      "bytes": 1029,
+      "passed": true
+    },
+    {
+      "key": "backend-types",
+      "sha256": "69e01b7ca2fa44c24963e7c54254dcbd7639763d159d3a14c116023391a8658a",
+      "bytes": 107,
+      "passed": true
+    },
+    {
+      "key": "changed-format",
+      "sha256": "b8ec334652afa9b1ba7e5c5b54de13c4acccba963b3da25d4b039533947e6846",
+      "bytes": 175,
+      "passed": true
+    },
+    {
+      "key": "first-consumer-build-missing-callback",
+      "sha256": "5d8e5bdafa24f9598b7a42825cbd80a73f58ee71aa908bdcaeba317580823663",
+      "bytes": 3168,
+      "passed": false
+    },
+    {
+      "key": "consumer-normal-build",
+      "sha256": "a917fc7dd3e33b7b0619983e5a2076c6439857154dbd130f6c58b792061a5060",
+      "bytes": 19744,
+      "passed": true
+    },
+    {
+      "key": "native-ui-99",
+      "sha256": "7aed61d99dd15374707b22a8a5391a1fb143f86689589525a6c7608d948498ed",
+      "bytes": 513,
+      "passed": true
+    },
+    {
+      "key": "native-domain-58",
+      "sha256": "5a7e9f23ef14cbea9c941e84edd696e11e51d80692cea6095c99045b882df18a",
+      "bytes": 11272,
+      "passed": true
+    },
+    {
+      "key": "native-types",
+      "sha256": "5384f2a14c05be4f2b39c8b01909e7d6704a744f60337e0b64aff1fc31251132",
+      "bytes": 308,
+      "passed": true
+    },
+    {
+      "key": "native-changed-lint",
+      "sha256": "452ec6ff5ff37bb7a3dc4fa51be86087161e118de7fc7ee0c09c262fb0f04b1e",
+      "bytes": 212,
+      "passed": true
+    },
+    {
+      "key": "native-consistency",
+      "sha256": "eb514f3f838bc19296c9f265f34e4ed61ae0d839f5e359abb2997c125647481e",
+      "bytes": 407,
+      "passed": true
+    },
+    {
+      "key": "native-all-platform-export",
+      "sha256": "65befb9505c27b439aa3fd90c20e4d51296628c16a7e9b3b2e58ef5ada4bb570",
+      "bytes": 12902,
+      "passed": true
+    }
+  ],
+  "nativeBundles": [
+    {
+      "file": "web/AppEntry-46487836dc9f5ab4135f84eff8369dda.js",
+      "sha256": "deae73917cd67de26bd00e998d942bcbd985aec798beca91f1ddeedbc2ed6e45"
+    },
+    {
+      "file": "ios/AppEntry-b0cde2d9f2a91beefeacc30243e72a11.hbc",
+      "sha256": "04667c850e93b7992d607dc03f5c50f7c88195392b7e1fa350ad57680d7342ca"
+    },
+    {
+      "file": "android/AppEntry-7a0858f388e0aaccb842553f6531b6a9.hbc",
+      "sha256": "ddd1f9da1fda3058fae6138a50a7caf5af2ef6361135f8abd5096e74ed20eb9b"
+    }
+  ],
+  "captures": {
+    "en-375-dark.png": "a973ec7c539d75e05a6714e4d616549e096ef96996aba2bc0dac97e83e3c9afc",
+    "ar-320-dark.png": "f8e2df7e4d2150ae3c2c67497ea2a7ea0660f861ef7b1840dcbc59bab0193757",
+    "fr-430-light.png": "91977b6475637eacd30b61fe0fdaa074c55c0426e5bdacb2eb8b498ea13c3491",
+    "browser-en.json": "732bde2fdda54e83d3094148eefba3ceef5af4933e16d1fa34843a43edd70d1d",
+    "browser-revoked.json": "231c26a736e16dda40d3981112d41730d4601abe988aacf07111f33868938054",
+    "browser-ar-restored.json": "4e017125e14fb644996a71ab0183b00f83099d5eb09dfb7846feed15f5275a1f",
+    "browser-sharing.json": "a7464556db4ad8869919b587fbe4cc5d8269473cb111bb4531bcd2c431f20353",
+    "browser-final-proof.json": "1c5c11c675692f226494af5e1912a41c60058e423da82b77655cc69e06a390da"
+  },
+  "checkpointSha256": "2c3b78eda4897a20419c080215690f7335f0770c03a4eaa18422f6e67a515f12",
+  "previousReceiptSha256": "fcec5c1ecda90d172099f5b842c03f6ffd0bf267bfd2508d6e37e692f1f16199",
+  "checks": {
+    "backendCases": 380,
+    "backendFiles": 32,
+    "authorityCases": 20,
+    "observationProjectionCases": 22,
+    "consumerUiCases": 180,
+    "consumerUiFiles": 29,
+    "nativeUiCases": 99,
+    "nativeUiFiles": 21,
+    "nativeDomainCases": 58,
+    "backendTypes": true,
+    "nativeTypes": true,
+    "nativeChangedLint": true,
+    "nativeConsistency": true,
+    "consumerNormalBuildPages": 270,
+    "compiledSourcesMatch": true,
+    "buildCompilerFilesRestored": true,
+    "nativeAllPlatformExport": true,
+    "canonicalNativeCopyMatches": true
+  },
+  "scope": {
+    "consumerAndStandaloneMarketplaceAdapters": true,
+    "legacyFallback": false,
+    "legacyApiStillCompatible": true,
+    "businessWebMarketplaceQualified": false,
+    "remainingLanesQualified": false,
+    "browserSyntheticOnly": true,
+    "componentWidths": [
+      320,
+      375,
+      430
+    ],
+    "actualPhoneViewport": false,
+    "actualTwoClient": false,
+    "physicalDevice": false,
+    "newApk": false,
+    "production": false,
+    "apiGenerationQualified": false,
+    "push": "hard-disabled",
+    "liveCommunicationsOrAccountWrites": false
+  },
+  "remainingGoal": "tasks/messenger-meta-parity/remaining-goal.md",
+  "next": [
+    "Business web Marketplace company-scoped transport and shared DOM hook",
+    "Bounded reaction-notification and remaining lane private-read cleanup",
+    "Full original authorization, actual client/device, privacy/recovery and release gates"
+  ]
+}

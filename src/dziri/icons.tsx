@@ -3,6 +3,19 @@ import { ActivityIndicator, Pressable } from 'react-native';
 import { Image } from 'expo-image';
 import { useLocale } from './locale';
 const sources = {
+  file: require('../../assets/icons/file.svg'),
+  link: require('../../assets/icons/link.svg'),
+  play: require('../../assets/icons/play.svg'),
+  pause: require('../../assets/icons/pause.svg'),
+  pin: require('../../assets/icons/pin.svg'),
+  menu: require('../../assets/icons/menu.svg'),
+  addCircle: require('../../assets/icons/add-circle.svg'),
+  more: require('../../assets/icons/more.svg'),
+  copy: require('../../assets/icons/copy.svg'),
+  edit: require('../../assets/icons/edit.svg'),
+  trash: require('../../assets/icons/trash.svg'),
+  eye: require('../../assets/icons/eye.svg'),
+  eyeOff: require('../../assets/icons/eye-off.svg'),
   globe: require('../../assets/icons/globe.svg'),
   logout: require('../../assets/icons/logout.svg'),
   search: require('../../assets/icons/search.svg'),
@@ -40,6 +53,7 @@ export function IconButton({
   busy = false,
   disabled = false,
   expanded,
+  compact = false,
 }: {
   name: IconName;
   label: string;
@@ -48,6 +62,7 @@ export function IconButton({
   busy?: boolean;
   disabled?: boolean;
   expanded?: boolean;
+  compact?: boolean;
 }) {
   return (
     <Pressable
@@ -56,8 +71,9 @@ export function IconButton({
       accessibilityState={{ disabled: busy || disabled, expanded }}
       disabled={busy || disabled}
       onPress={onPress}
+      hitSlop={compact ? 6 : undefined}
       style={({ pressed }) => ({
-        width: 44,
+        width: compact ? 32 : 44,
         height: 44,
         borderRadius: 12,
         alignItems: 'center',

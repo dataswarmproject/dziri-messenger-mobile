@@ -17,6 +17,7 @@ import { useLocale } from './locale';
 import { authRequest, authErrorReason, type AuthFlow } from './auth-request';
 import { dziriApi } from './api';
 import { IconButton } from './icons';
+import { PasswordInput } from './password-input';
 
 export function SignUpCompletion({
   complete,
@@ -189,6 +190,8 @@ export function SignInScreen({
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={{ flex: 1, backgroundColor: colors.background }}>
       <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
           flexGrow: 1,
@@ -262,14 +265,14 @@ export function SignInScreen({
           ) : null}
           {flow !== 'reset' ? (
             <>
-              <TextInput
+              <PasswordInput
+                key={flow}
                 value={password}
                 onChangeText={setPassword}
                 placeholder={verify ? t.newPassword : t.password}
                 accessibilityLabel={verify ? t.newPassword : t.password}
                 autoCapitalize="none"
                 autoCorrect={false}
-                secureTextEntry
                 autoComplete={flow === 'signIn' ? 'current-password' : 'new-password'}
                 textContentType={flow === 'signIn' ? 'password' : 'newPassword'}
                 editable={!busy}
@@ -284,14 +287,14 @@ export function SignInScreen({
                   <Text style={{ color: colors.secondary, textAlign: rtl ? 'right' : 'left' }}>
                     {t.authLengthError}
                   </Text>
-                  <TextInput
+                  <PasswordInput
+                    key={flow}
                     value={confirmation}
                     onChangeText={setConfirmation}
                     placeholder={t.confirmPassword}
                     accessibilityLabel={t.confirmPassword}
                     autoCapitalize="none"
                     autoCorrect={false}
-                    secureTextEntry
                     autoComplete="new-password"
                     textContentType="newPassword"
                     editable={!busy}
@@ -327,7 +330,7 @@ export function SignInScreen({
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                  <Text style={{ color: '#fff' }}>{agreed ? '✓' : ''}</Text>
+                  <Text style={{ color: colors.onPrimary }}>{agreed ? '✓' : ''}</Text>
                 </View>
                 <Text style={{ flex: 1, color: colors.text, textAlign: rtl ? 'right' : 'left' }}>
                   {t.agreeTerms}
@@ -371,12 +374,12 @@ export function SignInScreen({
               { backgroundColor: colors.primary, minHeight: 48, paddingHorizontal: 12 },
             ]}>
             {busy ? (
-              <ActivityIndicator color="#ffffff" />
+              <ActivityIndicator color={colors.onPrimary} />
             ) : (
               <Text
                 style={[
                   tailwind.style('text-base font-medium text-white'),
-                  { textAlign: 'center' },
+                  { textAlign: 'center', color: colors.onPrimary },
                 ]}>
                 {primary}
               </Text>

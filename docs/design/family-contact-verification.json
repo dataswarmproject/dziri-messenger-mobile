@@ -1,0 +1,151 @@
+{
+  "checkpoint": "family-contact-20261027",
+  "status": "implemented-locally-not-released",
+  "goal": "active",
+  "checks": {
+    "backend": 199,
+    "newFamilyCases": 25,
+    "suites": 19
+  },
+  "verification": {
+    "backendTypes": "passed",
+    "format": "passed",
+    "scopedWhitespace": "passed",
+    "buildImpact": "backend-only; no web/native runtime build required"
+  },
+  "sourceHashes": {
+    "convex/schema.ts": "cbefb1d3acb1cdba4d282ec31451d122febc097960874d3feb146c97bf62fdba",
+    "convex/messaging/familyContact.ts": "4bdb6a2b8e02e918cd641d39895ce61d656091e2870b236b9f8581c76874a89b",
+    "convex/messaging/families.ts": "8867fb31dd5fad64610754d1e90511f53bf1e58fe5acbf7fae435932bd0dad36",
+    "convex/messaging/parentalControls.ts": "f4c502661befe5e64b80a81d778f02138af85e458d1247df08db3f4327ab4420",
+    "convex/messaging/callPolicy.ts": "6225f9d0709d8561543b2846e88f7a618336fea0b0635c615cdf59d6a26980cd",
+    "convex/messaging/calls.ts": "9770af4ee857325b043920fd5359528fc648dd3f9b23e2d92401b68843cc5434",
+    "convex/messaging/livekit.ts": "e290bfb73fcde8fcbb5879a52179d91160dc83d9453dc695deb2709810033f76",
+    "convex/messaging/presence.ts": "f5ce4da2eab6d07f4aec61e422ed60b488937ce050b88a42c2dab8d9a4fc0d03",
+    "convex/messaging/contactPolicy.ts": "e7004c760ea8c919352ebe143d1fb7c49c8fcedf9c430c642948a749836b4096",
+    "convex/messaging/groupPolicy.ts": "be7cac48f2cec4fe4f92f4aef1ec1f45960433aac579fec4233d90f843dd5e83",
+    "tests/activation/messenger-family-contact.test.ts": "04f752675ae1023133e7d40f004060644ca0fc78b9f1d32c654c3c3045cb0cfe"
+  },
+  "logs": {
+    "family-contact-all-verified.log": {
+      "sha256": "8d82f3c8b6fc0517b552b8a0ff8f4768b1dee74b30cef184905579b4fa898961",
+      "bytes": 1025
+    },
+    "family-contact-types.log": {
+      "sha256": "69e01b7ca2fa44c24963e7c54254dcbd7639763d159d3a14c116023391a8658a",
+      "bytes": 107
+    },
+    "family-contact-format-verified.log": {
+      "sha256": "b8ec334652afa9b1ba7e5c5b54de13c4acccba963b3da25d4b039533947e6846",
+      "bytes": 175
+    },
+    "family-contact-red.log": {
+      "sha256": "2535029cab1e67238fb1ff3dc34e613808e0b5670be6f5826b4b0751248f4a24",
+      "bytes": 10758
+    },
+    "family-contact-expanded-red.log": {
+      "sha256": "e6f97ce76d33da8f56d1e98dbe70fffe38ca74deaf462cf79d3ca3a0d58c308e",
+      "bytes": 3586
+    },
+    "family-contact-presence-red.log": {
+      "sha256": "a05ec0687a2960a2107013944ca26939c7a605329a13e3084ea12f447d076ce0",
+      "bytes": 2159
+    },
+    "family-contact-call-role-red.log": {
+      "sha256": "2b02294c43f4624a9035817663fbf5e6c05cafeb45416454aa6b7abc3b30255e",
+      "bytes": 2420
+    }
+  },
+  "impact": {
+    "scope": "Current backend family-contact delta; not a release-baseline comparison or deployment approval",
+    "changed": [
+      "convex/schema.ts",
+      "convex/messaging/familyContact.ts",
+      "convex/messaging/families.ts",
+      "convex/messaging/parentalControls.ts",
+      "convex/messaging/callPolicy.ts",
+      "convex/messaging/calls.ts",
+      "convex/messaging/livekit.ts",
+      "convex/messaging/presence.ts",
+      "convex/messaging/contactPolicy.ts",
+      "convex/messaging/groupPolicy.ts",
+      "tests/activation/messenger-family-contact.test.ts",
+      "tasks/messenger-meta-parity/family-contact-20261027.md"
+    ],
+    "projects": [
+      {
+        "app": "apps/dziri-business",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-console",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-shop",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/circles",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/id",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-flexy",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      }
+    ]
+  },
+  "wireContract": {
+    "consumer": "apps/dziri/app/(main)/messages/[threadId]/page.tsx honors thread.canSend",
+    "standalone": "src/dziri/message-policy.ts honors thread.canSend; typing uses same writable check",
+    "querySurfacesTested": [
+      "messaging/threads:getThread",
+      "messaging/messenger:thread"
+    ],
+    "history": "retained for normal restricted contacts"
+  },
+  "schemaChange": [
+    "familyMembers.by_user_removedAt index"
+  ],
+  "dataMigration": false,
+  "boundaries": {
+    "schemaOrFunctionsPublished": false,
+    "gitPush": false,
+    "realMessagesOrFamilyAccountChanges": false,
+    "pushHardDisabled": true,
+    "providerConfiguredOrTokenMinted": false,
+    "mediaConnectionQualified": false,
+    "physicalOrLiveTwoClientQualified": false,
+    "secureEnrollmentQualified": false,
+    "postUnlockReceiptsQualified": false
+  },
+  "unchangedNativeArtifact": {
+    "sourceFilesMatched": 18,
+    "receipt": "D:/codex-artifacts/dziri-story-flows-20261027/verification.json",
+    "sha256": "42da0c9cf908b7c84a78aee959cd29ccc2fc987e1318e866fb1f6caf0f5a26b8",
+    "newApkProduced": false,
+    "cloudMetadataNotRequeriedThisSlice": true
+  },
+  "requiredGates": [
+    "Secure existing-account enrollment and canonical age/guardian authority",
+    "Parent schedules/timezone/prayer/screen-limit and Marketplace boundaries",
+    "Post-unlock receipt privacy",
+    "Real multi-account/device revocation and qualified media transport",
+    "Reviewed source/index/backend release"
+  ]
+}

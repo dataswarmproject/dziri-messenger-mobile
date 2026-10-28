@@ -1,0 +1,332 @@
+{
+  "checkpoint": "business-receipts-20261028",
+  "at": "2026-10-28T02:23:40.956Z",
+  "goal": "active; full original remaining-goal preserved",
+  "sources": {
+    "packages/ui/package.json": "3a67e0e3a7c7c48917428e77bd6ebed0f451a55d23c6170857184c4ea7a296bb",
+    "packages/ui/src/messaging/use-message-receipts.ts": "6268417a8be84471fe957dd8bd6859b2b6eb3a141fc54e471e4775b95ae369ca",
+    "packages/shared/src/messenger-receipts.ts": "166221d0e59d27f2d8627c55db97828f6ab1683a8140650014153047944f586e",
+    "apps/dziri/components/messaging/use-message-receipts.ts": "addddce432923253284ba154a27fb135e4ecce6af3b5df6f6b1052b78933fae1",
+    "apps/dziri-business/app/[slug]/dashboard/marketplace/messages/[id]/page.tsx": "c98a6bc222db3b8700406a378d3d60c63684cb0e492afce3d6b8a6236d6e057e",
+    "tests/business-ui/workspace-messages.ui-test.ts": "339fee5e94242e2f5bdc75355d603b6f54698b5100b6c4a937f008d8bd5016a3",
+    "tests/business-ui.vitest.config.ts": "56924eec5c610717f09906c2b49bc24fb1f9a87ec2ecb841d3d82ad811fbaf22",
+    "tests/feed-ui/vitest.config.ts": "a047e4b067ae53884806c720f16d7596fed6ae27f9f70cc829596dac6437e9f2",
+    "tests/feed-ui/messenger-marketplace-receipts.test.tsx": "55b3a8cd97fe6e092a8e68320b71bec128c45d213c21f252b85eb5d25701a562"
+  },
+  "backend": {
+    "historicalCases": 380,
+    "rerun": false,
+    "recordedSources": [
+      {
+        "path": "convex/marketplaceMessages.ts",
+        "sha256": "6071cdce7c3a1db9b2685e179ee0b0283bdd1747af90f992e62a38b6831c6f14",
+        "unchanged": true
+      },
+      {
+        "path": "convex/lib/marketplaceReceiptObservation.ts",
+        "sha256": "a24b3ab8a0841dc1819073e8c94d68917a3d4aca1f78381a90e120cd84857fe4",
+        "unchanged": true
+      },
+      {
+        "path": "convex/lib/marketplaceMessageViews.ts",
+        "sha256": "3c2717bf93f4ba1132c90a916735b322314e99c19cf496d67813253776e0f9d5",
+        "unchanged": true
+      },
+      {
+        "path": "convex/lib/marketplaceConversationAccess.ts",
+        "sha256": "89008e82979ef22af99c56b07d4ca1a0a78d4719729f89d4854ec56960b0bea2",
+        "unchanged": true
+      },
+      {
+        "path": "convex/lib/marketplaceAccess.ts",
+        "sha256": "138394b9ea5de1ddb2abd16d695548eca60622aa92e37a3b681ee2d772a95322",
+        "unchanged": true
+      },
+      {
+        "path": "convex/lib/sourcingAuthority.ts",
+        "sha256": "5a669eb3664380372c3139a34f1b3efe7cbc863289f646c941f9ff9166bd4ee9",
+        "unchanged": true
+      },
+      {
+        "path": "convex/messaging/commandIdentity.ts",
+        "sha256": "bcae6da93826af049970598f24065a2fdbeef8ddffbef28f79eb0e857d9ae26c",
+        "unchanged": true
+      },
+      {
+        "path": "convex/companies.ts",
+        "sha256": "d1fc30331784bd3a2be2bb99a14babfe97f79b9b1f9bed7bcf9c562e46d30a8c",
+        "unchanged": true
+      },
+      {
+        "path": "convex/superadmin/users.ts",
+        "sha256": "81c7cd109863a1600587055a445cdd273e761a09252f9493916a765bb2056d46",
+        "unchanged": true
+      },
+      {
+        "path": "convex/superadmin/companies.ts",
+        "sha256": "8841454e981eec0021b7f5da4d6c0ea2efa6bbc41a86881b1301c589811145f2",
+        "unchanged": true
+      },
+      {
+        "path": "convex/accountDeletion.ts",
+        "sha256": "75ca3d79298f87f9e9d40a489fb9e2d7c2a4059e7120b6b1dc66be5c7fc3c3e2",
+        "unchanged": true
+      },
+      {
+        "path": "convex/core/id/cndp.ts",
+        "sha256": "c3ea526633b43eeab708307053694b02d57682649aac0f4afff5da9339d37e91",
+        "unchanged": true
+      },
+      {
+        "path": "convex/schema.ts",
+        "sha256": "0634ce55bd33b76276f6f371d8f11e8983a5e2acf5e7ec4b8a1bbb527c286f5e",
+        "unchanged": true
+      },
+      {
+        "path": "convex/_generated/api.d.ts",
+        "sha256": "2e18477a7c143b057e0dc51834d394beeea39e7a992512b9133226d7e8d924d4",
+        "unchanged": true
+      },
+      {
+        "path": "convex/_generated/api.js",
+        "sha256": "f513058549831e85376f8d19cafaf2a4a770b6eb1b859fb371141f2c9dec0d70",
+        "unchanged": true
+      }
+    ],
+    "unlistedSourcesCertified": false
+  },
+  "nativeHandwrittenUnchanged": [
+    {
+      "path": "src/dziri/commerce.tsx",
+      "unchanged": true
+    },
+    {
+      "path": "src/dziri/api.ts",
+      "unchanged": true
+    },
+    {
+      "path": "src/dziri/use-receipts.ts",
+      "unchanged": true
+    },
+    {
+      "path": "src/dziri/message-list.tsx",
+      "unchanged": true
+    },
+    {
+      "path": "src/messenger-policy.ts",
+      "unchanged": true
+    }
+  ],
+  "canonicalNativeCopy": {
+    "sourceSha256": "166221d0e59d27f2d8627c55db97828f6ab1683a8140650014153047944f586e",
+    "sha256": "b19d01e1066892a51745511e25353c35623ace7e15fe67a943bf2a3947adbcd7"
+  },
+  "logs": [
+    {
+      "key": "loaded-read-and-old-send-red",
+      "sha256": "1f3cb664513188bb3b386d8a10930087365e79fbc13781bbbac32e9cf82fec19",
+      "bytes": 8177,
+      "passed": false
+    },
+    {
+      "key": "company-transport-red",
+      "sha256": "347c987fd556936fb196cae2a11f23145f37ed16dee9b3325a13008403dc4749",
+      "bytes": 2797,
+      "passed": false
+    },
+    {
+      "key": "pending-viewer-red",
+      "sha256": "af1608138edf451112c4da2d6f609e566ab61e1a1e4bd061eaea024c6fe4e98e",
+      "bytes": 1964,
+      "passed": false
+    },
+    {
+      "key": "other-staff-side-red",
+      "sha256": "0539b63f095133eca232f553b63ce437845b883c19808ef3d755ce304f705a24",
+      "bytes": 1852,
+      "passed": false
+    },
+    {
+      "key": "business-ui-711",
+      "sha256": "ce35a9c8f88b5b1daf6f005618c38c5c6c19833ea6f60cff14c11137db95b23b",
+      "bytes": 949,
+      "passed": true
+    },
+    {
+      "key": "consumer-ui-182",
+      "sha256": "cb083a1a3415fb0268fd74dccec4ea06ab40e5aeea2bc2280871e6c1b0a5a9d4",
+      "bytes": 1029,
+      "passed": true
+    },
+    {
+      "key": "business-normal-build",
+      "sha256": "e15d621ba42598718a49a7617558fe70c5961ffcafe47194c63cfc48c0687ff2",
+      "bytes": 10079,
+      "passed": true
+    },
+    {
+      "key": "consumer-normal-build",
+      "sha256": "5dcf584ae8325928e275bc01d0be4dc8edb0cc26f5be972e6e7b70230da33362",
+      "bytes": 19933,
+      "passed": true
+    },
+    {
+      "key": "changed-format",
+      "sha256": "b8ec334652afa9b1ba7e5c5b54de13c4acccba963b3da25d4b039533947e6846",
+      "bytes": 175,
+      "passed": true
+    },
+    {
+      "key": "native-ui-99",
+      "sha256": "48048391d2ea3064b3f36576d5cab7f8e9451159350c255fa2f8578b55a98aa0",
+      "bytes": 513,
+      "passed": true
+    },
+    {
+      "key": "native-types",
+      "sha256": "5384f2a14c05be4f2b39c8b01909e7d6704a744f60337e0b64aff1fc31251132",
+      "bytes": 308,
+      "passed": true
+    },
+    {
+      "key": "native-domain-58",
+      "sha256": "0569b0ed0f1fd7f5d48642c651d683d45446e78f8aac2f781c5c739bbde8765a",
+      "bytes": 11270,
+      "passed": true
+    },
+    {
+      "key": "native-consistency",
+      "sha256": "eb514f3f838bc19296c9f265f34e4ed61ae0d839f5e359abb2997c125647481e",
+      "bytes": 407,
+      "passed": true
+    },
+    {
+      "key": "native-all-platform-export",
+      "sha256": "fbdcf6fbd634af4c5694786f4a85355b916b6234428a259b88510a5f90521cb7",
+      "bytes": 12222,
+      "passed": true
+    }
+  ],
+  "nativeBundles": [
+    {
+      "file": "web/AppEntry-24de06e6343e88c92709fa3508cab84f.js",
+      "sha256": "eb6888083ec8217d319404829a3fd3b9b2dd8391637ed39c03ce2d3ce664cdf7"
+    },
+    {
+      "file": "ios/AppEntry-7aed6ba0a69448fb9ad34e5470688066.hbc",
+      "sha256": "1fe8e6d5e94fbe46dae8c4334ab4e831d303f09bdc47239272317332ab5b35cd"
+    },
+    {
+      "file": "android/AppEntry-2130ea9bf57ab78bca8b3f4cfca592df.hbc",
+      "sha256": "ed3a86fa27d388c526d3781f575fc9991ee7e2c174fcc8031120da9fa1b848a3"
+    }
+  ],
+  "captures": {
+    "en-375-light.png": "1eab8662f72eaa0e5f0fe210788e59aac221296fd7ac82d94d131cb2f0f73f09",
+    "ar-320-dark.png": "a79274afaa561b8d0e956c080016cc29bc702bf9079db333ff45c4a46fd4fe80",
+    "fr-430-light.png": "14f11fcaeeb38f675c3a45ac32445e4b7d415b67795e1dfc2a943ab25c5ebf3f",
+    "browser-en.json": "ae4fed4f6576020282ba65c8549ce845499ccf75e77fe1652d0258f353afc84c",
+    "browser-pending-actor.json": "890a4fa82c3fde9cbc9ea3bdbfc9e7502c080c492b994d8dc9cfd1c27313651e",
+    "browser-ar-restored.json": "6e3348686ecc3a2be90e3a112b024bba84daf4421a5a965af21920b578d2778d",
+    "browser-revoked.json": "5b97b07b527c2aea4c5e1b806c02aab34656d04ce6c0dfaf38ca8679284a92b7",
+    "browser-final-proof.json": "2b5751712449c87ab3c8a3c30f65832d627639dbe56e8f86f32b08ee8820a916"
+  },
+  "checkpointSha256": "7c51f9f3cfd8de8fef211a402dd1364cc492561c611dc7939136923a0ccbc3bb",
+  "previousReceiptSha256": "2b3dc30f6c908105c6e9ee71baae4f66c249ffeec5fb1ea15e614717f40bc2d6",
+  "checks": {
+    "businessUiCases": 711,
+    "businessUiFiles": 79,
+    "focusedBusinessCases": 11,
+    "consumerUiCases": 182,
+    "consumerUiFiles": 29,
+    "nativeUiCases": 99,
+    "nativeUiFiles": 21,
+    "nativeDomainCases": 58,
+    "nativeTypes": true,
+    "nativeIsolation": true,
+    "consumerNormalBuild": true,
+    "consumerStaticPages": 270,
+    "businessNormalBuild": true,
+    "businessStaticPages": 18,
+    "buildTypeChecks": true,
+    "exactCompilerFileRestoration": true,
+    "sharedHookRuntimeBodyPreserved": true,
+    "consumerCompiledSourceMatches": true,
+    "businessSourceMapsAvailable": false,
+    "nativeAllPlatformExport": true
+  },
+  "impact": {
+    "scope": "Local Business observer extraction delta only; not last-successful-deployment comparison or release approval",
+    "projects": [
+      {
+        "app": "apps/dziri",
+        "build": true,
+        "reason": "App/dependency changed: packages/ui/package.json"
+      },
+      {
+        "app": "apps/dziri-business",
+        "build": true,
+        "reason": "App/dependency changed: packages/ui/package.json"
+      },
+      {
+        "app": "apps/dziri-console",
+        "build": true,
+        "reason": "App/dependency changed: packages/ui/package.json"
+      },
+      {
+        "app": "apps/dziri-shop",
+        "build": true,
+        "reason": "App/dependency changed: packages/ui/package.json"
+      },
+      {
+        "app": "apps/circles",
+        "build": true,
+        "reason": "App/dependency changed: packages/ui/package.json"
+      },
+      {
+        "app": "apps/id",
+        "build": true,
+        "reason": "App/dependency changed: packages/ui/package.json"
+      },
+      {
+        "app": "apps/dziri-flexy",
+        "build": true,
+        "reason": "App/dependency changed: packages/ui/package.json"
+      }
+    ],
+    "qualifiedNewLocalBuilds": [
+      "apps/dziri",
+      "apps/dziri-business"
+    ],
+    "remainingAffectedBuilds": [
+      "apps/dziri-console",
+      "apps/dziri-shop",
+      "apps/circles",
+      "apps/id",
+      "apps/dziri-flexy"
+    ],
+    "actualLastSuccessfulDeploymentComparison": false
+  },
+  "scope": {
+    "businessObserverWired": true,
+    "companyAndStoreBound": true,
+    "scopeDraftAndViewerIsolation": true,
+    "storeSideSeparateFromAuthorRights": true,
+    "independentReactionNotificationCleanupQualified": false,
+    "allQueuedWriteIsolationQualified": false,
+    "browserSyntheticOnly": true,
+    "componentWidths": [
+      320,
+      375,
+      430
+    ],
+    "actualPhoneViewport": false,
+    "actualTwoClient": false,
+    "physicalDevice": false,
+    "actualModerator": false,
+    "newApk": false,
+    "production": false,
+    "push": "hard-disabled"
+  },
+  "remainingGoal": "tasks/messenger-meta-parity/remaining-goal.md"
+}

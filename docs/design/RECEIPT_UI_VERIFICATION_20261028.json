@@ -1,0 +1,299 @@
+{
+  "checkpoint": "receipt-ui-20261028",
+  "at": "2026-10-28T00:50:57.683Z",
+  "goal": "active; all original remaining-goal requirements retained",
+  "roots": {
+    "consumerBackend": "E:/CodexWorktrees/messenger-tabs/tawasool-mmogram",
+    "standalone": "D:/projects/dziri-messenger-mobile"
+  },
+  "heads": {
+    "consumerBackend": "0925f5310d6739542f4d0434a369864df48e9c78",
+    "standalone": "7d4e8e5359de2df51c89acc7548cdeac1c00d439"
+  },
+  "checks": {
+    "backendCases": 355,
+    "backendFiles": 31,
+    "consumerScopedUiCases": 167,
+    "consumerScopedUiFiles": 27,
+    "nativeUiCases": 91,
+    "nativeUiFiles": 20,
+    "nativeDomainCases": 58,
+    "joinCohortWorkspaceCases": 47,
+    "backendTypes": true,
+    "nativeTypes": true,
+    "nativeChangedSourceLint": true,
+    "nativeIsolationConsistency": true,
+    "consumerNormalBuild": true,
+    "consumerGeneratedPages": 270,
+    "nativeAllPlatformExport": true,
+    "compiledReceiptSourceMatches": true,
+    "canonicalGeneratedCopyMatches": true,
+    "codegen": false,
+    "fullUnrelatedConsumerFeedUi": false
+  },
+  "sources": {
+    "consumerBackend": {
+      "packages/shared/package.json": "64542358d45e497f3cb09068fd0835237237b61bc6f0778518cc4ea316a1d85c",
+      "packages/shared/src/messenger-receipts.ts": "f83f65238e6fec022ade07b90f63759ac58cb3b417be31cffea09d4947d21f82",
+      "apps/dziri/app/(main)/messages/[threadId]/page.tsx": "a6100ac80ada42b33e9fa59dd4932935d2602106864d2cc7768654de5c853f7b",
+      "apps/dziri/components/messaging/receipt-api.ts": "ff021d9373ddae35ed5fb8b76f25a794cb1a514ad816ed086b3c3237eb0e7f03",
+      "apps/dziri/components/messaging/receipt-message-bubble.tsx": "6b57efb3867a1ee6d8c7c73c184ee322dead3dc698b3d3b70db7fc3f82138c7c",
+      "apps/dziri/components/messaging/use-message-receipts.ts": "98f139cb46c6c073fd6b52e3f26ab9d9f30556a238f9ec7ec344efaabcaa5554",
+      "apps/dziri/components/messaging/message-bubble.tsx": "1d65f400bca3d1314b9d79078bcdf6c571268199f722fb7e2b5fccc986f0660e",
+      "apps/dziri/components/messaging/conversation-list-panel.tsx": "1dda6fd2668b6d903cb9bc198c66eeccb7959bfdb23d9cee4ccfdc3680c9778c",
+      "convex/messaging/receipts.ts": "fff29d5744b841e7c2fbc60734151f921c66df71637811d1df2c2432648efd9e",
+      "convex/messaging/unread.ts": "eeb10ed878be7b230785f2376fcf470cc546e50a1f4c2d1442801ecf895ae855",
+      "convex/messaging/unreadModel.ts": "d5eb07ee20761c42dd1a72123331789b0d58f262bf54c6039c5ce02e3b694780",
+      "convex/messaging/receiptAudience.ts": "b6f0a2bad0c6ece5cb49ebe4425d3097f1272da4290ba6db7ebc4f04701e22e1",
+      "convex/messaging/receiptEpoch.ts": "ffcb534761f61d416cc6cd0023722a5d87a9a5dcb7a9d91ca596e6ed5df46f81",
+      "convex/messaging/retireUnread.ts": "662a3acaa459e8cc8f3bf4b690aed591e3bbd8a5962cb0fe3876691e57b8c683",
+      "convex/messaging/preferences.ts": "3d70672f4f0c60b6a3a1fdf0f94ca9c73bb3a2d3540a11ef1929104e70702c02",
+      "convex/messaging/currentAccess.ts": "19fb5e5573d9218545ea680752e6705f940b9129b849dd41d427716281b9f608",
+      "convex/messaging/workspaceAccess.ts": "8193ed9140c1e55e902e3a26b459ca7ca3b2e1dae79cb268f58c79d6fde0ab3b",
+      "convex/messaging/messenger.ts": "b4355204d8c041b9745affa4e015afad4596d469c1aeade2cd0d9863815a78be",
+      "convex/messaging/threads.ts": "c1954c07f127af74f473ccbbca441390cb524ca401b6cfd22714508e873b2e2e",
+      "convex/workspace/salons.ts": "b47906c5c13b8907de3dfb1ce2f0671a55b5e0c5bca34d87397b22f448188281",
+      "convex/schema.ts": "0634ce55bd33b76276f6f371d8f11e8983a5e2acf5e7ec4b8a1bbb527c286f5e",
+      "convex/accountDeletion.ts": "75ca3d79298f87f9e9d40a489fb9e2d7c2a4059e7120b6b1dc66be5c7fc3c3e2",
+      "convex/dataExport.ts": "f00ce1fa501ddf1cdc6c849aa1ccc0afc26186e099ff94a5adf39df77f313df5",
+      "convex/_generated/api.d.ts": "2e18477a7c143b057e0dc51834d394beeea39e7a992512b9133226d7e8d924d4",
+      "convex/_generated/api.js": "f513058549831e85376f8d19cafaf2a4a770b6eb1b859fb371141f2c9dec0d70",
+      "tests/feed-ui/vitest.config.ts": "da22ea0dbe11c7fea498f4c13d1ef885ad94bdf435f34d9d09abfb4782fd8551",
+      "tests/feed-ui/messenger-receipt-adapter.test.tsx": "2d7d4577491c3e93f25658a86572dfe82ffd834b284dd17c02b986d19a24e05a",
+      "tests/feed-ui/messenger-receipt-observer.test.tsx": "e02f767939b0c9b3f343499e47fd4ed3e4ccaa0aac86f5b9b3561cb5acfd76c9",
+      "tests/feed-ui/messenger-bubble-selection.test.tsx": "d31d500627a23ed00e453c2d48cb28f6cd3f9a7ec47f9802497f78b019589aed",
+      "tests/feed-ui/messenger-inbox.test.tsx": "ad9ed5cf55af6e1dabd0945e605c1dfba2b11c8077383288a463e8de67c23143",
+      "tests/activation/messenger-receipt-client-scope.test.ts": "951cd519aa2fae2495fa45a530c2dabaf531130c4b132de4ecaedc5c95cd1235",
+      "tests/activation/messenger-public-join-access.test.ts": "d2f7aa30b3879b8e09be35ea7461667f144567e262e323d5c1ca4d53a0c7cb64",
+      "tests/activation/account-deletion-resume.test.ts": "d04773c54785fa4c7a9bac220a270e063177a2ad01c7030700dc2357491df2ff"
+    },
+    "standalone": {
+      "package.json": "977351fc08517a72de2bc95477bd2238a9c7ad66a382d426e035fe247d1908e3",
+      "src/messenger-policy.ts": "8e715ca2e3a49ade3dce0c37a376690b986841cc2e7eb4c643fa5c95ba43275c",
+      "src/dziri/api.ts": "a246550f4df89729c80b4fc2150d9a139fdf245f54885ee8fd345f246a363ded",
+      "src/dziri/conversation.tsx": "79acf42c210bb3e399121c351c4e0ad18b33623b2a7a130af966a338f582fb43",
+      "src/dziri/message-list.tsx": "88766fe21f32414f4aa897c649c6478d3d7a0d95cb0fca098b7946bebc310f9a",
+      "src/dziri/inbox.tsx": "9bea26d61a074144b6f876388ae6e9ef54d95e0a786f2e1727d6b0fc2df4964f",
+      "src/dziri/message-receipts.generated.ts": "0f0d950fd4deba9f91eae23f5e1a0d44143fbbb6fc5aa8f8cd9d6375c845901c",
+      "src/dziri/use-receipts.ts": "990c3743aaa310fa7bac6298561cdbdbb418c2c17902c63025f4863ec1e561f1",
+      "src/dziri/receipt-message-bubble.tsx": "ba1742748e4842976a915105c2640eb37d750aee5e581886e6d5e5f1a7a159cd",
+      "scripts/sync-message-receipts.mjs": "346c53657afb5a7dd316b32d201438afc24b38eea6c7d971e3e4e48280398d86",
+      "docs/message-receipts-contract.json": "cfb86f7be3b6249be3bcd6063edf0a926acd496ed620bdc0823d45f205341fc0",
+      "tests/exact-receipts.test.tsx": "88263ffcf95a1ee11394e3c2c88622b736b69e63fe1e29e617eac8d266924586"
+    }
+  },
+  "logs": [
+    {
+      "key": "backend-355",
+      "source": "E:/CodexWorktrees/messenger-tabs/tawasool-mmogram/.codex/receipt-ui-backend-final.log",
+      "passed": true,
+      "sha256": "b1f1a22546946674875580551aacd3ea8f2459eef465681abd6f4b932178c39b",
+      "bytes": 1025
+    },
+    {
+      "key": "backend-types",
+      "source": "E:/CodexWorktrees/messenger-tabs/tawasool-mmogram/.codex/receipt-ui-backend-types-final.log",
+      "passed": true,
+      "sha256": "69e01b7ca2fa44c24963e7c54254dcbd7639763d159d3a14c116023391a8658a",
+      "bytes": 107
+    },
+    {
+      "key": "consumer-ui-167",
+      "source": "E:/CodexWorktrees/messenger-tabs/tawasool-mmogram/.codex/receipt-ui-consumer-scoped-final.log",
+      "passed": true,
+      "sha256": "99487c96b7928607c41cf036ffcb798111a9dc528ec6b4e6e1e6b463a2f454a7",
+      "bytes": 1031
+    },
+    {
+      "key": "consumer-build",
+      "source": "E:/CodexWorktrees/messenger-tabs/tawasool-mmogram/.codex/receipt-ui-consumer-build.log",
+      "passed": true,
+      "sha256": "e6b59edac2f6524df769d1a520d78c91d63b939816571a8dff259286e25d63fe",
+      "bytes": 20374
+    },
+    {
+      "key": "join-cohort-workspace-47",
+      "source": "E:/CodexWorktrees/messenger-tabs/tawasool-mmogram/.codex/receipt-ui-join-access-green.log",
+      "passed": true,
+      "sha256": "526a65c4537dba0d849049228d5f5696460a953666c250daf7a920bbc1bbb251",
+      "bytes": 979
+    },
+    {
+      "key": "earlier-backend-timer-failure",
+      "source": "E:/CodexWorktrees/messenger-tabs/tawasool-mmogram/.codex/receipt-ui-backend-regression.log",
+      "passed": false,
+      "sha256": "3e5463a2093eaa8b02dfa2cc91c33f5a22d8ff12c350c5ebc1c2571fcbb19622",
+      "bytes": 3023
+    },
+    {
+      "key": "broader-feed-ui-unqualified",
+      "source": "E:/CodexWorktrees/messenger-tabs/tawasool-mmogram/.codex/receipt-ui-consumer-regression.log",
+      "passed": false,
+      "sha256": "1435f216294208e3ba444e5ef7987e56dabc2f6e150cd71afdd17040c38b0b4a",
+      "bytes": 9814
+    },
+    {
+      "key": "api-codegen-runtime-failure",
+      "source": "E:/CodexWorktrees/messenger-tabs/tawasool-mmogram/.codex/receipt-codegen-root-runtime.log",
+      "passed": false,
+      "sha256": "be83999df67a72510940f5d7048ffe4eeedf9997151b937a4f5fd149066527d1",
+      "bytes": 1053
+    },
+    {
+      "key": "native-ui-91",
+      "source": "D:/projects/dziri-messenger-mobile/.codex/receipts-20261028/.codex-receipts-ui-scroll-final.log",
+      "passed": true,
+      "sha256": "d4b9659b153c1ae0a063ad663b195628482e72d6dbf389b352f03ad773f06ea3",
+      "bytes": 513
+    },
+    {
+      "key": "native-types",
+      "source": "D:/projects/dziri-messenger-mobile/.codex/receipts-20261028/.codex-receipts-types-scroll-final.log",
+      "passed": true,
+      "sha256": "5384f2a14c05be4f2b39c8b01909e7d6704a744f60337e0b64aff1fc31251132",
+      "bytes": 308
+    },
+    {
+      "key": "native-lint",
+      "source": "D:/projects/dziri-messenger-mobile/.codex/receipts-20261028/.codex-receipts-lint-scroll-final.log",
+      "passed": true,
+      "sha256": "452ec6ff5ff37bb7a3dc4fa51be86087161e118de7fc7ee0c09c262fb0f04b1e",
+      "bytes": 212
+    },
+    {
+      "key": "native-final-all-platform-export",
+      "source": "D:/projects/dziri-messenger-mobile/.codex/receipts-20261028/.codex-receipts-export-scroll-final.log",
+      "passed": true,
+      "sha256": "9725ff389190ec0f62a45d3d2c0faafcbc841290f8eb7f90b9fa15af6657c031",
+      "bytes": 12221
+    },
+    {
+      "key": "native-domain-58",
+      "source": "D:/projects/dziri-messenger-mobile/.codex/receipts-20261028/domain-final.log",
+      "passed": true,
+      "sha256": "ad84965c860b9b74ee0ee4bfa7734084e81d9e8c713fddefb4d93acc06fcca1b",
+      "bytes": 11270
+    },
+    {
+      "key": "native-isolation-consistency",
+      "source": "D:/projects/dziri-messenger-mobile/.codex/receipts-20261028/consistency-final.log",
+      "passed": true,
+      "sha256": "eb514f3f838bc19296c9f265f34e4ed61ae0d839f5e359abb2997c125647481e",
+      "bytes": 407
+    },
+    {
+      "key": "native-shared-contract",
+      "source": "D:/projects/dziri-messenger-mobile/.codex/receipts-20261028/shared-controller-final.log",
+      "passed": true,
+      "sha256": "0cfa52f5da264e87926caa8d5ae087e964159d387fe7fb35ea7e428d9dd14ada",
+      "bytes": 40
+    }
+  ],
+  "nativeBundles": [
+    {
+      "file": "web/AppEntry-6c7a0260df080bec46c78186c9243ab2.js",
+      "sha256": "97c4c88c10d775f7607078ad13b3585c00962c104e952dc2fd4f31020226dafd",
+      "bytes": 2669448
+    },
+    {
+      "file": "android/AppEntry-d79279ce6f387452ab8371f2143ae524.hbc",
+      "sha256": "10357b9f96b20e09dd9199346b3625b1d51e35c5db8633a9a9206d9f8011933a",
+      "bytes": 4624717
+    },
+    {
+      "file": "ios/AppEntry-55d5c746877f91276a5eac405f0f13cd.hbc",
+      "sha256": "39b0a26b64df463debe5e236e8fa14ffdcb7d0d44f5797562aa980439716738b",
+      "bytes": 4623401
+    }
+  ],
+  "checkpointSha256": "d4c953fb21442ef523151cc6bafbbc0216f289c48149e9b9b39916b078cebea6",
+  "captures": {
+    "consumer-en-375-light.png": "f3469a62b8610d45c9f77384bc34effcf7f1015a18619db596638e913c201177",
+    "consumer-ar-320-dark.png": "7166b1dab3a0a2a524bd532200bc9dc27a9e09374e0a49c56750b5e4227a88fc",
+    "consumer-fr-430-light.png": "409fccfa69abf2630181b72f88ec3eae74506b8f0b2d91c9e1cda01741bed731",
+    "browser-arabic-proof.json": "e7c892c9f3ecc90110b61b46555209de1f1706aec138d622bf29beceaacab3ab",
+    "browser-final-proof.json": "0f90cfb6a1f03cf41d2875b7695a20df422f1a708b4b98a2290bc13c148d8e13"
+  },
+  "impact": {
+    "basis": "Local receipt integration delta only; not last-successful-deployment comparison or release approval",
+    "projects": [
+      {
+        "app": "apps/dziri",
+        "build": true,
+        "reason": "App/dependency changed: apps/dziri/app/(main)/messages/[threadId]/page.tsx"
+      },
+      {
+        "app": "apps/dziri-business",
+        "build": true,
+        "reason": "App/dependency changed: packages/shared/package.json"
+      },
+      {
+        "app": "apps/dziri-console",
+        "build": true,
+        "reason": "App/dependency changed: packages/shared/package.json"
+      },
+      {
+        "app": "apps/dziri-shop",
+        "build": true,
+        "reason": "App/dependency changed: packages/shared/package.json"
+      },
+      {
+        "app": "apps/circles",
+        "build": true,
+        "reason": "App/dependency changed: packages/shared/package.json"
+      },
+      {
+        "app": "apps/id",
+        "build": true,
+        "reason": "App/dependency changed: packages/shared/package.json"
+      },
+      {
+        "app": "apps/dziri-flexy",
+        "build": true,
+        "reason": "App/dependency changed: packages/shared/package.json"
+      }
+    ],
+    "qualifiedNewBuilds": [
+      "apps/dziri"
+    ],
+    "remainingAffectedBuilds": [
+      "apps/dziri-business",
+      "apps/dziri-console",
+      "apps/dziri-shop",
+      "apps/circles",
+      "apps/id",
+      "apps/dziri-flexy"
+    ],
+    "lastSuccessfulDeploymentComparison": false
+  },
+  "scope": {
+    "personalNonRequestServerEncryptedDmGroup": true,
+    "allLanesQualified": false,
+    "oversizedMessagesQualified": false,
+    "browserSyntheticOnly": true,
+    "componentWidths": [
+      320,
+      375,
+      430
+    ],
+    "actualMobileViewport": false,
+    "physicalDevice": false,
+    "authorizedLiveTwoAccount": false,
+    "actualModerator": false,
+    "production": false,
+    "newApkBuilt": false,
+    "newPrivateDownload": false,
+    "push": "hard-disabled",
+    "backgroundIncomingCalls": "held"
+  },
+  "remaining": [
+    "Oversized-bubble viewability and remaining lane/support/community private-read cleanup",
+    "Marketplace lifecycle consistency and broader private/public discovery/reader/privacy/family acceptance",
+    "Resolve Sharp Linux ARM64 analysis and regenerate canonical API references without weakening validation",
+    "Qualify all original device/two-client/recovery/media/Story/calling/security requirements",
+    "Review and build all affected release targets against actual last-successful deployment revisions",
+    "Authorized batched release, signed package/private download and full acceptance gates"
+  ],
+  "noLiveAccountOrCommunicationWrites": true,
+  "noPublicationOrMasterPush": true
+}

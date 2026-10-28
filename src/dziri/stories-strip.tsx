@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { Image } from 'expo-image';
 import { useQuery } from 'convex/react';
@@ -8,11 +8,13 @@ import { useColors } from './ui';
 import { useLocale } from './locale';
 import { StoryViewer } from './story-viewer';
 import { StoryComposer } from './story-composer';
-export function StoriesStrip() {
+export function StoriesStrip({
+  openConversation,
+}: { openConversation?: (threadId: string) => void } = {}) {
   const stories = useQuery(dziriApi.stories, {}),
     { t, rtl } = useLocale();
   const colors = useColors();
-  const [selected, setSelected] = useState<StoryRecord[] | null>(null),
+  const [selected, setSelected] = useState<string | null>(null),
     [create, setCreate] = useState(false);
   const groups = new Map<string, StoryRecord[]>();
   for (const story of stories ?? []) {
@@ -26,9 +28,15 @@ export function StoriesStrip() {
     group.push(story);
     groups.set(story.authorId, group);
   }
+  const selectedItems = selected ? groups.get(selected) : undefined;
+  const selectedAvailable = !!selectedItems?.length;
+  useEffect(() => {
+    if (selected && stories !== undefined && !selectedAvailable) setSelected(null);
+  }, [selected, selectedAvailable, stories]);
   return (
     <>
       <ScrollView
+        showsVerticalScrollIndicator={false}
         horizontal
         showsHorizontalScrollIndicator={false}
         style={{ maxHeight: 106 }}
@@ -66,7 +74,7 @@ export function StoriesStrip() {
               key={story.authorId}
               accessibilityRole="button"
               accessibilityLabel={story.authorName || story.authorHandle || t.stories}
-              onPress={() => setSelected(items)}
+              onPress={() => setSelected(story.authorId)}
               style={{ width: 65, alignItems: 'center', gap: 7 }}>
               <View
                 style={{
@@ -101,7 +109,13 @@ export function StoriesStrip() {
           );
         })}
       </ScrollView>
-      {selected ? <StoryViewer items={selected} close={() => setSelected(null)} /> : null}
+      {selectedItems ? (
+        <StoryViewer
+          items={selectedItems}
+          close={() => setSelected(null)}
+          openConversation={openConversation}
+        />
+      ) : null}
       {create ? <StoryComposer close={() => setCreate(false)} /> : null}
     </>
   );

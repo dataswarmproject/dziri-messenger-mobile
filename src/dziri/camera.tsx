@@ -23,7 +23,7 @@ export function CameraCapture({
     [busy, setBusy] = useState(false),
     [ready, setReady] = useState(false),
     [error, setError] = useState(false);
-  const { t } = useLocale();
+  const { t, rtl } = useLocale();
   async function take() {
     if (busy || !ready) return;
     setBusy(true);
@@ -73,13 +73,13 @@ export function CameraCapture({
             top: 48,
             left: 8,
             right: 8,
-            flexDirection: 'row',
+            flexDirection: rtl ? 'row-reverse' : 'row',
             justifyContent: 'space-between',
           }}>
           <FigmaButton name="cameraClose" label={t.close} onPress={close} />
           <FigmaButton
             name="cameraFlash"
-            label={t.camera}
+            label={t.flash}
             onPress={() => setFlash(value => !value)}
           />
         </View>
@@ -91,7 +91,7 @@ export function CameraCapture({
         <View
           style={{
             height: 120,
-            flexDirection: 'row',
+            flexDirection: rtl ? 'row-reverse' : 'row',
             alignItems: 'center',
             justifyContent: 'space-around',
           }}>
@@ -117,16 +117,14 @@ export function CameraCapture({
             }}>
             <FigmaIcon name="shutter" />
           </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={t.camera}
+          <FigmaButton
+            name="switchCamera"
+            label={t.flipCamera}
             onPress={() => {
               setReady(false);
               setFront(value => !value);
             }}
-            style={{ padding: 12 }}>
-            <Text style={{ color: '#fff', fontSize: 28 }}>↻</Text>
-          </Pressable>
+          />
         </View>
       </View>
     </Modal>

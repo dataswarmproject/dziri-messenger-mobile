@@ -12,6 +12,95 @@ import {
 import { createOutbox } from '../src/dziri/outbox.ts';
 import { uploadMedia, MAX_MEDIA_BYTES } from '../src/dziri/media-upload.ts';
 import { messageDirection } from '../src/dziri/typeface.ts';
+import { insertExpression, searchDarija } from '../src/dziri/expression-contract.generated.ts';
+import { graphemeSegments } from 'unicode-segmenter/grapheme';
+
+test('outbox retries freeze the reply and media command despite caller or presentation mutation', async () => {
+  const sent = [];
+  let visible = [];
+  const outbox = createOutbox(
+    async command => {
+      sent.push(command);
+      throw new Error('lost acknowledgement');
+    },
+    () => 'immutable',
+    drafts => {
+      visible = drafts;
+    },
+  );
+  const reply = { id: 'parent', body: 'Original quote', deleted: false };
+  const media = {
+    uri: 'file:///image',
+    storageId: 'stored-image',
+    type: 'image',
+    mime: 'image/png',
+    size: 1,
+  };
+  outbox.enqueueMedia(media, 'Caption', reply);
+  await new Promise(resolve => setTimeout(resolve, 0));
+  reply.id = 'different-parent';
+  media.storageId = 'different-image';
+  visible[0].reply.id = 'presentation-parent';
+  visible[0].media.storageId = 'presentation-image';
+  sent[0].reply.id = 'transport-parent';
+  outbox.retry('immutable');
+  await new Promise(resolve => setTimeout(resolve, 0));
+  assert.equal(sent[1].id, 'immutable');
+  assert.equal(sent[1].reply.id, 'parent');
+  assert.equal(sent[1].media.storageId, 'stored-image');
+});
+
+test('canonical acknowledgement before a failed response never resurrects the queued command', async () => {
+  let fail;
+  let visible;
+  const outbox = createOutbox(
+    () =>
+      new Promise((_, reject) => {
+        fail = reject;
+      }),
+    () => 'ack-first',
+    value => {
+      visible = value;
+    },
+  );
+  outbox.enqueue('Hello');
+  outbox.acknowledge(['ack-first']);
+  fail(new Error('response lost'));
+  await new Promise(resolve => setTimeout(resolve, 0));
+  assert.deepEqual(visible, []);
+});
+test('native cursor insertion uses Hermes-compatible graphemes and canonical Darija aliases', () => {
+  const body = 'x👩🏽‍💻y';
+  assert.deepEqual(insertExpression(body, 4, 4, '❤️', 100, graphemeSegments(body)), {
+    value: 'x❤️y',
+    caret: 3,
+  });
+  assert.equal(searchDarija('رَبِّي يَحْفَظَك')[0].id, 'rabi-yahafdek');
+});
+
+test('sticker retry keeps its selected resource, reply and stable command ID', async () => {
+  const sent = [];
+  const outbox = createOutbox(
+    async draft => {
+      sent.push(draft);
+      if (sent.length === 1) throw new Error('ack lost');
+    },
+    () => 'stable-sticker',
+    () => {},
+    () => 1,
+  );
+  const sticker = { id: 'approved-sticker', uri: 'https://example.com/sticker.webp' };
+  const reply = { id: 'parent', senderName: 'Alice', deleted: false };
+  assert.equal(outbox.enqueueSticker(sticker, reply), true);
+  sticker.id = 'changed-after-selection';
+  await new Promise(resolve => setTimeout(resolve, 0));
+  outbox.retry('stable-sticker');
+  await new Promise(resolve => setTimeout(resolve, 0));
+  assert.equal(sent.length, 2);
+  assert.equal(sent[1].id, 'stable-sticker');
+  assert.equal(sent[1].sticker.id, 'approved-sticker');
+  assert.equal(sent[1].reply.id, 'parent');
+});
 
 test('message direction follows the first strong letter independently of UI language', () => {
   assert.equal(messageDirection('مرحبا', false), 'rtl');

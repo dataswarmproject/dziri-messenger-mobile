@@ -24,7 +24,6 @@ export function MessengerShell({
 }) {
   const { t, rtl } = useLocale();
   const colors = useColors();
-  const labels = { friends: t.friendsTab, marketplace: t.marketplaceTab, staff: t.teamView };
   return (
     <View style={{ flex: 1, backgroundColor: colors.background, direction: 'ltr' }}>
       {!capabilities || !select ? (
@@ -42,10 +41,9 @@ export function MessengerShell({
               gap: 10,
             }}>
             <Image
-              source={require('../assets/dziri-ring.svg')}
+              source={require('../assets/dziri-ring.png')}
               contentFit="contain"
-              tintColor={colors.text}
-              style={{ width: 32, height: 32 }}
+              style={{ width: 32, height: 32, borderRadius: 6 }}
             />
             <Text
               numberOfLines={1}
@@ -61,52 +59,7 @@ export function MessengerShell({
       ) : null}
       <View style={{ flex: 1 }}>{children}</View>
       {capabilities && select && !immersive ? (
-        <View
-          accessibilityRole="tablist"
-          style={{
-            borderTopWidth: 0.5,
-            borderColor: colors.border,
-            flexDirection: rtl ? 'row-reverse' : 'row',
-            justifyContent: 'space-evenly',
-            paddingHorizontal: 12,
-          }}>
-          {messengerTabs(capabilities).map(tab => (
-            <Pressable
-              key={tab}
-              accessibilityRole="tab"
-              aria-selected={tab === selected}
-              accessibilityState={{ selected: tab === selected }}
-              onPress={() => select?.(tab)}
-              style={({ pressed }) => ({
-                flex: 1,
-                paddingHorizontal: 4,
-                paddingVertical: 10,
-                minHeight: 60,
-                alignItems: 'center',
-                gap: 4,
-                opacity: pressed ? 0.65 : 1,
-              })}>
-              <FigmaIcon
-                name={
-                  {
-                    friends: tab === selected ? 'chats' : 'chatsInactive',
-                    marketplace: tab === selected ? 'discoverActive' : 'discover',
-                    staff: tab === selected ? 'peopleActive' : 'people',
-                  }[tab] as FigmaIconName
-                }
-              />
-              <Text
-                style={{
-                  color: tab === selected ? colors.primary : colors.secondary,
-                  fontWeight: tab === selected ? '600' : '400',
-                  fontSize: 10,
-                  textAlign: 'center',
-                }}>
-                {labels[tab]}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
+        <MessengerTabs capabilities={capabilities} selected={selected} select={select} />
       ) : null}
     </View>
   );
@@ -122,3 +75,65 @@ const styles = StyleSheet.create({
     gap: 8,
   },
 });
+
+export function MessengerTabs({
+  capabilities,
+  selected,
+  select,
+}: {
+  capabilities: MessengerCapabilities;
+  selected: MessengerTab;
+  select: (tab: MessengerTab) => void;
+}) {
+  const { t, rtl } = useLocale();
+  const colors = useColors();
+  const labels = { friends: t.friendsTab, marketplace: t.marketplaceTab, staff: t.teamView };
+  return (
+    <View
+      accessibilityRole="tablist"
+      style={{
+        borderTopWidth: 0.5,
+        borderColor: colors.border,
+        flexDirection: rtl ? 'row-reverse' : 'row',
+        justifyContent: 'space-evenly',
+        paddingHorizontal: 12,
+      }}>
+      {messengerTabs(capabilities).map(tab => (
+        <Pressable
+          key={tab}
+          accessibilityRole="tab"
+          aria-selected={tab === selected}
+          accessibilityState={{ selected: tab === selected }}
+          onPress={() => select?.(tab)}
+          style={({ pressed }) => ({
+            flex: 1,
+            paddingHorizontal: 4,
+            paddingVertical: 10,
+            minHeight: 60,
+            alignItems: 'center',
+            gap: 4,
+            opacity: pressed ? 0.65 : 1,
+          })}>
+          <FigmaIcon
+            name={
+              {
+                friends: tab === selected ? 'chats' : 'chatsInactive',
+                marketplace: tab === selected ? 'discoverActive' : 'discover',
+                staff: tab === selected ? 'peopleActive' : 'people',
+              }[tab] as FigmaIconName
+            }
+          />
+          <Text
+            style={{
+              color: tab === selected ? colors.primary : colors.secondary,
+              fontWeight: tab === selected ? '600' : '400',
+              fontSize: 10,
+              textAlign: 'center',
+            }}>
+            {labels[tab]}
+          </Text>
+        </Pressable>
+      ))}
+    </View>
+  );
+}

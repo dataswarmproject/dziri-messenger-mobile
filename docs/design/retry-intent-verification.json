@@ -1,0 +1,192 @@
+{
+  "checkpoint": "retry-intent-20261027",
+  "status": "implemented-locally-not-released",
+  "goal": "active",
+  "checks": {
+    "backend": 174,
+    "consumerUi": 113,
+    "nativeDomainCompatibility": 58,
+    "totalDistinct": 345,
+    "newBackendCases": 26,
+    "newConsumerCases": 3
+  },
+  "verification": {
+    "backendTypes": "passed-final",
+    "consumerProductionBuild": "passed",
+    "format": "passed",
+    "scopedWhitespace": "passed",
+    "generatedBuildConfiguration": "restored-pre-build-bytes"
+  },
+  "sourceHashes": {
+    "convex/schema.ts": {
+      "sha256": "bd98c0871fcd8b642673c4d6a423d221b2f22595ebe14c0af0616cb6b77b606d",
+      "lastModified": 1793137019.6510344
+    },
+    "convex/messaging/commandIdentity.ts": {
+      "sha256": "17c35902ff5ede8792a7c152b25f26c9bb7ac290d9e0e0afed1a7b958ec998e7",
+      "lastModified": 1793137582.150892
+    },
+    "convex/messaging/currentAccess.ts": {
+      "sha256": "4f28ae102803ba40d58a09e626a895ceb65c17c6d2beb237df43eb05a4a9428b",
+      "lastModified": 1793137395.6981764
+    },
+    "convex/messaging/contactPolicy.ts": {
+      "sha256": "fe84ea4b4a3a720ee6c8c68a3dafc97ca3890e1f80b3c8ecbad4e4973cae207b",
+      "lastModified": 1793137113.6192439
+    },
+    "convex/messaging/messages.ts": {
+      "sha256": "d34274ab00cc69d166c9516e41cb4343a4fdb3b4b41040bce52177ad8f956717",
+      "lastModified": 1793137397.9104567
+    },
+    "convex/messaging/storyReply.ts": {
+      "sha256": "b29973a5cf77585907badfcb450b20c2c39a0631bbab697f91c09ed5a5f4109b",
+      "lastModified": 1793137282.2999494
+    },
+    "convex/messaging/forwarding.ts": {
+      "sha256": "bbe6543b451e855644039b80efca1bf2272504748630d511682323d799516077",
+      "lastModified": 1793137282.3550467
+    },
+    "convex/lib/marketplaceMessageWrite.ts": {
+      "sha256": "0caff8c4aca465856d82b077ec2a56564e5d9e2c21f0290b553fb78bfa793a5c",
+      "lastModified": 1793137584.2641556
+    },
+    "convex/lib/marketplaceMessageViews.ts": {
+      "sha256": "b11248e58c5c0169a4e3456375275d8ab6e55f05ae792654db7a78dffe55a349",
+      "lastModified": 1793137113.8115058
+    },
+    "apps/dziri/components/messaging/composer.tsx": {
+      "sha256": "95435b2b7a2e9232a9f0a4fe3f5d3bb22f9fa7907ea32ec076e88d8f13a23e2e",
+      "lastModified": 1793137889.7687593
+    },
+    "tests/activation/messenger-retry-intent.test.ts": {
+      "sha256": "605501a852afa2e7f1b36400252a5cada1b8ef1602389bfec8c3c0ea11ca90bb",
+      "lastModified": 1793137584.3432252
+    },
+    "tests/feed-ui/messenger-upload-composer.test.tsx": {
+      "sha256": "e8b8c98d9b65fde8a9b0b4a148c70245e19d741220c75217714f8b995dfbaf2b",
+      "lastModified": 1793137928.1594858
+    }
+  },
+  "logHashes": {
+    ".codex\\retry-intent-all-verified.log": {
+      "sha256": "72fb3016494de6807d0bde116d42f56d96ad68750152b4e71a497e2ba064bb3f",
+      "bytes": 1035
+    },
+    ".codex\\retry-intent-consumer-verified.log": {
+      "sha256": "5d0d058fd6129f708f83a07103227ac3986341bf7c3af63bb4286b826e2edfeb",
+      "bytes": 1029
+    },
+    ".codex\\retry-intent-types-final.log": {
+      "sha256": "69e01b7ca2fa44c24963e7c54254dcbd7639763d159d3a14c116023391a8658a",
+      "bytes": 107
+    },
+    ".codex\\retry-intent-format-final.log": {
+      "sha256": "b8ec334652afa9b1ba7e5c5b54de13c4acccba963b3da25d4b039533947e6846",
+      "bytes": 175
+    },
+    ".codex\\retry-intent-consumer-build.log": {
+      "sha256": "661441ba22c92cbf003514d904db03080fd564d2d100afd98f2f874d1ffb0d0c",
+      "bytes": 20374
+    },
+    "D:\\projects\\dziri-messenger-mobile\\.codex\\retry-intent-domain-verified.log": {
+      "sha256": "a89a830cda4dc35b1660d3cf728493e0f439e62578b294e34317cf65b2425ec3",
+      "bytes": 11098
+    }
+  },
+  "impact": {
+    "scope": "Current backend retry-intent delta; not a release-baseline comparison or deployment approval",
+    "changed": [
+      "convex/schema.ts",
+      "convex/messaging/commandIdentity.ts",
+      "convex/messaging/currentAccess.ts",
+      "convex/messaging/contactPolicy.ts",
+      "convex/messaging/messages.ts",
+      "convex/messaging/storyReply.ts",
+      "convex/messaging/forwarding.ts",
+      "convex/lib/marketplaceMessageWrite.ts",
+      "convex/lib/marketplaceMessageViews.ts",
+      "tests/activation/messenger-retry-intent.test.ts",
+      "tasks/messenger-meta-parity/retry-intent-20261027.md",
+      "apps/dziri/components/messaging/composer.tsx",
+      "tests/feed-ui/messenger-upload-composer.test.tsx"
+    ],
+    "projects": [
+      {
+        "app": "apps/dziri-business",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri",
+        "build": true,
+        "reason": "App/dependency changed: apps/dziri/components/messaging/composer.tsx"
+      },
+      {
+        "app": "apps/dziri-console",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-shop",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/circles",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/id",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-flexy",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      }
+    ]
+  },
+  "browser": {
+    "scope": "actual Consumer Composer, synthetic document/upload/mutation adapter; not real storage, full-app typography or phone acceptance",
+    "width": 375,
+    "captureHeight": 811,
+    "requestedViewportHeight": 812,
+    "fakeDispatches": 3,
+    "fakeUploads": 1,
+    "oldKeyReused": true,
+    "changedCaptionKeyDistinct": true,
+    "newerCaptionAndAttachmentPreserved": true,
+    "errors": [],
+    "capture": "consumer-attachment-retry-375.jpg",
+    "captureSha256": "a18a007f209b20a1ef39e2e97dd0a43b4b6235e70fd04933a5ada2b04a028edb",
+    "tabAndServerClosed": true,
+    "viewportReset": true
+  },
+  "schema": {
+    "optionalFields": [
+      "messages.clientCommandHash",
+      "marketplaceMessages.clientCommandHash"
+    ],
+    "newIndexes": false,
+    "backfill": false,
+    "published": false
+  },
+  "boundaries": {
+    "pushHardDisabled": true,
+    "providerChange": false,
+    "realCommunications": false,
+    "liveAccountOrModerationChanges": false,
+    "gitPushOrDeploy": false,
+    "physicalDeviceQualified": false,
+    "liveTwoClientQualified": false
+  },
+  "unchangedNativeArtifact": {
+    "receipt": "D:/codex-artifacts/dziri-story-flows-20261027/verification.json",
+    "path": "D:\\codex-artifacts\\dziri-story-flows-20261027\\DM-0.1.0-story-flows-arm64-compact.apk",
+    "sha256": "42da0c9cf908b7c84a78aee959cd29ccc2fc987e1318e866fb1f6caf0f5a26b8",
+    "newApkRequired": false,
+    "cloudMetadataNotRequeriedThisSlice": true
+  }
+}

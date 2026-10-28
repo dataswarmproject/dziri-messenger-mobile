@@ -6,6 +6,7 @@ import { useLocale } from './locale';
 import { useColors } from './ui';
 import { MessageStatus } from './message-status';
 import type { DeliveryState } from './message-policy';
+import { messageClock } from './message-presentation.generated';
 export function MessageActions({
   at,
   reply,
@@ -15,6 +16,7 @@ export function MessageActions({
   expanded,
   status,
   info,
+  edited,
 }: {
   at: number;
   reply?: () => void;
@@ -24,26 +26,28 @@ export function MessageActions({
   expanded: boolean;
   status?: DeliveryState;
   info: () => void;
+  edited?: boolean;
 }) {
   const { t, locale, rtl } = useLocale();
   const colors = useColors();
   const [picker, setPicker] = useState(false);
+  if (!expanded && !status) return null;
   return (
     <View style={{ gap: 2, maxWidth: '100%' }}>
       <View
         style={{
           flexDirection: rtl ? 'row-reverse' : 'row',
           alignItems: 'center',
+          flexWrap: 'wrap',
           gap: 2,
           maxWidth: '100%',
         }}>
-        <Text style={{ color: colors.secondary, fontSize: 11, flexShrink: 1 }}>
-          {new Date(at).toLocaleString(locale, {
-            ...(expanded ? ({ month: 'short', day: 'numeric', year: 'numeric' } as const) : {}),
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
-        </Text>
+        {edited ? <Text style={{ color: colors.secondary, fontSize: 11 }}>{t.edited}</Text> : null}
+        {expanded ? (
+          <Text style={{ color: colors.secondary, fontSize: 11, flexShrink: 1 }}>
+            {messageClock(at, locale)}
+          </Text>
+        ) : null}
         {status ? <MessageStatus state={status} info={info} /> : null}
         {reply ? (
           <Pressable

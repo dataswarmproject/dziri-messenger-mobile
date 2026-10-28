@@ -1,0 +1,390 @@
+{
+  "checkpoint": "request-send-epoch-20261028",
+  "at": "2026-10-28T06:08:46.805Z",
+  "goal": "active; full remaining-goal preserved",
+  "previousGoalTurn": "progress; confirmed local-copy removal",
+  "previousReceiptSha256": "25353034df058dcc366e2d4f6e59acbba1630f24a743f86d224c6c23ef7f379c",
+  "workspaces": {
+    "consumerBackend": {
+      "branch": "digitaltrendz/messenger-tabs",
+      "head": "0925f5310d6739542f4d0434a369864df48e9c78",
+      "dirtySourceHashesAreAuthoritative": true
+    },
+    "standalone": {
+      "branch": "digitaltrendz/consolidated-messenger",
+      "head": "7d4e8e5359de2df51c89acc7548cdeac1c00d439",
+      "dirtySourceHashesAreAuthoritative": true
+    }
+  },
+  "sources": {
+    "consumerBackend": {
+      "convex/messaging/requests.ts": "bbe4cc7bd554fab0359894fbfa224e0c367e419ca022c1fac7f9f171b9448c2f",
+      "tests/activation/marketplace-delivery.test.ts": "ef4f8bdc8517da40c04cfe1666fc7e48865f891496143b348769d9d131dd71d1",
+      "tests/activation/marketplace-location.test.ts": "48c47d74fb1e6122febe8af3dd3a7106bbdde11df88f0c20224ad337aa39f518",
+      "tests/activation/marketplace-messenger.test.ts": "8f64a23c24ac6eb5a3032b662b542eaffaa198c79d3506d702c815ed33b379d3",
+      "tests/activation/marketplace-profile-avatar.test.ts": "0e849f9f41d802295b89ba0e4bad4be1ff78d6cf0171d1b5eac43ad295be0108",
+      "tests/activation/marketplace-reaction-inbox.test.ts": "e0c71e5ea2255641b347acce4486bb7002374c770356a3fff77862e5863db89b",
+      "tests/activation/marketplace-receipt-authority.test.ts": "dc1c33086801b0dabb28bf7a0e3da64acc2f30f8da31934125d1cfae362c8774",
+      "tests/activation/marketplace-receipt-observation.test.ts": "f1d4c53a836144d5cb072cafb96aee7b48993ea87848e650b997a61463dc224c",
+      "tests/activation/marketplace-send-scope.test.ts": "2bd2fa953c27922fbe10f3168e9975770c6c62fa67b5d3c59143efdbfdb71151",
+      "tests/activation/marketplace-stock-integrity.test.ts": "d77d1347d9c14b02ee48714d1f92c81ee732c974add70d62539d26a8a5aa2222",
+      "tests/activation/marketplace-store-status-security.test.ts": "7eb8a5014bc3a2b6cd169775e3a87b1d7abdaf5bce3fb2ba1c1302c3b2e5f85e",
+      "tests/activation/messenger-continuation.test.ts": "986e908aaf747fd6be94467662adc84c14d2f25a3824811ff8324e5dbadbdf94",
+      "tests/activation/messenger-exact-receipts.test.ts": "3c4a372ef6638699ba4c6466d3ed0152e4bc86f7128872df7aa6d56ee6165aa0",
+      "tests/activation/messenger-exact-unread.test.ts": "8aec0e4073b73fd9dd0346b3e4e8b3dc1d6f61d1c161fb5bf05f33375e4cfd40",
+      "tests/activation/messenger-family-contact.test.ts": "04f752675ae1023133e7d40f004060644ca0fc78b9f1d32c654c3c3045cb0cfe",
+      "tests/activation/messenger-group-controls.test.ts": "e1971401a69c6f2d59495824d9ae372890b3dc6cac99120238d8ec4d008e3bc8",
+      "tests/activation/messenger-interactions.test.ts": "637e3331f2c57f890be34ccbec8e15b7798ed2abac509ae09cd7f53c7e113a63",
+      "tests/activation/messenger-marketplace-unread.test.ts": "b08dfd366335e9b951751a096757f3c72584bf5caeb105b8d955c0a0fd62faaf",
+      "tests/activation/messenger-privacy.test.ts": "4f7cb547588d529baa72cd520343babcc8b03cbb70912efc5e5b0dcc53fdd7bd",
+      "tests/activation/messenger-public-join-access.test.ts": "d2f7aa30b3879b8e09be35ea7461667f144567e262e323d5c1ca4d53a0c7cb64",
+      "tests/activation/messenger-public-presence.test.ts": "ac2dd1ba716ca2c3d2b082bda8852ef72067863f545a792fd8580e3a50fe19d8",
+      "tests/activation/messenger-receipt-audience.test.ts": "fab019fc6b5f52875b67c3b80bbad6b7f933b3c25985f2e09e0c3ee4426c1fbc",
+      "tests/activation/messenger-receipt-client-scope.test.ts": "951cd519aa2fae2495fa45a530c2dabaf531130c4b132de4ecaedc5c95cd1235",
+      "tests/activation/messenger-receipt-privacy.test.ts": "fb3085fbc540e03ac6c63107f2b3539372cf20080233f51f518a6c06b45a2415",
+      "tests/activation/messenger-receipts.test.ts": "0385c963fd960c2a0ecf7b1c54b078b25319dd3bf5f473643a84622966ede2e7",
+      "tests/activation/messenger-reporting.test.ts": "4e9c161bbf82f7512b7bc2ddca7366205b28a997182b85b0675537f1072ef934",
+      "tests/activation/messenger-request-send-scope.test.ts": "a7ff4a6ec3c340a5c4fbf9ff0973664976a4cd96a156cb53ae9e9177c4631bf7",
+      "tests/activation/messenger-requests.test.ts": "4fa592d4019e148c9b3bddd2991eee6d6a84d4505589953981b8d419baf5d62c",
+      "tests/activation/messenger-retry-intent.test.ts": "605501a852afa2e7f1b36400252a5cada1b8ef1602389bfec8c3c0ea11ca90bb",
+      "tests/activation/messenger-safety.test.ts": "b71584979e3f30ae71c116bba91d17ecdb2c7f6953e8e984ade7bc026c9d670e",
+      "tests/activation/messenger-send-scope.test.ts": "00b0c135b935d55365ae83320eeb27e878ba65f05427a4babab33855877c01f6",
+      "tests/activation/messenger-stories-safety.test.ts": "e13bb5481e4e1ebe2fc12d1fd1bf290bd8606ee25254aaa9a346045864192025",
+      "tests/activation/messenger-tabs.test.ts": "1072eacb2eb397c3a577baf8dd4848c654e458ef419ea9d2c7b4e3c344975a5b",
+      "tests/activation/messenger-unread-privacy.test.ts": "cf8a8d1a18104e8246f216e220ed9071534de54c6d727c8d749c0b41ad0e01e3",
+      "tests/feed-ui/messenger-action-policy.test.tsx": "6bfdf8abdbe265395a3a43d3037a31a667047401ca0af56ee037a29b17fa5e51",
+      "tests/feed-ui/messenger-actions.test.tsx": "a6ecf5bd7be2065355198441f03e87652ce6da3986b0a6f8b6fbb35b1d11c5ce",
+      "tests/feed-ui/messenger-bubble-selection.test.tsx": "d31d500627a23ed00e453c2d48cb28f6cd3f9a7ec47f9802497f78b019589aed",
+      "tests/feed-ui/messenger-call-readiness.test.tsx": "8728e2053b322f5ba7d8ef4dab9ad4234022e125ad0c971f1ae9da37da475cb0",
+      "tests/feed-ui/messenger-context-gesture.test.tsx": "45ef49fcc8238ec96f2567f0aa7be9a19850cc5097e5c8eed71e69f94342d5a6",
+      "tests/feed-ui/messenger-drafts.test.tsx": "6dab5bee55bbaebaf59a3d335e0c702bcbd5694af4fcd3309cd424c0b1a52652",
+      "tests/feed-ui/messenger-forward.test.tsx": "0a03dfd7aa21da668087d81ab478678657a3e50134b87c5ad63524f6d3257dcc",
+      "tests/feed-ui/messenger-history.test.tsx": "fde98c6fb5d47ec20549153f84c35f569687c64a63e7ebc967985b80b8e0d808",
+      "tests/feed-ui/messenger-inbox.test.tsx": "ad9ed5cf55af6e1dabd0945e605c1dfba2b11c8077383288a463e8de67c23143",
+      "tests/feed-ui/messenger-library.test.tsx": "496d743c4a0937f02463fd300a48127a657605c7af19d7e7238d1464cccb6b5d",
+      "tests/feed-ui/messenger-local-removal.test.tsx": "d3d7d12e70e27bc4c621a3bccf4ca0d1ef07414e8d05beceb0206f9528104187",
+      "tests/feed-ui/messenger-management.test.tsx": "fb9db73bf21604d2371ef0054a1b02196478bad956238fa3f81a4e3d64035f9c",
+      "tests/feed-ui/messenger-marketplace-drafts.test.tsx": "d7cf7519986f54d043055c7114ac081ffd3a323a349486aff5e7fe1f0a2c3bb9",
+      "tests/feed-ui/messenger-marketplace-reaction-page.test.tsx": "54b131ece521aa51425f9c78024d94e9c10a667e9e86a5de9170e269fc75ac78",
+      "tests/feed-ui/messenger-marketplace-receipts.test.tsx": "55b3a8cd97fe6e092a8e68320b71bec128c45d213c21f252b85eb5d25701a562",
+      "tests/feed-ui/messenger-media.test.tsx": "a3df49900ed2964cf00fe91588fb685e972104d78be891b7db18d05ba89f4c72",
+      "tests/feed-ui/messenger-personal-send-scope.test.tsx": "53567007bc3916e878c3bf1235aa0ffd42c1d37298f6795094f7f05732b66df6",
+      "tests/feed-ui/messenger-presentation.test.tsx": "7aa0d7fb7a83746a8ce6ca38ba57184f4c219498dd1221abf182a6da8795883d",
+      "tests/feed-ui/messenger-push-preparation.test.tsx": "c013db1ae41e1d75ec43701ce1ec4e7befb156f59f7ce63f70c39d9811a63b59",
+      "tests/feed-ui/messenger-reaction-inbox-hook.test.tsx": "bc5b465d4962ad38d66ff0d667bf6322ff1e3c7c7352beb4a1b417ec7238f669",
+      "tests/feed-ui/messenger-reaction-inbox.test.tsx": "6563813aa0432e616628ebd4232eccf794fad42b06ae1ec083d25e34c444e907",
+      "tests/feed-ui/messenger-receipt-adapter.test.tsx": "1a1f59556bb4ea78d6dcd573824b2b1780cdf6b9f3de4908bbb1bbc1eedb8bbd",
+      "tests/feed-ui/messenger-receipt-observer.test.tsx": "e02f767939b0c9b3f343499e47fd4ed3e4ccaa0aac86f5b9b3561cb5acfd76c9",
+      "tests/feed-ui/messenger-receipt-visibility.test.tsx": "872e59c81754ec4add134d4d7ba4714cd8408cc3feb9918d9f9d4d925bd67887",
+      "tests/feed-ui/messenger-replies.test.tsx": "f58d722bff060fc876528ce11cb353b920024e8aa2402a751ec1f32bcff4bb80",
+      "tests/feed-ui/messenger-requests-reporting.test.tsx": "e34aadc88aa7af7c93e849746d4fb44cacc855e45c525ce61e8847c49d8a8fe0",
+      "tests/feed-ui/messenger-send-scope.test.tsx": "73f23d6cbd81cb537e754940d4b3552a4184870a5e86b1c0d328773a8adfc81e",
+      "tests/feed-ui/messenger-send-status.test.tsx": "02ba61656950590a237b5db4d4d0b3806ef5e65c7423874df55317dfc1dfb415",
+      "tests/feed-ui/messenger-settings.test.tsx": "8898b09d202864e4c22a2ba5c683b788a75762a1243de29d78f7d96d70c4b6da",
+      "tests/feed-ui/messenger-stories.test.tsx": "5eaa7a3461562ed3bbe3230547ffccf1b5ad64bc66ea133341def9e528e4c517",
+      "tests/feed-ui/messenger-upload-composer.test.tsx": "090fdd61923932eaacd3692d431fb717ef914fe69f1b59c98815c69e94afd5f0",
+      "tests/feed-ui/messenger-upload.test.tsx": "b6e5f777aed22043c9d40f448e3adf709632ca85954cd5d1c8ee0e4e450518c0",
+      "tests/feed-ui/circle-commerce-sharing.test.tsx": "2985853978fc6abe8016ee75768be81408e2a4593e25c256cca258dcf067c808",
+      "tests/feed-ui/circle-guest-preview.test.tsx": "f0d865c43eb3b84318d5f3fe1f2eef53c8df489230bc8309b3c68ede1a8c20b5",
+      "tests/feed-ui/product-comments-sheet.test.tsx": "9458427bb35fff3237ce6904ef2b3bbe74f73cad858b746f888a4d8de3d5b3d4",
+      "tests/feed-ui/rewards-workspace.test.tsx": "2a12e1f9aa4b6f0686cb29d4e6cd5277cc519b0e9456c08a68aec643ef4471f0"
+    },
+    "standalone": {
+      "tests/attachment-lifecycle.test.tsx": "09bb58ca4432e2b3f99dac6332866c53b97cc3089b529ad43620ead6efd5eedc",
+      "tests/commerce-receipts.test.tsx": "aa91de229a6365d58b9e1161a00f5b9234d276ed8e2c38cfa167f260cf0a5d62",
+      "tests/composer-layout.test.tsx": "a70d7a1770119fbd5facb4900092ba8ad8eb58b07caeb786fd42c2efe6d5dfd1",
+      "tests/composer-upload.test.tsx": "7e9a2a74290467bd66eba85e7d355f2d32d62e20fc1d773b69342fd5eeb8527c",
+      "tests/conversation-send-scope.test.tsx": "24cc436edf9aaf2d4f1babe733925c04837462b635154fbe931c98f7218c941e",
+      "tests/exact-receipts.test.tsx": "1a4c0c344dbe4f5197cac950b52e78ca1e99e6fb5abeb3782784e49103dccbe3",
+      "tests/forward-screen.test.tsx": "895a5fbc833b607a3b42560797baa42c10e9eb961034c0b0553d8f4eecb29da3",
+      "tests/history-screen.test.tsx": "0cdaa7a2d75f2a359a7be16017052f688c4e74085040a3abc3deb14417f17d7e",
+      "tests/local-copy-removal.test.tsx": "a0e5ec20e80df7f88af670641bd86ab09448190f93823bed5e9003ae1aaaf877",
+      "tests/local-draft-scope.test.tsx": "68d8b5421f7125e7094d54a516d34826fd6870cee40a30e6480f8131551c6310",
+      "tests/local-messages.test.tsx": "d9adf94ece2da1de59f3492c85af4388f5c783dbedf0f89e95449ef71b0d106a",
+      "tests/management-screen.test.tsx": "a0854920ce466041182d4f1fb2eca90bf7263d7145c682d3a72de4d18e160bed",
+      "tests/marketplace-send-scope.test.tsx": "5a9e210d166a94e52f72ad02b68ba4c1cb15fb7e29ae6944d06453c7cfc74a7a",
+      "tests/message-actions.test.tsx": "a541d05a7d32de738709cdef8c2134f7cd1957760ab5d45065ab561f3cebb75a",
+      "tests/observed-playback.test.tsx": "e67394bd18b71ebf0d663ea8851cb478f0d93e033ce6d4dd4a9b133b30dc5fb7",
+      "tests/personal-send-scope.test.tsx": "ececacd856a38ea40e7431645f5e21f49e4b3e382155f715781fcd1f37eeb54a",
+      "tests/push-preparation.test.tsx": "8fe1e7a7b66c17512df30072835ed11c4ec53278464c397f09acd1f7f5a09401",
+      "tests/queued-message-review.test.tsx": "6a11e1bec6a241f8ec1bd9e6fc9cc988b740100fdd23601c962c5f46c1fe2b7f",
+      "tests/requests-reporting.test.tsx": "e656f9682b0e81cafc2fa7cca0dcd80ebebee6975115c850ea3aaf4312d642a2",
+      "tests/shared-media.test.tsx": "1b25836d5a8bc97144c3c66e07de815cc4a7971c1cf2ffe7917d4ea22b925182",
+      "tests/stories-access.test.tsx": "484839218612c5d1e9fcfd6c6a7e077b09acd2d279012e7ee7cd497bfeda833a",
+      "tests/story-composer.test.tsx": "33e94db4be8aa3cdf701eae040b8b843fed6d048f14fdaac619a6b5b2b3402dc",
+      "tests/story-quote.test.tsx": "2fccfb47bc53c8384e148052ecb2544a56c252a1381107c91c1278a6781ae446",
+      "tests/story-reply.test.tsx": "13ae3659cd979e183cb794f44e332af6a0e85599ecd1d7261acd0740a5e19662",
+      "tests/typing.test.tsx": "d099585842536fff47b1d10702dafe2b8b06bf6ad926bf10ba0d55f79ff6ca58",
+      "tests/vault-storage.test.tsx": "bb2c2dfb3a45fa703e18fe59bb94397ec45771d64809193936d20675b4170b9d",
+      "tests/voice-message.test.tsx": "9714f21677ebbc3e508d17eba58267ca69c95710ae35f6eac1e63b0dd20afd04"
+    }
+  },
+  "unchangedRecordedSources": {
+    "consumerBackend": {
+      "packages/shared/src/messenger-writes.ts": "5bba7e1d5e5f8b67a06beea24dd0431f01565e83084c27083d139ea30c0a78ca",
+      "apps/dziri/components/messaging/composer.tsx": "5d62997367b7aa418964c57d50bf721996d5cf4901ee91aca72285d1eca144b9",
+      "apps/dziri/components/messaging/message-status.tsx": "a63b8421f8269eb0fbcaf22d9ae10bc5dfe277bb31842de5e066d5ff38cf3ee5",
+      "apps/dziri/components/messaging/use-message-blob-url.ts": "6f6f88937b4caffaa2aecf70a85eb041782e2e836a8d97b68d275cab673708e4",
+      "apps/dziri/components/messaging/queued-message-review.tsx": "81e01ada2b9397731c4ac8e7835552c18bbc56527a41dbc6a44ab8f6569d7bed",
+      "apps/dziri/app/(main)/messages/[threadId]/page.tsx": "c1fcf726e4cdf9fb13b8a1b8f38b9ea030ec378228c1864436baa5276a2c10bc",
+      "tests/feed-ui/messenger-send-status.test.tsx": "02ba61656950590a237b5db4d4d0b3806ef5e65c7423874df55317dfc1dfb415",
+      "tests/feed-ui/messenger-personal-send-scope.test.tsx": "53567007bc3916e878c3bf1235aa0ffd42c1d37298f6795094f7f05732b66df6",
+      "tests/feed-ui/messenger-send-scope.test.tsx": "73f23d6cbd81cb537e754940d4b3552a4184870a5e86b1c0d328773a8adfc81e",
+      "tests/feed-ui/messenger-local-removal.test.tsx": "d3d7d12e70e27bc4c621a3bccf4ca0d1ef07414e8d05beceb0206f9528104187",
+      "convex/schema.ts": "ff48a8fa219d27d3dbb7f4b6f270af6c80193e004180cf1b3817afa8f7c0848b",
+      "convex/messaging/sendScope.ts": "c8ce4fe7a501c273bffd127cc5778a687fe944c0593c82e8594b687f2ee73eed",
+      "convex/messaging/commandIdentity.ts": "b45d13b2f58c75b7dce97d0859b4b765267328cabf0bcc98683adc750d771e45",
+      "convex/messaging/groups.ts": "0c318d920655d24c6e9500190717df04999b61680f927d78d52d96726fe35a89",
+      "convex/messaging/threads.ts": "2baadc4f2ab8aa5d3053fadf47f0e34dec0983771444d97c75cb74ff339ff514",
+      "convex/messaging/messenger.ts": "6925cde806322a591414527cce77e20f0755c19809d1c097787729efce5151a4",
+      "convex/messaging/messages.ts": "e0540cbc6777f03c3a3c09d56d9b41a8c969513a356bc0f5d65431fb6fa7722f"
+    },
+    "standalone": {
+      "src/dziri/conversation.tsx": "72a1da10bf82ad937de0418add73f4944a07fcb6f30827b660262439e68cb309",
+      "src/dziri/commerce.tsx": "7d41a7bdaf03e2d4ceca25775c1444ea33280b929ed232e73659913e34d46358",
+      "src/dziri/message-composer.tsx": "21a87c73609dec36f6d58f9a091612e30d08070e2b70d7917447bb4002bbb341",
+      "src/dziri/message-bubble.tsx": "429ea0eb1bb11471235182e49a3502c06bcee0db4d5dc7a61ce93a964d04a471",
+      "src/dziri/message-list.tsx": "2f9b5b85bb9c6bbad40606947b04d5dbe731a72fe986f956b1049b7c0c9938b0",
+      "src/dziri/local-messages.tsx": "4a7d11a70659f59c17a4bbfdb48b4222e080f30550ad95f5f8fe5a469d1b73bf",
+      "src/dziri/queued-message-review.tsx": "3a2d4a13a4e9b9fd6e31be167c439794c934d871cce1432323325f8cfbd95b01",
+      "src/dziri/message-writes.generated.ts": "22f7fd4e487f65d9d5602a64f682365ac0910f9e7fd45ae8bba41caf507cf418",
+      "docs/message-writes-contract.json": "c3b53a4aafc49e0f8192dce25b7d2be7578d255d991564bb49e598b7c622d180",
+      "tests/commerce-receipts.test.tsx": "aa91de229a6365d58b9e1161a00f5b9234d276ed8e2c38cfa167f260cf0a5d62",
+      "tests/queued-message-review.test.tsx": "6a11e1bec6a241f8ec1bd9e6fc9cc988b740100fdd23601c962c5f46c1fe2b7f",
+      "src/dziri/outbox.ts": "6d363a4132c083822d8e5ef4402c27c44f27ad2f4562cd0a5080e15daa66d457",
+      "src/dziri/message-vault.ts": "66bf099d662846fa6daab48215ed679dc29df354e5c9d014cf43266f14ae6f77",
+      "src/dziri/use-outbox.ts": "275ff50258dd6533c9f3c1a9f5c5df262ef9e565bec3d8d220eb16420f5ce2ff",
+      "tests/local-copy-removal.test.tsx": "a0e5ec20e80df7f88af670641bd86ab09448190f93823bed5e9003ae1aaaf877",
+      "tests/local-messages.test.tsx": "d9adf94ece2da1de59f3492c85af4388f5c783dbedf0f89e95449ef71b0d106a"
+    }
+  },
+  "unlistedSourcesCertified": false,
+  "generatedApi": {
+    "unchangedAgainstHead": true,
+    "sources": {
+      "convex/_generated/api.d.ts": "2e18477a7c143b057e0dc51834d394beeea39e7a992512b9133226d7e8d924d4",
+      "convex/_generated/api.js": "f513058549831e85376f8d19cafaf2a4a770b6eb1b859fb371141f2c9dec0d70",
+      "convex/_generated/dataModel.d.ts": "5df8434fdc274c6421f16b2db48b54eeba1781929298cee95424fd4b03cd2f87",
+      "convex/_generated/server.d.ts": "1da230ff2fbae6a7f7a40e373a0fc7492b3ca3159e54fb81dcfa224ba210816c",
+      "convex/_generated/server.js": "71f80aeb307b3d20c55aee732a4c8fdc23641d50c080661dcdc8ca6ccf16a9f7"
+    },
+    "codegenRerun": false
+  },
+  "logs": [
+    {
+      "key": "corrected-regression-red",
+      "passed": false,
+      "sha256": "c38fd8a65750bc5d5176754507690743eba0ea21b3629c5ae287c0a29132fec4"
+    },
+    {
+      "key": "focused-22",
+      "passed": true,
+      "sha256": "80a3318895e6727c9dfca94976e1a3583ffd259ab98f5ffbe0da26fba2d8a94d"
+    },
+    {
+      "key": "backend-446",
+      "passed": true,
+      "sha256": "96e00552e464a255bf7b8692698c636ac777e1e77114515473e39b841bf6e334"
+    },
+    {
+      "key": "consumer-ui-256",
+      "passed": true,
+      "sha256": "bcc1d80f53cd090097ed25c2b4bf2ba17b210c2480e0ee6da585f29239f75795"
+    },
+    {
+      "key": "full-convex-types",
+      "passed": true,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "key": "consumer-backend-format",
+      "passed": true,
+      "sha256": "f20510a9da4717c51c4cffee6d0dd88d6c9a723d0a83711d01216f5b48961283"
+    },
+    {
+      "key": "native-test-format",
+      "passed": true,
+      "sha256": "f20510a9da4717c51c4cffee6d0dd88d6c9a723d0a83711d01216f5b48961283"
+    },
+    {
+      "key": "native-ui-137",
+      "passed": true,
+      "sha256": "1b1156cc7c18f694d166da6a7b784ac6d4329b84076eacf8ffaca6ebbcead4f4"
+    }
+  ],
+  "terminalResults": [
+    {
+      "name": "backend",
+      "status": 0,
+      "error": null
+    },
+    {
+      "name": "consumer",
+      "status": 0,
+      "error": null
+    },
+    {
+      "name": "types",
+      "status": 0,
+      "error": null
+    }
+  ],
+  "checks": {
+    "focusedCases": 22,
+    "backendCases": 446,
+    "backendFiles": 33,
+    "consumerUiCases": 256,
+    "consumerUiFiles": 36,
+    "nativeUiCases": 137,
+    "nativeUiFiles": 27,
+    "fullConvexTypes": true,
+    "formatting": true
+  },
+  "impact": {
+    "currentDelta": {
+      "at": "2026-10-28T06:03:37.986Z",
+      "scope": "Local request send-epoch delta only; not actual last-successful-deployment comparison or release approval",
+      "changed": [
+        "convex/messaging/requests.ts",
+        "tests/activation/messenger-request-send-scope.test.ts",
+        "tests/feed-ui/messenger-call-readiness.test.tsx"
+      ],
+      "projects": [
+        {
+          "app": "apps/dziri",
+          "build": false,
+          "reason": "No app, workspace dependency or shared runtime changes"
+        },
+        {
+          "app": "apps/dziri-business",
+          "build": false,
+          "reason": "No app, workspace dependency or shared runtime changes"
+        },
+        {
+          "app": "apps/dziri-console",
+          "build": false,
+          "reason": "No app, workspace dependency or shared runtime changes"
+        },
+        {
+          "app": "apps/dziri-shop",
+          "build": false,
+          "reason": "No app, workspace dependency or shared runtime changes"
+        },
+        {
+          "app": "apps/circles",
+          "build": false,
+          "reason": "No app, workspace dependency or shared runtime changes"
+        },
+        {
+          "app": "apps/id",
+          "build": false,
+          "reason": "No app, workspace dependency or shared runtime changes"
+        },
+        {
+          "app": "apps/dziri-flexy",
+          "build": false,
+          "reason": "No app, workspace dependency or shared runtime changes"
+        }
+      ]
+    },
+    "previousUnreleasedSharedRuntimeBatch": {
+      "scope": "Confirmed local-copy removal delta only; not last-successful-deployment comparison or release approval",
+      "projects": [
+        {
+          "app": "apps/dziri",
+          "build": true,
+          "reason": "App/dependency changed: packages/shared/src/messenger-writes.ts"
+        },
+        {
+          "app": "apps/dziri-business",
+          "build": true,
+          "reason": "App/dependency changed: packages/shared/src/messenger-writes.ts"
+        },
+        {
+          "app": "apps/dziri-console",
+          "build": true,
+          "reason": "App/dependency changed: packages/shared/src/messenger-writes.ts"
+        },
+        {
+          "app": "apps/dziri-shop",
+          "build": true,
+          "reason": "App/dependency changed: packages/shared/src/messenger-writes.ts"
+        },
+        {
+          "app": "apps/circles",
+          "build": true,
+          "reason": "App/dependency changed: packages/shared/src/messenger-writes.ts"
+        },
+        {
+          "app": "apps/id",
+          "build": true,
+          "reason": "App/dependency changed: packages/shared/src/messenger-writes.ts"
+        },
+        {
+          "app": "apps/dziri-flexy",
+          "build": true,
+          "reason": "App/dependency changed: packages/shared/src/messenger-writes.ts"
+        }
+      ],
+      "qualifiedNewLocalBuilds": [
+        "apps/dziri",
+        "apps/dziri-business"
+      ],
+      "remainingAffectedBuilds": [
+        "apps/dziri-console",
+        "apps/dziri-shop",
+        "apps/circles",
+        "apps/id",
+        "apps/dziri-flexy"
+      ],
+      "actualLastSuccessfulDeploymentComparison": false
+    },
+    "newFrontendBuilds": false,
+    "newNativeExports": false,
+    "verifiedPreviousNativeBundlesUnchanged": [
+      {
+        "file": "web/AppEntry-da79ff7f8ede612ef908b1d9496adbfc.js",
+        "sha256": "0d3845b6f362a305ab3efca49549aa860f0513205ea51c1dbc25b36d9b8355cd"
+      },
+      {
+        "file": "ios/AppEntry-52fb0656e62fd63c07f5a77cf2e710fe.hbc",
+        "sha256": "bf09a90628a910d893100870cd6a8a4961b149c2d986a377b766db8f23dd179c"
+      },
+      {
+        "file": "android/AppEntry-12a0c2453cd26df806f018c4c79d68a0.hbc",
+        "sha256": "a13a77b586611db0856b3819cc4a8759e855e65ec11d51bb820359936d5e15a3"
+      }
+    ],
+    "actualLastSuccessfulDeploymentComparison": false
+  },
+  "scope": {
+    "canonicalRequestAccessClassChangesInvalidateBothCapturedSendGrants": true,
+    "sameClockClosedRestoreAndAccept": true,
+    "directAndProxyTextMedia": true,
+    "oldCommittedIntroductionCannotAcknowledgeWithStaleScope": true,
+    "freshScopeIdempotencyPreserved": true,
+    "closedFolderChangesPrivateAndEquivalent": true,
+    "noOpDecisionsPreserveGrant": true,
+    "receiptUnreadStatePreservedOutsideExistingAcceptanceReset": true,
+    "failedDecisionsRollBack": true,
+    "boundedReads": 3,
+    "boundedWrites": 2,
+    "legacyUnboundPathsQualified": false,
+    "otherPolicyTransitionsQualified": false,
+    "appRuntimeChanged": false,
+    "newSchemaOrApi": false,
+    "physicalDevice": false,
+    "liveTwoClient": false,
+    "actualModerator": false,
+    "newApk": false,
+    "production": false,
+    "push": "hard-disabled"
+  },
+  "checkpointSha256": "7c008e2e76fcc7250ab3902eb7b1d9533ce411f38bd64766537d94e873f16713",
+  "registers": {
+    "tasks/messenger-meta-parity/remaining-goal.md": "fa79de75ea309aefb94d72faabf12e6c0644829630613cd064e37747a54b3ad4",
+    "tasks/messenger-meta-parity/todo.md": "70286df68f40e17f35df2d2ccc7d2c01329ed9f508f56c0572db10135b93d7b4",
+    "docs/messenger/META_PARITY_AUDIT_20261027.md": "75b9d3a8813c7016c9de94ea992272e41c4f5c62a1262d2ca901a09a8b573372"
+  },
+  "remainingGoal": "tasks/messenger-meta-parity/remaining-goal.md"
+}

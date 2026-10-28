@@ -1,0 +1,162 @@
+{
+  "checkpoint": "receipt-privacy-20261027",
+  "status": "implemented-locally-not-released",
+  "goal": "active",
+  "checks": {
+    "backend": 240,
+    "newPrivacyCases": 15,
+    "suites": 22
+  },
+  "verification": {
+    "backendTypes": "passed",
+    "format": "passed",
+    "scopedWhitespace": "passed",
+    "buildImpact": "backend-only; no web/native runtime build required"
+  },
+  "sourceHashes": {
+    "convex/schema.ts": "0cc6bbbdaa6903efde4f922ed21ef02d48470667e58af68f89b5e2a6540e0113",
+    "convex/messaging/preferences.ts": "3d70672f4f0c60b6a3a1fdf0f94ca9c73bb3a2d3540a11ef1929104e70702c02",
+    "convex/messaging/presence.ts": "d785b7f1a55e53b8cb001c18f18a5a5391f5d7f7b7260f5acc6e5e133f4bcb05",
+    "convex/messaging/threads.ts": "da72aeef129937645f401f95c116ce1e3af390170c17401d2112074798cf6426",
+    "convex/messaging/requests.ts": "34f895bbde3caca8de8ee5ecf71507a76dbf0517b31af137ac9186e75333e065",
+    "convex/marketplaceMessages.ts": "e6fa59025a94e639a7bd69e49b749c822cd0202fd3c795292b2a1433d8a4b1da",
+    "convex/lib/marketplaceMessageViews.ts": "cc8493a35e08aa6a15f380675a4040630d203cb043a84a6cebe01cee76e39cfe",
+    "convex/workspace/directory.ts": "0d69162b216d9292a8db6a3649372c303c8f04181532c950419ac03323ed7d6d",
+    "convex/workspace/profile.ts": "047563069bac297a82fcae664d6f1051fab775ea1229ada21cd3e6db3efe6b16",
+    "tests/activation/messenger-receipt-privacy.test.ts": "fb3085fbc540e03ac6c63107f2b3539372cf20080233f51f518a6c06b45a2415",
+    "tests/activation/messenger-public-presence.test.ts": "ac2dd1ba716ca2c3d2b082bda8852ef72067863f545a792fd8580e3a50fe19d8"
+  },
+  "documentHashes": {
+    "receipt-privacy-20261027.md": "81ae641ecfa3fe487e317b3a6289ccc90ded854191c9bc4b481507667ea4dcf6",
+    "remaining-goal.md": "ba7744c0c47428857b0a7f2cd5f083e0e52145f7b04b74510057ba97fcc5c5ea",
+    "todo.md": "ff359c38df90f44359c22dbd5fdac0f25de2bd092bb008fd39c10bf6d6ce850c"
+  },
+  "logs": {
+    "receipt-privacy-all-verified.log": {
+      "sha256": "9aab03f3e8fa2410fa624d4af2d82c23a435386060fbf550cba85bebb03f2c21",
+      "bytes": 1025
+    },
+    "receipt-privacy-types.log": {
+      "sha256": "69e01b7ca2fa44c24963e7c54254dcbd7639763d159d3a14c116023391a8658a",
+      "bytes": 107
+    },
+    "receipt-privacy-format.log": {
+      "sha256": "b8ec334652afa9b1ba7e5c5b54de13c4acccba963b3da25d4b039533947e6846",
+      "bytes": 175
+    },
+    "receipt-privacy-whitespace.log": {
+      "sha256": "61c7f00f118d6235c09fdaf866767f9d53d9a8d099a9e66b6760d6d6176be20c",
+      "bytes": 976
+    },
+    "receipt-privacy-red.log": {
+      "sha256": "944201a327ed873660415502a97bb842e21b622833c2cf9bfeae7ccb7f78a078",
+      "bytes": 8253
+    },
+    "receipt-public-presence-red.log": {
+      "sha256": "c3a6d524843864796c953d067d3102372ab971b0f4b4f2e80a6d321c4152861a",
+      "bytes": 4198
+    },
+    "receipt-privacy-account-red.log": {
+      "sha256": "9485481de6e89c3ddd1d7016dce4cdbdf4b1bcda8922f93e374dc6083b72c56f",
+      "bytes": 2449
+    }
+  },
+  "impact": {
+    "scope": "Current backend receipt/privacy delta; not a release-baseline comparison or deployment approval",
+    "changed": [
+      "convex/schema.ts",
+      "convex/messaging/preferences.ts",
+      "convex/messaging/presence.ts",
+      "convex/messaging/threads.ts",
+      "convex/messaging/requests.ts",
+      "convex/marketplaceMessages.ts",
+      "convex/lib/marketplaceMessageViews.ts",
+      "convex/workspace/directory.ts",
+      "convex/workspace/profile.ts",
+      "tests/activation/messenger-receipt-privacy.test.ts",
+      "tests/activation/messenger-public-presence.test.ts",
+      "tasks/messenger-meta-parity/receipt-privacy-20261027.md",
+      "tasks/messenger-meta-parity/remaining-goal.md",
+      "tasks/messenger-meta-parity/todo.md"
+    ],
+    "projects": [
+      {
+        "app": "apps/dziri-business",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-console",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-shop",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/circles",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/id",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-flexy",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      }
+    ]
+  },
+  "wireContract": {
+    "clients": "Consumer and standalone retain existing receipt query/mutation shapes",
+    "publicPersonal": "Separate sharedReadAt/sharedReadGeneration/sharedDeliveredAt",
+    "publicMarketplace": "First-read generation; internal generation and reader identity omitted from DTO",
+    "privateState": "Private unread/delivery progress never directly projected as a public receipt",
+    "preferences": "Monotonic generation on real read-sharing transitions, independent of clock",
+    "publicPresence": "Canonical activity/last-seen policy in workspace directory/profile/search",
+    "legacyPersonal": "Historical private cursors are unknown as public evidence; no consent backfill"
+  },
+  "optionalSchemaMetadata": [
+    "threadMembers.sharedReadAt",
+    "threadMembers.sharedReadGeneration",
+    "threadMembers.sharedDeliveredAt",
+    "messengerPreferences.readReceiptsGeneration",
+    "marketplaceMessages.receiptReadGeneration"
+  ],
+  "dataMigration": false,
+  "boundaries": {
+    "schemaOrFunctionsPublished": false,
+    "gitPush": false,
+    "realCommunicationsOrAccountChanges": false,
+    "pushHardDisabled": true,
+    "providerConfiguredOrTokenMinted": false,
+    "physicalOrLiveTwoClientQualified": false,
+    "exactVisibleMessageBatchQualified": false,
+    "timestampTiesQualified": false,
+    "secureEnrollmentQualified": false
+  },
+  "unchangedNativeArtifact": {
+    "sourceFilesMatched": 18,
+    "receipt": "D:/codex-artifacts/dziri-story-flows-20261027/verification.json",
+    "sha256": "42da0c9cf908b7c84a78aee959cd29ccc2fc987e1318e866fb1f6caf0f5a26b8",
+    "newApkProduced": false,
+    "cloudMetadataNotRequeriedThisSlice": true
+  },
+  "requiredGates": [
+    "Exact visible-message batch/identity acknowledgement including timestamp ties",
+    "Authorized live two-client focus/reconnect/revocation and physical-device acceptance",
+    "Secure family enrollment/age/guardian authority and remaining time/privacy controls",
+    "Review conservative legacy receipt transition and additive metadata before backend release",
+    "Reviewed source/schema/backend release; no production publication in this checkpoint"
+  ]
+}

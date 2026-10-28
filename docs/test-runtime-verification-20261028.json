@@ -1,0 +1,1109 @@
+{
+  "checkpoint": "test-runtime-20261028",
+  "at": "2026-10-28T09:32:11.444Z",
+  "goal": "active; full original remaining scope unchanged",
+  "previousReceiptSha256": "2e7d76d69abbe66d987d05f4a73fcbdb872a05db321ce5b0377349c543198fdb",
+  "candidate": "E:/CodexWorktrees/messenger-master-integration-20261028/tawasool-mmogram",
+  "original": "E:/CodexWorktrees/messenger-tabs/tawasool-mmogram",
+  "native": "D:/projects/dziri-messenger-mobile",
+  "head": "f0af35e64eb81aa9c6a8aec578f7fdbd56767b23",
+  "mergeHead": "005b769bc9014748259e6227a71a6c1caf547ec6",
+  "mergeCommitted": false,
+  "scope": "Development-only test runtime and fixture clock migration; no production implementation/API changes",
+  "sources": {
+    "package.json": "f612960f55879fdc29c96030353453f7fa019d4a0d9418be1f88c39a4001eb7a",
+    "package-lock.json": "120e5e70aa7a38142cbc1bd82bce2b592c483ce0321ef8470a15c641edf5d51b",
+    "tests/runtime/convex-scheduler-context.test.ts": "fabd3156e93663485bec8e381fa3f8084e4b0dfc3bf9f98d648fc65d31fb9cdc",
+    "tests/ddie/feed-capture-packet.test.ts": "13a7c35c6e30a42c5850b858b391cdd47bef32d1b594c0dc8291b3d1490544a3",
+    "tests/ddie/privacy-purpose.test.ts": "7bbee88ae50712953c83607a405b1476eea5bc28b165b5986f8e84dfee8bb9aa",
+    "tests/ddie/native-creator-preference.test.ts": "c6070132531e01ab129d3d3654f294711198186adb456c2a4cdbc3652498f62e"
+  },
+  "packageIntegrity": {
+    "version": "0.0.49",
+    "url": "https://registry.npmjs.org/convex-test/-/convex-test-0.0.49.tgz",
+    "integrityMatched": true,
+    "sha256": "eafd32db65614cc6b093bccbe7775db546b5c9bcfef9dd8bfa566b6ce40a1923"
+  },
+  "canonicalOldPackage": {
+    "installed": "2296b32fceb5cbae27765182f1210c96d507b2ba51f4a03ad07fd13b8857b77d",
+    "canonical": "2296b32fceb5cbae27765182f1210c96d507b2ba51f4a03ad07fd13b8857b77d",
+    "matches": true
+  },
+  "candidatePackage": {
+    "version": "0.0.66",
+    "peerDependencies": {
+      "convex": "^1.43.0"
+    },
+    "integrity": "sha512-d70YxtlUqL6w37EmcxAYSQPRZ6lWF7PQ4q/KrbUrn6bfbxPG4eafLl5386UNrjCb8U1kX7mRCanrB4Bv8uB5Cg==",
+    "sha256": "dcaffb856ef81221019404df96d6e9b2b3c0b11424a314111397487dd3fbb463"
+  },
+  "isolation": {
+    "candidateRoot": "E:\\CodexWorktrees\\messenger-master-integration-20261028\\tawasool-mmogram",
+    "originalDependencyRetainedAtLink": "E:\\CodexWorktrees\\messenger-master-integration-20261028\\tawasool-mmogram\\node_modules\\.convex-test-original-link-20261028",
+    "installedVersion": "0.0.66",
+    "physicalCopy": true,
+    "originalIndexSha256": "2296b32fceb5cbae27765182f1210c96d507b2ba51f4a03ad07fd13b8857b77d"
+  },
+  "preservation": {
+    "originalProductSource": true,
+    "originalStagedDiff": true,
+    "deliberateOriginalBookkeeping": [
+      "tasks/messenger-meta-parity/remaining-goal.md"
+    ],
+    "nativePaths": 41,
+    "nativeUnchanged": true,
+    "originalTestRuntimeUnchanged": true
+  },
+  "verification": {
+    "schedulerRed": {
+      "status": 1,
+      "cases": 5,
+      "failed": 2,
+      "log": "scheduler-real-red.log"
+    },
+    "schedulerGreen": {
+      "status": 0,
+      "cases": 5,
+      "log": "scheduler-green.log"
+    },
+    "core": {
+      "at": "2026-10-28T09:26:02.634Z",
+      "status": 0,
+      "error": null,
+      "args": [
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "convex/vitest.config.ts",
+        "tests/activation/marketplace-delivery.test.ts",
+        "tests/activation/marketplace-location.test.ts",
+        "tests/activation/marketplace-messenger.test.ts",
+        "tests/activation/marketplace-profile-avatar.test.ts",
+        "tests/activation/marketplace-reaction-inbox.test.ts",
+        "tests/activation/marketplace-receipt-authority.test.ts",
+        "tests/activation/marketplace-receipt-observation.test.ts",
+        "tests/activation/marketplace-send-scope.test.ts",
+        "tests/activation/marketplace-stock-integrity.test.ts",
+        "tests/activation/marketplace-store-status-security.test.ts",
+        "tests/activation/messenger-contact-send-scope.test.ts",
+        "tests/activation/messenger-continuation.test.ts",
+        "tests/activation/messenger-exact-receipts.test.ts",
+        "tests/activation/messenger-exact-unread.test.ts",
+        "tests/activation/messenger-family-contact.test.ts",
+        "tests/activation/messenger-group-controls.test.ts",
+        "tests/activation/messenger-interactions.test.ts",
+        "tests/activation/messenger-marketplace-unread.test.ts",
+        "tests/activation/messenger-privacy.test.ts",
+        "tests/activation/messenger-public-join-access.test.ts",
+        "tests/activation/messenger-public-presence.test.ts",
+        "tests/activation/messenger-receipt-audience.test.ts",
+        "tests/activation/messenger-receipt-client-scope.test.ts",
+        "tests/activation/messenger-receipt-privacy.test.ts",
+        "tests/activation/messenger-receipts.test.ts",
+        "tests/activation/messenger-reporting.test.ts",
+        "tests/activation/messenger-request-send-scope.test.ts",
+        "tests/activation/messenger-requests.test.ts",
+        "tests/activation/messenger-retry-intent.test.ts",
+        "tests/activation/messenger-safety.test.ts",
+        "tests/activation/messenger-send-scope.test.ts",
+        "tests/activation/messenger-stories-safety.test.ts",
+        "tests/activation/messenger-tabs.test.ts",
+        "tests/activation/messenger-unread-privacy.test.ts",
+        "tests/activation/account-deletion-resume.test.ts",
+        "tests/activation/dsar-artifacts.test.ts",
+        "tests/tv",
+        "tests/runtime/convex-scheduler-context.test.ts",
+        "--maxWorkers",
+        "4"
+      ],
+      "durationMs": 25507,
+      "cases": 530,
+      "files": 39
+    },
+    "clockFixtureMigration": {
+      "status": 0,
+      "cases": 71,
+      "files": 3,
+      "log": "clock-fixtures-green.log"
+    },
+    "completeMatrix": {
+      "at": "2026-10-28T09:30:14.362Z",
+      "status": 1,
+      "error": null,
+      "args": [
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "convex/vitest.config.ts",
+        "tests/activation/marketplace-delivery.test.ts",
+        "tests/activation/marketplace-location.test.ts",
+        "tests/activation/marketplace-messenger.test.ts",
+        "tests/activation/marketplace-profile-avatar.test.ts",
+        "tests/activation/marketplace-reaction-inbox.test.ts",
+        "tests/activation/marketplace-receipt-authority.test.ts",
+        "tests/activation/marketplace-receipt-observation.test.ts",
+        "tests/activation/marketplace-send-scope.test.ts",
+        "tests/activation/marketplace-stock-integrity.test.ts",
+        "tests/activation/marketplace-store-status-security.test.ts",
+        "tests/activation/messenger-contact-send-scope.test.ts",
+        "tests/activation/messenger-continuation.test.ts",
+        "tests/activation/messenger-exact-receipts.test.ts",
+        "tests/activation/messenger-exact-unread.test.ts",
+        "tests/activation/messenger-family-contact.test.ts",
+        "tests/activation/messenger-group-controls.test.ts",
+        "tests/activation/messenger-interactions.test.ts",
+        "tests/activation/messenger-marketplace-unread.test.ts",
+        "tests/activation/messenger-privacy.test.ts",
+        "tests/activation/messenger-public-join-access.test.ts",
+        "tests/activation/messenger-public-presence.test.ts",
+        "tests/activation/messenger-receipt-audience.test.ts",
+        "tests/activation/messenger-receipt-client-scope.test.ts",
+        "tests/activation/messenger-receipt-privacy.test.ts",
+        "tests/activation/messenger-receipts.test.ts",
+        "tests/activation/messenger-reporting.test.ts",
+        "tests/activation/messenger-request-send-scope.test.ts",
+        "tests/activation/messenger-requests.test.ts",
+        "tests/activation/messenger-retry-intent.test.ts",
+        "tests/activation/messenger-safety.test.ts",
+        "tests/activation/messenger-send-scope.test.ts",
+        "tests/activation/messenger-stories-safety.test.ts",
+        "tests/activation/messenger-tabs.test.ts",
+        "tests/activation/messenger-unread-privacy.test.ts",
+        "tests/activation/account-deletion-resume.test.ts",
+        "tests/activation/dsar-artifacts.test.ts",
+        "tests/tv",
+        "tests/ddie",
+        "tests/runtime/convex-scheduler-context.test.ts",
+        "--maxWorkers",
+        "4"
+      ],
+      "durationMs": 48928,
+      "qualified": false
+    },
+    "triage": {
+      "at": "2026-10-28T09:31:17.271Z",
+      "files": [
+        "tests/ddie/audience-measurement-collection.test.ts",
+        "tests/ddie/feed-delivery-link.test.ts",
+        "tests/ddie/feed-purpose-epoch.test.ts",
+        "tests/ddie/recommendation-linked-negative.test.ts",
+        "tests/ddie/signed-share-conversion-ledger.test.ts",
+        "tests/ddie/signed-share-conversion-pair.test.ts",
+        "tests/ddie/signed-share-order-evidence.test.ts",
+        "tests/ddie/signed-share-order-scope.test.ts",
+        "tests/ddie/signed-share-view.test.ts",
+        "tests/ddie/signed-share.test.ts"
+      ],
+      "displayedFailureRecords": 170,
+      "runnerSummary": {
+        "failedTests": 170,
+        "passedTests": 976,
+        "failedFiles": 10,
+        "passedFiles": 64
+      },
+      "scheduledJobErrors": 0,
+      "transactionErrors": 0,
+      "workerTeardownErrors": 0,
+      "failures": [
+        {
+          "file": "tests/ddie/audience-measurement-collection.test.ts",
+          "test": "cached valid evidence from external respects actual projection authority",
+          "error": "Error: Stale or conflicting inventory"
+        },
+        {
+          "file": "tests/ddie/audience-measurement-collection.test.ts",
+          "test": "closed projection disables cached owned evidence and stops an already-positive inventory job without changing money",
+          "error": "AssertionError: expected 1793179780154 to be less than or equal to 1793179780153"
+        },
+        {
+          "file": "tests/ddie/audience-measurement-collection.test.ts",
+          "test": "expired requests and a request crossing the collection day cannot become observations",
+          "error": "AssertionError: expected true to be false // Object.is equality"
+        },
+        {
+          "file": "tests/ddie/feed-delivery-link.test.ts",
+          "test": "cached reference qualification still checks each observation's content and issue time",
+          "error": "AssertionError: expected [ 'eligible', 'unavailable', …(2) ] to deeply equal [ 'eligible', 'unavailable', …(2) ]"
+        },
+        {
+          "file": "tests/ddie/feed-delivery-link.test.ts",
+          "test": "follower delivery link is read-only and uses its existing authority",
+          "error": "AssertionError: expected { status: 'unavailable', version: 1 } to match object { status: 'eligible', …(4) }"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "canonical capture retains server-checked purpose lineage separately from raw acknowledgement and delivery",
+          "error": "AssertionError: expected { checkedAt: 1800000000001, …(7) } to match object { …(8) }"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "history admits reported receipt and stored save while ignoring forged client labels and save reports",
+          "error": "AssertionError: expected [] to deeply equal [ 'impression' ]"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "purpose grant does not activate DABE and each use rechecks pause, notice and user opt-in",
+          "error": "AssertionError: expected [] to have a length of 1 but got +0"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "legacy producers and unlinked purpose cannot become history after a later grant",
+          "error": "AssertionError: expected { …(6) } to match object { version: 1, …(4) }"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "a report accepted before lease expiry survives natural expiry; pending and late reports do not",
+          "error": "AssertionError: expected [] to have a length of 1 but got +0"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "current block changes invalidate already retained history",
+          "error": "AssertionError: expected [] to have a length of 1 but got +0"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "current version changes invalidate already retained history",
+          "error": "AssertionError: expected [] to have a length of 1 but got +0"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "current policy changes invalidate already retained history",
+          "error": "AssertionError: expected [] to have a length of 1 but got +0"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "current actor changes invalidate already retained history",
+          "error": "AssertionError: expected [] to have a length of 1 but got +0"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "current reset changes invalidate already retained history",
+          "error": "AssertionError: expected [] to have a length of 1 but got +0"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "bounded history deduplicates observations and never labels duration or generic negatives as fatigue",
+          "error": "AssertionError: expected [] to deeply equal [ 'impression' ]"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "actual qualified serving consumes current history while preserving fixed receipts and restored baseline on withdrawal",
+          "error": "AssertionError: expected [ 'sports', 'fixed', 'music', 'news' ] to deeply equal [ 'music', 'fixed', 'sports', 'news' ]"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "real provider history preserves primary football identity despite title hints",
+          "error": "AssertionError: expected null to be 'sports' // Object.is equality"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "real provider history preserves primary music identity despite title hints",
+          "error": "AssertionError: expected null to be 'music' // Object.is equality"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "existing follower playback receipts keep issuance epoch and accepted report time",
+          "error": "AssertionError: expected [] to have a length of 1 but got +0"
+        },
+        {
+          "file": "tests/ddie/feed-purpose-epoch.test.ts",
+          "test": "existing follower dwell receipts keep issuance epoch and accepted report time",
+          "error": "AssertionError: expected [] to have a length of 1 but got +0"
+        },
+        {
+          "file": "tests/ddie/recommendation-linked-negative.test.ts",
+          "test": "different_pending linked negative cannot contaminate another recommendation receipt at completion",
+          "error": "AssertionError: expected 'unavailable' to be 'eligible' // Object.is equality"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "new real debit atomically captures a private original candidate without reward or another debit",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "actual released source transition updates only the captured attribution state",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "actual partial-refund source transition updates only the captured attribution state",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "actual refunded source transition updates only the captured attribution state",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "real buyer conversion_attribution withdrawal deletes captures and a regrant cannot retrofit them",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "real buyer product_analytics withdrawal deletes captures and a regrant cannot retrofit them",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "withdrawal worker purges the exact original issuer epoch even while source admission is closed",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "withdrawal worker purges the exact original configurator epoch even while source admission is closed",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "registered buyerId owner deletion isolates other actors and never rewrites money",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "registered sellerId owner deletion isolates other actors and never rewrites money",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "registered issuerId owner deletion isolates other actors and never rewrites money",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "registered recordedBy owner deletion isolates other actors and never rewrites money",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "real DSAR owner projections hide buyer and debit/order details from the distinct issuer",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "existing source retention purges the ledger while collection is closed",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "actual DSAR bundle merges distinct buyer and seller/issuer/configurator rows exactly once",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "delayed multi-page withdrawal deletes only the original epoch after a regrant",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "dispute invalidates the original candidate and never selects another view",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "revocation invalidates the original candidate and never selects another view",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "observation invalidates the original candidate and never selects another view",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "original-item invalidates the original candidate and never selects another view",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "scope invalidates the original candidate and never selects another view",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "two actual independently observed scoped contents hold the checkout instead of choosing the latest",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "actual checkout exact retries create one order, debit and original ledger row",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "closed capture cannot be backfilled by a later review, worker or checkout retry",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "deleted capture remains missing after original checkout retry and worker",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "another original debit command conflicts without changing captured evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "actual dispute intake invalidates captured attribution without changing original money",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "actual return intake invalidates captured attribution without changing original money",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "bounded view overflow holds attribution and preserves the original checkout",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "ambiguous policy source holds attribution without rolling back ordinary checkout",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "ambiguous membership source holds attribution without rolling back ordinary checkout",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "ambiguous buyer-choice source holds attribution without rolling back ordinary checkout",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-ledger.test.ts",
+          "test": "ambiguous issuer-choice source holds attribution without rolling back ordinary checkout",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "internal source uses a reviewed paid-event window after browser expiry and reads without mutating money or evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "closed join review returns before source reads",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "closed capture review returns before source reads",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "closed order review returns before source reads",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "closed scope review returns before source reads",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "closed processing review returns before source reads",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "closed view review returns before source reads",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid pair review captureVersion cannot inherit another source review",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid pair review captureReference cannot inherit another source review",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid pair review orderVersion cannot inherit another source review",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid pair review orderReference cannot inherit another source review",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid pair review scopeVersion cannot inherit another source review",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid pair review scopeReference cannot inherit another source review",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid pair review source cannot inherit another source review",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid pair review purpose cannot inherit another source review",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid pair review retention cannot inherit another source review",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid pair review reference cannot inherit another source review",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid pair review version cannot inherit another source review",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid reviewed window 0 is unavailable",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid reviewed window -1 is unavailable",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid reviewed window 4999 is unavailable",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid reviewed window 86400001 is unavailable",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid reviewed window NaN is unavailable",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid reviewed window Infinity is unavailable",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "invalid reviewed window 5000.5 is unavailable",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "payment at strict event boundary 6000 remains held",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "payment at strict event boundary 306000 remains held",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "original order paid before observation cannot qualify through a later status change",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "unmatched original item is held without deriving purchase from total or caller outcome",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "legacy order lacking original checkout snapshot stays held",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "actual cancellation preserves original purchase and refund without another credit",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "conversion-withdrawal closes the exact original pair without rewriting sources",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "conversion-regrant closes the exact original pair without rewriting sources",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "analytics-withdrawal closes the exact original pair without rewriting sources",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "issuer-revoke closes the exact original pair without rewriting sources",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "scope-change closes the exact original pair without rewriting sources",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "company-member closes the exact original pair without rewriting sources",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "inactive-buyer closes the exact original pair without rewriting sources",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "notice-change closes the exact original pair without rewriting sources",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "missing original observation claim is held, not replaced by a recent winner",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "duplicate original observation claim is held, not replaced by a recent winner",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "changed original observation claim is held, not replaced by a recent winner",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "opened cannot be interpreted as original observed conversion evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "future-observation cannot be interpreted as original observed conversion evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "impossible-visibility cannot be interpreted as original observed conversion evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "extended-purge cannot be interpreted as original observed conversion evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "missing-conversion-marker cannot be interpreted as original observed conversion evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "superseded cannot be interpreted as original observed conversion evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "original scope expiry bounds payment even when the independently reviewed window is longer",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "pair use ends at existing view retention and never extends it for a purchase",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "another buyer's real debit cannot be paired to this recipient",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "actual released preserves original debit and current receipt state without a payout",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "actual partial-refund preserves original debit and current receipt state without a payout",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-conversion-pair.test.ts",
+          "test": "internal arguments accept source record IDs only, rejecting caller money or target-actor claims",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-evidence.test.ts",
+          "test": "contradictory order evidence is held ({\"updatedAt\":1791547200001})",
+          "error": "AssertionError: expected { evidence: { …(18) }, …(1) } to deeply equal { status: 'held', …(1) }"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "conversion source stays closed before optional reads and does not change normal observations",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "original conversion epoch is independent, observed once, private and nonfinancial",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "missing-grant at original open never backfills on retry or observation",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "closed-source at original open never backfills on retry or observation",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "unscoped at original open never backfills on retry or observation",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "withdrawal and regrant never replace original conversion lineage",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "conversion review closed at first observation cannot qualify through an exact retry after restoration",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "invalid conversion review version closes capture before optional reads",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "invalid conversion review reference closes capture before optional reads",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "invalid conversion review processingVersion closes capture before optional reads",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "invalid conversion review viewVersion closes capture before optional reads",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "invalid conversion review purpose closes capture before optional reads",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "invalid conversion review source closes capture before optional reads",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "invalid conversion review retention closes capture before optional reads",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "review-version invalidates current conversion observation without rewriting original evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "review-reference invalidates current conversion observation without rewriting original evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "notice invalidates current conversion observation without rewriting original evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "choice-row invalidates current conversion observation without rewriting original evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "scope invalidates current conversion observation without rewriting original evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "expired invalidates current conversion observation without rewriting original evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "account invalidates current conversion observation without rewriting original evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "member invalidates current conversion observation without rewriting original evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "wrong-actor invalidates current conversion observation without rewriting original evidence",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "sender conversion consent cannot authorize recipient capture",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "conversion withdrawn after observation closes use while analytics retries and immutable evidence remain",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "same original epoch cannot be first observed after a temporary conversion-notice closure",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "actual signed issuance fixes original scope; retries retain original MAC after another mapping is recorded",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "same-ms scope holds new issuance without consuming budget or choosing a mapping",
+          "error": "AssertionError: expected [ { …(6) } ] to have a length of +0 but got 1"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "actual HTTP navigation and recipient observation retain original scope and close after it changes",
+          "error": "Error: Synthetic share issuance failed"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "real configuration stamps original scope; exact retries keep one row and matching excludes unrelated basket items",
+          "error": "AssertionError: expected [ { …(20) } ] to match object [ { recordedAt: 1791633600000, …(4) } ]"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "a bound sellerId actor can export and delete a share issued by a different admin",
+          "error": "Error: Synthetic admin did not issue bound share"
+        },
+        {
+          "file": "tests/ddie/signed-share-order-scope.test.ts",
+          "test": "a bound recordedBy actor can export and delete a share issued by a different admin",
+          "error": "Error: Synthetic admin did not issue bound share"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "opening requires the displayed content and the exact independently current recipient epoch",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "actual HTTP redirect is first-party, stateless and uniform while processing is closed",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "independent view review and excluded navigation still allow only the functional redirect",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "recipient authority is independent and excludes anonymous, self and company members",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "actual open is single-use across actors and commands, with exact recovery after challenge expiry",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "open recovery works at the daily cap and changed challenges conflict without resampling",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "tampered HMAC never creates a recipient view",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "report requires server elapsed time and foreground visibility and rejects impossible claims",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "exact reports recover once, changed payload conflicts and one candidate wins per recipient/campaign/content",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "withdrawal and regrant cannot revive an old recipient view or its open command",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "current issuer, content, campaign, policy, key and review changes close reports and recovery",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "own exports redact challenges, commands and issuer identity; sender cannot export recipient observations",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "actual account deletion cascades view claims for either recipient or issuer",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "a new purpose epoch supersedes an invalid winner permanently",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "retention removes views and claim pointers at the exact boundary even with admission closed",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "removed signing keys close public recovery while preserving conservative duplicate suppression until expiry",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share-view.test.ts",
+          "test": "view retention drains overflow through bounded scheduled batches",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share.test.ts",
+          "test": "real creation and exact retry retain one opaque share and one consumed budget",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share.test.ts",
+          "test": "wrong purpose cannot authorize creation; actual withdrawal and regrant never revive an old token",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share.test.ts",
+          "test": "notice admission/registry and processing/policy changes suppress old stored grants",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share.test.ts",
+          "test": "signature verification rejects altered token, campaign/content scope and exact expiry",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share.test.ts",
+          "test": "request conflicts and malformed windows cannot change the original share or budget",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share.test.ts",
+          "test": "bounded daily issue cap admits exact retries at the cap and keeps budget after revocation",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share.test.ts",
+          "test": "owner revocation is idempotent and works after admission closes; other actors cannot revoke",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share.test.ts",
+          "test": "current campaign, company, issuer, membership, policy and content lifecycle govern stored use",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share.test.ts",
+          "test": "bounded actor export redacts nonce and commands; account cleanup covers both new actor tables",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share.test.ts",
+          "test": "retention processes excess rows in bounded scheduled batches",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        },
+        {
+          "file": "tests/ddie/signed-share.test.ts",
+          "test": "retention honors exact boundary and removes private nonce even with admission closed",
+          "error": "Error: Synthetic authorized fixture did not issue"
+        }
+      ]
+    },
+    "stagedSecretScan": {
+      "status": 0,
+      "log": "staged-secret-check.log"
+    },
+    "productionRuntimeGuard": {
+      "status": 0,
+      "log": "production-runtime-check.log"
+    }
+  },
+  "holds": {
+    "push": "HARD-DISABLED",
+    "providerConfiguration": false,
+    "productionPublication": false,
+    "masterPush": false,
+    "realAccountActions": false,
+    "physicalDevice": false,
+    "newApk": false
+  },
+  "remaining": [
+    "Trace the ten remaining DDIE clock-sensitive failure files without weakening consent/expiry/provenance/idempotency/money/privacy checks",
+    "Qualify complete backend matrix and complete reviewed local merge with active hooks",
+    "Requalify affected downstream/native outputs and every original feature/security/privacy/real-account/device/recovery/moderation/release/APK acceptance gate"
+  ],
+  "evidence": {
+    "backend-after-clock-fixtures-result.json": "17a25fe0844a92ba73952f17e3915e59e0f38ffe91b294ade54eaed768148adc",
+    "backend-after-clock-fixtures.log": "72bb674932eb4a717f51a3bacb9f071331f6153b54b6c798a0312edac6b00a8c",
+    "backend-qualification-result.json": "9dadb3e7da48c7f4a9d2d1c3c3aa344fb0efd897cd7e121e0d8b3ced73315f7b",
+    "backend-qualification.log": "4b9f2ce5484d42b0589fda309c0c52cabca7013f42165f5c87e88d6772b13149",
+    "before-package-lock.json": "4c9330500d5455c8594f368c888976ed82005de29f69be75c058c06e420cbac5",
+    "before-package.json": "b27a117e5c0c8d40f91b2fdc6d6f82e4d17e165951318af6c741f94deb7ba2a3",
+    "candidate-package-metadata.json": "debe4664c266c545348623c916de9c193568b0c1e848a56fcd90981f22eb0e8d",
+    "capture-clock-green.log": "7436a5598795a268c4eedd3b0d12c912d14963b5e04455cb195fa160236a1cd1",
+    "clock-fixtures-green.log": "c1737ee041d6e9d7db42243a978127a7860c4b8f5f17866ec59f0546d5f001b6",
+    "convex-test-0.0.49.tgz": "eafd32db65614cc6b093bccbe7775db546b5c9bcfef9dd8bfa566b6ce40a1923",
+    "convex-test-0.0.66.tgz": "dcaffb856ef81221019404df96d6e9b2b3c0b11424a314111397487dd3fbb463",
+    "core-backend-result.json": "297a9d218580f91d1afd98f53b4a598e5d96f1176dc0a15e4a2b81c7f1ce2b19",
+    "core-backend.log": "6fd285fd11ba691c886d17d4c07e00f6a549ba3bd26a16306e7ad15177828fc5",
+    "installed-comparison.json": "f04d763b74c89db80cecfebbeb9b8dae85f8341a8660941074b4f230c8085074",
+    "package-integrity.json": "26c090e595a4b7e712197c73e43983edbb93eb3470aa5c05daceb551a7214d6a",
+    "production-runtime-check.log": "ad8977b22d7017507f5b9f76b6fd8c4ff190e6e953ba3ee375d705d44c71dc16",
+    "remaining-triage.json": "7e62206ed2ef2c3071bad2f166386d5b05ce11c6b34594cd03aa49c89974660c",
+    "result-summaries.json": "5809a697a7dfe38e66c64b0748ed9d264b3f85e1a2159148f26d8cf9b299d98c",
+    "runtime-isolation.json": "72583efd98f73121ab0698bb365d3910b632f76a7de0da2bbbfdd987702b46aa",
+    "scheduler-green.log": "70e0c75f4d42f40f5ac4851d332b4e3c31f271bab1b06df334694410a828f93f",
+    "scheduler-real-red.log": "b7d2990d1fb18f211296e710dbcc2be034e060998abab9093b4f3aae395f7ebf",
+    "scheduler-red.log": "e66a44c4df652f6be84a7f0a6d82b4cb3fd4ea0b64015298b39108d8dac9f15a",
+    "staged-secret-check.log": "119f6149833cc4dd175d5ed19761c0cedc88f9486a275e7757e26b7647a34dc3",
+    "test-runtime-20261028.md": "7abdb1d4f7a6c12c2fb022546f4dfc955c219ac01e835e138892df8cad2ed7ba"
+  }
+}

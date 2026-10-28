@@ -18,7 +18,7 @@ export function MessageStatus({ state, info }: { state: DeliveryState; info: () 
       <Icon
         name={state === 'read' || state === 'delivered' ? 'doubleCheck' : 'check'}
         size={16}
-        color={state === 'read' ? colors.primary : colors.secondary}
+        color={state === 'read' ? colors.readReceipt : colors.secondary}
       />
     </View>
   );

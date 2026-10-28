@@ -1,0 +1,383 @@
+{
+  "checkpoint": "local-discard-20261028",
+  "at": "2026-10-28T05:52:09.282Z",
+  "goal": "active; entire original remaining-goal preserved",
+  "previousReceiptSha256": "717c09ab759883773f064f0cae5049b1f77e5b0f29cbc96774f2b86fc404aeb4",
+  "workspaces": {
+    "consumerBackend": {
+      "branch": "digitaltrendz/messenger-tabs",
+      "head": "0925f5310d6739542f4d0434a369864df48e9c78",
+      "dirtySourceHashesAreAuthoritative": true
+    },
+    "standalone": {
+      "branch": "digitaltrendz/consolidated-messenger",
+      "head": "7d4e8e5359de2df51c89acc7548cdeac1c00d439",
+      "dirtySourceHashesAreAuthoritative": true
+    }
+  },
+  "sources": {
+    "consumerBackend": {
+      "packages/shared/src/messenger-writes.ts": "5bba7e1d5e5f8b67a06beea24dd0431f01565e83084c27083d139ea30c0a78ca",
+      "apps/dziri/components/messaging/composer.tsx": "5d62997367b7aa418964c57d50bf721996d5cf4901ee91aca72285d1eca144b9",
+      "apps/dziri/components/messaging/message-status.tsx": "a63b8421f8269eb0fbcaf22d9ae10bc5dfe277bb31842de5e066d5ff38cf3ee5",
+      "apps/dziri/components/messaging/use-message-blob-url.ts": "6f6f88937b4caffaa2aecf70a85eb041782e2e836a8d97b68d275cab673708e4",
+      "apps/dziri/components/messaging/queued-message-review.tsx": "81e01ada2b9397731c4ac8e7835552c18bbc56527a41dbc6a44ab8f6569d7bed",
+      "apps/dziri/app/(main)/messages/[threadId]/page.tsx": "c1fcf726e4cdf9fb13b8a1b8f38b9ea030ec378228c1864436baa5276a2c10bc",
+      "tests/feed-ui/messenger-send-status.test.tsx": "02ba61656950590a237b5db4d4d0b3806ef5e65c7423874df55317dfc1dfb415",
+      "tests/feed-ui/messenger-personal-send-scope.test.tsx": "53567007bc3916e878c3bf1235aa0ffd42c1d37298f6795094f7f05732b66df6",
+      "tests/feed-ui/messenger-call-readiness.test.tsx": "b5e7b93f38814a137f331698ad69571b40c59660b192ff5c948a534e48bf99a7",
+      "tests/feed-ui/messenger-send-scope.test.tsx": "73f23d6cbd81cb537e754940d4b3552a4184870a5e86b1c0d328773a8adfc81e",
+      "tests/feed-ui/messenger-local-removal.test.tsx": "d3d7d12e70e27bc4c621a3bccf4ca0d1ef07414e8d05beceb0206f9528104187"
+    },
+    "standalone": {
+      "src/dziri/conversation.tsx": "72a1da10bf82ad937de0418add73f4944a07fcb6f30827b660262439e68cb309",
+      "src/dziri/commerce.tsx": "7d41a7bdaf03e2d4ceca25775c1444ea33280b929ed232e73659913e34d46358",
+      "src/dziri/message-composer.tsx": "21a87c73609dec36f6d58f9a091612e30d08070e2b70d7917447bb4002bbb341",
+      "src/dziri/message-bubble.tsx": "429ea0eb1bb11471235182e49a3502c06bcee0db4d5dc7a61ce93a964d04a471",
+      "src/dziri/message-list.tsx": "2f9b5b85bb9c6bbad40606947b04d5dbe731a72fe986f956b1049b7c0c9938b0",
+      "src/dziri/local-messages.tsx": "4a7d11a70659f59c17a4bbfdb48b4222e080f30550ad95f5f8fe5a469d1b73bf",
+      "src/dziri/queued-message-review.tsx": "3a2d4a13a4e9b9fd6e31be167c439794c934d871cce1432323325f8cfbd95b01",
+      "src/dziri/message-writes.generated.ts": "22f7fd4e487f65d9d5602a64f682365ac0910f9e7fd45ae8bba41caf507cf418",
+      "docs/message-writes-contract.json": "c3b53a4aafc49e0f8192dce25b7d2be7578d255d991564bb49e598b7c622d180",
+      "tests/conversation-send-scope.test.tsx": "b010fd945eb17a2ac3b45ddbd9bfc20ef34412e188ae9b5c8a1ba99d1a8f229e",
+      "tests/commerce-receipts.test.tsx": "aa91de229a6365d58b9e1161a00f5b9234d276ed8e2c38cfa167f260cf0a5d62",
+      "tests/queued-message-review.test.tsx": "6a11e1bec6a241f8ec1bd9e6fc9cc988b740100fdd23601c962c5f46c1fe2b7f",
+      "src/dziri/outbox.ts": "6d363a4132c083822d8e5ef4402c27c44f27ad2f4562cd0a5080e15daa66d457",
+      "src/dziri/message-vault.ts": "66bf099d662846fa6daab48215ed679dc29df354e5c9d014cf43266f14ae6f77",
+      "src/dziri/use-outbox.ts": "275ff50258dd6533c9f3c1a9f5c5df262ef9e565bec3d8d220eb16420f5ce2ff",
+      "tests/local-copy-removal.test.tsx": "a0e5ec20e80df7f88af670641bd86ab09448190f93823bed5e9003ae1aaaf877",
+      "tests/local-messages.test.tsx": "d9adf94ece2da1de59f3492c85af4388f5c783dbedf0f89e95449ef71b0d106a"
+    }
+  },
+  "canonicalNativeCopy": {
+    "version": 1,
+    "source": "packages/shared/src/messenger-writes.ts",
+    "sourceSha256": "5bba7e1d5e5f8b67a06beea24dd0431f01565e83084c27083d139ea30c0a78ca",
+    "sha256": "22f7fd4e487f65d9d5602a64f682365ac0910f9e7fd45ae8bba41caf507cf418"
+  },
+  "historicalBackend": {
+    "cases": 354,
+    "rerun": false,
+    "recordedSourcesUnchanged": {
+      "convex/schema.ts": "ff48a8fa219d27d3dbb7f4b6f270af6c80193e004180cf1b3817afa8f7c0848b",
+      "convex/messaging/sendScope.ts": "c8ce4fe7a501c273bffd127cc5778a687fe944c0593c82e8594b687f2ee73eed",
+      "convex/messaging/commandIdentity.ts": "b45d13b2f58c75b7dce97d0859b4b765267328cabf0bcc98683adc750d771e45",
+      "convex/messaging/groups.ts": "0c318d920655d24c6e9500190717df04999b61680f927d78d52d96726fe35a89",
+      "convex/messaging/threads.ts": "2baadc4f2ab8aa5d3053fadf47f0e34dec0983771444d97c75cb74ff339ff514",
+      "convex/messaging/messenger.ts": "6925cde806322a591414527cce77e20f0755c19809d1c097787729efce5151a4",
+      "convex/messaging/messages.ts": "e0540cbc6777f03c3a3c09d56d9b41a8c969513a356bc0f5d65431fb6fa7722f"
+    },
+    "unlistedSourcesCertified": false
+  },
+  "logs": [
+    {
+      "key": "consumer-confirmation-red",
+      "passed": false,
+      "sha256": "699eef1d0d191af63ce6b475b598cc5e15b77452f82d5277a5466ae8b5760c9d"
+    },
+    {
+      "key": "native-removal-red",
+      "passed": false,
+      "sha256": "7a375a9124da284a6e397a81e81c8843b514a4bd245a9d261dcb1251d46b541f"
+    },
+    {
+      "key": "native-readonly-red",
+      "passed": false,
+      "sha256": "af35333b1dbf46a95e59b619c8df4ffb98661e5ba1e82134a1fa5716193b8d2a"
+    },
+    {
+      "key": "consumer-locale-red",
+      "passed": false,
+      "sha256": "7667fa61342c2e52d1f9db36e4593e73080588d029947cb18b1e2ddffea82b95"
+    },
+    {
+      "key": "native-locale-red",
+      "passed": false,
+      "sha256": "dd0e4daca587c62b834a76776e6c3c1a1f54aa9ec1a9ccea7e39f9c7263ec0d5"
+    },
+    {
+      "key": "consumer-ui-255",
+      "passed": true,
+      "sha256": "8fd55690a4ad173edaa7e133f2ec32a6baae30b0a6c22946eb60c63c8d8f7c57"
+    },
+    {
+      "key": "business-ui-715",
+      "passed": true,
+      "sha256": "58ee700cdda24a8a23ef91a17b982e7144151dcb2ac80e1b833ab2bd8f5b42b0"
+    },
+    {
+      "key": "native-ui-136",
+      "passed": true,
+      "sha256": "b2ca1e6a0293ff7253fccfedd9a3614b5befc9f3cc5e0336d73d5a40fbf4f765"
+    },
+    {
+      "key": "native-domain-58",
+      "passed": true,
+      "sha256": "238dff5e2ab20fafa5989d91a41fe4fedf8010757b5076672175e0f056a9a31f"
+    },
+    {
+      "key": "native-types",
+      "passed": true,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "key": "native-lint",
+      "passed": true,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "key": "native-consistency",
+      "passed": true,
+      "sha256": "630b7cb0387d13642f1a343fb43bd7c0f7604f6bf68ae6b0be1de0f0d4e4601c"
+    },
+    {
+      "key": "native-format",
+      "passed": true,
+      "sha256": "f20510a9da4717c51c4cffee6d0dd88d6c9a723d0a83711d01216f5b48961283"
+    },
+    {
+      "key": "consumer-format",
+      "passed": true,
+      "sha256": "f20510a9da4717c51c4cffee6d0dd88d6c9a723d0a83711d01216f5b48961283"
+    },
+    {
+      "key": "diff-check",
+      "passed": true,
+      "sha256": "18e85c7d4804db55c73718320a1eedb341dfcb74f2f488dd4e0cb39eea77ecae"
+    },
+    {
+      "key": "native-export-final",
+      "passed": true,
+      "sha256": "4beba980f7e65e2326b1de399134984bef8c0578a0ab32cc1039b0665211fdaa"
+    },
+    {
+      "key": "consumer-build-final",
+      "passed": true,
+      "sha256": "8fc7da614eee40b227e0fdd0366e5537b0013cb65be8ff2f11c7f7fbddc7ff73"
+    },
+    {
+      "key": "business-build",
+      "passed": true,
+      "sha256": "181e023f88a0f0c374fe82b60eb6600df2c0961d0cd085e94fd16e12d1e39c1a"
+    }
+  ],
+  "terminal": {
+    "statuses": {
+      "consumerUiFinal": 0,
+      "businessUi": 0,
+      "nativeUiDomainTypesLintConsistency": 0,
+      "nativeAllPlatformExport": 0,
+      "consumerFinalNormalBuild": 0,
+      "businessNormalBuild": 0,
+      "consumerCompiledSources": 0
+    },
+    "priorTerminalResults": {
+      "consumerBuildBeforeLanguageFix": 0,
+      "nativeExportBeforeLanguageFix": 0,
+      "readonlyRegressionRed": 1,
+      "consumerLanguageRegressionRed": 1,
+      "nativeLanguageRegressionRed": 1
+    },
+    "cleanup": {
+      "temporaryBrowserTab": "30 closed",
+      "fixtureServer": "65833 stopped with Ctrl-C; expected terminal exit 1"
+    }
+  },
+  "restoration": [
+    {
+      "path": "apps/dziri/tsconfig.json",
+      "sha256": "1de0df402239a0855a49db2f028bfb44b432e695d8cf22891f905960c84e8fca",
+      "restored": true
+    },
+    {
+      "path": "apps/dziri/next-env.d.ts",
+      "sha256": "9bd3641ad8ef38638136d1444b26739baa38071b08ed9e72853a7684ee0445b1",
+      "restored": true
+    },
+    {
+      "path": "apps/dziri-business/tsconfig.json",
+      "sha256": "7184d65dcc49d2769b6d0cac81fc47f52f2c04cc7a13cd321e690f35423238f3",
+      "restored": true
+    },
+    {
+      "path": "apps/dziri-business/next-env.d.ts",
+      "sha256": "f4e8976c19fc926644d72610bf1058bd6bf52add97e46a02bc0b912a751625c0",
+      "restored": true
+    }
+  ],
+  "compiledSources": {
+    "at": "2026-10-28T05:52:09.037Z",
+    "targets": [
+      "packages/shared/src/messenger-writes.ts",
+      "apps/dziri/components/messaging/composer.tsx",
+      "apps/dziri/components/messaging/message-status.tsx",
+      "apps/dziri/components/messaging/use-message-blob-url.ts",
+      "apps/dziri/components/messaging/queued-message-review.tsx",
+      "apps/dziri/app/(main)/messages/[threadId]/page.tsx"
+    ],
+    "found": [
+      {
+        "target": "apps/dziri/components/messaging/use-message-blob-url.ts",
+        "map": "67684-456b97ae4b1c2362.js.map",
+        "same": true,
+        "currentHash": "8f5d64dcc97b6936328e5488fe2d2c344929d17ea7f771cc09e0d42b25623fbf"
+      },
+      {
+        "target": "apps/dziri/components/messaging/message-status.tsx",
+        "map": "67684-456b97ae4b1c2362.js.map",
+        "same": true,
+        "currentHash": "a5e03a012ab9f9ab00eb5371166539bd8ef14c6444dc27fa5a32a74bd9151c81"
+      },
+      {
+        "target": "packages/shared/src/messenger-writes.ts",
+        "map": "67684-456b97ae4b1c2362.js.map",
+        "same": true,
+        "currentHash": "3256214ffdc04d94c64307f9e41ceac9d7ca402f2a9e57b2c90352c15304d43a"
+      },
+      {
+        "target": "apps/dziri/components/messaging/queued-message-review.tsx",
+        "map": "app\\(main)\\messages\\[threadId]\\page-dd560a509508f173.js.map",
+        "same": true,
+        "currentHash": "fc7046ba2f4ee849c708e0c7e4e02863f34bedb63fa2925dfca6bb354266a6eb"
+      },
+      {
+        "target": "apps/dziri/components/messaging/composer.tsx",
+        "map": "app\\(main)\\messages\\[threadId]\\page-dd560a509508f173.js.map",
+        "same": true,
+        "currentHash": "849e2eddcf94de4c55b6becd3bf750a98e705ae78bde6126164c2bd5d01635bc"
+      },
+      {
+        "target": "apps/dziri/app/(main)/messages/[threadId]/page.tsx",
+        "map": "app\\(main)\\messages\\[threadId]\\page-dd560a509508f173.js.map",
+        "same": true,
+        "currentHash": "5e9580764fa279187b082caeacb532ff5b70a700690945526b5d1531c024ca2b"
+      }
+    ],
+    "compiledSourcesMatch": true,
+    "businessSourceMapsAvailable": false
+  },
+  "nativeBundles": [
+    {
+      "file": "web/AppEntry-da79ff7f8ede612ef908b1d9496adbfc.js",
+      "sha256": "0d3845b6f362a305ab3efca49549aa860f0513205ea51c1dbc25b36d9b8355cd"
+    },
+    {
+      "file": "ios/AppEntry-52fb0656e62fd63c07f5a77cf2e710fe.hbc",
+      "sha256": "bf09a90628a910d893100870cd6a8a4961b149c2d986a377b766db8f23dd179c"
+    },
+    {
+      "file": "android/AppEntry-12a0c2453cd26df806f018c4c79d68a0.hbc",
+      "sha256": "a13a77b586611db0856b3819cc4a8759e855e65ec11d51bb820359936d5e15a3"
+    }
+  ],
+  "captures": {
+    "browser-checks.json": "6a61c4734807f8a8ff2632c709035a425a06c753a77f2b6eaf189363c096d557",
+    "ar-320-dark.png": "ad920eb7ab151f362a6d0bd5d199a58087bca55c5425e9af48ee66fc25005e47",
+    "fr-430-light.png": "880a679d94409e7e8dada7fb127c9d3fbba96727edcad26b7351621662997ee8"
+  },
+  "checkpointSha256": "2d508cd3c48f175629e6907980632d7f30c49cfb289aa4a079ae02b36b1dd51f",
+  "registers": {
+    "tasks/messenger-meta-parity/remaining-goal.md": "d064970cfc7cbb8eb1ed926cbeb580189cfe0c8f86e731ac17b979ee045ebc2f",
+    "tasks/messenger-meta-parity/todo.md": "94bd5f6b90992e6a9f14164307e38aa3ab34d6fd48a7e9b313ea6ce211d465e0",
+    "docs/messenger/META_PARITY_AUDIT_20261027.md": "57c9aacfdab6b0b113a272288c55a8617d400ea58bc3038b5c3972157454371d"
+  },
+  "checks": {
+    "consumerUiCases": 255,
+    "consumerUiFiles": 36,
+    "businessUiCases": 715,
+    "businessUiFiles": 79,
+    "nativeUiCases": 136,
+    "nativeUiFiles": 27,
+    "nativeDomainCases": 58,
+    "nativeTypes": true,
+    "nativeLint": true,
+    "nativeConsistency": true,
+    "nativeAllPlatformExport": true,
+    "consumerNormalBuild": true,
+    "consumerStaticPages": 270,
+    "businessNormalBuild": true,
+    "businessStaticPages": 18,
+    "compilerFilesRestoredExactly": true,
+    "consumerCompiledSourcesMatch": true,
+    "syntheticBrowserCases": 8,
+    "browserErrors": 0
+  },
+  "scope": {
+    "views": [
+      "consumer-personal",
+      "standalone-personal",
+      "standalone-marketplace"
+    ],
+    "explicitLocalRemovalConfirmation": true,
+    "currentDraftAndOtherCommandsPreserved": true,
+    "currentAccountAndOriginalIntentRequired": true,
+    "nativePersistedRemovalReadBack": true,
+    "boundedIdOnlyRemovalProtection": true,
+    "staleSaveResurrectionTested": true,
+    "readOnlyNativeReview": true,
+    "currentLanguageErrorFeedback": true,
+    "serverDeleteOrSubmittedSendCancellation": false,
+    "physicalFilesOrStorageObjectsDeleted": false,
+    "webProcessKillRecovery": false,
+    "crossProcessTransactionsQualified": false,
+    "physicalDevice": false,
+    "liveTwoClient": false,
+    "actualModerator": false,
+    "newApk": false,
+    "production": false,
+    "push": "hard-disabled"
+  },
+  "impact": {
+    "scope": "Confirmed local-copy removal delta only; not last-successful-deployment comparison or release approval",
+    "projects": [
+      {
+        "app": "apps/dziri",
+        "build": true,
+        "reason": "App/dependency changed: packages/shared/src/messenger-writes.ts"
+      },
+      {
+        "app": "apps/dziri-business",
+        "build": true,
+        "reason": "App/dependency changed: packages/shared/src/messenger-writes.ts"
+      },
+      {
+        "app": "apps/dziri-console",
+        "build": true,
+        "reason": "App/dependency changed: packages/shared/src/messenger-writes.ts"
+      },
+      {
+        "app": "apps/dziri-shop",
+        "build": true,
+        "reason": "App/dependency changed: packages/shared/src/messenger-writes.ts"
+      },
+      {
+        "app": "apps/circles",
+        "build": true,
+        "reason": "App/dependency changed: packages/shared/src/messenger-writes.ts"
+      },
+      {
+        "app": "apps/id",
+        "build": true,
+        "reason": "App/dependency changed: packages/shared/src/messenger-writes.ts"
+      },
+      {
+        "app": "apps/dziri-flexy",
+        "build": true,
+        "reason": "App/dependency changed: packages/shared/src/messenger-writes.ts"
+      }
+    ],
+    "qualifiedNewLocalBuilds": [
+      "apps/dziri",
+      "apps/dziri-business"
+    ],
+    "remainingAffectedBuilds": [
+      "apps/dziri-console",
+      "apps/dziri-shop",
+      "apps/circles",
+      "apps/id",
+      "apps/dziri-flexy"
+    ],
+    "actualLastSuccessfulDeploymentComparison": false
+  },
+  "remainingGoal": "tasks/messenger-meta-parity/remaining-goal.md"
+}

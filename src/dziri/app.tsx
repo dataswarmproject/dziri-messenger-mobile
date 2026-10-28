@@ -1,3 +1,4 @@
+import { RequestsScreen } from './request-report';
 import React, {
   Component,
   useCallback,
@@ -8,11 +9,11 @@ import React, {
   useState,
   type ReactNode,
 } from 'react';
-import { Platform, Pressable, View } from 'react-native';
+import { Platform, Pressable, View, useWindowDimensions } from 'react-native';
 import { Text } from './typography';
 import { consumerFonts } from './fonts';
 import { consumerTypeface } from './typeface';
-import { ConvexReactClient, useConvexAuth, useQuery } from 'convex/react';
+import { ConvexReactClient, useConvex, useConvexAuth, useQuery } from 'convex/react';
 import { ConvexHttpClient } from 'convex/browser';
 import { ConvexAuthProvider, useAuthActions } from '@convex-dev/auth/react';
 import * as SecureStore from 'expo-secure-store';
@@ -37,26 +38,27 @@ import { MessengerShell } from '../shell';
 import { activeMessengerTab, messengerScopeKey, type MessengerTab } from '../messenger-policy';
 import { CommerceScreen } from './commerce';
 import { IconButton } from './icons';
+import { usePersonalPush } from './use-personal-push';
+import { SettingsIcon } from './settings-icon';
 import { useAppearance } from './appearance';
-import { SettingsScreen } from './settings';
+import { SettingsScreen, PrivacyScreen, ProfileSettingsScreen } from './settings';
 import { PeopleScreen } from './people';
 import { DetailsScreen } from './details';
+import { usePresenceHeartbeat } from './use-presence';
+import { StoreProfileScreen, ProfileScreen } from './directory-profile';
+import { createWebSessionStorage } from './session-storage';
+import { messengerWorkspace } from './workspace-layout';
+import { WorkspaceSidebar, type WorkspaceSelection } from './workspace-sidebar';
+import { BlockedPeopleScreen } from './safety';
+import { LocalMessagesProvider, clearLocalMessageSessions } from './local-messages';
+import { StartupScreen } from './startup-screen';
 
 const Stack = createNativeStackNavigator<MessengerRoutes>();
 const ResetSession = createContext(() => {});
 const TeamRuntime = createContext<(userId: string) => ReactNode>(() => null);
-const previewStorage = new Map<string, string>();
 const storage =
   Platform.OS === 'web'
-    ? {
-        getItem: (key: string) => previewStorage.get(key) ?? null,
-        setItem: (key: string, value: string) => {
-          previewStorage.set(key, value);
-        },
-        removeItem: (key: string) => {
-          previewStorage.delete(key);
-        },
-      }
+    ? createWebSessionStorage(() => window.sessionStorage)
     : {
         getItem: (key: string) => SecureStore.getItemAsync(secureStorageKey(key)),
         setItem: (key: string, value: string) =>
@@ -103,9 +105,7 @@ function Bootstrap() {
           <Notice text={t.failed} />
         </MessengerShell>
       ) : !fontsLoaded ? (
-        <MessengerShell>
-          <Notice text={t.loading} busy />
-        </MessengerShell>
+        <StartupScreen />
       ) : url ? (
         <CustomerService url={url} />
       ) : (
@@ -148,12 +148,10 @@ function CustomerService({ url }: { url: string }) {
     };
   }, [url, attempt]);
   if (state === 'ready') return <ConnectedApp url={url} />;
+  if (state === 'checking') return <StartupScreen />;
   return (
     <MessengerShell>
-      <Notice
-        text={state === 'checking' ? t.loading : t.messengerUnavailable}
-        busy={state === 'checking'}
-      />
+      <Notice text={t.messengerUnavailable} />
       {state === 'unavailable' ? (
         <Pressable
           accessibilityRole="button"
@@ -202,13 +200,7 @@ function AuthGate() {
   const resetSession = useContext(ResetSession);
   const completeRegistration = useCallback(() => setRegistrationPending(false), []);
   const { isLoading, isAuthenticated } = useConvexAuth();
-  const { t } = useLocale();
-  if (isLoading)
-    return (
-      <MessengerShell>
-        <Notice text={t.loading} busy />
-      </MessengerShell>
-    );
+  if (isLoading) return <StartupScreen />;
   return isAuthenticated && registrationPending ? (
     <MessengerShell>
       <SignUpCompletion
@@ -226,7 +218,15 @@ function AuthGate() {
 }
 
 function UserNavigator() {
+  const { width } = useWindowDimensions();
+  const [workspaceRoute, setWorkspaceRoute] = useState<{
+    scope: string;
+    selection: WorkspaceSelection;
+  } | null>(null);
+  const client = useConvex();
   const me = useQuery(dziriApi.me, {});
+  usePersonalPush(me?._id);
+  usePresenceHeartbeat(!!me);
   const capabilities = useQuery(dziriApi.capabilities, {});
   const [selected, setSelected] = useState<MessengerTab>('friends');
   const [supportInbox, setSupportInbox] = useState<string | null>(null);
@@ -241,12 +241,7 @@ function UserNavigator() {
     if (tab !== selected) setSelected(tab);
     setSupportInbox(null);
   }, [tab, selected, capabilities]);
-  if (me === undefined || capabilities === undefined)
-    return (
-      <MessengerShell>
-        <Notice text={t.loading} busy />
-      </MessengerShell>
-    );
+  if (me === undefined || capabilities === undefined) return <StartupScreen />;
   if (!me || !capabilities)
     return (
       <MessengerShell>
@@ -255,105 +250,149 @@ function UserNavigator() {
       </MessengerShell>
     );
   const base = dark ? DarkTheme : DefaultTheme;
+  const scope = messengerScopeKey(me._id, tab, capabilities);
+  const activeRoute =
+    workspaceRoute?.scope === scope ? workspaceRoute.selection : { name: 'Chats' };
+  const teamActive = tab === 'staff' && supportInbox === scope;
+  const workspace = messengerWorkspace(width, activeRoute.name, teamActive);
+  const selectTab = (next: MessengerTab) => {
+    setSelected(next);
+    setSupportInbox(null);
+    setImmersive(false);
+  };
   return (
-    <MessengerShell
-      capabilities={capabilities}
-      immersive={immersive}
-      selected={tab}
-      select={next => {
-        setSelected(next);
-        setSupportInbox(null);
-        setImmersive(false);
-      }}
-      account={<SignOut />}>
-      {tab === 'staff' && supportInbox === messengerScopeKey(me._id, tab, capabilities) ? (
-        <View style={{ flex: 1 }}>
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => setSupportInbox(null)}
-            style={tailwind.style('p-3')}>
-            <Text style={{ color: colors.primary }}>{t.backToTeam}</Text>
-          </Pressable>
-          {renderTeam(me._id)}
-        </View>
-      ) : (
-        <NavigationContainer
-          key={messengerScopeKey(me._id, tab, capabilities)}
-          onStateChange={state =>
-            setImmersive((state?.routes[state.index ?? 0]?.name ?? 'Chats') !== 'Chats')
-          }
-          theme={{
-            ...base,
-            colors: {
-              ...base.colors,
-              primary: colors.primary,
-              background: colors.background,
-              card: colors.surface,
-              text: colors.text,
-              border: colors.border,
-              notification: colors.primary,
-            },
-          }}>
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-              headerTintColor: colors.text,
-              headerStyle: { backgroundColor: colors.surface },
-              headerTitleStyle: { fontFamily: consumerTypeface({ rtl, weight: '600' }) },
-              contentStyle: { backgroundColor: colors.background },
+    <LocalMessagesProvider key={me._id} actor={me._id} deployment={client.url}>
+      <MessengerShell
+        capabilities={capabilities}
+        immersive={workspace.split || immersive}
+        selected={tab}
+        select={selectTab}
+        account={<SignOut />}>
+        {tab === 'staff' && supportInbox === messengerScopeKey(me._id, tab, capabilities) ? (
+          <View style={{ flex: 1 }}>
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => setSupportInbox(null)}
+              style={tailwind.style('p-3')}>
+              <Text style={{ color: colors.primary }}>{t.backToTeam}</Text>
+            </Pressable>
+            {renderTeam(me._id)}
+          </View>
+        ) : (
+          <NavigationContainer
+            key={messengerScopeKey(me._id, tab, capabilities)}
+            onStateChange={state => {
+              const route = state?.routes[state.index ?? 0];
+              setImmersive((route?.name ?? 'Chats') !== 'Chats');
+              const params = route?.params as
+                | { threadId?: string; conversationId?: string; storeId?: string }
+                | undefined;
+              setWorkspaceRoute({ scope, selection: { name: route?.name ?? 'Chats', ...params } });
+            }}
+            theme={{
+              ...base,
+              colors: {
+                ...base.colors,
+                primary: colors.primary,
+                background: colors.background,
+                card: colors.surface,
+                text: colors.text,
+                border: colors.border,
+                notification: colors.primary,
+              },
             }}>
-            <Stack.Screen
-              name="Chats"
-              options={{
-                headerShown: false,
-                title:
-                  tab === 'friends'
-                    ? t.friendsTab
-                    : tab === 'marketplace'
-                      ? t.marketplaceTab
-                      : t.teamView,
-              }}>
-              {props => (
-                <InboxScreen
-                  {...props}
-                  lane={tab}
-                  openSupportInbox={() =>
-                    setSupportInbox(messengerScopeKey(me._id, tab, capabilities))
-                  }
-                />
-              )}
-            </Stack.Screen>
-            <Stack.Screen
-              name="Conversation"
-              component={ConversationScreen}
-              options={{ title: t.unknown }}
-            />
-            <Stack.Screen
-              name="Support"
-              component={SupportScreen}
-              options={{ headerShown: true, title: t.support }}
-            />
-            <Stack.Screen
-              name="Commerce"
-              component={CommerceScreen}
-              options={{ title: t.unknown }}
-            />
-            <Stack.Screen name="Settings">
-              {props => <SettingsScreen {...props} account={<SignOut />} />}
-            </Stack.Screen>
-            <Stack.Screen name="People" component={PeopleScreen} />
-            <Stack.Screen name="Details" component={DetailsScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      )}
-    </MessengerShell>
+            <View style={{ flex: 1, flexDirection: rtl ? 'row-reverse' : 'row' }}>
+              {workspace.split ? (
+                <View
+                  style={{
+                    width: workspace.sidebarWidth,
+                    borderRightWidth: rtl ? 0 : 0.5,
+                    borderLeftWidth: rtl ? 0.5 : 0,
+                    borderColor: colors.border,
+                  }}>
+                  <WorkspaceSidebar
+                    lane={tab}
+                    capabilities={capabilities}
+                    select={selectTab}
+                    selection={activeRoute}
+                    openSupportInbox={() => setSupportInbox(scope)}
+                  />
+                </View>
+              ) : null}
+              <View style={{ flex: 1, minWidth: 0 }}>
+                <Stack.Navigator
+                  screenOptions={{
+                    headerShown: false,
+                    headerTintColor: colors.text,
+                    headerStyle: { backgroundColor: colors.surface },
+                    headerTitleStyle: { fontFamily: consumerTypeface({ rtl, weight: '600' }) },
+                    contentStyle: { backgroundColor: colors.background },
+                  }}>
+                  <Stack.Screen
+                    name="Chats"
+                    options={{
+                      headerShown: false,
+                      title:
+                        tab === 'friends'
+                          ? t.friendsTab
+                          : tab === 'marketplace'
+                            ? t.marketplaceTab
+                            : t.teamView,
+                    }}>
+                    {props =>
+                      workspace.split ? (
+                        <Notice text={t.selectConversation} />
+                      ) : (
+                        <InboxScreen
+                          {...props}
+                          lane={tab}
+                          openSupportInbox={() =>
+                            setSupportInbox(messengerScopeKey(me._id, tab, capabilities))
+                          }
+                        />
+                      )
+                    }
+                  </Stack.Screen>
+                  <Stack.Screen
+                    name="Conversation"
+                    component={ConversationScreen}
+                    options={{ title: t.unknown }}
+                  />
+                  <Stack.Screen
+                    name="Support"
+                    component={SupportScreen}
+                    options={{ headerShown: true, title: t.support }}
+                  />
+                  <Stack.Screen
+                    name="Commerce"
+                    component={CommerceScreen}
+                    options={{ title: t.unknown }}
+                  />
+                  <Stack.Screen name="Settings">
+                    {props => <SettingsScreen {...props} account={<SignOut row />} />}
+                  </Stack.Screen>
+                  <Stack.Screen name="ProfileSettings" component={ProfileSettingsScreen} />
+                  <Stack.Screen name="People" component={PeopleScreen} />
+                  <Stack.Screen name="Privacy" component={PrivacyScreen} />
+                  <Stack.Screen name="Requests" component={RequestsScreen} />
+                  <Stack.Screen name="BlockedPeople" component={BlockedPeopleScreen} />
+                  <Stack.Screen name="StoreProfile" component={StoreProfileScreen} />
+                  <Stack.Screen name="Profile" component={ProfileScreen} />
+                  <Stack.Screen name="Details" component={DetailsScreen} />
+                </Stack.Navigator>
+              </View>
+            </View>
+          </NavigationContainer>
+        )}
+      </MessengerShell>
+    </LocalMessagesProvider>
   );
 }
 
-function SignOut() {
+function SignOut({ row = false }: { row?: boolean }) {
   const resetSession = useContext(ResetSession);
   const { signOut } = useAuthActions();
-  const { t } = useLocale();
+  const { t, rtl } = useLocale();
   const colors = useColors();
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -362,6 +401,7 @@ function SignOut() {
     setBusy(true);
     setFailed(false);
     try {
+      await clearLocalMessageSessions();
       await signOut();
       // A new login must never reuse a prior account's cached queries/mutation queue.
       resetSession();
@@ -371,6 +411,29 @@ function SignOut() {
       setBusy(false);
     }
   };
+  if (row)
+    return (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={failed ? t.retry : t.signOut}
+        aria-busy={busy}
+        accessibilityState={{ disabled: busy }}
+        disabled={busy}
+        onPress={() => void exit()}
+        style={({ pressed }) => ({
+          minHeight: 60,
+          paddingHorizontal: 16,
+          gap: 12,
+          flexDirection: rtl ? 'row-reverse' : 'row',
+          alignItems: 'center',
+          opacity: pressed || busy ? 0.55 : 1,
+        })}>
+        <SettingsIcon name="logout" busy={busy} />
+        <Text style={{ flex: 1, fontSize: 15, lineHeight: 21, color: colors.text }}>
+          {failed ? t.retry : t.signOut}
+        </Text>
+      </Pressable>
+    );
   return (
     <IconButton
       name="logout"

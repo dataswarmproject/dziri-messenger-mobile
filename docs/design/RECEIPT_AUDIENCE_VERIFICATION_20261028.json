@@ -1,0 +1,194 @@
+{
+  "checkpoint": "receipt-audience-20261028",
+  "status": "canonical-recipient-and-unread-privacy-prerequisites-integrated-clients-not-activated",
+  "goal": "active",
+  "checks": {
+    "backend": 326,
+    "suites": 29,
+    "newAudienceCases": 12,
+    "newUnreadPrivacyCases": 10
+  },
+  "verification": {
+    "backendTypes": "passed",
+    "scopedFormat": "passed",
+    "scopedWhitespace": "passed",
+    "largeLegacyFiles": "Schema/export/deletion edits kept narrow; no wholesale formatting",
+    "buildImpact": "Backend-only local delta; no web/native build required",
+    "fixtureScope": "Synthetic transactions, scheduling, export/purge and 1024-member source path; not deployed capacity or physical proof"
+  },
+  "sourceHashes": {
+    "convex/schema.ts": "0634ce55bd33b76276f6f371d8f11e8983a5e2acf5e7ec4b8a1bbb527c286f5e",
+    "convex/messaging/receiptAudience.ts": "b6f0a2bad0c6ece5cb49ebe4425d3097f1272da4290ba6db7ebc4f04701e22e1",
+    "convex/messaging/retireUnread.ts": "662a3acaa459e8cc8f3bf4b690aed591e3bbd8a5962cb0fe3876691e57b8c683",
+    "convex/messaging/unreadModel.ts": "d5eb07ee20761c42dd1a72123331789b0d58f262bf54c6039c5ce02e3b694780",
+    "convex/messaging/receipts.ts": "2c68413c37ed5a1177866cecfcc9ce7f6410cbfcda5cb5640f28037b351fbf28",
+    "convex/messaging/threads.ts": "5e99e7584217197253e944bbb20a6143ca3a16496a2a7a93565d68f268e37dde",
+    "convex/messaging/groups.ts": "c483867d0fad9cce81b54a14af83f9e4f43729e5344a62a492489adaae79a204",
+    "convex/messaging/requests.ts": "8323a559542a159680013fab15bc328a3c082d62b6fa9693b9c5d60d7cca7a7b",
+    "convex/messaging/unread.ts": "acb20db846b95d8c0f6d7e3e999cc0058a0d7400427104e2d51ff6cd73f601fe",
+    "convex/messaging/organization.ts": "ba09c13c444a4394debfe57473058e6e34abe53aae8ced1a725fa607ea10b5eb",
+    "convex/workspace/salons.ts": "f6adb3e246e47605d0ab03fd90c86b4e84adf74d4ff9741ebf0002f9f2e7d326",
+    "convex/lib/messengerUnreadExport.ts": "0a7c61180237d0e4a7e98ada7f8ef263c5ebc5b5eded2cb7557d61af475a475d",
+    "convex/accountDeletion.ts": "75ca3d79298f87f9e9d40a489fb9e2d7c2a4059e7120b6b1dc66be5c7fc3c3e2",
+    "convex/dataExport.ts": "f00ce1fa501ddf1cdc6c849aa1ccc0afc26186e099ff94a5adf39df77f313df5",
+    "tests/activation/messenger-exact-receipts.test.ts": "3c4a372ef6638699ba4c6466d3ed0152e4bc86f7128872df7aa6d56ee6165aa0",
+    "tests/activation/messenger-receipt-audience.test.ts": "fab019fc6b5f52875b67c3b80bbad6b7f933b3c25985f2e09e0c3ee4426c1fbc",
+    "tests/activation/messenger-unread-privacy.test.ts": "cf8a8d1a18104e8246f216e220ed9071534de54c6d727c8d749c0b41ad0e01e3"
+  },
+  "documentHashes": {
+    "receipt-audience-20261028.md": "d9a3161eb63adf427970c4e8e9fb28f62a7fcec907daf68463e826a53d286cb6",
+    "remaining-goal.md": "d54c104dbc14318ae9635d5934d787eb776974fafc9de1e646879ffc4f7a8dab",
+    "todo.md": "62f791c4fda36ab8045aa2fde2b70ff894f62813dae65cae971ced86f7938828"
+  },
+  "logs": {
+    "receipt-audience-all-final.log": {
+      "sha256": "c0e576c52321081f2dabf8a94cb35654d098d62d8dad697a727601a50bfc625b",
+      "bytes": 1203
+    },
+    "receipt-audience-types-verified.log": {
+      "sha256": "69e01b7ca2fa44c24963e7c54254dcbd7639763d159d3a14c116023391a8658a",
+      "bytes": 107
+    },
+    "receipt-audience-format.log": {
+      "sha256": "b8ec334652afa9b1ba7e5c5b54de13c4acccba963b3da25d4b039533947e6846",
+      "bytes": 175
+    },
+    "receipt-audience-whitespace.log": {
+      "sha256": "c152ab3f2b7a86a711353789f01d791d6db5f7a512064bcf4f9c0f47e75508ad",
+      "bytes": 351
+    },
+    "receipt-audience-red.log": {
+      "sha256": "92616f5cea1a41cf6977d5cb654c567b055e1eea860a03e898b92f6e609d0721",
+      "bytes": 6248
+    },
+    "receipt-audience-corrupt-red.log": {
+      "sha256": "b9dd7398448e29aa3d77a3d12f8f5e871d7f97ed6282e480ec315fbb1d83d47a",
+      "bytes": 1899
+    },
+    "receipt-audience-privacy-red.log": {
+      "sha256": "391de2bb65f52d5e6515e82eebaa78010be403bee6f19293daf15a680a8b3fcb",
+      "bytes": 8264
+    },
+    "receipt-audience-retirement-red.log": {
+      "sha256": "0c25174b0498de46e69c534209180c8eae705c932c850e7396aa2fcbb614c105",
+      "bytes": 5496
+    },
+    "receipt-audience-legacy-fixture.log": {
+      "sha256": "c71cc64ddd4fdea6b95db69e8370a4af33512c94d91dd88c6a700177cdb41347",
+      "bytes": 4311
+    }
+  },
+  "impact": {
+    "scope": "Current backend receipt-audience/unread-privacy delta; not a release-baseline comparison or deployment approval",
+    "changed": [
+      "convex/schema.ts",
+      "convex/messaging/receiptAudience.ts",
+      "convex/messaging/retireUnread.ts",
+      "convex/messaging/unreadModel.ts",
+      "convex/messaging/receipts.ts",
+      "convex/messaging/threads.ts",
+      "convex/messaging/groups.ts",
+      "convex/messaging/requests.ts",
+      "convex/messaging/unread.ts",
+      "convex/messaging/organization.ts",
+      "convex/workspace/salons.ts",
+      "convex/lib/messengerUnreadExport.ts",
+      "convex/accountDeletion.ts",
+      "convex/dataExport.ts",
+      "tests/activation/messenger-exact-receipts.test.ts",
+      "tests/activation/messenger-receipt-audience.test.ts",
+      "tests/activation/messenger-unread-privacy.test.ts",
+      "tasks/messenger-meta-parity/receipt-audience-20261028.md",
+      "tasks/messenger-meta-parity/remaining-goal.md",
+      "tasks/messenger-meta-parity/todo.md"
+    ],
+    "projects": [
+      {
+        "app": "apps/dziri-business",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-console",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-shop",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/circles",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/id",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-flexy",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      }
+    ]
+  },
+  "contract": {
+    "cohort": "Initial current-membership capture; monotonic join revisions; message binds revision in send transaction",
+    "maximumMemberships": 1024,
+    "perMessageRecipientArray": false,
+    "writers": "Existing common hook covers all five personal message insertion sites",
+    "joins": "Invitation, public and salon joins/rejoins update same cohort transactionally",
+    "requestAcceptance": "Observation epoch changes while original recipient cohort is preserved",
+    "legacyGroup": "Unknown; no original audience inferred or backfilled",
+    "unreadExport": "Owner-only minimal marker references; current/retired label; cap 500 and truncation",
+    "unreadErasure": "Canonical owner-indexed personal-data purge; peers/history unchanged",
+    "retirement": "At most 100 obsolete markers per job; current scope re-read; current arrivals retained",
+    "corruptScope": "Impossible cohort or cross-owner cleanup metadata fails closed"
+  },
+  "optionalSchemaFields": [
+    "threads.receiptAudienceRevision",
+    "threadMembers.receiptAudienceFrom",
+    "messages.receiptAudienceRevision"
+  ],
+  "newTableOrIndex": false,
+  "boundaries": {
+    "schemaOrFunctionsPublished": false,
+    "gitPush": false,
+    "realInitializationOrBackfill": false,
+    "realExportDeletionCleanupOrAccountChanges": false,
+    "realCommunications": false,
+    "pushHardDisabled": true,
+    "providerConfiguredOrTokenMinted": false,
+    "consumerProducerSwitched": false,
+    "standaloneProducerSwitched": false,
+    "exactUiCapabilityAdvertised": false,
+    "generatedApiReferencesRefreshed": false,
+    "physicalOrLiveTwoClientQualified": false,
+    "deployedGroupCapacityQualified": false,
+    "fullPrivacyLifecycleQualified": false
+  },
+  "unchangedNativeArtifact": {
+    "recordedSourceHashesMatched": 18,
+    "receipt": "D:/codex-artifacts/dziri-story-flows-20261027/verification.json",
+    "sha256": "42da0c9cf908b7c84a78aee959cd29ccc2fc987e1318e866fb1f6caf0f5a26b8",
+    "newApkProduced": false,
+    "cloudMetadataNotRequeriedThisSlice": true
+  },
+  "requiredGates": [
+    "Refresh generated references/capability and wire both exact UI adapters/readiness/scope cancellation",
+    "Actual component focus/viewability/reconnect and authorized client/native acceptance",
+    "Active-account revocation review of legacy public join/salon aliases",
+    "Broader observation/preference/membership privacy retention, real DSAR/erasure and physical/orphan repair qualification",
+    "Maximal deployed-group performance and remaining global unread/account limits",
+    "Reviewed source/schema/backend/client release and actual user initialization authorization",
+    "All previous family/security/provider/physical gates remain required"
+  ]
+}

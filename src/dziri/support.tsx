@@ -74,7 +74,7 @@ function SupportFlow({
           tailwind.style('rounded-xl p-4'),
           { backgroundColor: colors.primary, opacity: consent && !busy ? 1 : 0.5 },
         ]}>
-        <Text style={{ color: '#fff', textAlign: 'center' }}>
+        <Text style={{ color: colors.onPrimary, textAlign: 'center' }}>
           {busy ? t.loading : t.startSupport}
         </Text>
       </Pressable>

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "source": "packages/shared/src/messenger-history.ts",
+      "target": "src/dziri/history-policy.generated.ts",
+      "sourceSha256": "7ac2090e3e3343b3d656ef5772991c9c880dc7935b3244b16f7210bba9025781",
+      "sha256": "6e6aa4c3f05a1e74799b04336f86ffbcd5a9b106111d4ac7f9f3d37d9f5944af"
+    },
+    {
+      "source": "apps/dziri/components/messaging/use-history-search.ts",
+      "target": "src/dziri/use-history-search.generated.ts",
+      "sourceSha256": "878012d29ecd87da77f48c2805919070593a8191457041d61734d78cff34d005",
+      "sha256": "e1e46a85e93c45e673133f4c4a0020f004a5cead3dda0df5bf7129d64d3cbf2f"
+    }
+  ]
+}

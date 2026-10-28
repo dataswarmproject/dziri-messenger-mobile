@@ -2,17 +2,18 @@ import type { ExpoConfig } from 'expo/config';
 import dziriBackend from './config/dziri-backend.json';
 
 const config: ExpoConfig = {
-  name: 'Dziri Messenger',
+  name: 'DM',
   slug: 'dziri-messenger',
   version: '0.1.0',
   orientation: 'portrait',
   icon: './assets/dziri-ring.png',
   userInterfaceStyle: 'automatic',
   scheme: 'dziri-messenger',
+  web: { name: 'Dziri Messenger', shortName: 'DM' },
   ios: { supportsTablet: true, bundleIdentifier: 'com.dziri.messenger' },
   android: {
     package: 'com.dziri.messenger',
-    adaptiveIcon: { foregroundImage: './assets/dziri-ring.png', backgroundColor: '#0a0b0b' },
+    adaptiveIcon: { foregroundImage: './assets/dziri-ring.png', backgroundColor: '#000000' },
   },
   extra: {
     inboxUrl: process.env.EXPO_PUBLIC_INBOX_URL ?? '',
@@ -20,6 +21,7 @@ const config: ExpoConfig = {
     supportCompanyId: process.env.EXPO_PUBLIC_SUPPORT_COMPANY_ID ?? '',
   },
   plugins: [
+    './plugins/with-launcher-icon.cjs',
     'expo-font',
     'expo-image',
     'expo-secure-store',
@@ -36,7 +38,7 @@ const config: ExpoConfig = {
       {
         photosPermission: 'Allow Dziri Messenger to select photos you choose to send.',
         cameraPermission: 'Allow Dziri Messenger to take a photo.',
-        microphonePermission: false,
+        microphonePermission: 'Allow Dziri Messenger to record a voice message.',
       },
     ],
     [

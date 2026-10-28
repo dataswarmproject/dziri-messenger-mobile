@@ -1,0 +1,186 @@
+{
+  "checkpoint": "exact-unread-20261028",
+  "status": "canonical-private-accounting-integrated-clients-not-activated",
+  "goal": "active",
+  "checks": {
+    "backend": 288,
+    "newExactUnreadCases": 21,
+    "suites": 24
+  },
+  "verification": {
+    "backendTypes": "passed",
+    "format": "passed",
+    "scopedWhitespace": "passed",
+    "buildImpact": "backend-only; no web/native runtime build required",
+    "fixtureScope": "Synthetic Convex transactions/scheduled jobs; no actual client viewability, deployed or physical proof",
+    "intermediateFailure": "Business task timed out during concurrent checks; final unchanged-timeout sequential run passed, precise cause unproven",
+    "fixtureCorrection": "Forwarding test now uses an authorized different source conversation; product rule unchanged"
+  },
+  "sourceHashes": {
+    "convex/schema.ts": "72108a8fc8636eba107d6ab2312e3e1dd9d6c81ff2823f9775e31915c5ce6ef7",
+    "convex/messaging/unread.ts": "d8aa919f020e5fe4ca08d01304296db252192b5e07583da253ba9886c890e13b",
+    "convex/messaging/unreadModel.ts": "f2fc05a84cf6109ff0a697b3e18cb751b58579bb424e0ac0ea160fdbd2cea891",
+    "convex/messaging/receipts.ts": "49c3feefb9bbc44af456dede4901f1c1f90a55c533b0c270deeca01395559e0d",
+    "convex/messaging/receiptEpoch.ts": "ffcb534761f61d416cc6cd0023722a5d87a9a5dcb7a9d91ca596e6ed5df46f81",
+    "convex/messaging/messages.ts": "7c2349b63be1ad12e4440c13dd9c664712ce0cf6d2d4ec09eb8853b75d29f7e7",
+    "convex/messaging/calls.ts": "28261c75ea89fe0e4031e33c201b773b31240e00323f46263ddfe66b54928ca9",
+    "convex/messaging/organization.ts": "aa3c1a688ed8353533de47465ee03ac8d28320ddbf321b4a1a7e6f3725488154",
+    "convex/messaging/threads.ts": "b8b064b4af7903eaab55e6e732f9ce42dd1a879de060514fe1e45483ab9db171",
+    "convex/messaging/messenger.ts": "87b7db55f728e3c89da550e28e70a1188127daa001316f632156d1ddf32be725",
+    "convex/lib/messageEnforcement.ts": "4af5e164d05fca6941c479757b24a3d6909a53908ac62e65591b18d51c02b7a0",
+    "tests/activation/messenger-exact-unread.test.ts": "8f49d8bcaad8a20224d698b404ccae6e7b936f9c7911406b8aa79f7a49b4ab8f"
+  },
+  "documentHashes": {
+    "exact-unread-20261028.md": "c89a2d0daa8ffe9c281ec5b41c8a28772aa5f34ecbcb1a52118b3a884dea13b9",
+    "remaining-goal.md": "aeda52508f5ab84cc97f5363e7a873a72628e926d26b2f019b1d455b08e94c4e",
+    "todo.md": "36c4712b46a11143a7679fdcce5f1bc49f0966959d8786dad17a8ec4c7c8adfc"
+  },
+  "logs": {
+    "exact-unread-all-final.log": {
+      "sha256": "922b2af861df45b3dd5012a691855217e6bb5a7af143d089f8bab09b450bbcc5",
+      "bytes": 1025
+    },
+    "exact-unread-types-verified.log": {
+      "sha256": "69e01b7ca2fa44c24963e7c54254dcbd7639763d159d3a14c116023391a8658a",
+      "bytes": 107
+    },
+    "exact-unread-format.log": {
+      "sha256": "b8ec334652afa9b1ba7e5c5b54de13c4acccba963b3da25d4b039533947e6846",
+      "bytes": 175
+    },
+    "exact-unread-whitespace.log": {
+      "sha256": "e52e52d897b804db1b0b677d835ce483f7c46df5580a32d0583ea688c5ad4af7",
+      "bytes": 595
+    },
+    "exact-unread-red.log": {
+      "sha256": "9ab67000436638bd6fab635861efa7b1367c33d849fe53efa1617fccea48b038",
+      "bytes": 15416
+    },
+    "exact-unread-clock-red.log": {
+      "sha256": "920a015e67a90df4991db686dfa76f8d1ee185680c6181782d038a9db619d3bc",
+      "bytes": 2012
+    },
+    "exact-unread-edit-red.log": {
+      "sha256": "c511540e88b405bcc258c2f0c579634b327ae25b43db2da89b580a1657e0f05a",
+      "bytes": 1923
+    },
+    "exact-unread-all-verified.log": {
+      "sha256": "887355c3c0ee5480df6ca4b6a9a933d76ceae4e3f1f37f9ad91266a34befb499",
+      "bytes": 2940
+    },
+    "exact-unread-writers-green.log": {
+      "sha256": "71eb31772f77f0eb088cc3888bf5eeaa499685a125bad1a795b24e14ff179c12",
+      "bytes": 2277
+    }
+  },
+  "impact": {
+    "scope": "Current backend exact private-unread delta; not a release-baseline comparison or deployment approval",
+    "changed": [
+      "convex/schema.ts",
+      "convex/messaging/unread.ts",
+      "convex/messaging/unreadModel.ts",
+      "convex/messaging/receipts.ts",
+      "convex/messaging/receiptEpoch.ts",
+      "convex/messaging/messages.ts",
+      "convex/messaging/calls.ts",
+      "convex/messaging/organization.ts",
+      "convex/messaging/threads.ts",
+      "convex/messaging/messenger.ts",
+      "convex/lib/messageEnforcement.ts",
+      "tests/activation/messenger-exact-unread.test.ts",
+      "tasks/messenger-meta-parity/exact-unread-20261028.md",
+      "tasks/messenger-meta-parity/remaining-goal.md",
+      "tasks/messenger-meta-parity/todo.md"
+    ],
+    "projects": [
+      {
+        "app": "apps/dziri-business",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-console",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-shop",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/circles",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/id",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      },
+      {
+        "app": "apps/dziri-flexy",
+        "build": false,
+        "reason": "No app, workspace dependency or shared runtime changes"
+      }
+    ]
+  },
+  "contract": {
+    "initialize": "Explicit current membership; private historical floor; scoped pages of 100; no public evidence backfill",
+    "unreadIdentity": "Message/user/membership/epoch/private-generation ledger; read removes exact IDs, delivery does not",
+    "observationScope": "Prepared exact writes require current expected epoch and independent inbox revision",
+    "dismissal": "Private generation change; no receipt; new arrivals survive old work",
+    "writers": "All five direct personal message insertions, including media, forward/Story text and both call-history sites; E2EE explicitly skipped",
+    "readers": "Both existing inbox projections plus legacy total badge; readiness explicit in summary/list metadata",
+    "visibility": "Revision/cursor-bound pages; thread readiness unknown until restriction/restoration propagation finishes",
+    "countCap": 100,
+    "legacy": "Prepared legacy timestamp endpoints cannot publish exact evidence or clear unseen prefixes"
+  },
+  "schemaChange": {
+    "newPrivateTable": "messageUnread",
+    "tableIndexes": 4,
+    "preparedMembershipIndex": "threadMembers.by_thread_leftAt_exactUnreadEpoch",
+    "optionalMetadata": [
+      "threadMembers preparation, revision, generation and cursor",
+      "threads.unreadVisibilityPendingCount",
+      "messages visibility revision/pending/cursor"
+    ]
+  },
+  "boundaries": {
+    "schemaOrFunctionsPublished": false,
+    "gitPush": false,
+    "realInitializationOrBackfill": false,
+    "realCommunicationsOrAccountChanges": false,
+    "pushHardDisabled": true,
+    "providerConfiguredOrTokenMinted": false,
+    "consumerProducerSwitched": false,
+    "standaloneProducerSwitched": false,
+    "exactUiCapabilityAdvertised": false,
+    "generatedApiReferencesRefreshed": false,
+    "physicalOrLiveTwoClientQualified": false,
+    "callMediaQualified": false,
+    "ledgerPrivacyLifecycleQualified": false,
+    "publicOriginalRecipientIdentityQualified": false
+  },
+  "unchangedNativeArtifact": {
+    "recordedSourceHashesMatched": 18,
+    "receipt": "D:/codex-artifacts/dziri-story-flows-20261027/verification.json",
+    "sha256": "42da0c9cf908b7c84a78aee959cd29ccc2fc987e1318e866fb1f6caf0f5a26b8",
+    "newApkProduced": false,
+    "cloudMetadataNotRequeriedThisSlice": true
+  },
+  "requiredGates": [
+    "Wire both UI producers/renderers, readiness, exact scopes and viewability/reconnect cancellation",
+    "Refresh generated API references and scoped capability before integration freeze",
+    "Bind original public group-recipient identity beyond join-time inference for clock/join ties",
+    "Integrate/review ledger erasure/export, old-scope retention and physical-message purge lifecycle",
+    "Maximal-group performance, global unread limits and authorized client/native acceptance",
+    "Reviewed source/index/schema/backend/client release and actual user initialization authorization",
+    "Previously recorded family, security, provider and physical qualification gates"
+  ]
+}

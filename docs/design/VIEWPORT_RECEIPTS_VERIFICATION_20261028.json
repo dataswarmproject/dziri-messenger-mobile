@@ -1,0 +1,229 @@
+{
+  "checkpoint": "viewport-receipts-20261028",
+  "at": "2026-10-28T01:11:56.115Z",
+  "goal": "active; original remaining-goal retained",
+  "policy": {
+    "wholeShortMessage": true,
+    "viewportCoveragePercent": 80,
+    "activeReadDwellMs": 500
+  },
+  "sources": {
+    "consumer": {
+      ".gitignore": "c17b13bc0f8174ad7281eadefe49049fbf42f35c71f44839e83102f1a2ce6626",
+      "packages/shared/src/messenger-receipts.ts": "d1c1e074ef834186aec85bd2eeefe3e95f252777f1d87c99d02dabe3363e17c4",
+      "apps/dziri/components/messaging/use-message-receipts.ts": "efe698fcdc2acffb16b606442f858de7254f8f2cae8e5516ec4a279bc82d0b45",
+      "tests/feed-ui/messenger-receipt-adapter.test.tsx": "9b65530ed58bb6dafbe2a908a3e558b3f9987315d977fb1da4e2dc912dd19dc2",
+      "tests/feed-ui/messenger-receipt-visibility.test.tsx": "872e59c81754ec4add134d4d7ba4714cd8408cc3feb9918d9f9d4d925bd67887",
+      "tests/feed-ui/messenger-receipt-observer.test.tsx": "e02f767939b0c9b3f343499e47fd4ed3e4ccaa0aac86f5b9b3561cb5acfd76c9"
+    },
+    "standalone": {
+      "src/dziri/message-list.tsx": "14cd2d1384f0ba445b3ec125bf4d75d58b55e3f102df982890276eb7568916a7",
+      "src/dziri/message-receipts.generated.ts": "ad059b7e56bc0475679a0ac4e16e2255e94d7949f0b8ac26a4b43318216f8783",
+      "docs/message-receipts-contract.json": "c5a2e972b044655a6d9947690d6684fbc832791d6a8e300543cd5427f558661c",
+      "tests/exact-receipts.test.tsx": "1e0b98004f3caa0273b2613ec7c2d37c0482be984fa7770c0dfadc9825a6d80f"
+    }
+  },
+  "logs": [
+    {
+      "key": "consumer-focused-20",
+      "sha256": "5bb67dc9402979c72a34f765a2e43af5d4c8a2b92611e52cd6af8c1470bd83d2",
+      "bytes": 936
+    },
+    {
+      "key": "consumer-ui-172",
+      "sha256": "e48976c85a78794450863e061730d3d2d08281eab0544c9f22183f8390900308",
+      "bytes": 1029
+    },
+    {
+      "key": "consumer-build",
+      "sha256": "083116ac12dab3ebefbd59a5c90d501980ff98c25fdbe11f2ee53458629fd0e4",
+      "bytes": 20407
+    },
+    {
+      "key": "native-ui-94",
+      "sha256": "ec69dd69a5637749f83c0822a5a8bca8e649a8e2a737e0379b7216c174df2b59",
+      "bytes": 513
+    },
+    {
+      "key": "native-domain-58",
+      "sha256": "49b2bc591332b709aa6d754ef1854825c7d7aca2fe2b0f59284207a1f837df2e",
+      "bytes": 11273
+    },
+    {
+      "key": "native-types",
+      "sha256": "5384f2a14c05be4f2b39c8b01909e7d6704a744f60337e0b64aff1fc31251132",
+      "bytes": 308
+    },
+    {
+      "key": "native-changed-lint",
+      "sha256": "452ec6ff5ff37bb7a3dc4fa51be86087161e118de7fc7ee0c09c262fb0f04b1e",
+      "bytes": 212
+    },
+    {
+      "key": "native-consistency",
+      "sha256": "eb514f3f838bc19296c9f265f34e4ed61ae0d839f5e359abb2997c125647481e",
+      "bytes": 407
+    },
+    {
+      "key": "native-all-platform-export",
+      "sha256": "d5acf023919fafbfbfdd964ee251fbaffcf9f3035807af9f271c0972326b8bc0",
+      "bytes": 12390
+    }
+  ],
+  "bundles": [
+    {
+      "file": "web/AppEntry-8a5c8beeded14f2008729dd2c3a61a88.js",
+      "sha256": "9876d4dfaf0825f1a416bdc605df48f004f40809cf153744ce2daa14a3e0d1d6"
+    },
+    {
+      "file": "android/AppEntry-765d55f31777fb4fb05ff83ab188e79d.hbc",
+      "sha256": "14a93e94599e8809ffc1fecdd9d699c0c43cef7b7613d8e67af21784ebf7d15d"
+    },
+    {
+      "file": "ios/AppEntry-74151d1fab4c1ef946f5cd626eab8f08.hbc",
+      "sha256": "9f49d7dbc2976df90c08f79a78fcf63fd1525ee56ca9f3d0941de42dcaa0f608"
+    }
+  ],
+  "compiledSourcesMatch": true,
+  "buildConfigRestored": true,
+  "canonicalNativeCopyMatches": true,
+  "previousBackend": {
+    "checkpoint": "receipt-ui-20261028",
+    "historicalCases": 355,
+    "rerun": false,
+    "recordedFiles": [
+      {
+        "path": "convex/messaging/receipts.ts",
+        "sha256": "fff29d5744b841e7c2fbc60734151f921c66df71637811d1df2c2432648efd9e",
+        "same": true
+      },
+      {
+        "path": "convex/messaging/unread.ts",
+        "sha256": "eeb10ed878be7b230785f2376fcf470cc546e50a1f4c2d1442801ecf895ae855",
+        "same": true
+      },
+      {
+        "path": "convex/messaging/unreadModel.ts",
+        "sha256": "d5eb07ee20761c42dd1a72123331789b0d58f262bf54c6039c5ce02e3b694780",
+        "same": true
+      },
+      {
+        "path": "convex/messaging/receiptAudience.ts",
+        "sha256": "b6f0a2bad0c6ece5cb49ebe4425d3097f1272da4290ba6db7ebc4f04701e22e1",
+        "same": true
+      },
+      {
+        "path": "convex/messaging/receiptEpoch.ts",
+        "sha256": "ffcb534761f61d416cc6cd0023722a5d87a9a5dcb7a9d91ca596e6ed5df46f81",
+        "same": true
+      },
+      {
+        "path": "convex/messaging/retireUnread.ts",
+        "sha256": "662a3acaa459e8cc8f3bf4b690aed591e3bbd8a5962cb0fe3876691e57b8c683",
+        "same": true
+      },
+      {
+        "path": "convex/messaging/preferences.ts",
+        "sha256": "3d70672f4f0c60b6a3a1fdf0f94ca9c73bb3a2d3540a11ef1929104e70702c02",
+        "same": true
+      },
+      {
+        "path": "convex/messaging/currentAccess.ts",
+        "sha256": "19fb5e5573d9218545ea680752e6705f940b9129b849dd41d427716281b9f608",
+        "same": true
+      },
+      {
+        "path": "convex/messaging/workspaceAccess.ts",
+        "sha256": "8193ed9140c1e55e902e3a26b459ca7ca3b2e1dae79cb268f58c79d6fde0ab3b",
+        "same": true
+      },
+      {
+        "path": "convex/messaging/messenger.ts",
+        "sha256": "b4355204d8c041b9745affa4e015afad4596d469c1aeade2cd0d9863815a78be",
+        "same": true
+      },
+      {
+        "path": "convex/messaging/threads.ts",
+        "sha256": "c1954c07f127af74f473ccbbca441390cb524ca401b6cfd22714508e873b2e2e",
+        "same": true
+      },
+      {
+        "path": "convex/workspace/salons.ts",
+        "sha256": "b47906c5c13b8907de3dfb1ce2f0671a55b5e0c5bca34d87397b22f448188281",
+        "same": true
+      },
+      {
+        "path": "convex/schema.ts",
+        "sha256": "0634ce55bd33b76276f6f371d8f11e8983a5e2acf5e7ec4b8a1bbb527c286f5e",
+        "same": true
+      },
+      {
+        "path": "convex/accountDeletion.ts",
+        "sha256": "75ca3d79298f87f9e9d40a489fb9e2d7c2a4059e7120b6b1dc66be5c7fc3c3e2",
+        "same": true
+      },
+      {
+        "path": "convex/dataExport.ts",
+        "sha256": "f00ce1fa501ddf1cdc6c849aa1ccc0afc26186e099ff94a5adf39df77f313df5",
+        "same": true
+      },
+      {
+        "path": "convex/_generated/api.d.ts",
+        "sha256": "2e18477a7c143b057e0dc51834d394beeea39e7a992512b9133226d7e8d924d4",
+        "same": true
+      },
+      {
+        "path": "convex/_generated/api.js",
+        "sha256": "f513058549831e85376f8d19cafaf2a4a770b6eb1b859fb371141f2c9dec0d70",
+        "same": true
+      }
+    ],
+    "allRecordedFilesUnchanged": true,
+    "unlistedFilesCertified": false
+  },
+  "captures": {
+    "browser-en.json": "fabb9fad45ce58b5540dff058f73609a830c49a22d84ad43a35930472d3fb225",
+    "browser-ar.json": "f0ce25c5f9007b35c8b2101f03c1b508a1fab1fbaa37b4539356fc2124c4cda2",
+    "browser-final-proof.json": "bb696527af31e5cfa5fac60364b03dadde9fccaf5724ebf0793c77d2020e353f",
+    "tall-message-en-375.png": "6c6c9a196f8bea21ed7a94666f0ccb1451f088808574cc5387437a363c4ee234",
+    "tall-message-ar-320-resized.png": "ff22fd430b67dd6e5e36737a886ffd987015a9c3d630f856f9074766d358efc5",
+    "tall-message-fr-430.png": "ffb2ac62d3df1210ebbd1c09668b1bb64d46d038bdf90696c2d45ee9dd73b3a5"
+  },
+  "checkpointSha256": "f2b217f050f506c0c70fef4953756cf5b5ed3caf01557b7073a72533af92e988",
+  "checks": {
+    "consumerUiCases": 172,
+    "consumerUiFiles": 28,
+    "focusedPolicyCases": 20,
+    "nativeUiCases": 94,
+    "nativeUiFiles": 20,
+    "nativeDomainCases": 58,
+    "nativeTypes": true,
+    "nativeChangedLint": true,
+    "nativeConsistency": true,
+    "consumerNormalBuildPages": 270,
+    "nativeAllPlatformExport": true,
+    "browserErrors": 0
+  },
+  "scope": {
+    "syntheticBrowserOnly": true,
+    "actualInstalledFlashListHelperTested": true,
+    "componentWidths": [
+      320,
+      375,
+      430
+    ],
+    "physicalDevice": false,
+    "actualMobileViewport": false,
+    "actualTwoClient": false,
+    "marketplaceQualified": false,
+    "allLanesQualified": false,
+    "apiGenerationQualified": false,
+    "otherSixAffectedBuildsQualified": false,
+    "production": false,
+    "newApk": false,
+    "push": "hard-disabled"
+  },
+  "next": "Marketplace explicit visible-message observations and canonical actor/consent/store-access lifecycle in both clients",
+  "remainingGoal": "tasks/messenger-meta-parity/remaining-goal.md",
+  "noLiveWritesOrPublication": true
+}

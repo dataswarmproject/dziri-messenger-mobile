@@ -1,0 +1,28 @@
+# Marketplace draft isolation and older-draft review — 28 October 2026
+
+Status: implemented and qualified locally. The complete remaining goal stays active. Push remains hard-disabled. No backend publication, real communication, production deployment, master push, account/grant change or APK distribution ran.
+
+## Behavior
+
+Consumer previously saved Marketplace text under actor plus conversation only, allowing the same draft to appear in buyer and store views. Consumer and DM now use the same canonical local scope function, with an explicit buyer/store namespace. DM's resulting scope strings are unchanged for canonical IDs; its existing encrypted journals reopen without migration.
+
+Older Consumer drafts have ambiguous view provenance. They remain in their original account/conversation slot and are never assigned automatically. A compact EN/FR/AR review panel lets the current user inspect the older text, use it in this chat, explicitly append it to an occupied draft, or keep it for later. Review and recovery do not send messages. Another account/view, a closed chat or a stale draft revision cannot execute a retained recovery action.
+
+Recovery compares the saved source and destination with the reviewed snapshots. It writes and reads back the destination before removing the unchanged older source. A changed source/target, overlength append, quota error or silently failed write stops recovery without erasing either text. If cleanup fails after a verified copy, both copies remain and the UI explains the result. The current in-memory draft is checked by revision, including identical-text edits. Storage-access failure does not deliberately discard an already loaded older preview.
+
+Ordinary saves retain the existing 8,000-character, 20-draft and 24-hour limits. While a review is active, a reference-counted lease protects its source from ordinary LRU eviction by this or another composer. Closing one of two reviews does not release the other's lease. Closing the last review releases it. Leases do not prevent explicit deletion or normal expiry; when no slot can be evicted, new text stays in memory. A verified recovery copy can temporarily occupy an extra slot if source cleanup fails: preserving both copies takes precedence over destructive cleanup. No new sensitive-data category, token storage or external transfer was introduced.
+
+## Local verification
+
+- Meaningful RED cases reproduced loss of the older copy when typing at capacity and when another composer saved. GREEN covers those cases, multi-view lease cleanup, buyer/store/account separation, stale/unmounted callbacks, checked copy/cleanup, storage failures and the localized actual review component.
+- Final Consumer scope: 232 UI cases / 34 files, including 15 dedicated draft-isolation/recovery cases and an actual chat-page recovery case. Business: 715 UI cases / 79 files. DM: 109 UI cases / 22 files, 58 domain cases, types, changed-source lint, consistency and Android/iOS/web exports. DM's compatibility case reopens existing buyer/store journal slots through the shared helper.
+- Normal Consumer and Business builds include type checks. Final Consumer source-map comparison, exact compiler-file restoration, bundle hashes and terminal results are recorded in `draft-scope-verification.json`. The Consumer build before the final lease change is preserved separately and is not the final runtime proof.
+- Ten browser cases use the actual Consumer page and real local draft hooks/storage with synthetic accounts/text and mocked server boundaries. They cover collapsed review without insertion, explicit append, independent buyer/store slots, replacement account, keep-for-later, and AR/320/dark plus FR/430/light layouts. EN/375 is the initial component. Communication writes remain zero; the final browser error list is empty. The initial fixture configuration/stub errors were corrected before the clean verification tab was opened. This is desktop component-width/local-storage proof, not a phone viewport, live backend or two-account server test. Temporary tabs/server were closed.
+
+Artifact root: `D:/codex-artifacts/dziri-draft-scope-20261028`. Earlier checkpoint receipts remain unchanged. Backend sources recorded by the previous captured-send checkpoint are checked for unchanged hashes; its 395 backend cases are historical and were not rerun for this UI/storage-only slice. Unlisted backend sources are not certified.
+
+## Remaining work
+
+Personal/group/support queued-send binding remains required. The source audit found direct and proxy text/media entrypoints, a shared Story-reply text writer, persisted native commands, and membership epoch helpers. Inventory durable role/workspace/account revision writers before selecting the personal send constraint; do not assume a receipt epoch alone proves every loss/re-grant transition. Preserve current contact/family/moderation/idempotency policies and test same-clock changes. No personal send-binding implementation or acceptance is claimed by this draft slice.
+
+Other mutation families, physical process-kill/keyboard/media interruptions, actual authorized two-client privacy/recovery/moderation, the legacy global badge scan, API-generation/runtime qualification and the entire original feature/screen/security/calling/release matrix remain open in `remaining-goal.md`. Shared runtime impact remains conservative across seven web apps; only the two newly recorded web builds qualify here. Five other affected builds and comparison against actual successful deployed revisions remain release requirements. The previous APK does not contain this work. Push and dependent background calling stay disabled.

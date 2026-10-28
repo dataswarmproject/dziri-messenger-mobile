@@ -1,0 +1,123 @@
+{
+  "checkpoint": "marketplace-observation-20261028",
+  "at": "2026-10-28T01:22:53.134Z",
+  "goal": "active; full original remaining-goal retained",
+  "sources": {
+    "convex/marketplaceMessages.ts": "940f5fec8d3cce8d3f03c433a900dd19c2a4a3f8b62935eeb60dce8f439c5a59",
+    "convex/lib/marketplaceMessageViews.ts": "3c2717bf93f4ba1132c90a916735b322314e99c19cf496d67813253776e0f9d5",
+    "convex/lib/marketplaceReceiptObservation.ts": "fbbe3e7b60c191b1697366ce0e11dc4550aa9dcdce290ac7541b40e81b5e5c81",
+    "tests/activation/marketplace-receipt-observation.test.ts": "65beccf35f9210bc4364446a8a93539152f0bf18b3421f8a48cfaf1307d99c8b",
+    "convex/lib/marketplaceConversationAccess.ts": "89008e82979ef22af99c56b07d4ca1a0a78d4719729f89d4854ec56960b0bea2",
+    "convex/lib/marketplaceAccess.ts": "138394b9ea5de1ddb2abd16d695548eca60622aa92e37a3b681ee2d772a95322",
+    "convex/messaging/preferences.ts": "3d70672f4f0c60b6a3a1fdf0f94ca9c73bb3a2d3540a11ef1929104e70702c02",
+    "convex/schema.ts": "0634ce55bd33b76276f6f371d8f11e8983a5e2acf5e7ec4b8a1bbb527c286f5e",
+    "convex/_generated/api.d.ts": "2e18477a7c143b057e0dc51834d394beeea39e7a992512b9133226d7e8d924d4",
+    "convex/_generated/api.js": "f513058549831e85376f8d19cafaf2a4a770b6eb1b859fb371141f2c9dec0d70"
+  },
+  "logs": [
+    {
+      "key": "missing-contract-red",
+      "source": ".codex/marketplace-observation-red.log",
+      "sha256": "b36e8f4a1ce53b1a9248be67185536bd9a136df6280e7139212725987e7f6168",
+      "bytes": 11672,
+      "passed": false
+    },
+    {
+      "key": "seller-private-read-red",
+      "source": ".codex/marketplace-context-red.log",
+      "sha256": "1d63231c2186e18a4669212e55a698c587738f05e10dea3468afd9bd7169dd5a",
+      "bytes": 2319,
+      "passed": false
+    },
+    {
+      "key": "scoped-regression-345",
+      "source": ".codex/marketplace-observation-regression-final.log",
+      "sha256": "9650b3c3e603ed667cc46e4450005fda9061a4330ff91f217a33d0451ef829d6",
+      "bytes": 1105,
+      "passed": true
+    },
+    {
+      "key": "final-types",
+      "source": ".codex/marketplace-observation-types-final.log",
+      "sha256": "69e01b7ca2fa44c24963e7c54254dcbd7639763d159d3a14c116023391a8658a",
+      "bytes": 107,
+      "passed": true
+    },
+    {
+      "key": "changed-format",
+      "source": ".codex/marketplace-observation-format-check.log",
+      "sha256": "b8ec334652afa9b1ba7e5c5b54de13c4acccba963b3da25d4b039533947e6846",
+      "bytes": 175,
+      "passed": true
+    }
+  ],
+  "checkpointSha256": "73d755b5b9455db9d73a0e146735f09efd8d39393e44aaa148ababbfd2c573cf",
+  "previousCheckpointSha256": "b791abd0af1cbfa57c3a5c2056c28353f9c5c06868b5a2d4e535fb1b33df2be1",
+  "unchangedPersonalAdapters": [
+    {
+      "path": "packages/shared/src/messenger-receipts.ts",
+      "unchanged": true
+    },
+    {
+      "path": "apps/dziri/components/messaging/use-message-receipts.ts",
+      "unchanged": true
+    }
+  ],
+  "unchangedNative": [
+    {
+      "path": "src/dziri/message-list.tsx",
+      "unchanged": true
+    },
+    {
+      "path": "src/dziri/message-receipts.generated.ts",
+      "unchanged": true
+    },
+    {
+      "path": "docs/message-receipts-contract.json",
+      "unchanged": true
+    },
+    {
+      "path": "tests/exact-receipts.test.tsx",
+      "unchanged": true
+    }
+  ],
+  "checks": {
+    "newMarketplaceCases": 22,
+    "scopedBackendCases": 345,
+    "scopedBackendFiles": 30,
+    "finalBackendTypes": true,
+    "changedFormat": true,
+    "canonicalHistoryBothScopes": true,
+    "canonicalRecentAndPagedHistory": true
+  },
+  "contract": {
+    "optionalObservation": {
+      "expectedActorId": "authenticated actor consistency only",
+      "readGeneration": "safe nonnegative integer matching current actor preferences"
+    },
+    "boundReadRequiresExplicitIds": true,
+    "maxIds": 100,
+    "existingStoreAuthorityPreserved": true,
+    "newClientCapability": false,
+    "legacyCallersUnchanged": true
+  },
+  "scope": {
+    "backendOnly": true,
+    "newSchema": false,
+    "clientAdaptersActivated": false,
+    "durableAuthorityLossRegrantQualified": false,
+    "marketplaceViewportRetryQualified": false,
+    "actualTwoClient": false,
+    "physicalDevice": false,
+    "production": false,
+    "newApk": false,
+    "push": "hard-disabled",
+    "realCommunicationOrAccountWrites": false
+  },
+  "next": [
+    "Audit and bind durable authority identity across every loss/regrant path",
+    "Wire Consumer and standalone Marketplace visibility/dwell/retry adapters to the completed bound contract",
+    "Complete the unchanged full acceptance/release backlog"
+  ],
+  "remainingGoal": "tasks/messenger-meta-parity/remaining-goal.md"
+}

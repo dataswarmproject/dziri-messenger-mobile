@@ -33,3 +33,5 @@ grant, user communication or new APK. Only verified local/GitHub master backup i
 authorized. Original workspaces, old receipts and build outputs stay preserved.
 
 Step 3 local client wiring is now qualified in [staff-clients-20261028.md](staff-clients-20261028.md). This supersedes the earlier no-client-controls status only; steps 4–5, real interoperability and the full original acceptance remain required. No staff-session/viewport capability is advertised by the administrative setup feature.
+
+Step4a identity-bound isolated native session is locally qualified in [staff-sessions-20261029.md](staff-sessions-20261029.md). Step4b secure unified handoff and4c explicit canonical grants/exact viewport remain required. Existing password/MFA binding is not the final unified SSO end state. All step5/full-goal gates remain open.

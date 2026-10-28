@@ -14,7 +14,7 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "test:domain": "node --test tests/domain.test.mjs",
-    "test": "node --test tests/domain.test.mjs tests/inbox.test.mjs tests/access.test.mjs tests/tabs.test.mjs tests/auth.test.mjs tests/presentation.test.mjs tests/message-actions-contract.test.mjs tests/message-layout.test.mjs tests/message-vault.test.mjs tests/outbox-recovery.test.mjs tests/navigation-layout.test.mjs",
+    "test": "node --test tests/domain.test.mjs tests/inbox.test.mjs tests/access.test.mjs tests/tabs.test.mjs tests/auth.test.mjs tests/presentation.test.mjs tests/message-actions-contract.test.mjs tests/message-layout.test.mjs tests/message-vault.test.mjs tests/outbox-recovery.test.mjs tests/navigation-layout.test.mjs tests/staff-client.test.mjs",
     "test:ui": "vitest run --config tests/ui.config.mjs",
     "check:actions": "node scripts/sync-message-actions.mjs",
     "check:history": "node scripts/sync-message-history.mjs",

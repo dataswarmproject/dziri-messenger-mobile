@@ -1,0 +1,111 @@
+{
+  "checkpoint": "inbox-policy-20261028",
+  "at": "2026-10-28T14:32:04.808Z",
+  "previousReceiptSha256": "bd1b2c3a5e53015eb54c3efe7a8dbe3aff8fdd89ece70c141ae96b50bf1eec17",
+  "sourceBase": {
+    "platform": "58cce2b94b97a55c41df3a56ec91aaa630895288",
+    "standalone": "23bdb4dee231c99ee672d742c70b75125b09621f"
+  },
+  "goal": "active; full original scope and all actual acceptance gates preserved",
+  "sources": {
+    "convex/_generated/api.d.ts": "fe7059df4eb2b05be5d0e2e21e708faa310000e673f0dda71217b1f8efe784fd",
+    "convex/schema.ts": "1085466f4f2aa06ea9420de78513ef3f5c609db3fb702f54c9cef018b71bce59",
+    "convex/lib/companyGrant.ts": "d2c27c04977f73cf23db12d57444f6650e2b4bf8dd6cdf4bdaf48327288c02f4",
+    "convex/lib/marketplaceAccess.ts": "5d471a094bfece2171d443821a2886c8fb2512de0290b6c57f280b282028a2e7",
+    "convex/messaging/workspaceAccess.ts": "c08b1fdf139441b249e04de00cb5ecb6753d7937606dcf8705252afa1e410898",
+    "convex/inbox/keys.ts": "3eed0c0f3054e316bdc505099c5dbee81ba0f23220d8d68f5d609fafce8e1af7",
+    "convex/inbox/schema.ts": "90ee9b443eeebb40375936c12dd53a9005c7bf3e38ef57c7ca9d660732f97b86",
+    "convex/inbox/policy.ts": "4b9f674d3a7a69ec60b167c973afb4eb6155d7c405165788779bfffad49389a8",
+    "tests/activation/inbox-policy.test.ts": "e2a47906bdfb364219e3aeaeab21a122f71a199c51e9c3b003392c6d3dd0741e"
+  },
+  "evidence": {
+    "backend-final-result.json": "68cab9dec257aef0562a4ef57e29515e983a4b97b4a08be3c433a5d79abf0ea8",
+    "backend-final.log": "33cd9df31f041a2ea36606f1d9684114e7107685436351551a54b73299e7ce9f",
+    "build-impact.json": "2227ea369c828980dcd71550ee9e65fa801bb1278710f4e2cd7a36cb05d1f1bf",
+    "consumer-ui-result.json": "5e6f3e51bdab8415ff6f13d89b64d71cbc84d37ac3680f8dcc48f03e549e5831",
+    "consumer-ui.log": "fa14fcc8d1954384a261d4ceafd165dbc7bec7827eaf3cb44311ba714f3e5bcf",
+    "dependency-audit-result.json": "3e55d7f4ceb75355d9ce9787a46364791b008c275629f2be6652624242af0a92",
+    "dependency-audit-summary.json": "e97f152e0f4a7dabe51f3dd1f43c64829b732792bc59b97f4dcbf74120a74661",
+    "dependency-audit.log": "48460d8f0f3d2260801635062096d77bf59d6fafb4ed53dd8e6e38d0686c3617",
+    "deployment-hold-result.json": "ded889cd073c474803188c7d89f6f5b2fcdcce771c28efc47935ce8d3e7cd9ce",
+    "deployment-hold.log": "0baffe092a21b013db71fb9b01f2f015006d6e2d404bf1ae7dc76761f5db31c1",
+    "expanded-policy-after-fix.log": "ee99164c18e92d2a969952922918d3ffaa016f441efc3a8c55a222722798d7b4",
+    "expanded-policy-before-fix.log": "aa43e511fa3341290d02db35c90e42ac0e004d98dab47e26af0ca5d8b4e1d385",
+    "expanded-red.log": "605359e3dc4e7632b873b9d339b8531260c5804f72df67d8c8d1d30a2efc342d",
+    "focused-final.log": "55421cbd410e01793005a78196ef0b5d7858f6005e4b1598564acb72538b0b27",
+    "green-first-result.json": "f461844ea431a1ae32fade01e1b6b95eb94cbbba3d23493790d72db3f9596be9",
+    "green-first.log": "83cb792c210f461e754138cdf309da867079c4d69b2ae880bd8df117dae9ef1c",
+    "native-ui-result.json": "17dd79ab2ad36d5761e0ffed9623b3cd9cfb59549adac8efe89b43da9510d799",
+    "native-ui.log": "b63a6e87124a8c9b15e3ef1e8324fe386a853e6dfd3241ae2796c1afeb6104b7",
+    "official-codegen-result.json": "b23c3eaef5c0f7e9f23eea0373996ba59080c734b6594c2a60a28b99d3a42a27",
+    "official-codegen-selected-result.json": "3d93f6f67e12d640a6f53bb152e512bf6878839b65873197b30dcdf83bb8d129",
+    "official-codegen-selected.log": "b331ea72047c7150c6eb73f9d233d6b46a0cded6030700e9d72e83ae4d402a05",
+    "official-codegen.log": "d0a37fa248d3b6335efeb113b75f34b7c570b38d658050a3e956d6a311388e04",
+    "preservation.json": "601f0bc3d34413bfe9c6a887dcbbb028dbc0ce757ac1c234079fc7d033263115",
+    "red-result.json": "f5c262345a25c65ef973666e33e23dbd495bbecc7d5ca29200c7e6691e3ef3b1",
+    "red.log": "693a9b0df7ab59a5371917fc971a4e128b237fb7c24fddb1d594567e69282380",
+    "review.md": "1d5524cf33617f48581bbc7c68923cb78e6825cc5e00f6a3b702fb464817721c",
+    "tenant-consent-before-fix.log": "385ffc90a76bca240033e6670e7e16c850af092373544303cf0d36ef6ff35cd9",
+    "tenant-consent-policy-before-fix.log": "558add3f7deaf76bc35d79c18850d9af14b2d236f5e7b1fa5935430b98ab8107"
+  },
+  "preservation": {
+    "originalPaths": 316,
+    "originalSourcePreserved": true,
+    "originalIndexEmpty": true,
+    "concurrentPrimaryBridgeAndSchemaPreserved": true,
+    "nativeRuntimeUnchanged": true,
+    "previousQualifiedNativeInputHashesChecked": 6,
+    "failures": []
+  },
+  "qualification": {
+    "focused": { "cases": 62, "files": 1 },
+    "backend": { "cases": 1735, "files": 105 },
+    "consumerUI": { "cases": 242, "files": 33 },
+    "standaloneUI": { "cases": 147, "files": 27 },
+    "officialCodegenAndTypes": {
+      "status": 0,
+      "runningDeploymentModified": false,
+      "selection": "dev:honorable-moose-964"
+    },
+    "initialFailures": "Missing module and wrong test config: no tests executed; missing schema field: 62 setup failures. Behavioral runs: one stale-order failure, then two tenant/consent failures, all closed locally.",
+    "deploymentHoldChecks": 8,
+    "dependencyAudit": {
+      "status": 1,
+      "counts": {
+        "info": 0,
+        "low": 18,
+        "moderate": 62,
+        "high": 23,
+        "critical": 2,
+        "total": 105
+      },
+      "criticalPackages": ["dompurify", "next"],
+      "dependenciesChanged": false,
+      "releaseGate": "Unresolved existing findings; no clean dependency or production-release claim. Reachability and compatible remediation remain required before lifting the release hold."
+    },
+    "frontendOrNativeBuildRepeated": false,
+    "buildReason": "All eight build-impact results false; frontend/native runtime unchanged. Actual successful-deployment SHA reconciliation remains held.",
+    "physicalOrLiveAcceptance": false
+  },
+  "holds": {
+    "sourceBackupAuthorized": true,
+    "automaticDeploymentEnabled": false,
+    "projectHolds": [
+      "dziri",
+      "dziri-business",
+      "dziri-console",
+      "dziri-shop",
+      "circles",
+      "id",
+      "dziri-flexy",
+      "dcod"
+    ],
+    "manualDeployment": false,
+    "backendPublication": false,
+    "realMessagesOrModeration": false,
+    "providerActivation": false,
+    "personalPush": "hard-disabled",
+    "newAPK": false
+  },
+  "remaining": "Actual four-endpoint support service, canonical writers/access/hooks/transport/privacy, both clients and authorized interoperability; plus all original captured-action/self-hide/group/policy/media/Story/security/device/recovery/release/APK acceptance"
+}

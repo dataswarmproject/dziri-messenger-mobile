@@ -1,0 +1,80 @@
+{
+  "checkpoint": "family-send-epoch-20261028",
+  "at": "2026-10-28T10:31:11.144Z",
+  "goal": "active; original full remaining scope retained",
+  "previousReceiptSha256": "5c794bb0e2632fb69b5a96ab115310397e1add8fc1195059f8c168e4c6af483e",
+  "sourceBase": {
+    "candidate": "301e5ac16db0117499acf7440ac0224209f1125a",
+    "native": "0e11da9df796f8e9a1ce70a3f5d07c141e4e7b83"
+  },
+  "qualification": {
+    "initialRed": { "cases": 24, "failed": 21, "passed": 3 },
+    "focusedFinal": { "cases": 37, "status": 0 },
+    "separateRemovalGuardRed": { "failed": 1, "guardRestored": true },
+    "selectedBackend": {
+      "cases": 1183,
+      "files": 75,
+      "status": 0,
+      "workers": 4,
+      "normalLogging": true
+    },
+    "consumerContract": { "cases": 27, "files": 3, "status": 0 },
+    "nativeContract": { "cases": 14, "files": 3, "status": 0 },
+    "officialCodegenTypes": {
+      "status": 0,
+      "developmentAnalysisOnly": true,
+      "runningFunctionsPublished": false
+    },
+    "newProductSourcesUnchangedSinceBroaderMatrix": true,
+    "clientRuntimeChanged": false
+  },
+  "preservation": {
+    "originalSourcePaths": 316,
+    "originalSourceAndIndexPreserved": true,
+    "nativeRuntimePaths": 41,
+    "nativeRuntimePreserved": true,
+    "receiptAndUnreadEpochsPreserved": true,
+    "publicProfileRevisionExposure": false
+  },
+  "sources": {
+    "convex/schema.ts": "53e91c996b18d8b2479e490e35102565eda394aca3499b51be0162d0c56b0996",
+    "convex/messaging/familySendAuthority.ts": "62b4efcf41d2e4941e3cbd25a898aca40c124d3fc5911ebd2f4b65f40233f90e",
+    "convex/messaging/families.ts": "4c8d95f7b02e31208a14602b56b4295d695f7eed6b08528c76b4b7bcc2a8f9d5",
+    "convex/messaging/parentalControls.ts": "593ba31a9a5e719a70535ea573b9e64a317a23accb4fcdfb373edc92fd7e73e8",
+    "convex/messaging/sendScope.ts": "6e33bfa3088a66ef96de60fcba1791942679676f3751a7929834ddcf908432ec",
+    "convex/_generated/api.d.ts": "fa141784517ce14721d50587717b08acbd64223744cba4edc2e7415a96fb5251",
+    "tests/activation/messenger-family-send-scope.test.ts": "cf08336d6f6e8b12898736878c2ddb505a516416739fae508ebf2b32ab300518"
+  },
+  "evidence": {
+    "red.log": "4cbe5086a6a699833f844c55f4200322a3b75caa05fc317aa0c2e74f57d63bb7",
+    "green-first.log": "eaeba33923c021a7f1891aa7cbabb4bc505b58762ccaf7c06569ec7968730150",
+    "green-boundaries.log": "251ba67b3fd16a4382b20e4ce9a9f7e1c4312f8b85ff3c040e28e40aec4ff01e",
+    "green-final.log": "10755bb2c3d3583caf1b2efeaa5992e4bb12153651726193ab78b6cc0f8510e6",
+    "removal-guard-red.log": "06a1c14220eae388bd896b924bc3d24bc1677ff171a4760c0b50a83a9c0c02af",
+    "backend.log": "f9454a63eabe643895c29dfada08baa8106752f5fe299a8cc95a802269833fd3",
+    "backend-result.json": "b5ba2cd0bbbafeb734c10cf3890c6132da4609f5d8b1425df17aa8d5e25b0e91",
+    "backend-source-hashes.json": "b6ccc315e8bc5a1297a4a45299626b53625900ae21e12b7116242cd407b29900",
+    "consumer-contract.log": "678c4c97750279bca36afc3e16344f17d65688620a96e337c2f020b3a07cc956",
+    "native-contract.log": "53fdd561478eb1a83df5fcc37fdf8ec6778f1e2fe182b91266c467a911c63c58",
+    "codegen.log": "b331ea72047c7150c6eb73f9d233d6b46a0cded6030700e9d72e83ae4d402a05",
+    "codegen-result.json": "cf70bac9a4cc6ee5402bc52819e91efe8573a95cb915c7969e8d5bdc22db64a7",
+    "build-impact.json": "8fae4743071a621f9e4c154b659c60ec21c1d023b0fd9daff7777e928b00f05a"
+  },
+  "holds": {
+    "allAutomaticVercelDeployment": false,
+    "backendPublication": false,
+    "providerActivation": false,
+    "personalPush": "hard-disabled",
+    "realAccountActions": false,
+    "newApk": false,
+    "githubSourceBackupAuthorized": true
+  },
+  "remaining": [
+    "Full original remaining-goal.md objective and acceptance",
+    "Family enrollment invitation/verified age/guardian authority release gate",
+    "Trusted-follow, scheduled/time-window, age-out and remaining policy reversals",
+    "Freeze/unfreeze/read-only controls and other command/Story producers",
+    "Actual authorized client/device/recovery/moderation/privacy proof",
+    "Affected release qualification, billing resolution and separate deployment approval"
+  ]
+}

@@ -20,6 +20,97 @@ export type StaffEntryProps = {
   businesses: StaffBusiness[];
   supported: boolean;
 };
+
+/** Shared public copy only. Provider tickets and credentials stay in staff runtimes. */
+export function staffHandoffCopy(locale: string) {
+  return locale === 'ar'
+    ? {
+        continue: 'المتابعة بحساب دزيري',
+        resume: 'متابعة تسجيل الدخول',
+        cancel: 'إلغاء تسجيل الدخول',
+        verify: 'تحقق',
+        code: 'رمز التحقق',
+        recovery: 'استخدام رمز استرداد',
+        otp: 'استخدام رمز المصادقة',
+        recoveryCode: 'رمز الاسترداد',
+        working: 'جارٍ التحقق من الوصول…',
+        idle: 'استخدم حساب دزيري المرتبط بملف فريقك. قد يُطلب منك تحقق إضافي.',
+        challenge: 'أدخل رمز المصادقة أو رمز استرداد غير مستخدم.',
+        retry: 'تعذر إكمال الطلب. تابع المحاولة نفسها أو ألغها.',
+        review: 'توجد محاولة تسجيل دخول محفوظة. تابعها أو ألغها قبل بدء محاولة أخرى.',
+        cleanup: 'لم نتمكن من تأكيد إلغاء الجلسة على الخادم. احتفظنا بالمحاولة لإعادة الإلغاء.',
+        storage: 'تعذر الوصول إلى التخزين الآمن. أعد المحاولة قبل تسجيل الدخول.',
+        unavailable: 'تسجيل الدخول بحساب دزيري غير متاح حاليًا. يمكنك استخدام حساب الفريق.',
+        changed: 'تغير حسابك أو صلاحيات الفريق. ألغِ المحاولة المحفوظة ثم تحقق من الوصول.',
+        setup: 'أكمل إعداد الأمان أو تسجيل الدخول الموحد في صندوق الفريق على الويب.',
+        cancelled: 'أُلغيت محاولة تسجيل الدخول.',
+      }
+    : locale === 'fr'
+      ? {
+          continue: 'Continuer avec Dziri',
+          resume: 'Reprendre la connexion',
+          cancel: 'Annuler la connexion',
+          verify: 'Vérifier',
+          code: 'Code de vérification',
+          recovery: 'Utiliser un code de secours',
+          otp: 'Utiliser le code d’authentification',
+          recoveryCode: 'Code de secours',
+          working: 'Vérification de l’accès…',
+          idle: 'Utilisez le compte Dziri lié à votre profil d’équipe. Une vérification supplémentaire peut être demandée.',
+          challenge: 'Saisissez votre code d’authentification ou un code de secours inutilisé.',
+          retry: 'La demande n’a pas abouti. Reprenez la même tentative ou annulez-la.',
+          review:
+            'Une tentative de connexion est enregistrée. Reprenez-la ou annulez-la avant d’en créer une autre.',
+          cleanup:
+            'L’annulation de la session serveur n’a pas pu être confirmée. La tentative est conservée pour réessayer l’annulation.',
+          storage: 'Le stockage sécurisé est inaccessible. Réessayez avant de vous connecter.',
+          unavailable:
+            'La connexion avec Dziri est indisponible. Vous pouvez utiliser votre compte d’équipe.',
+          changed:
+            'Votre compte ou vos droits ont changé. Annulez la tentative enregistrée puis vérifiez votre accès.',
+          setup:
+            'Terminez la configuration de sécurité ou la connexion fédérée dans la messagerie d’équipe sur le Web.',
+          cancelled: 'La tentative de connexion a été annulée.',
+        }
+      : {
+          continue: 'Continue with Dziri',
+          resume: 'Resume sign-in',
+          cancel: 'Cancel sign-in',
+          verify: 'Verify',
+          code: 'Verification code',
+          recovery: 'Use a recovery code',
+          otp: 'Use authenticator code',
+          recoveryCode: 'Recovery code',
+          working: 'Verifying access…',
+          idle: 'Use the Dziri account linked to your staff profile. Additional verification may be required.',
+          challenge: 'Enter your authenticator code or an unused recovery code.',
+          retry: 'The request did not complete. Resume the same attempt or cancel it.',
+          review: 'A sign-in attempt is saved. Resume or cancel it before starting another.',
+          cleanup:
+            'Server session cancellation could not be confirmed. The attempt is retained so you can retry cancellation.',
+          storage: 'Secure storage is unavailable. Try again before signing in.',
+          unavailable: 'Dziri sign-in is unavailable. You can use your staff account.',
+          changed:
+            'Your account or staff access changed. Cancel the saved attempt, then check your access.',
+          setup: 'Complete security setup or federated sign-in in your web team inbox.',
+          cancelled: 'The sign-in attempt was cancelled.',
+        };
+}
+
+export function staffHandoffMessage(state: string, locale: string) {
+  const copy = staffHandoffCopy(locale);
+  if (state === 'mfa_required' || state === 'challenge_failed' || state === 'invalid_attempt')
+    return copy.challenge;
+  if (state === 'revocation_unconfirmed') return copy.cleanup;
+  if (state === 'storage_failed') return copy.storage;
+  if (state === 'review_required') return copy.review;
+  if (state === 'authority_changed' || state === 'reauthenticate') return copy.changed;
+  if (state === 'security_setup_required' || state === 'federated_auth_required') return copy.setup;
+  if (state === 'disabled' || state === 'unavailable') return copy.unavailable;
+  if (state === 'cancelled') return copy.cancelled;
+  if (state === 'idle') return copy.idle;
+  return copy.retry;
+}
 export function validStaffWorkspace(
   value: StaffWorkspace | null | undefined,
   actorId: string,

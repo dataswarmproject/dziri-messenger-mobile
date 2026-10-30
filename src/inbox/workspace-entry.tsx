@@ -18,7 +18,7 @@ import InboxApp from './app';
 const workspaceRef = makeFunctionReference<
   'query',
   { companyId: string; expectedActorId: string; observationId: string },
-  StaffWorkspace | null
+  (StaffWorkspace & { handoffVersion?: number }) | null
 >('inbox/workspace:current');
 const colors = colorsFor(true);
 export default function StaffWorkspaceEntry(props: StaffEntryProps) {
@@ -113,5 +113,12 @@ function ObservedWorkspace({ actorId, companyId }: { actorId: string; companyId:
         {copy.workspaceReconnect}
       </Text>
     );
-  return <InboxApp key={staffWorkspaceKey(value)} workspace={value} />;
+  // Only the authenticated server descriptor may advertise broker availability.
+  return (
+    <InboxApp
+      key={staffWorkspaceKey(value)}
+      workspace={value}
+      handoffSupported={value.handoffVersion === 1}
+    />
+  );
 }

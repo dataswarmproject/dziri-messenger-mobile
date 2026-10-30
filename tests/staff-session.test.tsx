@@ -6,6 +6,7 @@ import type { StaffWorkspace } from '../src/dziri/messenger-staff.generated';
 import { staffWorkspaceKey, staffCopy } from '../src/dziri/messenger-staff.generated';
 import { inboxSessionScope } from '../src/inbox/session-key';
 import { secureStorageKey } from '../src/dziri/config';
+import { clearSessionIf, saveSession } from '../src/inbox/session';
 const h = vi.hoisted(() => ({
   store: new Map<string, string>(),
   writes: [] as string[],
@@ -96,6 +97,140 @@ test('login persists only after a fresh matching profile and keeps another accou
     first.origin + '/auth/sign_in',
     first.origin + '/api/v1/profile',
   ]);
+});
+
+test('handoff reserves authentication and publishes only after a matching provider profile', async () => {
+  h.fetch.mockResolvedValue(response(profile));
+  await show();
+  let reservation!: NonNullable<ReturnType<typeof flow.reserveHandoff>>;
+  await act(async () => {
+    reservation = flow.reserveHandoff()!;
+  });
+  await act(async () => {
+    await flow.login(first.email, 'synthetic-password');
+  });
+  expect(h.fetch).not.toHaveBeenCalled();
+  await act(async () => {
+    await reservation.accept(session);
+  });
+  expect(flow.profile).toBeNull();
+  await act(async () => {
+    reservation.complete();
+  });
+  expect(flow.profile?.id).toBe(80);
+  expect(h.fetch.mock.calls.map(c => c[0])).toEqual([first.origin + '/api/v1/profile']);
+});
+
+test('handoff profile failures never persist credentials', async () => {
+  h.fetch.mockResolvedValue(response({ ...profile, id: 81 }));
+  await show();
+  let reservation!: NonNullable<ReturnType<typeof flow.reserveHandoff>>;
+  await act(async () => {
+    reservation = flow.reserveHandoff()!;
+  });
+  await act(async () => {
+    await expect(reservation.accept(session)).rejects.toThrow();
+    await reservation.release();
+  });
+  expect(flow.profile).toBeNull();
+  expect(h.writes).toEqual([]);
+});
+
+test('a handoff vault failure never opens the workspace', async () => {
+  h.fetch.mockResolvedValue(response(profile));
+  await show();
+  let reservation!: NonNullable<ReturnType<typeof flow.reserveHandoff>>;
+  await act(async () => {
+    reservation = flow.reserveHandoff()!;
+  });
+  h.saveFails = true;
+  await act(async () => {
+    await expect(reservation.accept(session)).rejects.toThrow();
+    await reservation.release();
+  });
+  expect(flow.profile).toBeNull();
+  expect(h.writes).toEqual([]);
+  expect(() => reservation.complete()).toThrow();
+});
+
+test('cancellation clears an accepted candidate without publishing it', async () => {
+  h.fetch.mockResolvedValue(response(profile));
+  await show();
+  let reservation!: NonNullable<ReturnType<typeof flow.reserveHandoff>>;
+  await act(async () => {
+    reservation = flow.reserveHandoff()!;
+    await reservation.accept(session);
+  });
+  expect(h.store.size).toBe(1);
+  await act(async () => {
+    await reservation.release();
+  });
+  expect(h.store.size).toBe(0);
+  expect(flow.profile).toBeNull();
+  expect(() => reservation.complete()).toThrow();
+});
+
+test('exact-client cleanup preserves replacement credentials but clears rotated owned tokens', async () => {
+  const scope = staffWorkspaceKey(first);
+  await saveSession(first.origin, { ...session, client: 'replacement' }, scope);
+  await clearSessionIf(first.origin, scope, session);
+  expect([...h.store.values()].join('')).toContain('replacement');
+  await saveSession(first.origin, { ...session, 'access-token': 'rotated' }, scope);
+  await clearSessionIf(first.origin, scope, session);
+  expect(h.store.size).toBe(0);
+});
+
+test('retrying old cleanup cannot close a replacement login in the same workspace', async () => {
+  h.fetch.mockResolvedValue(response(profile));
+  await show();
+  let reservation!: NonNullable<ReturnType<typeof flow.reserveHandoff>>;
+  await act(async () => {
+    reservation = flow.reserveHandoff()!;
+    await reservation.accept(session);
+    await reservation.release();
+  });
+  h.fetch.mockImplementation(
+    async (url: string) =>
+      new Response(JSON.stringify(url.endsWith('/auth/sign_in') ? { data: profile } : profile), {
+        headers: { 'content-type': 'application/json', ...session, client: 'replacement-device' },
+      }),
+  );
+  await act(async () => {
+    await flow.login(first.email, 'synthetic-password');
+  });
+  const client = flow.client;
+  await act(async () => {
+    await reservation.release();
+  });
+  expect(flow.profile?.id).toBe(80);
+  expect([...h.store.values()].join('')).toContain('replacement-device');
+  await act(async () => {
+    expect((await client!.profile()).id).toBe(80);
+  });
+});
+
+test('handoff late profiles cannot restore a replaced workspace', async () => {
+  let resolve!: (r: Response) => void;
+  h.fetch.mockImplementation(
+    () =>
+      new Promise<Response>(r => {
+        resolve = r;
+      }),
+  );
+  await show();
+  let reservation!: NonNullable<ReturnType<typeof flow.reserveHandoff>>, pending!: Promise<void>;
+  await act(async () => {
+    reservation = flow.reserveHandoff()!;
+    pending = reservation.accept(session);
+  });
+  await show({ ...first, authorityKey: 'v1:' + 'b'.repeat(64) });
+  await act(async () => {
+    resolve(response(profile));
+    await expect(pending).rejects.toThrow();
+    await reservation.release();
+  });
+  expect(flow.profile).toBeNull();
+  expect(h.writes).toEqual([]);
 });
 test('an old login completion cannot persist or show a session after scope replacement', async () => {
   let finish!: (value: Response) => void;

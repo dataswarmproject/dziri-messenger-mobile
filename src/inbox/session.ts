@@ -39,3 +39,26 @@ export async function loadSession(origin: string, identityScope = ''): Promise<S
     ? session
     : null;
 }
+
+/** Remove only this provider client, including a rotated token, never a replacement login. */
+export function clearSessionIf(origin: string, identityScope: string, expected: Session) {
+  if (Platform.OS === 'web') return Promise.resolve();
+  const key = secureStorageKey(inboxSessionScope(origin, identityScope));
+  writes = writes
+    .catch(() => {})
+    .then(async () => {
+      const value = await SecureStore.getItemAsync(key);
+      if (!value) return;
+      const saved: unknown = JSON.parse(value);
+      if (
+        saved &&
+        typeof saved === 'object' &&
+        'client' in saved &&
+        saved.client === expected.client &&
+        'uid' in saved &&
+        saved.uid === expected.uid
+      )
+        await SecureStore.deleteItemAsync(key);
+    });
+  return writes;
+}

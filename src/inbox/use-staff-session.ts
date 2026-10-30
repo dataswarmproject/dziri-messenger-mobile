@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { InboxClient, type Profile } from './client';
-import { loadSession, saveSession } from './session';
+import { InboxClient, type Profile, type Session } from './client';
+import { clearSessionIf, loadSession, saveSession } from './session';
 import {
   staffWorkspaceKey,
   staffCopy,
@@ -13,6 +13,12 @@ type SessionError =
   | 'workspaceSecuritySetup'
   | 'workspaceLogoutFailed'
   | 'workspaceLogout';
+
+export type StaffReservation = {
+  accept: (session: Session) => Promise<void>;
+  complete: () => void;
+  release: () => Promise<void>;
+};
 
 /** Provider credentials never leave this staff-only lifecycle. */
 export function useStaffSession(workspace: StaffWorkspace, proxy: boolean, locale: string) {
@@ -30,6 +36,7 @@ export function useStaffSession(workspace: StaffWorkspace, proxy: boolean, local
     alive = useRef(false),
     current = useRef<InboxClient | null>(null),
     locked = useRef(false),
+    restoring = useRef(true),
     revoking = useRef(false);
   scope.current = key;
   const active = (generation: number, client?: InboxClient) =>
@@ -65,6 +72,7 @@ export function useStaffSession(workspace: StaffWorkspace, proxy: boolean, local
     const generation = ++epoch.current;
     alive.current = true;
     locked.current = false;
+    restoring.current = true;
     revoking.current = false;
     setState({ key, client: null, profile: null, busy: true, error: '' });
     void (async () => {
@@ -89,7 +97,10 @@ export function useStaffSession(workspace: StaffWorkspace, proxy: boolean, local
           });
         }
       } finally {
-        if (active(generation)) setState(s => ({ ...s, busy: false }));
+        if (active(generation)) {
+          restoring.current = false;
+          setState(s => ({ ...s, busy: false }));
+        }
       }
     })();
     return () => {
@@ -107,7 +118,7 @@ export function useStaffSession(workspace: StaffWorkspace, proxy: boolean, local
     mfa?: { token: string; code: string },
   ): Promise<string | undefined> {
     const generation = epoch.current;
-    if (!active(generation) || locked.current) return;
+    if (!active(generation) || locked.current || restoring.current) return;
     locked.current = true;
     revoking.current = false;
     setState(s => ({ ...s, key, busy: true, error: '' }));
@@ -132,6 +143,80 @@ export function useStaffSession(workspace: StaffWorkspace, proxy: boolean, local
         setState(s => ({ ...s, busy: false }));
       }
     }
+  }
+  function reserveHandoff(): StaffReservation | null {
+    const generation = epoch.current;
+    if (!active(generation) || locked.current || restoring.current || state.profile) return null;
+    locked.current = true;
+    setState(s => ({ ...s, busy: true, error: '' }));
+    let closed = false,
+      committed = false,
+      accepting = false;
+    let candidate: { client: InboxClient; profile: Profile } | null = null;
+    let issued: Session | null = null;
+    const allowed = (client?: InboxClient) => !closed && active(generation, client);
+    return {
+      async accept(session) {
+        if (!allowed() || accepting) throw new Error('Staff sign-in is no longer active');
+        accepting = true;
+        issued = { ...session };
+        const client = create(generation);
+        let verified: Session | null = null;
+        // Profile rejection must not clear another mount's credentials.
+        client.onUnauthorized = undefined;
+        client.onSession = next => {
+          verified = next;
+        };
+        client.setSession(session);
+        const profile = await client.profile();
+        if (!allowed(client) || !verified) throw new Error('Staff sign-in is no longer active');
+        issued = verified;
+        await saveSession(workspace.origin, verified, key, () => allowed(client));
+        if (!allowed(client)) throw new Error('Staff sign-in is no longer active');
+        candidate = { client, profile };
+      },
+      complete() {
+        if (!candidate || !allowed(candidate.client))
+          throw new Error('Staff sign-in is no longer active');
+        const { client, profile } = candidate;
+        client.onSession = session => {
+          if (!active(generation, client) || revoking.current) return;
+          void saveSession(
+            workspace.origin,
+            session,
+            key,
+            () => active(generation, client) && !revoking.current,
+          ).catch(() => {
+            if (active(generation, client)) setState(s => ({ ...s, error: 'workspaceStorage' }));
+          });
+        };
+        client.onUnauthorized = () => {
+          if (!active(generation, client) || revoking.current) return;
+          current.current = null;
+          if (issued) void clearSessionIf(workspace.origin, key, issued).catch(() => {});
+          setState({ key, client: null, profile: null, busy: false, error: 'workspaceReconnect' });
+        };
+        closed = true;
+        committed = true;
+        locked.current = false;
+        setState({ key, client, profile, busy: false, error: '' });
+      },
+      async release() {
+        if (committed) return;
+        const firstRelease = !closed;
+        closed = true;
+        candidate?.client.dispose();
+        // Queue before waiting: a remount's load waits for this exact-client removal.
+        const clearing = issued ? clearSessionIf(workspace.origin, key, issued) : Promise.resolve();
+        if (firstRelease && active(generation)) {
+          current.current?.dispose();
+          current.current = null;
+          locked.current = false;
+          setState({ key, client: null, profile: null, busy: false, error: '' });
+        }
+        await clearing;
+      },
+    };
   }
   async function logout() {
     const generation = epoch.current,
@@ -176,6 +261,7 @@ export function useStaffSession(workspace: StaffWorkspace, proxy: boolean, local
     ...(state.key === key ? state : { key, client: null, profile: null, busy: true, error: '' }),
     error: state.key === key && state.error ? copy[state.error] : '',
     login,
+    reserveHandoff,
     logout,
   };
 }

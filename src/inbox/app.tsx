@@ -28,6 +28,7 @@ import {
   type Profile,
 } from './client';
 import { useStaffSession } from './use-staff-session';
+import { StaffHandoffGate } from './handoff-panel';
 import {
   staffWorkspaceKey,
   staffCopy,
@@ -98,9 +99,11 @@ function Action({
 export default function InboxApp({
   onExit,
   workspace,
+  handoffSupported = false,
 }: {
   onExit?: () => void;
   workspace: StaffWorkspace;
+  handoffSupported?: boolean;
 }) {
   const { t } = useLocale();
   const [fonts, fontError] = useFonts(consumerFonts);
@@ -117,7 +120,11 @@ export default function InboxApp({
           {fontError ? (
             <Text style={styles.error}>Unable to load fonts.</Text>
           ) : fonts ? (
-            <Connection key={staffWorkspaceKey(workspace)} workspace={workspace} />
+            <Connection
+              key={staffWorkspaceKey(workspace)}
+              workspace={workspace}
+              handoffSupported={handoffSupported}
+            />
           ) : (
             <ActivityIndicator color={colors.primary} />
           )}
@@ -127,7 +134,13 @@ export default function InboxApp({
   );
 }
 
-function Connection({ workspace }: { workspace: StaffWorkspace }) {
+function Connection({
+  workspace,
+  handoffSupported,
+}: {
+  workspace: StaffWorkspace;
+  handoffSupported: boolean;
+}) {
   const [proxy, setProxy] = useState(false),
     [ready, setReady] = useState(Platform.OS !== 'web');
   useEffect(() => {
@@ -148,11 +161,40 @@ function Connection({ workspace }: { workspace: StaffWorkspace }) {
     };
   }, [workspace.origin]);
   if (!ready) return <ActivityIndicator color={colors.primary} />;
-  return <SessionConnection key={String(proxy)} workspace={workspace} proxy={proxy} />;
+  return (
+    <SessionConnection
+      key={String(proxy)}
+      workspace={workspace}
+      proxy={proxy}
+      handoffSupported={handoffSupported}
+    />
+  );
 }
-function SessionConnection({ workspace, proxy }: { workspace: StaffWorkspace; proxy: boolean }) {
+function SessionConnection({
+  workspace,
+  proxy,
+  handoffSupported,
+}: {
+  workspace: StaffWorkspace;
+  proxy: boolean;
+  handoffSupported: boolean;
+}) {
   const { locale } = useLocale();
-  const { client, profile, error, busy, login, logout } = useStaffSession(workspace, proxy, locale);
+  const { client, profile, error, busy, login, logout, reserveHandoff } = useStaffSession(
+    workspace,
+    proxy,
+    locale,
+  );
+  const signIn = (blocked = false, handoff?: React.ReactNode) => (
+    <StaffLogin
+      origin={workspace.origin}
+      initialEmail={workspace.email}
+      login={login}
+      busy={busy || blocked}
+      error={error}
+      handoff={handoff}
+    />
+  );
   return profile && client ? (
     <Accounts
       key={workspace.authorityKey}
@@ -161,23 +203,22 @@ function SessionConnection({ workspace, proxy }: { workspace: StaffWorkspace; pr
       logout={logout}
       error={error}
     />
+  ) : handoffSupported ? (
+    <StaffHandoffGate workspace={workspace} reserve={reserveHandoff} sessionBusy={busy}>
+      {signIn}
+    </StaffHandoffGate>
   ) : (
-    <Login
-      origin={workspace.origin}
-      initialEmail={workspace.email}
-      login={login}
-      busy={busy}
-      error={error}
-    />
+    signIn()
   );
 }
 
-function Login({
+export function StaffLogin({
   origin,
   initialEmail,
   login,
   busy,
   error,
+  handoff,
 }: {
   origin: string;
   initialEmail: string;
@@ -188,6 +229,7 @@ function Login({
   ) => Promise<string | undefined>;
   busy: boolean;
   error: string;
+  handoff?: React.ReactNode;
 }) {
   const email = initialEmail;
   const [password, setPassword] = useState('');
@@ -197,7 +239,7 @@ function Login({
   const { locale } = useLocale(),
     copy = staffCopy(locale);
   async function submit() {
-    if (lock.current) return;
+    if (lock.current || busy) return;
     lock.current = true;
     try {
       const token = await login(email.trim(), password, mfa ? { token: mfa, code } : undefined);
@@ -224,6 +266,7 @@ function Login({
         <Text style={styles.muted}>
           Your web inbox, on the go. Sign in with your staff account.
         </Text>
+        {handoff}
         <Text style={styles.text}>Inbox address</Text>
         <TextInput
           accessibilityLabel="Inbox address"
@@ -240,6 +283,7 @@ function Login({
             <Text style={styles.text}>Verification code</Text>
             <TextInput
               accessibilityLabel="Verification code"
+              editable={!busy}
               value={code}
               onChangeText={setCode}
               keyboardType="number-pad"
@@ -271,6 +315,7 @@ function Login({
             <Text style={styles.text}>Password</Text>
             <TextInput
               accessibilityLabel="Password"
+              editable={!busy}
               value={password}
               onChangeText={setPassword}
               secureTextEntry

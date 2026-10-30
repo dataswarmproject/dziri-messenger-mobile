@@ -12,6 +12,7 @@ import {
   loadPendingHandoff,
   savePendingHandoff,
   listPendingHandoffs,
+  clearRecoveredHandoff,
 } from '../src/inbox/handoff-store';
 import { staffWorkspaceKey, type StaffWorkspace } from '../src/dziri/messenger-staff.generated';
 const h = vi.hoisted(() => ({
@@ -101,6 +102,75 @@ test('confirmed removal also retires the owner recovery-directory entry', async 
   await savePendingHandoff(w, p);
   await savePendingHandoff(w, null, p);
   expect(await listPendingHandoffs(w.actorId)).toEqual([]);
+});
+
+test('owner cleanup needs no current workspace descriptor after access is lost', async () => {
+  const p = pending();
+  await savePendingHandoff(w, p);
+  await clearRecoveredHandoff(w.actorId, p);
+  expect(await listPendingHandoffs(w.actorId)).toEqual([]);
+  expect(await loadPendingHandoff(w)).toBeNull();
+});
+
+test('owner cleanup refuses a different account without removing proof', async () => {
+  const p = pending();
+  await savePendingHandoff(w, p);
+  await expect(clearRecoveredHandoff('another-account', p)).rejects.toThrow();
+  expect(await loadPendingHandoff(w)).toEqual(p);
+});
+
+test('recovered cleanup preserves a replacement attempt in the same workspace', async () => {
+  const p = pending(),
+    next = { ...p, ticket: { ...p.ticket, cipher: 'replacement' } };
+  await savePendingHandoff(w, p);
+  await clearRecoveredHandoff(w.actorId, p);
+  await savePendingHandoff(w, next);
+  await expect(clearRecoveredHandoff(w.actorId, p)).rejects.toThrow('changed');
+  expect(await loadPendingHandoff(w)).toEqual(next);
+  expect(await listPendingHandoffs(w.actorId)).toEqual([next]);
+});
+
+test('recovered cleanup can retire an attempt whose scoped copy was interrupted', async () => {
+  const p = pending();
+  h.failAtWrite = 3;
+  await expect(savePendingHandoff(w, p)).rejects.toThrow();
+  h.failAtWrite = 0;
+  await clearRecoveredHandoff(w.actorId, p);
+  expect(await listPendingHandoffs(w.actorId)).toEqual([]);
+});
+
+test('a cancelled marker survives index-write failure and permits exact cleanup retry', async () => {
+  const p = pending();
+  await savePendingHandoff(w, p);
+  h.failAtWrite = 5;
+  await expect(clearRecoveredHandoff(w.actorId, p)).rejects.toThrow();
+  h.failAtWrite = 0;
+  await clearRecoveredHandoff(w.actorId, p);
+  expect(await listPendingHandoffs(w.actorId)).toEqual([]);
+  await savePendingHandoff(w, { ...p, ticket: { ...p.ticket, cipher: 'new-attempt' } });
+  expect((await loadPendingHandoff(w))?.ticket.cipher).toBe('new-attempt');
+});
+
+test('owner discovery rejects corrupted ticket fields before a cancellation request', async () => {
+  const p = pending();
+  await savePendingHandoff(w, p);
+  const key = [...h.values.keys()].find(k => k.startsWith('staff-recovery.'))!;
+  h.values.set(key, JSON.stringify({ ...p, ticket: { ...p.ticket, iv: 'corrupt' } }));
+  await expect(listPendingHandoffs(w.actorId)).rejects.toThrow();
+});
+
+test('cold discovery retires confirmed markers so cancelled businesses cannot exhaust recovery capacity', async () => {
+  for (let i = 0; i < 24; i++) {
+    const workspace = { ...w, companyId: 'retired-company-' + i };
+    const p = { ...pending(), scope: staffWorkspaceKey(workspace) };
+    await savePendingHandoff(workspace, p);
+    h.failAtWrite = h.writes.length + 2;
+    await expect(clearRecoveredHandoff(w.actorId, p)).rejects.toThrow();
+    h.failAtWrite = 0;
+  }
+  expect(await listPendingHandoffs(w.actorId)).toEqual([]);
+  await savePendingHandoff(w, pending());
+  expect(await listPendingHandoffs(w.actorId)).toHaveLength(1);
 });
 
 test('an interruption before the scope copy preserves owner discovery and resumable proof', async () => {

@@ -3,6 +3,7 @@ import { Linking } from 'react-native';
 import Constants from 'expo-constants';
 import CustomerApp from './dziri/app';
 import StaffWorkspaceEntry from './inbox/workspace-entry';
+import { StaffRecoveryEntry } from './inbox/owner-recovery-entry';
 import { LocaleProvider } from './dziri/locale';
 import { supportLink } from './access';
 import { MessengerAppearance } from './dziri/appearance';
@@ -44,6 +45,7 @@ function MessengerRuntime() {
     <CustomerApp
       supportCompanyId={companyId}
       renderTeam={input => <StaffWorkspaceEntry {...input} />}
+      renderStaffRecovery={actorId => <StaffRecoveryEntry key={actorId} actorId={actorId} />}
     />
   );
 }

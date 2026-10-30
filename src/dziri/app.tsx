@@ -59,6 +59,7 @@ const ResetSession = createContext(() => {});
 const TeamRuntime = createContext<
   (input: import('./messenger-staff.generated').StaffEntryProps) => ReactNode
 >(() => null);
+const StaffRecoveryRuntime = createContext<((actorId: string) => ReactNode) | undefined>(undefined);
 const storage =
   Platform.OS === 'web'
     ? createWebSessionStorage(() => window.sessionStorage)
@@ -71,9 +72,11 @@ const storage =
 
 export default function DziriApp({
   renderTeam,
+  renderStaffRecovery,
   supportCompanyId = '',
 }: {
   renderTeam: (input: import('./messenger-staff.generated').StaffEntryProps) => ReactNode;
+  renderStaffRecovery?: (actorId: string) => ReactNode;
   supportCompanyId?: string;
 }) {
   return (
@@ -81,7 +84,9 @@ export default function DziriApp({
       <SafeAreaProvider>
         <SupportTargetProvider value={supportCompanyId}>
           <TeamRuntime.Provider value={renderTeam}>
-            <Bootstrap />
+            <StaffRecoveryRuntime.Provider value={renderStaffRecovery}>
+              <Bootstrap />
+            </StaffRecoveryRuntime.Provider>
           </TeamRuntime.Provider>
         </SupportTargetProvider>
       </SafeAreaProvider>
@@ -235,6 +240,7 @@ function UserNavigator() {
   const [supportInbox, setSupportInbox] = useState<string | null>(null);
   const [immersive, setImmersive] = useState(false);
   const renderTeam = useContext(TeamRuntime);
+  const renderStaffRecovery = useContext(StaffRecoveryRuntime);
   const { t, rtl } = useLocale();
   const colors = useColors();
   const { dark } = useAppearance();
@@ -377,7 +383,13 @@ function UserNavigator() {
                     options={{ title: t.unknown }}
                   />
                   <Stack.Screen name="Settings">
-                    {props => <SettingsScreen {...props} account={<SignOut row />} />}
+                    {props => (
+                      <SettingsScreen
+                        {...props}
+                        account={<SignOut row />}
+                        staffRecovery={renderStaffRecovery?.(me._id)}
+                      />
+                    )}
                   </Stack.Screen>
                   <Stack.Screen name="ProfileSettings" component={ProfileSettingsScreen} />
                   <Stack.Screen name="People" component={PeopleScreen} />

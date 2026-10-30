@@ -111,6 +111,71 @@ export function staffHandoffMessage(state: string, locale: string) {
   if (state === 'idle') return copy.idle;
   return copy.retry;
 }
+
+export function staffRecoveryCopy(locale: string) {
+  return locale === 'ar'
+    ? {
+        title: 'عمليات تسجيل دخول الفريق المحفوظة',
+        description:
+          'راجع عمليات تسجيل دخول الفريق المحفوظة، بما فيها محاولات الأنشطة التي لم يعد بإمكانك الوصول إليها.',
+        attempt: 'عملية تسجيل دخول الفريق',
+        expired: 'انتهت مهلة التحقق. ما زال بإمكانك إلغاء تسجيل الدخول.',
+        expires: 'تنتهي مهلة التحقق',
+        close: 'إغلاق',
+        reload: 'تحديث القائمة',
+        review: 'تحتاج إلى مراجعة',
+        confirm: 'إلغاء تسجيل دخول الفريق؟',
+        confirmHint:
+          'يؤدي هذا إلى إغلاق جلسة الخادم التي أنشأتها هذه العملية. قد تحتاج إلى تسجيل الدخول مجددًا إلى صندوق الفريق.',
+        keep: 'الاحتفاظ بتسجيل الدخول',
+        cancel: 'إلغاء تسجيل الدخول',
+        working: 'جارٍ إلغاء تسجيل الدخول…',
+        empty: 'لا توجد عمليات تسجيل دخول محفوظة',
+        loading: 'جارٍ التحقق من العمليات المحفوظة…',
+        complete: 'أُلغي تسجيل الدخول.',
+      }
+    : locale === 'fr'
+      ? {
+          title: 'Connexions d’équipe enregistrées',
+          description:
+            'Consultez les connexions d’équipe enregistrées, y compris les tentatives pour les entreprises auxquelles vous n’avez plus accès.',
+          attempt: 'Connexion d’équipe',
+          expired: 'La vérification a expiré. Vous pouvez toujours annuler cette connexion.',
+          expires: 'Expiration de la vérification',
+          close: 'Fermer',
+          reload: 'Actualiser la liste',
+          review: 'À vérifier',
+          confirm: 'Annuler cette connexion d’équipe ?',
+          confirmHint:
+            'Cela ferme la session serveur créée par cette connexion. Vous devrez peut-être vous reconnecter à la messagerie d’équipe.',
+          keep: 'Conserver la connexion',
+          cancel: 'Annuler la connexion',
+          working: 'Annulation de la connexion…',
+          empty: 'Aucune connexion enregistrée',
+          loading: 'Vérification des connexions enregistrées…',
+          complete: 'La connexion a été annulée.',
+        }
+      : {
+          title: 'Saved staff sign-ins',
+          description:
+            'Review saved staff sign-ins, including attempts for businesses you can no longer access.',
+          attempt: 'Staff sign-in',
+          expired: 'Verification expired. You can still cancel this sign-in.',
+          expires: 'Verification expires',
+          close: 'Close',
+          reload: 'Refresh list',
+          review: 'Review needed',
+          confirm: 'Cancel this staff sign-in?',
+          confirmHint:
+            'This closes the server session created by this sign-in. You may need to sign in again in the team inbox.',
+          keep: 'Keep sign-in',
+          cancel: 'Cancel sign-in',
+          working: 'Cancelling sign-in…',
+          empty: 'No saved staff sign-ins',
+          loading: 'Checking saved sign-ins…',
+          complete: 'The sign-in was cancelled.',
+        };
+}
 export function validStaffWorkspace(
   value: StaffWorkspace | null | undefined,
   actorId: string,

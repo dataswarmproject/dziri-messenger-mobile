@@ -10,8 +10,9 @@ import type { MessengerRoutes } from './routes';
 import { LanguageMenu, Notice, useColors } from './ui';
 import { useLocale } from './locale';
 import { useAppearance } from './appearance';
-import { FigmaButton, FigmaIcon } from './figma';
-import { SettingsIcon, type SettingsIconName } from './settings-icon';
+import { FigmaButton } from './figma';
+import type { SettingsIconName } from './settings-icon';
+import { SettingsRow } from './settings-row';
 import { ScreenHeading } from './screen-parts';
 import { MessengerSwitch } from './switch';
 
@@ -22,85 +23,14 @@ const preferenceIcons: Record<keyof MessengerPreferences, SettingsIconName> = {
   typingIndicators: 'typing',
 };
 
-function SettingsRow({
-  icon,
-  title,
-  value,
-  onPress,
-  children,
-}: {
-  icon: SettingsIconName;
-  title: string;
-  value?: string;
-  onPress?: () => void;
-  children?: ReactNode;
-}) {
-  const { rtl } = useLocale();
-  const colors = useColors();
-  const content = (
-    <>
-      <SettingsIcon name={icon} />
-      <View
-        style={{
-          minHeight: 60,
-          flex: 1,
-          minWidth: 0,
-          flexDirection: rtl ? 'row-reverse' : 'row',
-          alignItems: 'center',
-          gap: 10,
-          borderBottomWidth: 0.5,
-          borderColor: colors.border,
-        }}>
-        <Text
-          style={{
-            flex: 1,
-            fontSize: metrics.message,
-            lineHeight: metrics.messageLine,
-            color: colors.text,
-          }}>
-          {title}
-        </Text>
-        {value ? (
-          <Text
-            numberOfLines={1}
-            style={{
-              maxWidth: '45%',
-              fontSize: metrics.preview,
-              lineHeight: metrics.previewLine,
-              color: colors.secondary,
-            }}>
-            {value}
-          </Text>
-        ) : null}
-        {children}
-        {onPress ? <FigmaIcon name="chevron" /> : null}
-      </View>
-    </>
-  );
-  const style = {
-    minHeight: 60,
-    paddingHorizontal: 16,
-    gap: 12,
-    flexDirection: rtl ? ('row-reverse' as const) : ('row' as const),
-    alignItems: 'center' as const,
-  };
-  return onPress ? (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={title}
-      onPress={onPress}
-      style={style}>
-      {content}
-    </Pressable>
-  ) : (
-    <View style={style}>{content}</View>
-  );
-}
-
 export function SettingsScreen({
   navigation,
   account,
-}: NativeStackScreenProps<MessengerRoutes, 'Settings'> & { account: ReactNode }) {
+  staffRecovery,
+}: NativeStackScreenProps<MessengerRoutes, 'Settings'> & {
+  account: ReactNode;
+  staffRecovery?: ReactNode;
+}) {
   const me = useQuery(dziriApi.me, {});
   const presence = useQuery(dziriApi.presence, me ? { userIds: [me._id] } : 'skip');
   const settings = presence?.find(row => row.userId === me?._id)?.settings;
@@ -201,6 +131,7 @@ export function SettingsScreen({
         title={t.discover}
         onPress={() => navigation.navigate('People', { mode: 'discover' })}
       />
+      {staffRecovery}
       <View style={{ paddingTop: 12 }}>{account}</View>
     </ScrollView>
   );

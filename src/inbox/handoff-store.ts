@@ -7,8 +7,8 @@ import { sameHandoff, type PendingHandoff } from './handoff';
 
 const memory = new Map<string, string>();
 const writes = new Map<string, Promise<void>>();
-const keyFor = (workspace: StaffWorkspace) =>
-  secureStorageKey('staff-handoff-v1:' + staffWorkspaceKey(workspace));
+const keyForScope = (scope: string) => secureStorageKey('staff-handoff-v1:' + scope);
+const keyFor = (workspace: StaffWorkspace) => keyForScope(staffWorkspaceKey(workspace));
 const read = (key: string) =>
   Platform.OS === 'web' ? Promise.resolve(memory.get(key) ?? null) : SecureStore.getItemAsync(key);
 // 24 SHA-256 identifiers keep the owner index below older OS-vault value limits.
@@ -25,16 +25,32 @@ const directoryKey = (actorId: string) => secureStorageKey('staff-handoff-owner-
 const recoveryId = (scope: string) => digestStringAsync(CryptoDigestAlgorithm.SHA256, scope);
 const recoveryKey = (id: string) => 'staff-recovery.' + id;
 function ownerOf(scope: string): string {
+  if (typeof scope !== 'string' || scope.length > 4096)
+    throw new Error('Pending staff sign-in unavailable');
   const fields = JSON.parse(scope);
   if (
     !Array.isArray(fields) ||
+    fields.length !== 10 ||
+    JSON.stringify(fields) !== scope ||
     fields[0] !== 'staff-workspace-v1' ||
-    typeof fields[1] !== 'string' ||
-    !fields[1]
+    ![1, 2, 3, 4, 8, 9].every(i => typeof fields[i] === 'string' && fields[i]) ||
+    ![5, 6, 7].every(i => Number.isSafeInteger(fields[i]) && fields[i] > 0) ||
+    !['agent', 'administrator'].includes(fields[8]) ||
+    !/^v1:[a-f0-9]{64}$/.test(fields[9])
+  )
+    throw new Error('Pending staff sign-in unavailable');
+  const origin = new URL(fields[4]);
+  if (
+    origin.protocol !== 'https:' ||
+    origin.origin !== fields[4] ||
+    origin.username ||
+    origin.password
   )
     throw new Error('Pending staff sign-in unavailable');
   return fields[1];
 }
+const retired = (entry: Record<string, unknown>, scope: string) =>
+  entry?.state === 'cancelled' && entry.scope === scope;
 function queued(key: string, work: () => Promise<void>) {
   const job = (writes.get(key) ?? Promise.resolve()).catch(() => {}).then(work);
   writes.set(key, job);
@@ -67,8 +83,11 @@ async function remember(pending: PendingHandoff) {
     if (!keys.includes(id) && keys.length >= MAX_PENDING)
       throw new Error('Pending staff sign-ins require review');
     const previous = await read(key);
-    if (previous && !sameHandoff(JSON.parse(previous), pending))
-      throw new Error('Pending staff sign-in changed');
+    if (previous) {
+      const entry = JSON.parse(previous);
+      if (!retired(entry, pending.scope) && !sameHandoff(entry, pending))
+        throw new Error('Pending staff sign-in changed');
+    }
     // Individual encrypted recovery records keep the bounded owner index small.
     await write(key, JSON.stringify(pending));
     if (!keys.includes(id)) await write(directoryKey(actor), JSON.stringify([...keys, id]));
@@ -81,9 +100,12 @@ async function forget(pending: PendingHandoff) {
   return queued(directoryKey(actor), async () => {
     const keys = await indexFor(actor),
       raw = await read(key);
-    if (raw && !sameHandoff(JSON.parse(raw), pending))
-      throw new Error('Pending staff sign-in changed');
-    await write(key, JSON.stringify({ state: 'cancelled', scope: pending.scope }));
+    if (raw) {
+      const entry = JSON.parse(raw);
+      if (!retired(entry, pending.scope) && !sameHandoff(entry, pending))
+        throw new Error('Pending staff sign-in changed');
+    }
+    await write(key, JSON.stringify({ ...pending, state: 'cancelled' }));
     await write(directoryKey(actor), JSON.stringify(keys.filter(k => k !== id)));
     await remove(key);
   });
@@ -92,47 +114,98 @@ async function forget(pending: PendingHandoff) {
 export async function listPendingHandoffs(actorId: string): Promise<PendingHandoff[]> {
   await writes.get(directoryKey(actorId))?.catch(() => {});
   const keys = await indexFor(actorId),
-    result: PendingHandoff[] = [];
+    result: PendingHandoff[] = [],
+    completed = new Map<string, string>();
   for (const id of keys) {
     const raw = await read(recoveryKey(id));
     if (!raw) throw new Error('Pending staff sign-in recovery unavailable');
     const entry = JSON.parse(raw);
     if (ownerOf(entry.scope) !== actorId || (await recoveryId(entry.scope)) !== id)
       throw new Error('Pending staff sign-in recovery unavailable');
-    if (entry.state === 'cancelled') continue;
-    if (entry.version !== 1 || !entry.ticket || !Number.isSafeInteger(entry.expiresAt))
-      throw new Error('Pending staff sign-in recovery unavailable');
-    result.push(entry);
+    if (entry.state === 'cancelled') {
+      completed.set(id, raw);
+      continue;
+    }
+    result.push(parse(raw, entry.scope)!);
   }
+  if (completed.size)
+    await queued(directoryKey(actorId), async () => {
+      const current = await indexFor(actorId),
+        removable = new Set<string>();
+      for (const [id, marker] of completed)
+        if (current.includes(id) && (await read(recoveryKey(id))) === marker) removable.add(id);
+      if (!removable.size) return;
+      // The marker already proves confirmed cancellation. Retire the index first;
+      // a failed record deletion must not leave a dangling directory entry.
+      await write(directoryKey(actorId), JSON.stringify(current.filter(id => !removable.has(id))));
+      for (const id of removable) await remove(recoveryKey(id));
+    });
   return result;
 }
-function parse(value: string | null, workspace: StaffWorkspace): PendingHandoff | null {
+function parse(value: string | null, scope: string): PendingHandoff | null {
   if (!value) return null;
+  if (value.length > 32768) throw new Error('Pending staff sign-in unavailable');
+  ownerOf(scope);
   const parsed = JSON.parse(value) as PendingHandoff;
   if (
+    !parsed ||
     parsed.version !== 1 ||
-    parsed.scope !== staffWorkspaceKey(workspace) ||
+    parsed.scope !== scope ||
     !Number.isSafeInteger(parsed.expiresAt) ||
+    parsed.expiresAt <= 0 ||
+    parsed.expiresAt > 8.64e15 ||
     !parsed.ticket ||
     parsed.ticket.keyVersion !== 1 ||
     typeof parsed.ticket.cipher !== 'string' ||
+    !parsed.ticket.cipher ||
     parsed.ticket.cipher.length > 8192 ||
     typeof parsed.ticket.iv !== 'string' ||
     !/^[A-Za-z0-9_-]{16}$/.test(parsed.ticket.iv)
   )
     throw new Error('Pending staff sign-in unavailable');
-  return parsed;
+  return {
+    version: 1,
+    scope,
+    expiresAt: parsed.expiresAt,
+    ticket: {
+      cipher: parsed.ticket.cipher,
+      iv: parsed.ticket.iv,
+      keyVersion: 1,
+    },
+  };
 }
 /** Web is memory-only. Native recovery stores an already encrypted ticket in the OS vault. */
 export async function loadPendingHandoff(workspace: StaffWorkspace) {
   const key = keyFor(workspace);
   await writes.get(key)?.catch(() => {});
-  const stored = parse(await read(key), workspace);
+  const stored = parse(await read(key), staffWorkspaceKey(workspace));
   if (stored) return stored;
   const recovered = (await listPendingHandoffs(workspace.actorId)).find(
     p => p.scope === staffWorkspaceKey(workspace),
   );
-  return recovered ? parse(JSON.stringify(recovered), workspace) : null;
+  return recovered ?? null;
+}
+
+/** Only after server-confirmed cancellation. No current business descriptor is needed. */
+export async function clearRecoveredHandoff(actorId: string, expected: PendingHandoff) {
+  const captured = parse(JSON.stringify(expected), expected.scope);
+  if (!captured || ownerOf(captured.scope) !== actorId)
+    throw new Error('Pending staff sign-in unavailable');
+  const key = keyForScope(captured.scope);
+  return queued(key, async () => {
+    const current = parse(await read(key), captured.scope);
+    if (current && !sameHandoff(current, captured))
+      throw new Error('Pending staff sign-in changed');
+    // Check both copies before removing either, including interrupted scope writes.
+    const raw = await read(recoveryKey(await recoveryId(captured.scope)));
+    if (raw) {
+      const entry = JSON.parse(raw);
+      if (!retired(entry, captured.scope) && !sameHandoff(entry, captured))
+        throw new Error('Pending staff sign-in changed');
+    }
+    await remove(key);
+    await forget(captured);
+  });
 }
 /** Compare-and-set within the serialized vault operation prevents stale cleanup erasing a replacement. */
 export function savePendingHandoff(
@@ -140,44 +213,32 @@ export function savePendingHandoff(
   pending: PendingHandoff | null,
   expected?: PendingHandoff,
 ) {
+  if (!pending) {
+    if (!expected || expected.scope !== staffWorkspaceKey(workspace))
+      return Promise.reject(new Error('Pending staff sign-in changed'));
+    return clearRecoveredHandoff(workspace.actorId, expected);
+  }
   const key = keyFor(workspace);
-  const job = (writes.get(key) ?? Promise.resolve())
-    .catch(() => {})
-    .then(async () => {
-      const current = parse(await read(key), workspace);
-      if (pending) {
-        if (
-          pending.scope !== staffWorkspaceKey(workspace) ||
-          (current && !sameHandoff(current, pending))
-        )
-          throw new Error('Pending staff sign-in changed');
-        const value = JSON.stringify({
-          version: 1,
-          scope: pending.scope,
-          expiresAt: pending.expiresAt,
-          ticket: {
-            cipher: pending.ticket.cipher,
-            iv: pending.ticket.iv,
-            keyVersion: pending.ticket.keyVersion,
-          },
-        });
-        parse(value, workspace);
-        await remember(JSON.parse(value));
-        if (Platform.OS === 'web') memory.set(key, value);
-        else await SecureStore.setItemAsync(key, value);
-      } else {
-        if (!expected || (current && !sameHandoff(current, expected)))
-          throw new Error('Pending staff sign-in changed');
-        if (Platform.OS === 'web') memory.delete(key);
-        else await SecureStore.deleteItemAsync(key);
-        await forget(expected);
-      }
+  return queued(key, async () => {
+    const current = parse(await read(key), staffWorkspaceKey(workspace));
+    if (
+      pending.scope !== staffWorkspaceKey(workspace) ||
+      (current && !sameHandoff(current, pending))
+    )
+      throw new Error('Pending staff sign-in changed');
+    const value = JSON.stringify({
+      version: 1,
+      scope: pending.scope,
+      expiresAt: pending.expiresAt,
+      ticket: {
+        cipher: pending.ticket.cipher,
+        iv: pending.ticket.iv,
+        keyVersion: pending.ticket.keyVersion,
+      },
     });
-  writes.set(key, job);
-  void job
-    .finally(() => {
-      if (writes.get(key) === job) writes.delete(key);
-    })
-    .catch(() => {});
-  return job;
+    parse(value, staffWorkspaceKey(workspace));
+    await remember(JSON.parse(value));
+    if (Platform.OS === 'web') memory.set(key, value);
+    else await SecureStore.setItemAsync(key, value);
+  });
 }

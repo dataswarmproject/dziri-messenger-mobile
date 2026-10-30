@@ -21,6 +21,41 @@ export type StaffEntryProps = {
   supported: boolean;
 };
 
+/** Shared staff-window copy; no provider credential or personal-session state. */
+export function staffWindowCopy(locale: string) {
+  return locale === 'ar'
+    ? {
+        title: 'صندوق الفريق',
+        waiting: 'جارٍ التحقق من تسجيل دخول الفريق…',
+        closed: 'أُغلقت نافذة الفريق. ارجع إلى دزيري للتحقق من الوصول وفتحها من جديد.',
+        open: 'فتح صندوق الفريق',
+        close: 'إغلاق صندوق الفريق',
+        active: 'صندوق الفريق مفتوح في نافذة منفصلة.',
+        blocked: 'تعذر فتح نافذة الفريق. اسمح بالنوافذ المنبثقة لدزيري ثم أعد المحاولة.',
+      }
+    : locale === 'fr'
+      ? {
+          title: 'Messagerie d’équipe',
+          waiting: 'Vérification de la connexion d’équipe…',
+          closed:
+            'La fenêtre d’équipe est fermée. Revenez dans Dziri pour vérifier votre accès et la rouvrir.',
+          open: 'Ouvrir la messagerie d’équipe',
+          close: 'Fermer la messagerie d’équipe',
+          active: 'La messagerie d’équipe est ouverte dans une fenêtre séparée.',
+          blocked:
+            'La fenêtre n’a pas pu être ouverte. Autorisez les fenêtres de Dziri, puis réessayez.',
+        }
+      : {
+          title: 'Team inbox',
+          waiting: 'Verifying staff sign-in…',
+          closed: 'The team window is closed. Return to Dziri to check access and open it again.',
+          open: 'Open team inbox',
+          close: 'Close team inbox',
+          active: 'The team inbox is open in a separate window.',
+          blocked: 'The team window could not be opened. Allow popups for Dziri, then try again.',
+        };
+}
+
 /** Shared public copy only. Provider tickets and credentials stay in staff runtimes. */
 export function staffHandoffCopy(locale: string) {
   return locale === 'ar'

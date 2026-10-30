@@ -4,14 +4,32 @@
     {
       "source": "packages/shared/src/messenger-staff.ts",
       "target": "src/dziri/messenger-staff.generated.ts",
-      "sourceSha256": "af0e0f9872a0c290cac4c01bc00a163330f7225e922bc931b91652a9a952e13a",
-      "sha256": "50bb880208d41498b55d0a619fdc25528d99544c7439af7312f044543049ab4b"
+      "sourceSha256": "58a0b3117066a170e5629169109bdff364893a45cc99f275852a0a3825eca975",
+      "sha256": "b8aff0fbc98bed78f65e2e549ba4ceb3b6e33b2fcc1f4f795f49a5bc5cac0b9e"
     },
     {
       "source": "packages/ui/src/messaging/use-staff-setup.ts",
       "target": "src/dziri/use-staff-setup.generated.ts",
       "sourceSha256": "2db577c34749f4e2ea68e44bc343934a76b0090bac56e819a834f496b3d4a01a",
       "sha256": "74f6325b5543e3d132ed279ac8310122d1a9c4db2c4aefc006562d773577707f"
+    },
+    {
+      "source": "packages/shared/src/inbox/staff-session-policy.ts",
+      "target": "src/inbox/workspace-policy.ts",
+      "sourceSha256": "a67aa57514cbcf5cc7e5f2ec43017565ef0c0f46baab0edc1c9ad2073cf9d342",
+      "sha256": "ef5b50ce65a412eb5faa5645651b82f2f1d766a33a669133bf02d6fa8417d6ce"
+    },
+    {
+      "source": "packages/shared/src/inbox/handoff.ts",
+      "target": "src/inbox/handoff.ts",
+      "sourceSha256": "c09f464d901e7ce231392d7f3de71c8ae0f93b882f76fc421984ec973f1d0da5",
+      "sha256": "4e49b5bc791e3b8cbf7407fb9db5a39e9c01e63ce45151875ed89b7d413d8a72"
+    },
+    {
+      "source": "packages/shared/src/inbox/pending-handoff.ts",
+      "target": "src/inbox/pending-handoff.ts",
+      "sourceSha256": "37914a23710ed40307d366e97e944cb60a54a26713bf7188c7b2f5c1493755b8",
+      "sha256": "e16633598141202b930b473b2087452e25102c43a0b1d9589e241ab65af5221f"
     }
   ]
 }

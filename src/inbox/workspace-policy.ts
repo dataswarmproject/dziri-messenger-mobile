@@ -1,5 +1,19 @@
 import type { StaffWorkspace } from '../dziri/messenger-staff.generated';
-import type { Profile, Session } from './client';
+export type Session = { 'access-token': string; client: string; uid: string };
+export type Account = {
+  id: number;
+  name: string;
+  role: string;
+  status: string;
+};
+export type Profile = {
+  id: number;
+  name: string;
+  email: string;
+  pubsub_token: string;
+  account_id?: number;
+  accounts: Account[];
+};
 const object = (value: unknown): value is Record<string, unknown> =>
   value !== null && typeof value === 'object' && !Array.isArray(value);
 const text = (value: unknown): value is string =>
@@ -17,7 +31,11 @@ export function boundStaffSession(scope: StaffWorkspace, value: Session) {
     email(value.uid) !== scope.email
   )
     throw new Error('Staff identity does not match this Dziri workspace.');
-  return { 'access-token': value['access-token'], client: value.client, uid: value.uid };
+  return {
+    'access-token': value['access-token'],
+    client: value.client,
+    uid: value.uid,
+  };
 }
 export function boundStaffProfile(scope: StaffWorkspace, raw: unknown): Profile {
   if (

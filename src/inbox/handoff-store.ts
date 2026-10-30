@@ -4,6 +4,7 @@ import { digestStringAsync, CryptoDigestAlgorithm } from 'expo-crypto';
 import { secureStorageKey } from '../dziri/config';
 import { staffWorkspaceKey, type StaffWorkspace } from '../dziri/messenger-staff.generated';
 import { sameHandoff, type PendingHandoff } from './handoff';
+import { staffHandoffOwner as ownerOf, parsePendingHandoff as parse } from './pending-handoff';
 
 const memory = new Map<string, string>();
 const writes = new Map<string, Promise<void>>();
@@ -24,31 +25,6 @@ const remove = (key: string) =>
 const directoryKey = (actorId: string) => secureStorageKey('staff-handoff-owner-v1:' + actorId);
 const recoveryId = (scope: string) => digestStringAsync(CryptoDigestAlgorithm.SHA256, scope);
 const recoveryKey = (id: string) => 'staff-recovery.' + id;
-function ownerOf(scope: string): string {
-  if (typeof scope !== 'string' || scope.length > 4096)
-    throw new Error('Pending staff sign-in unavailable');
-  const fields = JSON.parse(scope);
-  if (
-    !Array.isArray(fields) ||
-    fields.length !== 10 ||
-    JSON.stringify(fields) !== scope ||
-    fields[0] !== 'staff-workspace-v1' ||
-    ![1, 2, 3, 4, 8, 9].every(i => typeof fields[i] === 'string' && fields[i]) ||
-    ![5, 6, 7].every(i => Number.isSafeInteger(fields[i]) && fields[i] > 0) ||
-    !['agent', 'administrator'].includes(fields[8]) ||
-    !/^v1:[a-f0-9]{64}$/.test(fields[9])
-  )
-    throw new Error('Pending staff sign-in unavailable');
-  const origin = new URL(fields[4]);
-  if (
-    origin.protocol !== 'https:' ||
-    origin.origin !== fields[4] ||
-    origin.username ||
-    origin.password
-  )
-    throw new Error('Pending staff sign-in unavailable');
-  return fields[1];
-}
 const retired = (entry: Record<string, unknown>, scope: string) =>
   entry?.state === 'cancelled' && entry.scope === scope;
 function queued(key: string, work: () => Promise<void>) {
@@ -141,38 +117,6 @@ export async function listPendingHandoffs(actorId: string): Promise<PendingHando
       for (const id of removable) await remove(recoveryKey(id));
     });
   return result;
-}
-function parse(value: string | null, scope: string): PendingHandoff | null {
-  if (!value) return null;
-  if (value.length > 32768) throw new Error('Pending staff sign-in unavailable');
-  ownerOf(scope);
-  const parsed = JSON.parse(value) as PendingHandoff;
-  if (
-    !parsed ||
-    parsed.version !== 1 ||
-    parsed.scope !== scope ||
-    !Number.isSafeInteger(parsed.expiresAt) ||
-    parsed.expiresAt <= 0 ||
-    parsed.expiresAt > 8.64e15 ||
-    !parsed.ticket ||
-    parsed.ticket.keyVersion !== 1 ||
-    typeof parsed.ticket.cipher !== 'string' ||
-    !parsed.ticket.cipher ||
-    parsed.ticket.cipher.length > 8192 ||
-    typeof parsed.ticket.iv !== 'string' ||
-    !/^[A-Za-z0-9_-]{16}$/.test(parsed.ticket.iv)
-  )
-    throw new Error('Pending staff sign-in unavailable');
-  return {
-    version: 1,
-    scope,
-    expiresAt: parsed.expiresAt,
-    ticket: {
-      cipher: parsed.ticket.cipher,
-      iv: parsed.ticket.iv,
-      keyVersion: 1,
-    },
-  };
 }
 /** Web is memory-only. Native recovery stores an already encrypted ticket in the OS vault. */
 export async function loadPendingHandoff(workspace: StaffWorkspace) {

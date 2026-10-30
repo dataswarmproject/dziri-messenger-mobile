@@ -11,11 +11,18 @@ if (sourceIndex >= 0) {
   const files = [
     ['packages/shared/src/messenger-staff.ts', 'src/dziri/messenger-staff.generated.ts'],
     ['packages/ui/src/messaging/use-staff-setup.ts', 'src/dziri/use-staff-setup.generated.ts'],
+    ['packages/shared/src/inbox/staff-session-policy.ts', 'src/inbox/workspace-policy.ts'],
+    ['packages/shared/src/inbox/handoff.ts', 'src/inbox/handoff.ts'],
+    ['packages/shared/src/inbox/pending-handoff.ts', 'src/inbox/pending-handoff.ts'],
   ].map(([source, target]) => {
     const bytes = readFileSync(resolve(process.argv[sourceIndex + 1], source));
     writeFileSync(
       resolve(root, target),
-      bytes.toString().replaceAll('@dziri/shared/messenger-staff', './messenger-staff.generated'),
+      bytes
+        .toString()
+        .replaceAll('@dziri/shared/messenger-staff', './messenger-staff.generated')
+        .replaceAll('../messenger-staff', '../dziri/messenger-staff.generated')
+        .replaceAll('./staff-session-policy', './workspace-policy'),
     );
     execFileSync(
       process.execPath,

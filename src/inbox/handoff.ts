@@ -1,5 +1,5 @@
 import { staffWorkspaceKey, type StaffWorkspace } from '../dziri/messenger-staff.generated';
-import type { Session } from './client';
+import type { Session } from './workspace-policy';
 
 export type HandoffTicket = { cipher: string; iv: string; keyVersion: number };
 export type PendingHandoff = {
@@ -74,7 +74,10 @@ export class StaffHandoff {
   }
   private async cleanup(pending: PendingHandoff): Promise<Result> {
     try {
-      const reply = await this.ports.exchange({ ticket: pending.ticket, phase: 'cancel' });
+      const reply = await this.ports.exchange({
+        ticket: pending.ticket,
+        phase: 'cancel',
+      });
       if (!record(reply) || reply.state !== 'cancelled') return { state: 'revocation_unconfirmed' };
       // Never clear a newer attempt that may have replaced this one during an await.
       const stored = await this.ports.load();
@@ -152,7 +155,11 @@ export class StaffHandoff {
         pending = {
           version: 1,
           scope: this.scope,
-          ticket: { cipher: reply.ticket.cipher, iv: reply.ticket.iv, keyVersion: 1 },
+          ticket: {
+            cipher: reply.ticket.cipher,
+            iv: reply.ticket.iv,
+            keyVersion: 1,
+          },
           expiresAt: reply.expiresAt,
         };
         try {

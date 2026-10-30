@@ -1,0 +1,149 @@
+import { beforeEach, expect, test, vi } from 'vitest';
+import { createHash } from 'node:crypto';
+vi.mock('expo-crypto', () => ({
+  CryptoDigestAlgorithm: { SHA256: 'SHA-256' },
+  digestStringAsync: async (_algorithm: string, value: string) =>
+    createHash('sha256').update(value).digest('hex'),
+}));
+import { getFunctionName, type FunctionReference } from 'convex/server';
+import type { ConvexReactClient } from 'convex/react';
+import { createStaffHandoff } from '../src/inbox/handoff-client';
+import {
+  loadPendingHandoff,
+  savePendingHandoff,
+  listPendingHandoffs,
+} from '../src/inbox/handoff-store';
+import { staffWorkspaceKey, type StaffWorkspace } from '../src/dziri/messenger-staff.generated';
+const h = vi.hoisted(() => ({
+  values: new Map<string, string>(),
+  writes: [] as string[],
+  failAtWrite: 0,
+}));
+vi.mock('react-native', () => ({ Platform: { OS: 'android' } }));
+vi.mock('expo-secure-store', () => ({
+  getItemAsync: async (key: string) => h.values.get(key) ?? null,
+  setItemAsync: async (key: string, value: string) => {
+    if (h.failAtWrite === h.writes.length + 1) throw new Error('Synthetic interrupted write');
+    h.values.set(key, value);
+    h.writes.push(value);
+  },
+  deleteItemAsync: async (key: string) => {
+    h.values.delete(key);
+  },
+}));
+const w: StaffWorkspace = {
+  version: 1,
+  observationId: 'synthetic-observation',
+  actorId: 'agent',
+  companyId: 'company',
+  tenantId: 'tenant',
+  origin: 'https://synthetic-inbox.invalid',
+  remoteUserId: 80,
+  accountId: 43,
+  inboxId: 2,
+  email: 'agent@synthetic.invalid',
+  role: 'agent',
+  authorityKey: 'v1:' + 'a'.repeat(64),
+};
+const pending = () => ({
+  version: 1 as const,
+  scope: staffWorkspaceKey(w),
+  ticket: { cipher: 'synthetic-cipher', iv: 'abcdefghijklmnop', keyVersion: 1 },
+  expiresAt: Date.now() + 300_000,
+});
+beforeEach(() => {
+  h.values.clear();
+  h.writes.length = 0;
+  h.failAtWrite = 0;
+});
+test('native pending recovery stores only an encrypted ticket in the scoped OS vault', async () => {
+  const p = pending();
+  await savePendingHandoff(w, { ...p, auth: 'must-never-persist' } as typeof p);
+  expect(await loadPendingHandoff(w)).toEqual(p);
+  expect(h.writes[0]).not.toContain('must-never-persist');
+  expect(await loadPendingHandoff({ ...w, actorId: 'another' })).toBeNull();
+});
+test('cleanup compares ticket identity independently of object key order', async () => {
+  const p = pending();
+  await savePendingHandoff(w, p);
+  await savePendingHandoff(w, null, p);
+  expect(await loadPendingHandoff(w)).toBeNull();
+});
+test('a stale removal cannot erase a replacement ticket', async () => {
+  const p = pending(),
+    next = { ...p, ticket: { ...p.ticket, cipher: 'replacement-cipher' } };
+  await savePendingHandoff(w, p);
+  await savePendingHandoff(w, null, p);
+  await savePendingHandoff(w, next);
+  await expect(savePendingHandoff(w, null, p)).rejects.toThrow('changed');
+  expect(await loadPendingHandoff(w)).toEqual(next);
+});
+test('an unconfirmed attempt cannot be overwritten or blindly cleared', async () => {
+  const p = pending();
+  await savePendingHandoff(w, p);
+  await expect(
+    savePendingHandoff(w, { ...p, ticket: { ...p.ticket, cipher: 'replacement' } }),
+  ).rejects.toThrow('changed');
+  await expect(savePendingHandoff(w, null)).rejects.toThrow('changed');
+  expect(await loadPendingHandoff(w)).toEqual(p);
+});
+
+test('the owner can discover an interrupted attempt after losing its workspace authority', async () => {
+  const p = pending();
+  await savePendingHandoff(w, p);
+  expect(await loadPendingHandoff({ ...w, authorityKey: 'v1:' + 'b'.repeat(64) })).toBeNull();
+  expect(await listPendingHandoffs(w.actorId)).toEqual([p]);
+  expect(await listPendingHandoffs('another-account')).toEqual([]);
+});
+
+test('confirmed removal also retires the owner recovery-directory entry', async () => {
+  const p = pending();
+  await savePendingHandoff(w, p);
+  await savePendingHandoff(w, null, p);
+  expect(await listPendingHandoffs(w.actorId)).toEqual([]);
+});
+
+test('an interruption before the scope copy preserves owner discovery and resumable proof', async () => {
+  const p = pending();
+  h.failAtWrite = 3;
+  await expect(savePendingHandoff(w, p)).rejects.toThrow('interrupted');
+  h.failAtWrite = 0;
+  expect(await listPendingHandoffs(w.actorId)).toEqual([p]);
+  expect(await loadPendingHandoff(w)).toEqual(p);
+});
+
+test('real broker references and vault bind the captured workspace before provider-session acceptance', async () => {
+  const input = { ...w },
+    p = pending(),
+    accept = vi.fn(async () => {});
+  const action = vi.fn(async (ref: FunctionReference<'action'>, args: Record<string, unknown>) => {
+    if (getFunctionName(ref) === 'inbox/staffHandoff:prepare') {
+      expect(args).toEqual({ companyId: w.companyId, authorityKey: w.authorityKey });
+      return { state: 'prepared', ticket: p.ticket, expiresAt: p.expiresAt };
+    }
+    expect(getFunctionName(ref)).toBe('inbox/staffHandoff:exchange');
+    expect(await loadPendingHandoff(w)).toEqual(p);
+    return {
+      state: 'ready',
+      auth: { accessToken: 'synthetic-provider-token', client: 'synthetic-client', uid: w.email },
+      user_id: 80,
+      account_id: 43,
+      inbox_id: 2,
+      authority_key: w.authorityKey,
+      expires_at: Math.floor(Date.now() / 1000) + 86_400,
+    };
+  });
+  const flow = createStaffHandoff(
+    input,
+    { action } as unknown as Pick<ConvexReactClient, 'action'>,
+    accept,
+  );
+  input.companyId = 'replacement-business';
+  expect(await flow.start()).toEqual({ state: 'ready' });
+  expect(accept).toHaveBeenCalledWith({
+    'access-token': 'synthetic-provider-token',
+    client: 'synthetic-client',
+    uid: w.email,
+  });
+  expect(h.writes.every(value => !value.includes('synthetic-provider-token'))).toBe(true);
+});

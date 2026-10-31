@@ -195,7 +195,11 @@ test('real broker references and vault bind the captured workspace before provid
     expect(await loadPendingHandoff(w)).toEqual(p);
     return {
       state: 'ready',
-      auth: { accessToken: 'synthetic-provider-token', client: 'synthetic-client', uid: w.email },
+      auth: {
+        accessToken: 'synthetic-provider-token',
+        client: `dziri-staff:${'c'.repeat(48)}`,
+        uid: w.email,
+      },
       user_id: 80,
       account_id: 43,
       inbox_id: 2,
@@ -212,7 +216,7 @@ test('real broker references and vault bind the captured workspace before provid
   expect(await flow.start()).toEqual({ state: 'ready' });
   expect(accept).toHaveBeenCalledWith({
     'access-token': 'synthetic-provider-token',
-    client: 'synthetic-client',
+    client: `dziri-staff:${'c'.repeat(48)}`,
     uid: w.email,
   });
   expect(h.writes.every(value => !value.includes('synthetic-provider-token'))).toBe(true);

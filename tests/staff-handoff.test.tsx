@@ -30,7 +30,7 @@ function fixture() {
     state: 'ready',
     auth: {
       accessToken: 'synthetic-provider-token',
-      client: 'synthetic-client',
+      client: `dziri-staff:${'c'.repeat(48)}`,
       uid: workspace.email,
     },
     user_id: 80,

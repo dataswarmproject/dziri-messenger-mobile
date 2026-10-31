@@ -1,5 +1,5 @@
 import { staffWorkspaceKey, type StaffWorkspace } from '../dziri/messenger-staff.generated';
-import type { Session } from './workspace-policy';
+import { validManagedStaffClient, type Session } from './workspace-policy';
 
 export type HandoffTicket = { cipher: string; iv: string; keyVersion: number };
 export type PendingHandoff = {
@@ -218,8 +218,7 @@ export class StaffHandoff {
         !record(auth) ||
         typeof auth.accessToken !== 'string' ||
         !/^[A-Za-z0-9_-]{1,512}$/.test(auth.accessToken) ||
-        typeof auth.client !== 'string' ||
-        !/^[A-Za-z0-9_-]{1,512}$/.test(auth.client) ||
+        !validManagedStaffClient(auth.client) ||
         auth.uid !== this.workspace.email ||
         result.user_id !== this.workspace.remoteUserId ||
         result.account_id !== this.workspace.accountId ||

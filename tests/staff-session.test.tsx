@@ -42,7 +42,11 @@ const first: StaffWorkspace = {
   role: 'agent',
   authorityKey: 'v1:' + 'a'.repeat(64),
 };
-const session = { 'access-token': 'synthetic-token', client: 'device', uid: first.email };
+const session = {
+  'access-token': 'synthetic-token',
+  client: `dziri-staff:${'c'.repeat(48)}`,
+  uid: first.email,
+};
 const profile = {
   id: 80,
   email: first.email,
@@ -172,9 +176,9 @@ test('cancellation clears an accepted candidate without publishing it', async ()
 
 test('exact-client cleanup preserves replacement credentials but clears rotated owned tokens', async () => {
   const scope = staffWorkspaceKey(first);
-  await saveSession(first.origin, { ...session, client: 'replacement' }, scope);
+  await saveSession(first.origin, { ...session, client: `dziri-staff:${'d'.repeat(48)}` }, scope);
   await clearSessionIf(first.origin, scope, session);
-  expect([...h.store.values()].join('')).toContain('replacement');
+  expect([...h.store.values()].join('')).toContain(`dziri-staff:${'d'.repeat(48)}`);
   await saveSession(first.origin, { ...session, 'access-token': 'rotated' }, scope);
   await clearSessionIf(first.origin, scope, session);
   expect(h.store.size).toBe(0);
@@ -192,7 +196,11 @@ test('retrying old cleanup cannot close a replacement login in the same workspac
   h.fetch.mockImplementation(
     async (url: string) =>
       new Response(JSON.stringify(url.endsWith('/auth/sign_in') ? { data: profile } : profile), {
-        headers: { 'content-type': 'application/json', ...session, client: 'replacement-device' },
+        headers: {
+          'content-type': 'application/json',
+          ...session,
+          client: `dziri-staff:${'e'.repeat(48)}`,
+        },
       }),
   );
   await act(async () => {
@@ -203,7 +211,7 @@ test('retrying old cleanup cannot close a replacement login in the same workspac
     await reservation.release();
   });
   expect(flow.profile?.id).toBe(80);
-  expect([...h.store.values()].join('')).toContain('replacement-device');
+  expect([...h.store.values()].join('')).toContain(`dziri-staff:${'e'.repeat(48)}`);
   await act(async () => {
     expect((await client!.profile()).id).toBe(80);
   });

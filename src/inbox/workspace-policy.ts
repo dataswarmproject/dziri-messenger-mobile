@@ -22,11 +22,14 @@ const text = (value: unknown): value is string =>
   value.length <= 4096 &&
   !/[\u0000-\u001f\u007f]/.test(value);
 const email = (value: unknown) => (typeof value === 'string' ? value.trim().toLowerCase() : '');
+/** Native StaffSession issues the marker plus SecureRandom.hex(24). */
+export const validManagedStaffClient = (value: unknown): value is string =>
+  typeof value === 'string' && value.length === 60 && /^dziri-staff:[a-f0-9]{48}$/.test(value);
 export function boundStaffSession(scope: StaffWorkspace, value: Session) {
   if (
     !value ||
     !text(value['access-token']) ||
-    !text(value.client) ||
+    !validManagedStaffClient(value.client) ||
     !text(value.uid) ||
     email(value.uid) !== scope.email
   )

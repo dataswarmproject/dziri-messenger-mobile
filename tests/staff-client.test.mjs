@@ -28,13 +28,35 @@ const profile = () => ({
 });
 const session = {
   'access-token': 'synthetic-token',
-  client: 'synthetic-device',
+  client: `dziri-staff:${'c'.repeat(48)}`,
   uid: 'agent@synthetic.invalid',
 };
 const response = data =>
   new Response(JSON.stringify(data), {
     headers: { 'content-type': 'application/json', ...session },
   });
+
+for (const id of [
+  'ordinary-device',
+  'dziri-staff:',
+  `dziri-staff:${'a'.repeat(47)}`,
+  `dziri-staff:${'a'.repeat(49)}`,
+  `dziri-staff:${'A'.repeat(48)}`,
+  `dziri-staff:${'a'.repeat(48)}\n`,
+]) {
+  test(`ordinary or malformed client ${JSON.stringify(id)} is rejected before network or persistence`, () => {
+    let calls = 0;
+    const client = new InboxClient(workspace(), async () => {
+      calls++;
+      return response(profile());
+    });
+    client.onSession = () => {
+      calls++;
+    };
+    assert.throws(() => client.setSession({ ...session, client: id }));
+    assert.equal(calls, 0);
+  });
+}
 
 test('staff client cannot request account data before validating the current provider profile', async () => {
   let calls = 0;

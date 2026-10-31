@@ -15,7 +15,11 @@ const workspace = () => ({
   role: 'agent',
   authorityKey: 'v1:' + 'a'.repeat(64),
 });
-const saved = { 'access-token': 'first', client: 'device', uid: 'agent@example.com' };
+const saved = {
+  'access-token': 'first',
+  client: `dziri-staff:${'0123456789abcdef'.repeat(3)}`,
+  uid: 'agent@example.com',
+};
 const profile = () => ({
   id: 80,
   name: 'Synthetic agent',
@@ -48,7 +52,7 @@ test('Inbox origins exclude credentials and paths; local development is explicit
 
 test('Staff authentication uses the existing server session; rotated tokens replace old ones', async () => {
   const calls = [];
-  const session = { 'access-token': 'first', client: 'device', uid: 'agent@example.com' };
+  const session = { 'access-token': 'first', client: saved.client, uid: 'agent@example.com' };
   const fetcher = async (url, init) => {
     calls.push({ url, init });
     return new Response(
@@ -57,7 +61,7 @@ test('Staff authentication uses the existing server session; rotated tokens repl
         headers: {
           'content-type': 'application/json',
           'access-token': 'rotated',
-          client: 'device',
+          client: saved.client,
           uid: session.uid,
         },
       },

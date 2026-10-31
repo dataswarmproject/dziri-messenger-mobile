@@ -55,7 +55,11 @@ const pending = () => ({
 });
 const ready = () => ({
   state: 'ready',
-  auth: { accessToken: 'synthetic-token', client: 'device', uid: w.email },
+  auth: {
+    accessToken: 'synthetic-token',
+    client: `dziri-staff:${'0123456789abcdef'.repeat(3)}`,
+    uid: w.email,
+  },
   user_id: 80,
   account_id: 43,
   inbox_id: 2,

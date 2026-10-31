@@ -16,14 +16,14 @@
     {
       "source": "packages/shared/src/inbox/staff-session-policy.ts",
       "target": "src/inbox/workspace-policy.ts",
-      "sourceSha256": "a67aa57514cbcf5cc7e5f2ec43017565ef0c0f46baab0edc1c9ad2073cf9d342",
-      "sha256": "ef5b50ce65a412eb5faa5645651b82f2f1d766a33a669133bf02d6fa8417d6ce"
+      "sourceSha256": "b7cced1019aa2afdf253401a405fa5d5f181b29ed58271e32b686d2040f9d65e",
+      "sha256": "d418b265ca987a1f319de5fc7cc17214e30ab37dc0c30e3ba55affa3995a33a7"
     },
     {
       "source": "packages/shared/src/inbox/handoff.ts",
       "target": "src/inbox/handoff.ts",
-      "sourceSha256": "c09f464d901e7ce231392d7f3de71c8ae0f93b882f76fc421984ec973f1d0da5",
-      "sha256": "4e49b5bc791e3b8cbf7407fb9db5a39e9c01e63ce45151875ed89b7d413d8a72"
+      "sourceSha256": "4d5d9b987d1d51d30620ef036917cfdbbd753888192af9456484c5896c3779fe",
+      "sha256": "fd54690ea5d6f6e3f001c36bce362d74343fc916d241aa31366b61b72dc3d40d"
     },
     {
       "source": "packages/shared/src/inbox/pending-handoff.ts",

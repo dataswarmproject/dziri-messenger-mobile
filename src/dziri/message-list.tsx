@@ -39,7 +39,9 @@ export function MessageList({
   reporting = false,
   exactReceipts,
   reactionInbox = false,
+  actionScope,
 }: {
+  actionScope?: string;
   messages: BubbleMessage[];
   reportStoreId?: string;
   reporting?: boolean;
@@ -309,6 +311,7 @@ export function MessageList({
       />
       {actionMessage ? (
         <MessageActionDialog
+          contextId={actionScope}
           key={actionMessage.id}
           reportTarget={
             reporting &&

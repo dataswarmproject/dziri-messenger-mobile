@@ -237,6 +237,7 @@ function Conversation({
         </>
       ) : null}
       <MessageList
+        actionScope={localScope}
         reporting={capabilities?.features?.messageReporting === 1}
         pin={
           capabilities?.features?.inboxOrganization === 1 &&

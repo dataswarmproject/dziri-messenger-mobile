@@ -1,6 +1,13 @@
 import { ReportPanel } from './request-report';
 import type { ReportTarget } from './messenger-safety.generated';
-import React, { useEffect, useRef, useState, type ReactNode } from 'react';
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type ComponentProps,
+} from 'react';
 import {
   ActivityIndicator,
   Keyboard,
@@ -24,10 +31,25 @@ import {
   messageActionAvailability,
   MESSAGE_TEXT_LIMIT,
   MESSAGE_QUICK_REACTIONS,
+  messageActionScopeKey,
 } from './message-action-policy.generated';
 import type { BubbleMessage } from './message-bubble';
 
-export function MessageActionDialog({
+export function MessageActionDialog(props: ComponentProps<typeof MessageActionSession>) {
+  return (
+    <MessageActionSession
+      key={messageActionScopeKey({
+        actorId: props.myId,
+        messageId: props.message.id,
+        contextId: props.contextId,
+        writable: props.writable,
+      })}
+      {...props}
+    />
+  );
+}
+
+function MessageActionSession({
   message,
   myId,
   writable,
@@ -42,6 +64,7 @@ export function MessageActionDialog({
   renderForward,
   reportTarget,
 }: {
+  contextId?: string;
   message: BubbleMessage;
   reportTarget?: ReportTarget;
   myId: string;
@@ -75,7 +98,7 @@ export function MessageActionDialog({
     [busy, setBusy] = useState(false);
   const locked = useRef(false),
     mounted = useRef(true);
-  useEffect(() => {
+  useLayoutEffect(() => {
     mounted.current = true;
     Keyboard.dismiss();
     return () => {
@@ -264,7 +287,7 @@ export function MessageActionDialog({
                         void run(async () => {
                           if (!(await Clipboard.setStringAsync(message.actionBody!)))
                             throw new Error('Clipboard unavailable');
-                          onCopied?.();
+                          if (mounted.current) onCopied?.();
                         }),
                       t.copyText,
                     )
@@ -292,7 +315,12 @@ export function MessageActionDialog({
         ) : mode === 'report' && reportTarget ? (
           <ReportPanel target={reportTarget} close={close} />
         ) : mode === 'forward' ? (
-          (renderForward?.(close, () => setMode('more')) ?? null)
+          (renderForward?.(
+            () => {
+              if (mounted.current) close();
+            },
+            () => setMode('more'),
+          ) ?? null)
         ) : mode === 'emoji' ? (
           <View
             style={{

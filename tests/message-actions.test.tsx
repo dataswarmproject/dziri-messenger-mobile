@@ -141,12 +141,16 @@ function button(label: string) {
     b => b.textContent === label || b.getAttribute('aria-label') === label,
   );
 }
-async function render(overrides: Partial<BubbleMessage> = {}) {
+async function render(
+  overrides: Partial<BubbleMessage> = {},
+  owner: { myId?: string; contextId?: string } = {},
+) {
   await act(async () =>
     root.render(
       <MessageActionDialog
         message={{ ...message, createdAt: Date.now(), ...overrides }}
-        myId="me"
+        myId={owner.myId ?? 'me'}
+        {...{ contextId: owner.contextId }}
         writable
         edit={edit}
         remove={remove}
@@ -170,11 +174,75 @@ async function draft(value: string) {
   });
 }
 
+test.each([
+  { message: { id: 'replacement' }, owner: {} },
+  { message: { senderId: 'replacement-actor' }, owner: { myId: 'replacement-actor' } },
+  { message: {}, owner: { contextId: 'other-store' } },
+])('a changed action owner/target discards the previous edit: %j', async change => {
+  await render();
+  await openEdit();
+  await draft('Draft belonging to the first target');
+  await render(change.message, change.owner);
+  expect(host.querySelector('textarea')).toBeNull();
+  expect(edit).not.toHaveBeenCalled();
+});
+
+test.each(['resolve', 'reject'])(
+  'late %s of an old action leaves replacement UI alone',
+  async result => {
+    let finish!: () => void;
+    edit.mockImplementationOnce(
+      () =>
+        new Promise((resolve, reject) => {
+          finish = () => (result === 'resolve' ? resolve(null) : reject(new Error('old action')));
+        }),
+    );
+    await render();
+    await openEdit();
+    await draft('Dispatched old draft');
+    await click('Save');
+    await render({ id: 'replacement' });
+    await openEdit();
+    await draft('Replacement draft');
+    await act(async () => finish());
+    expect(host.querySelector('textarea')?.value).toBe('Replacement draft');
+    expect(host.querySelector('[role="alert"]')).toBeNull();
+    expect(close).not.toHaveBeenCalled();
+    expect(button('Save')?.disabled).toBe(false);
+  },
+);
+
 test('received text can be copied but cannot be edited or removed', async () => {
   await render({ senderId: 'peer' });
   expect(button('Copy text')).toBeDefined();
   expect(button('Edit message')).toBeUndefined();
   expect(button('Delete message')).toBeUndefined();
+});
+
+test('receipt updates for the same owner and message preserve an in-progress edit', async () => {
+  await render();
+  await openEdit();
+  await draft('Keep this draft');
+  await render({ reactions: [{ emoji: '❤️', count: 1, mine: true }] });
+  expect(host.querySelector('textarea')?.value).toBe('Keep this draft');
+});
+
+test('losing write access discards the open edit', async () => {
+  await render();
+  await openEdit();
+  await draft('No longer writable');
+  await act(async () =>
+    root.render(
+      <MessageActionDialog
+        message={message}
+        myId="me"
+        writable={false}
+        close={close}
+        edit={edit}
+      />,
+    ),
+  );
+  expect(host.querySelector('textarea')).toBeNull();
 });
 
 test('context actions use the screenshot reaction rail and bottom strip; edit lives under More', async () => {

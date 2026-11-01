@@ -2,6 +2,22 @@
 export const MESSAGE_EDIT_WINDOW_MS = 15 * 60 * 1000;
 export const MESSAGE_TEXT_LIMIT = 8000;
 export const MESSAGE_QUICK_REACTIONS = ['❤️', '😆', '😮', '😢', '😡', '👍'] as const;
+
+// React lifetime only: never an authorization grant or a server version check.
+export function messageActionScopeKey(scope: {
+  actorId?: string;
+  messageId?: string;
+  contextId?: string;
+  writable: boolean;
+}): string {
+  return JSON.stringify([
+    scope.actorId ?? null,
+    scope.messageId ?? null,
+    scope.contextId ?? null,
+    scope.writable,
+  ]);
+}
+
 export type GroupMemberAction = 'remove' | 'promote' | 'demote' | 'transfer';
 export function groupMemberActions(
   actorRole: string,

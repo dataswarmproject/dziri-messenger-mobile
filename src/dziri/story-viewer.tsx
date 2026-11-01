@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AppState, KeyboardAvoidingView, Platform, Modal, Pressable, View } from 'react-native';
 import { Image } from 'expo-image';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useMutation } from 'convex/react';
 import { dziriApi, type StoryRecord } from './api';
 import { Text } from './typography';
@@ -31,8 +32,7 @@ export function StoryViewer({
   const [active, setActive] = useState(AppState.currentState === 'active');
   const view = useMutation(dziriApi.storyView),
     { t, rtl, locale } = useLocale();
-  const copy = storyCopy(locale),
-    insets = useSafeAreaInsets();
+  const copy = storyCopy(locale);
   const index = items.findIndex(item => item._id === storyId);
   const story = index < 0 ? undefined : items[index];
   const running = active && !paused && !held && !replying && !failed;
@@ -147,212 +147,227 @@ export function StoryViewer({
   }, [progress, index, select, running]);
   if (!story) return null;
   return (
-    <Modal visible animationType="fade" onRequestClose={close}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{ flex: 1, direction: 'ltr' }}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: '#000',
-            paddingTop: Math.max(8, Platform.OS === 'ios' ? insets.top : 0),
-            paddingBottom: Math.max(12, Platform.OS === 'ios' ? insets.bottom : 0),
-          }}>
-          <View pointerEvents="box-none" style={{ paddingHorizontal: 12, paddingBottom: 8 }}>
-            <View style={{ flexDirection: rtl ? 'row-reverse' : 'row', gap: 4 }}>
-              {items.map((item, i) => (
-                <View
-                  key={item._id}
-                  style={{ height: 2, flex: 1, backgroundColor: 'rgba(255,255,255,.4)' }}>
-                  <View
-                    style={{
-                      height: 2,
-                      width: `${i < index ? 100 : i === index ? Math.floor(progress * 100) : 0}%`,
-                      backgroundColor: '#fff',
-                    }}
-                  />
-                </View>
-              ))}
-            </View>
+    <Modal
+      visible
+      animationType="fade"
+      statusBarTranslucent
+      navigationBarTranslucent
+      onRequestClose={close}>
+      <SafeAreaProvider>
+        <StatusBar style="light" />
+        <SafeAreaView
+          edges={['top', 'bottom', 'left', 'right']}
+          style={{ flex: 1, backgroundColor: '#000' }}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            style={{ flex: 1, direction: 'ltr' }}>
             <View
               style={{
-                flexDirection: rtl ? 'row-reverse' : 'row',
-                alignItems: 'center',
-                gap: 12,
+                flex: 1,
+                backgroundColor: '#000',
                 paddingTop: 8,
+                paddingBottom: 12,
               }}>
-              {story.authorImage ? (
-                <Image
-                  source={{ uri: story.authorImage }}
-                  style={{ width: 32, height: 32, borderRadius: 16 }}
-                />
-              ) : null}
-              <Text
-                numberOfLines={1}
-                style={{ color: '#fff', fontSize: 14, fontWeight: '600', flex: 1 }}>
-                {story.authorName || story.authorHandle || t.unknown}
-              </Text>
-              <IconButton
-                name={paused || (mediaStory && !ready) ? 'play' : 'pause'}
-                label={paused || (mediaStory && !ready) ? copy.play : copy.pause}
-                color="#fff"
-                onPress={toggle}
-              />
-              <IconButton name="close" label={copy.close} color="#fff" onPress={close} />
-            </View>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              borderRadius: 0,
-              overflow: 'hidden',
-              backgroundColor: story.backgroundHex || '#171717',
-              justifyContent: 'center',
-            }}>
-            <Pressable
-              accessible={false}
-              disabled={mediaStory}
-              onPressIn={() => {
-                if (!mediaStory) setHeld(true);
-              }}
-              onPressOut={() => setHeld(false)}
-              style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              {story.expiresAt <= Date.now() ? (
-                <Text style={{ color: '#fff', textAlign: 'center' }}>{t.unavailable}</Text>
-              ) : story.type === 'photo' && story.mediaUrl ? (
-                <Image
-                  key={story._id + ':' + attempt}
-                  source={{ uri: story.mediaUrl }}
-                  onLoad={() => mediaReady(true)}
-                  onError={failure}
-                  contentFit="contain"
-                  style={{ width: '100%', height: '100%' }}
-                />
-              ) : story.mediaUrl ? (
-                <MediaPreview
-                  key={story._id + ':' + attempt}
-                  media={{ uri: story.mediaUrl, type: story.type === 'voice' ? 'voice' : 'video' }}
-                  onPlayingChange={mediaReady}
-                  onProgress={playbackProgress}
-                  onEnded={ended}
-                  paused={!running}
-                  autoPlay
-                  playRequest={playRequest}
-                  onError={failure}
-                  fullScreen
-                />
-              ) : (
-                <Text
+              <View pointerEvents="box-none" style={{ paddingHorizontal: 12, paddingBottom: 8 }}>
+                <View style={{ flexDirection: rtl ? 'row-reverse' : 'row', gap: 4 }}>
+                  {items.map((item, i) => (
+                    <View
+                      key={item._id}
+                      style={{ height: 2, flex: 1, backgroundColor: 'rgba(255,255,255,.4)' }}>
+                      <View
+                        style={{
+                          height: 2,
+                          width: `${i < index ? 100 : i === index ? Math.floor(progress * 100) : 0}%`,
+                          backgroundColor: '#fff',
+                        }}
+                      />
+                    </View>
+                  ))}
+                </View>
+                <View
                   style={{
-                    color: '#fff',
-                    fontSize: 24,
-                    lineHeight: 36,
-                    textAlign: 'center',
-                    padding: 24,
+                    flexDirection: rtl ? 'row-reverse' : 'row',
+                    alignItems: 'center',
+                    gap: 12,
+                    paddingTop: 8,
                   }}>
-                  {story.body}
-                </Text>
-              )}
-            </Pressable>
-            {!ready && !failed && !missingMedia && story.type !== 'text' ? (
-              <Text
-                accessibilityRole="text"
-                style={{
-                  position: 'absolute',
-                  alignSelf: 'center',
-                  color: '#bbb',
-                  fontSize: 13,
-                  padding: 16,
-                }}>
-                {copy.loading}
-              </Text>
-            ) : null}
-            {failed || missingMedia ? (
+                  {story.authorImage ? (
+                    <Image
+                      source={{ uri: story.authorImage }}
+                      style={{ width: 32, height: 32, borderRadius: 16 }}
+                    />
+                  ) : null}
+                  <Text
+                    numberOfLines={1}
+                    style={{ color: '#fff', fontSize: 14, fontWeight: '600', flex: 1 }}>
+                    {story.authorName || story.authorHandle || t.unknown}
+                  </Text>
+                  <IconButton
+                    name={paused || (mediaStory && !ready) ? 'play' : 'pause'}
+                    label={paused || (mediaStory && !ready) ? copy.play : copy.pause}
+                    color="#fff"
+                    onPress={toggle}
+                  />
+                  <IconButton name="close" label={copy.close} color="#fff" onPress={close} />
+                </View>
+              </View>
               <View
                 style={{
-                  position: 'absolute',
-                  top: 80,
-                  bottom: 64,
-                  left: 0,
-                  right: 0,
-                  backgroundColor: '#171717',
-                  alignItems: 'center',
+                  flex: 1,
+                  borderRadius: 0,
+                  overflow: 'hidden',
+                  backgroundColor: story.backgroundHex || '#171717',
                   justifyContent: 'center',
-                  padding: 24,
-                  gap: 12,
                 }}>
-                <Text
-                  accessibilityRole="alert"
-                  style={{ color: '#fff', fontSize: 14, textAlign: 'center' }}>
-                  {copy.failed}
-                </Text>
-                {!missingMedia ? (
+                <Pressable
+                  accessible={false}
+                  disabled={mediaStory}
+                  onPressIn={() => {
+                    if (!mediaStory) setHeld(true);
+                  }}
+                  onPressOut={() => setHeld(false)}
+                  style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                  {story.expiresAt <= Date.now() ? (
+                    <Text style={{ color: '#fff', textAlign: 'center' }}>{t.unavailable}</Text>
+                  ) : story.type === 'photo' && story.mediaUrl ? (
+                    <Image
+                      key={story._id + ':' + attempt}
+                      source={{ uri: story.mediaUrl }}
+                      onLoad={() => mediaReady(true)}
+                      onError={failure}
+                      contentFit="contain"
+                      style={{ width: '100%', height: '100%' }}
+                    />
+                  ) : story.mediaUrl ? (
+                    <MediaPreview
+                      key={story._id + ':' + attempt}
+                      media={{
+                        uri: story.mediaUrl,
+                        type: story.type === 'voice' ? 'voice' : 'video',
+                      }}
+                      onPlayingChange={mediaReady}
+                      onProgress={playbackProgress}
+                      onEnded={ended}
+                      paused={!running}
+                      autoPlay
+                      playRequest={playRequest}
+                      onError={failure}
+                      fullScreen
+                    />
+                  ) : (
+                    <Text
+                      style={{
+                        color: '#fff',
+                        fontSize: 24,
+                        lineHeight: 36,
+                        textAlign: 'center',
+                        padding: 24,
+                      }}>
+                      {story.body}
+                    </Text>
+                  )}
+                </Pressable>
+                {!ready && !failed && !missingMedia && story.type !== 'text' ? (
+                  <Text
+                    accessibilityRole="text"
+                    style={{
+                      position: 'absolute',
+                      alignSelf: 'center',
+                      color: '#bbb',
+                      fontSize: 13,
+                      padding: 16,
+                    }}>
+                    {copy.loading}
+                  </Text>
+                ) : null}
+                {failed || missingMedia ? (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: 80,
+                      bottom: 64,
+                      left: 0,
+                      right: 0,
+                      backgroundColor: '#171717',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: 24,
+                      gap: 12,
+                    }}>
+                    <Text
+                      accessibilityRole="alert"
+                      style={{ color: '#fff', fontSize: 14, textAlign: 'center' }}>
+                      {copy.failed}
+                    </Text>
+                    {!missingMedia ? (
+                      <Pressable
+                        accessibilityRole="button"
+                        accessibilityLabel={copy.retry}
+                        onPress={retry}
+                        style={{
+                          minHeight: 44,
+                          paddingHorizontal: 20,
+                          borderRadius: 22,
+                          backgroundColor: '#fff',
+                          justifyContent: 'center',
+                        }}>
+                        <Text style={{ color: '#111' }}>{copy.retry}</Text>
+                      </Pressable>
+                    ) : null}
+                  </View>
+                ) : null}
+                <View
+                  pointerEvents="box-none"
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: 4,
+                    right: 4,
+                    flexDirection: rtl ? 'row-reverse' : 'row',
+                    justifyContent: 'space-between',
+                  }}>
                   <Pressable
                     accessibilityRole="button"
-                    accessibilityLabel={copy.retry}
-                    onPress={retry}
+                    accessibilityLabel={copy.previous}
+                    onPress={() => (index > 0 ? select(index - 1) : close())}
                     style={{
-                      minHeight: 44,
-                      paddingHorizontal: 20,
+                      width: 44,
+                      height: 44,
                       borderRadius: 22,
-                      backgroundColor: '#fff',
+                      backgroundColor: 'rgba(0,0,0,.25)',
+                      alignItems: 'center',
                       justifyContent: 'center',
                     }}>
-                    <Text style={{ color: '#111' }}>{copy.retry}</Text>
+                    <Text style={{ color: '#fff' }}>{rtl ? '›' : '‹'}</Text>
                   </Pressable>
-                ) : null}
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel={copy.next}
+                    onPress={() => select(index + 1)}
+                    style={{
+                      width: 44,
+                      height: 44,
+                      borderRadius: 22,
+                      backgroundColor: 'rgba(0,0,0,.25)',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Text style={{ color: '#fff' }}>{rtl ? '‹' : '›'}</Text>
+                  </Pressable>
+                </View>
               </View>
-            ) : null}
-            <View
-              pointerEvents="box-none"
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: 4,
-                right: 4,
-                flexDirection: rtl ? 'row-reverse' : 'row',
-                justifyContent: 'space-between',
-              }}>
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={copy.previous}
-                onPress={() => (index > 0 ? select(index - 1) : close())}
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: 22,
-                  backgroundColor: 'rgba(0,0,0,.25)',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Text style={{ color: '#fff' }}>{rtl ? '›' : '‹'}</Text>
-              </Pressable>
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={copy.next}
-                onPress={() => select(index + 1)}
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: 22,
-                  backgroundColor: 'rgba(0,0,0,.25)',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Text style={{ color: '#fff' }}>{rtl ? '‹' : '›'}</Text>
-              </Pressable>
+              <StoryReply
+                key={story._id}
+                storyId={story._id}
+                authorId={story.authorId}
+                close={close}
+                onPauseChange={setReplying}
+                openConversation={openConversation}
+              />
             </View>
-          </View>
-          <StoryReply
-            key={story._id}
-            storyId={story._id}
-            authorId={story.authorId}
-            close={close}
-            onPauseChange={setReplying}
-            openConversation={openConversation}
-          />
-        </View>
-      </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
+      </SafeAreaProvider>
     </Modal>
   );
 }

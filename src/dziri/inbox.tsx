@@ -321,7 +321,7 @@ export function InboxScreen({
             }}
             style={{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }}>
             <Image
-              source={require('../../assets/dziri-ring.svg')}
+              source={require('../../assets/dziri-ring-transparent.png')}
               contentFit="contain"
               tintColor={colors.text}
               accessible={false}

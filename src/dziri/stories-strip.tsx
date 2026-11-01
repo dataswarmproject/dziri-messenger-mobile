@@ -72,7 +72,7 @@ export function StoriesStrip({
               />
             ) : (
               <Image
-                source={require('../../assets/dziri-ring.svg')}
+                source={require('../../assets/dziri-ring-transparent.png')}
                 contentFit="contain"
                 tintColor={colors.text}
                 style={{ width: 28, height: 28 }}

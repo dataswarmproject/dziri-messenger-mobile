@@ -18,7 +18,8 @@ export function StartupScreen() {
         padding: 24,
       }}>
       <Image
-        source={require('../../assets/dziri-ring.png')}
+        source={require('../../assets/dziri-ring-transparent.png')}
+        tintColor={colors.text}
         contentFit="contain"
         accessible={false}
         style={{ width: 112, height: 112, borderRadius: 24 }}

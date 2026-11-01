@@ -1,4 +1,9 @@
 assets/dziri-ring.svg -text
+assets/iconly/*.svg -text
+assets/icons/staff.svg -text
+assets/icons/marketplace.svg -text
+assets/icons/plus.svg -text
+licenses/magic-ui.txt -text
 /src/inbox/** text eol=lf
 /src/dziri/** text eol=lf
 /src/messenger.tsx text eol=lf

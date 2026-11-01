@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Modal, Pressable, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Image } from 'expo-image';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useMutation } from 'convex/react';
 import { Text, TextInput } from './typography';
 import { FigmaButton } from './figma';
-import { IconButton } from './icons';
+import { Icon, IconButton } from './icons';
 import { useColors } from './ui';
 import { useLocale } from './locale';
 import { dziriApi } from './api';
@@ -21,8 +22,7 @@ export function StoryComposer({
 }) {
   const colors = useColors(),
     { t, rtl, locale } = useLocale();
-  const copy = storyCopy(locale),
-    insets = useSafeAreaInsets();
+  const copy = storyCopy(locale);
   const media = useAttachment();
   const create = useMutation(dziriApi.storyCreate);
   const [body, setBody] = useState(''),
@@ -78,6 +78,7 @@ export function StoryComposer({
       await create({
         type: upload ? (upload.type === 'video' ? 'video' : 'photo') : 'text',
         body: body.trim() || undefined,
+        ...(!upload ? { backgroundHex: '#151515' } : {}),
         ...(upload
           ? {
               mediaStorageId: upload.storageId,
@@ -97,141 +98,260 @@ export function StoryComposer({
     }
   }
   return (
-    <Modal visible animationType="slide" onRequestClose={cancel}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{ flex: 1, direction: 'ltr' }}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: colors.background,
-            paddingTop: Math.max(8, Platform.OS === 'ios' ? insets.top : 0),
-            paddingBottom: Platform.OS === 'ios' ? insets.bottom : 0,
-          }}>
-          <View
-            style={{
-              height: 56,
-              flexDirection: rtl ? 'row-reverse' : 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              paddingHorizontal: 12,
-            }}>
-            <IconButton name="close" label={t.cancel} color={colors.text} onPress={cancel} />
-            <Text style={{ fontSize: 15, fontWeight: '700', color: colors.text }}>
-              {t.yourStory}
-            </Text>
-            <Pressable
-              accessibilityRole="button"
-              disabled={busy || (!body.trim() && !media.attachment)}
-              onPress={() => void publish()}
-              style={{ padding: 12 }}>
-              <Text style={{ color: colors.primary }}>{busy ? t.loading : t.publishStory}</Text>
-            </Pressable>
-          </View>
-          <View
-            accessibilityLabel={copy.audience}
-            style={{
-              flexDirection: rtl ? 'row-reverse' : 'row',
-              justifyContent: 'center',
-              gap: 8,
-              padding: 12,
-            }}>
-            {(['followers', 'public'] as const).map(value => (
-              <Pressable
-                key={value}
-                accessibilityRole="radio"
-                accessibilityState={{ checked: audience === value }}
-                disabled={busy}
-                onPress={() => setAudience(value)}
+    <Modal
+      visible
+      animationType="slide"
+      statusBarTranslucent
+      navigationBarTranslucent
+      onRequestClose={cancel}>
+      <SafeAreaProvider>
+        <SafeAreaView
+          edges={['top', 'bottom', 'left', 'right']}
+          style={{ flex: 1, backgroundColor: colors.background }}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            style={{ flex: 1, direction: 'ltr' }}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: colors.background,
+                paddingTop: 4,
+              }}>
+              <View
                 style={{
-                  minHeight: 44,
-                  paddingHorizontal: 16,
-                  borderRadius: 22,
-                  backgroundColor: audience === value ? colors.primary : colors.surface,
+                  minHeight: 56,
+                  flexDirection: rtl ? 'row-reverse' : 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 12,
+                }}>
+                <IconButton name="close" label={t.cancel} color={colors.text} onPress={cancel} />
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    flex: 1,
+                    textAlign: 'center',
+                    fontSize: 16,
+                    fontWeight: '700',
+                    color: colors.text,
+                  }}>
+                  {t.yourStory}
+                </Text>
+                <View style={{ width: 44 }} />
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  minHeight: 0,
+                  marginHorizontal: 12,
+                  borderRadius: 24,
+                  overflow: 'hidden',
+                  backgroundColor: '#151515',
                   justifyContent: 'center',
                 }}>
-                <Text
+                {media.attachment ? (
+                  <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+                    {media.attachment.type === 'image' ? (
+                      <Image
+                        source={{ uri: media.attachment.uri }}
+                        contentFit="contain"
+                        style={{ width: '100%', height: '100%' }}
+                      />
+                    ) : (
+                      <MediaPreview media={media.attachment} fullScreen />
+                    )}
+                  </View>
+                ) : null}
+                {media.attachment ? (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: 8,
+                      right: rtl ? undefined : 8,
+                      left: rtl ? 8 : undefined,
+                      zIndex: 1,
+                      borderRadius: 22,
+                      backgroundColor: '#0009',
+                    }}>
+                    <IconButton
+                      name="close"
+                      label={t.cancel}
+                      color="#fff"
+                      disabled={busy}
+                      onPress={() => media.change(null)}
+                    />
+                  </View>
+                ) : null}
+                <View
                   style={{
-                    fontSize: 13,
-                    color: audience === value ? colors.onPrimary : colors.text,
+                    flex: 1,
+                    minHeight: 0,
+                    justifyContent: media.attachment ? 'flex-end' : 'center',
+                    paddingVertical: 24,
+                  }}
+                  pointerEvents="box-none">
+                  <TextInput
+                    multiline
+                    editable={!busy}
+                    maxLength={media.attachment ? 200 : 280}
+                    accessibilityLabel={t.yourStory}
+                    value={body}
+                    onChangeText={setBody}
+                    placeholder={
+                      locale === 'ar'
+                        ? 'اكتب شيئاً…'
+                        : locale === 'fr'
+                          ? 'Écrivez quelque chose…'
+                          : 'Write something…'
+                    }
+                    placeholderTextColor="#ffffff80"
+                    style={{
+                      minHeight: media.attachment ? 64 : 104,
+                      maxHeight: '100%',
+                      fontSize: media.attachment
+                        ? 20
+                        : body.length > 160
+                          ? 22
+                          : body.length > 80
+                            ? 26
+                            : 32,
+                      lineHeight: media.attachment
+                        ? 28
+                        : body.length > 160
+                          ? 30
+                          : body.length > 80
+                            ? 34
+                            : 42,
+                      fontWeight: '600',
+                      color: '#fff',
+                      padding: 24,
+                      textAlign: 'center',
+                      textAlignVertical: 'center',
+                      writingDirection: 'auto',
+                      backgroundColor: media.attachment ? '#0008' : 'transparent',
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 8, gap: 10 }}>
+                {media.busy ? (
+                  <View style={{ alignItems: 'center' }}>
+                    <Text style={{ color: colors.secondary, fontSize: 12 }}>
+                      {t.uploading} {Math.round(media.progress * 100)}%
+                    </Text>
+                    <Pressable
+                      accessibilityRole="button"
+                      onPress={cancelUpload}
+                      style={{ minHeight: 44, justifyContent: 'center' }}>
+                      <Text style={{ color: colors.text }}>{t.cancelUpload}</Text>
+                    </Pressable>
+                  </View>
+                ) : null}
+                {failed || media.failed ? (
+                  <Text accessibilityRole="alert" style={{ color: colors.text, fontSize: 13 }}>
+                    {copy.failedPublish}
+                  </Text>
+                ) : null}
+                <View
+                  style={{
+                    flexDirection: rtl ? 'row-reverse' : 'row',
+                    alignItems: 'center',
+                    gap: 8,
                   }}>
-                  {copy[value]}
-                </Text>
-              </Pressable>
-            ))}
-          </View>
-          {media.busy ? (
-            <View style={{ padding: 12, alignItems: 'center' }}>
-              <Text style={{ color: colors.secondary, fontSize: 12 }}>
-                {t.uploading} {Math.round(media.progress * 100)}%
-              </Text>
-              <Pressable
-                accessibilityRole="button"
-                onPress={cancelUpload}
-                style={{ minHeight: 44, justifyContent: 'center' }}>
-                <Text style={{ color: colors.text }}>{t.cancelUpload}</Text>
-              </Pressable>
-            </View>
-          ) : null}
-          {media.attachment ? (
-            <View style={{ alignItems: 'center', padding: 16 }}>
-              <MediaPreview media={media.attachment} />
-              <IconButton
-                name="close"
-                label={t.cancel}
-                color={colors.secondary}
-                disabled={busy}
-                onPress={() => media.change(null)}
+                  <View
+                    style={{
+                      flexDirection: rtl ? 'row-reverse' : 'row',
+                      gap: 4,
+                      borderRadius: 24,
+                      backgroundColor: colors.surface,
+                      paddingHorizontal: 4,
+                    }}>
+                    <FigmaButton
+                      disabled={busy}
+                      name="photo"
+                      label={t.camera}
+                      onPress={() => setCamera(true)}
+                    />
+                    <FigmaButton
+                      disabled={busy}
+                      name="gallery"
+                      label={t.photo}
+                      onPress={() => void media.choose()}
+                    />
+                  </View>
+                  <View
+                    accessibilityLabel={copy.audience}
+                    style={{
+                      flex: 1,
+                      minWidth: 0,
+                      flexDirection: rtl ? 'row-reverse' : 'row',
+                      justifyContent: 'flex-end',
+                      gap: 4,
+                    }}>
+                    {(['followers', 'public'] as const).map(value => (
+                      <Pressable
+                        key={value}
+                        accessibilityRole="radio"
+                        accessibilityState={{ checked: audience === value }}
+                        disabled={busy}
+                        onPress={() => setAudience(value)}
+                        style={{
+                          minHeight: 44,
+                          paddingHorizontal: 10,
+                          borderRadius: 22,
+                          justifyContent: 'center',
+                          backgroundColor: audience === value ? colors.surface : 'transparent',
+                        }}>
+                        <Text
+                          numberOfLines={1}
+                          style={{
+                            fontSize: 12,
+                            fontWeight: audience === value ? '600' : '400',
+                            color: audience === value ? colors.text : colors.secondary,
+                          }}>
+                          {copy[value]}
+                        </Text>
+                      </Pressable>
+                    ))}
+                  </View>
+                </View>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={t.publishStory}
+                  accessibilityState={{
+                    disabled: busy || (!body.trim() && !media.attachment),
+                    busy,
+                  }}
+                  disabled={busy || (!body.trim() && !media.attachment)}
+                  onPress={() => void publish()}
+                  style={{
+                    minHeight: 48,
+                    borderRadius: 24,
+                    backgroundColor: colors.primary,
+                    flexDirection: rtl ? 'row-reverse' : 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                    opacity: busy || (!body.trim() && !media.attachment) ? 0.4 : 1,
+                  }}>
+                  <Icon name="send" size={18} color={colors.onPrimary} />
+                  <Text style={{ color: colors.onPrimary, fontSize: 14, fontWeight: '700' }}>
+                    {busy ? copy.publishing : t.publishStory}
+                  </Text>
+                </Pressable>
+              </View>
+              <CameraCapture
+                open={camera}
+                close={() => setCamera(false)}
+                captured={value => {
+                  if (mounted.current && !closed.current && !lock.current) media.change(value);
+                }}
+                gallery={() => void media.choose()}
               />
             </View>
-          ) : null}
-          <TextInput
-            multiline
-            editable={!busy}
-            maxLength={2000}
-            accessibilityLabel={t.yourStory}
-            value={body}
-            onChangeText={setBody}
-            placeholder={t.message}
-            placeholderTextColor={colors.secondary}
-            style={{
-              flex: 1,
-              fontSize: 24,
-              lineHeight: 34,
-              color: colors.text,
-              padding: 24,
-              textAlignVertical: 'top',
-            }}
-          />
-          {failed || media.failed ? (
-            <Text accessibilityRole="alert" style={{ padding: 16, color: colors.text }}>
-              {copy.failedPublish}
-            </Text>
-          ) : null}
-          <View style={{ padding: 16, flexDirection: rtl ? 'row-reverse' : 'row', gap: 16 }}>
-            <FigmaButton
-              disabled={busy}
-              name="photo"
-              label={t.camera}
-              onPress={() => setCamera(true)}
-            />
-            <FigmaButton
-              disabled={busy}
-              name="gallery"
-              label={t.photo}
-              onPress={() => void media.choose()}
-            />
-          </View>
-          <CameraCapture
-            open={camera}
-            close={() => setCamera(false)}
-            captured={value => {
-              if (mounted.current && !closed.current && !lock.current) media.change(value);
-            }}
-            gallery={() => void media.choose()}
-          />
-        </View>
-      </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
+      </SafeAreaProvider>
     </Modal>
   );
 }

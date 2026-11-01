@@ -57,8 +57,10 @@ vi.mock('expo-image', () => ({
   },
 }));
 vi.mock('react-native-safe-area-context', () => ({
-  useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
+  SafeAreaProvider: ({ children }: any) => <div>{children}</div>,
+  SafeAreaView: ({ children }: any) => <div>{children}</div>,
 }));
+vi.mock('expo-status-bar', () => ({ StatusBar: () => null }));
 vi.mock('react-native', () => ({
   Platform: { OS: 'web' },
   KeyboardAvoidingView: ({ children }: any) => <div>{children}</div>,

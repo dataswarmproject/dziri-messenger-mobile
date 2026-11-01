@@ -63,7 +63,8 @@ export function SettingsScreen({
           gap: 28,
         }}>
         <Image
-          source={me.image ? { uri: me.image } : require('../../assets/dziri-ring.svg')}
+          source={me.image ? { uri: me.image } : require('../../assets/dziri-ring-transparent.png')}
+          tintColor={me.image ? undefined : colors.text}
           contentFit="contain"
           style={{ width: 115, height: 115, borderRadius: me.image ? 58 : 0 }}
         />

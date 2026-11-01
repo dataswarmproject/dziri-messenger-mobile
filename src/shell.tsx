@@ -44,7 +44,8 @@ export function MessengerShell({
               gap: 10,
             }}>
             <Image
-              source={require('../assets/dziri-ring.png')}
+              source={require('../assets/dziri-ring-transparent.png')}
+              tintColor={colors.text}
               contentFit="contain"
               style={{ width: 32, height: 32, borderRadius: 6 }}
             />
@@ -172,7 +173,11 @@ export function MessengerTabs({
             gap: 4,
           }}>
           <Image
-            source={profile.image ? { uri: profile.image } : require('../assets/dziri-ring.svg')}
+            source={
+              profile.image
+                ? { uri: profile.image }
+                : require('../assets/dziri-ring-transparent.png')
+            }
             contentFit={profile.image ? 'cover' : 'contain'}
             tintColor={profile.image ? undefined : colors.text}
             accessible={false}

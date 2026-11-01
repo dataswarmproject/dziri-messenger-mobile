@@ -257,7 +257,7 @@ export function StaffLogin({
       keyboardShouldPersistTaps="handled">
       <View style={{ width: '100%', maxWidth: 420, alignSelf: 'center', gap: 18 }}>
         <Image
-          source={require('../../assets/dziri-ring.svg')}
+          source={require('../../assets/dziri-ring-transparent.png')}
           tintColor={colors.text}
           style={{ width: 76, height: 76 }}
           contentFit="contain"
@@ -358,7 +358,11 @@ function Accounts({
   return (
     <View style={styles.fill}>
       <View style={styles.bar}>
-        <Image source={require('../../assets/dziri-ring.png')} style={{ width: 32, height: 32 }} />
+        <Image
+          source={require('../../assets/dziri-ring-transparent.png')}
+          tintColor={colors.text}
+          style={{ width: 32, height: 32 }}
+        />
         <Text style={styles.title}>Dziri Inbox</Text>
         <Action label="Sign out" onPress={logout} />
       </View>

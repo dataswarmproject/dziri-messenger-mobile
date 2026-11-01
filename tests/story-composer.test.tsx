@@ -53,6 +53,7 @@ vi.mock('../src/dziri/typography', () => ({
   ),
 }));
 vi.mock('../src/dziri/icons', () => ({
+  Icon: () => <span aria-hidden="true" />,
   IconButton: ({ label, onPress, disabled }: any) => (
     <button disabled={disabled} aria-label={label} onClick={onPress} />
   ),
@@ -64,8 +65,10 @@ vi.mock('../src/dziri/figma', () => ({
 }));
 vi.mock('../src/dziri/camera', () => ({ CameraCapture: () => null }));
 vi.mock('../src/dziri/media-preview', () => ({ MediaPreview: () => null }));
+vi.mock('expo-image', () => ({ Image: () => <span aria-hidden="true" /> }));
 vi.mock('react-native-safe-area-context', () => ({
-  useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
+  SafeAreaProvider: ({ children }: any) => <div>{children}</div>,
+  SafeAreaView: ({ children }: any) => <div>{children}</div>,
 }));
 vi.mock('react-native', () => ({
   Platform: { OS: 'web' },
@@ -156,4 +159,31 @@ test('video selection publishes its real media type and duration and locks editi
       audience: 'followers',
     }),
   );
+});
+
+test('a text Story publishes the preview background and selected audience', async () => {
+  h.media = null;
+  await show();
+  expect(
+    [...host.querySelectorAll('button')].find(b => b.textContent === 'Publish')!.disabled,
+  ).toBe(true);
+  const input = host.querySelector('textarea')!;
+  await act(async () => {
+    Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value')!.set!.call(
+      input,
+      'A new day',
+    );
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await act(async () =>
+    [...host.querySelectorAll('button')].find(b => b.textContent === 'Public')!.click(),
+  );
+  await publish();
+  expect(h.upload).not.toHaveBeenCalled();
+  expect(h.create).toHaveBeenCalledWith({
+    type: 'text',
+    body: 'A new day',
+    backgroundHex: '#151515',
+    audience: 'public',
+  });
 });

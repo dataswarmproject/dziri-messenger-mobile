@@ -28,6 +28,15 @@ assert.equal(
   sha('assets/dziri-ring.png'),
   'd90e53f48c4e3a3c8b82dd63214757eebbf8794093662ef35153188786eb997d',
 );
+// Android's SVG tint applies to the wrapper rectangle. Use the exact embedded
+// transparent raster for native theme tinting, without redrawing the mark.
+const embeddedRing = Buffer.from(
+  readFileSync(resolve(root, 'assets/dziri-ring.svg'), 'utf8').match(
+    /data:image\/png;base64,([^"]+)/,
+  )[1],
+  'base64',
+);
+assert.deepEqual(readFileSync(resolve(root, 'assets/dziri-ring-transparent.png')), embeddedRing);
 
 const layoutChanges = execFileSync(
   'git',

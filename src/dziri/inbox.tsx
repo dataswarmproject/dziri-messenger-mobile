@@ -28,6 +28,7 @@ type Row = {
   title: string;
   preview: string;
   image?: string;
+  userId?: string;
   at: number;
   unread: number;
   unreadIsMarker?: boolean;
@@ -42,10 +43,12 @@ const ConversationRow = memo(function ConversationRow({
   row,
   open,
   details,
+  profile,
 }: {
   row: Row;
   open: (row: Row) => void;
   details: (row: Row) => void;
+  profile: (row: Row) => void;
 }) {
   const colors = useColors();
   const { rtl, locale, t } = useLocale();
@@ -68,6 +71,9 @@ const ConversationRow = memo(function ConversationRow({
     .join('');
   return (
     <SwipeConversation
+      userId={row.userId}
+      title={row.title}
+      profile={row.userId ? () => profile(row) : undefined}
       threadId={row.kind === 'thread' ? row.id : undefined}
       organization={
         row.organization
@@ -232,6 +238,12 @@ export function InboxScreen({
       ),
     [navigation],
   );
+  const profile = useCallback(
+    (row: Row) => {
+      if (row.userId) navigation.navigate('Profile', { userId: row.userId });
+    },
+    [navigation],
+  );
   if (lane === 'marketplace' ? commerce === undefined : threads === undefined)
     return <Notice text={t.loading} busy />;
   const rows: Row[] =
@@ -253,6 +265,7 @@ export function InboxScreen({
           kind: 'thread',
           title: thread.title || thread.otherUser?.name || thread.otherUser?.handle || t.unknown,
           image: thread.avatarUrl || thread.otherUser?.image,
+          userId: thread.otherUser?._id,
           preview:
             thread.encryption === 'e2ee'
               ? t.encryptionUnavailable
@@ -460,6 +473,7 @@ export function InboxScreen({
             }}
             open={open}
             details={details}
+            profile={profile}
           />
         )}
         keyExtractor={row => row.id}

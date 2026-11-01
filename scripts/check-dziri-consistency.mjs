@@ -11,6 +11,9 @@ execFileSync(
 );
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+execFileSync(process.execPath, [resolve(root, 'scripts/sync-inbox-actions.mjs')], {
+  stdio: 'pipe',
+});
 execFileSync(process.execPath, [resolve(root, 'scripts/sync-messenger-title.mjs')], {
   stdio: 'pipe',
 });

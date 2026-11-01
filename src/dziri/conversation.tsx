@@ -1,4 +1,5 @@
 import { RequestBanner } from './request-report';
+import { historyDraftScope } from './inbox-actions.generated';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { useConvexConnectionState, useMutation, usePaginatedQuery, useQuery } from 'convex/react';
@@ -30,17 +31,26 @@ import {
 } from './message-writes.generated';
 
 export function ConversationScreen(props: NativeStackScreenProps<MessengerRoutes, 'Conversation'>) {
-  return <Conversation key={props.route.params.threadId} {...props} />;
+  const thread = useQuery(dziriApi.thread, { threadId: props.route.params.threadId });
+  return (
+    <Conversation
+      key={`${props.route.params.threadId}:${thread?.historyClearedBefore ?? 0}`}
+      {...props}
+    />
+  );
 }
 function Conversation({
   route,
   navigation,
 }: NativeStackScreenProps<MessengerRoutes, 'Conversation'>) {
   const { threadId } = route.params;
-  const localScope = `${route.params.lane ?? 'friends'}:thread:${threadId}`;
   const { t, locale } = useLocale();
   const colors = useColors();
   const thread = useQuery(dziriApi.thread, { threadId });
+  const localScope = historyDraftScope(
+    `${route.params.lane ?? 'friends'}:thread:${threadId}`,
+    thread?.historyClearedBefore,
+  );
   const me = useQuery(dziriApi.me, {});
   const capabilities = useQuery(dziriApi.capabilities, {});
   const writeActor = thread?.writeContext?.expectedActorId,

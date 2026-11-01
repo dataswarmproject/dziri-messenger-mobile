@@ -2,7 +2,10 @@ import React, { useMemo, useRef, useState, type ReactNode } from 'react';
 import { Animated, PanResponder, Platform, Pressable, View } from 'react-native';
 import { useMutation, useQuery } from 'convex/react';
 import { dziriApi } from './api';
-import { FigmaIcon } from './figma';
+import { IconlyGlyph, type IconlyName } from './iconly';
+import { SafetyAction } from './safety';
+import { DeleteChat, type DeleteChatIntent } from './delete-chat';
+import { inboxActionCopy } from './inbox-actions.generated';
 import { useLocale } from './locale';
 import { useColors } from './ui';
 import { Text } from './typography';
@@ -13,14 +16,22 @@ export function SwipeConversation({
   details,
   children,
   organization,
+  profile,
+  userId,
+  title = '',
 }: {
   threadId?: string;
   details: () => void;
   children: (showActions: () => void, canOpen: () => boolean) => ReactNode;
   organization?: { pinned: boolean; archived: boolean; unread: boolean };
+  profile?: () => void;
+  userId?: string;
+  title?: string;
 }) {
-  const { t, rtl } = useLocale(),
+  const { t, rtl, locale } = useLocale(),
     colors = useColors();
+  const copy = inboxActionCopy[locale];
+  const [deleteIntent, setDeleteIntent] = useState<DeleteChatIntent | null>(null);
   const [open, setOpen] = useState(false),
     [menu, setMenu] = useState(false),
     [busy, setBusy] = useState(false),
@@ -28,8 +39,10 @@ export function SwipeConversation({
   const offset = useRef(new Animated.Value(0)).current,
     opened = useRef(false),
     swipeAt = useRef(0);
-  const width = threadId ? 104 : 52;
+  const width = threadId ? (userId ? 248 : 188) : 60;
   const detail = useQuery(dziriApi.thread, open && threadId ? { threadId } : 'skip');
+  const capabilities = useQuery(dziriApi.capabilities, open || !!deleteIntent ? {} : 'skip');
+  const me = useQuery(dziriApi.me, open || !!deleteIntent ? {} : 'skip');
   const mute = useMutation(dziriApi.muteThread);
   const position = (value: boolean) => {
     opened.current = value;
@@ -89,38 +102,38 @@ export function SwipeConversation({
       setBusy(false);
     }
   }
-  const action = (
-    icon: 'swipeMenu' | 'swipeMute',
-    label: string,
-    onPress: () => void,
-    disabled = false,
-  ) => (
+  const action = (icon: IconlyName, label: string, onPress: () => void, disabled = false) => (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
-      disabled={disabled}
+      disabled={!open || disabled}
+      accessibilityState={{ disabled: !open || disabled }}
       onPress={onPress}
       style={{
-        width: 44,
-        height: 44,
+        width: 56,
+        minHeight: 68,
         alignItems: 'center',
         justifyContent: 'center',
+        gap: 4,
         opacity: disabled ? 0.5 : 1,
       }}>
-      <FigmaIcon name="swipeCircle" />
       <View
         pointerEvents="none"
         style={{
-          position: 'absolute',
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+          backgroundColor: colors.surface,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <FigmaIcon name={icon} />
+        <IconlyGlyph name={icon} color={colors.text} size={20} />
       </View>
+      <Text
+        numberOfLines={2}
+        style={{ color: colors.text, fontSize: 11, lineHeight: 14, textAlign: 'center' }}>
+        {label}
+      </Text>
     </Pressable>
   );
   return (
@@ -137,21 +150,47 @@ export function SwipeConversation({
           right: rtl ? undefined : 8,
           flexDirection: rtl ? 'row-reverse' : 'row',
           alignItems: 'center',
-          gap: 8,
+          gap: 4,
+          pointerEvents: open ? 'auto' : 'none',
         }}>
-        {action('swipeMenu', organization ? t.more : t.details, () => {
-          position(false);
-          if (organization) setMenu(true);
-          else details();
-        })}
         {threadId
           ? action(
-              'swipeMute',
-              (detail?.mutedUntil ?? 0) > Date.now() ? t.unmute : t.mute,
+              'volumeOff',
+              (detail?.mutedUntil ?? 0) > Date.now() ? copy.unmute : copy.mute,
               () => void toggleMute(),
               !detail || busy,
             )
           : null}
+        {threadId
+          ? action(
+              'delete',
+              copy.delete,
+              () => {
+                if (!me?._id || !detail || capabilities?.features?.historyDeletion !== 1) return;
+                setDeleteIntent({
+                  threadId,
+                  expectedActorId: me._id,
+                  throughRevision: detail.historyRevision ?? 0,
+                });
+              },
+              !detail || !me || capabilities?.features?.historyDeletion !== 1,
+            )
+          : null}
+        {action('profile', profile ? copy.profile : t.details, () => {
+          position(false);
+          (profile ?? details)();
+        })}
+        {threadId && userId ? (
+          <SafetyAction
+            userId={userId}
+            name={title}
+            active={open && capabilities?.features?.safety === 1}
+            onComplete={() => position(false)}
+            renderTrigger={({ blocked, disabled, open: showBlock }) =>
+              action('shieldAlert', blocked ? copy.unblock : copy.block, showBlock, disabled)
+            }
+          />
+        ) : null}
       </View>
       <Animated.View
         {...pan.panHandlers}
@@ -172,6 +211,21 @@ export function SwipeConversation({
           },
         )}
       </Animated.View>
+      {deleteIntent ? (
+        <DeleteChat
+          intent={deleteIntent}
+          current={
+            capabilities?.features?.historyDeletion === 1 &&
+            me?._id === deleteIntent.expectedActorId &&
+            !!detail &&
+            (detail.historyRevision ?? 0) === deleteIntent.throughRevision
+          }
+          close={() => {
+            setDeleteIntent(null);
+            position(false);
+          }}
+        />
+      ) : null}
       {menu && organization && threadId ? (
         <ThreadActions
           threadId={threadId}

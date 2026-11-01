@@ -8,18 +8,62 @@ import { Text } from './typography';
 import { ScreenHeading, PersonAvatar } from './screen-parts';
 import { useColors } from './ui';
 import { useLocale } from './locale';
-export function SafetyAction({
+class SafetyBoundary extends React.Component<
+  { children: React.ReactNode; fallback: React.ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
+export function SafetyAction(props: React.ComponentProps<typeof SafetyActionContent>) {
+  const { t } = useLocale(),
+    colors = useColors();
+  const fallback = props.renderTrigger ? (
+    props.renderTrigger({ disabled: true, blocked: !!props.knownBlocked, open: () => {} })
+  ) : (
+    <Pressable
+      disabled
+      accessibilityRole="button"
+      accessibilityState={{ disabled: true }}
+      style={{ minHeight: 44, justifyContent: 'center', opacity: 0.5 }}>
+      <Text style={{ color: colors.primary, fontSize: 14 }}>
+        {props.knownBlocked ? t.unblockAccount : t.blockAccount}
+      </Text>
+    </Pressable>
+  );
+  return (
+    <SafetyBoundary key={`${props.userId}:${props.active !== false}`} fallback={fallback}>
+      <SafetyActionContent {...props} />
+    </SafetyBoundary>
+  );
+}
+function SafetyActionContent({
   userId,
   name,
   knownBlocked,
+  active = true,
+  renderTrigger,
+  onComplete,
 }: {
   userId: string;
   name: string;
   knownBlocked?: boolean;
+  active?: boolean;
+  renderTrigger?: (props: {
+    disabled: boolean;
+    blocked: boolean;
+    open: () => void;
+  }) => React.ReactNode;
+  onComplete?: () => void;
 }) {
   const state = useQuery(
     dziriApi.blockState,
-    knownBlocked === undefined ? { otherUserId: userId } : 'skip',
+    active && knownBlocked === undefined ? { otherUserId: userId } : 'skip',
   );
   const blocked = knownBlocked ?? state?.blocked;
   const block = useMutation(dziriApi.blockUser),
@@ -39,6 +83,7 @@ export function SafetyAction({
       if (intent === 'block') await block({ blockedUserId: userId });
       else await unblock({ blockedUserId: userId });
       setIntent(null);
+      onComplete?.();
     } catch {
       setFailed(true);
     } finally {
@@ -57,14 +102,24 @@ export function SafetyAction({
   );
   return (
     <>
-      {button(
-        blocked ? t.unblockAccount : t.blockAccount,
-        () => {
-          setIntent(blocked ? 'unblock' : 'block');
-          setFailed(false);
-        },
-        blocked === undefined,
-      )}
+      {renderTrigger
+        ? renderTrigger({
+            disabled: blocked === undefined || busy,
+            blocked: !!blocked,
+            open: () => {
+              if (blocked === undefined || busy) return;
+              setIntent(blocked ? 'unblock' : 'block');
+              setFailed(false);
+            },
+          })
+        : button(
+            blocked ? t.unblockAccount : t.blockAccount,
+            () => {
+              setIntent(blocked ? 'unblock' : 'block');
+              setFailed(false);
+            },
+            blocked === undefined,
+          )}
       {intent ? (
         <Modal
           visible

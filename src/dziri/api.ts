@@ -155,6 +155,8 @@ export interface ThreadSummary {
 }
 
 export interface ThreadDetail {
+  historyRevision?: number;
+  historyClearedBefore?: number;
   writeContext?: PersonalWriteContext | null;
   request?: import('./messenger-safety.generated').RequestView;
   canSend?: boolean;
@@ -290,6 +292,11 @@ export const dziriApi = {
   pinMessage: makeFunctionReference<'mutation', { messageId: string; pinned?: boolean }, boolean>(
     'messaging/messages:togglePin',
   ),
+  deleteHistory: makeFunctionReference<
+    'mutation',
+    { threadId: string; expectedActorId: string; throughRevision: number },
+    null
+  >('messaging/organization:deleteHistory'),
   organizeThread: makeFunctionReference<
     'mutation',
     { threadId: string; action: 'archive' | 'pin' | 'unread'; value: boolean },

@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "source": "packages/ui/src/messaging/use-messenger-title.ts",
+  "sourceSha256": "f4ebc868ae0b84477e95bec30637d4e3e73cac8f7bf500070357c20924710cfe",
+  "sha256": "a9c8017605486e6694624855ce4c914f7805dc7a25c845682629da8fe45f0a50",
+  "licenseSha256": "4d53a4544c209881824a8da827263de7c84191150f023e132d83b2b85e56ee9b"
+}

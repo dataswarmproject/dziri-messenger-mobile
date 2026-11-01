@@ -2,6 +2,7 @@ import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { Image } from 'expo-image';
 import { useColors } from './ui';
+import { IconlyGlyph, type IconlyName } from './iconly';
 
 const assets = {
   notifications: require('../../assets/settings/bell.svg'),
@@ -20,6 +21,17 @@ const assets = {
 } as const;
 
 export type SettingsIconName = keyof typeof assets;
+const iconlyNames: Partial<Record<SettingsIconName, IconlyName>> = {
+  notifications: 'notification',
+  active: 'activity',
+  profile: 'profile',
+  privacy: 'privacy',
+  people: 'people',
+  discover: 'discovery',
+  logout: 'logout',
+  phone: 'call',
+  lastSeen: 'time',
+};
 
 export function SettingsIcon({ name, busy = false }: { name: SettingsIconName; busy?: boolean }) {
   const colors = useColors();
@@ -37,6 +49,8 @@ export function SettingsIcon({ name, busy = false }: { name: SettingsIconName; b
       }}>
       {busy ? (
         <ActivityIndicator color={colors.text} size="small" />
+      ) : iconlyNames[name] ? (
+        <IconlyGlyph name={iconlyNames[name]!} color={colors.text} size={20} />
       ) : (
         <Image
           source={assets[name]}

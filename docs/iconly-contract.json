@@ -1,0 +1,411 @@
+{
+  "version": 1,
+  "sourceFile": "https://www.figma.com/design/h74FycxHMr7U98GL6dD2YJ/",
+  "archiveSha256": "8d7b71e1ddd0dc5f10ebeaf6129b2eee336c117286a61526adcbd5b6c9978460",
+  "generatedSha256": "907a3e08aa4ad76382249e371c36ceebf6fb7eeb01cdd2d66f31d31d7cc40c3f",
+  "entries": {
+    "search": {
+      "file": "search.svg",
+      "source": "Iconly/Regular/Light/Search.svg",
+      "sha256": "78924b066384eb748b6a5992ebbd0c4a8c9b50dc6fafebe15068346119550334",
+      "width": 24,
+      "height": 24
+    },
+    "edit": {
+      "file": "edit.svg",
+      "source": "Iconly/Regular/Light/Edit.svg",
+      "sha256": "a1df0657fc20c40db47ab6b4eefe1f581f572b108d89d253faedee05885ab17b",
+      "width": 24,
+      "height": 24
+    },
+    "compose": {
+      "file": "compose.svg",
+      "source": "Iconly/Regular/Light/Edit Square.svg",
+      "sha256": "f4e86a37780b3c103663c3b943c79b90f27e851a78980fd2effd7080dc76c329",
+      "width": 24,
+      "height": 24
+    },
+    "image": {
+      "file": "image.svg",
+      "source": "Iconly/Regular/Light/Image.svg",
+      "sha256": "0472143e88eebce2be9824a7d0ffc35e4aeac3f42e3b3cf45a503ce95080bf2d",
+      "width": 24,
+      "height": 24
+    },
+    "camera": {
+      "file": "camera.svg",
+      "source": "Iconly/Regular/Light/Camera.svg",
+      "sha256": "0f67481c21c6f9f6c0f7437b5ead6cccc9b329f13083a7d75d78e13089da93dd",
+      "width": 24,
+      "height": 24
+    },
+    "video": {
+      "file": "video.svg",
+      "source": "Iconly/Regular/Light/Video.svg",
+      "sha256": "c95aa331aaefb36fb38e3204c05bdecae2955107df1afd0e5d0e90e460765073",
+      "width": 24,
+      "height": 24
+    },
+    "call": {
+      "file": "call.svg",
+      "source": "Iconly/Regular/Light/Call.svg",
+      "sha256": "2dfed8705ed06b321461bcd765cb00d60bd2e7dd29662a828aebb8c5ee36c320",
+      "width": 24,
+      "height": 24
+    },
+    "voice": {
+      "file": "voice.svg",
+      "source": "Iconly/Regular/Light/Voice.svg",
+      "sha256": "7e558daa7f41a6116b772167a52cbcf05c874bbd8ca5c1e3bf348f9e979296f9",
+      "width": 24,
+      "height": 24
+    },
+    "category": {
+      "file": "category.svg",
+      "source": "Iconly/Regular/Light/Category.svg",
+      "sha256": "047a00a7c293480d314791a8dbe051470fc27dd837b7908364de8d3536d80e4a",
+      "width": 24,
+      "height": 24
+    },
+    "chat": {
+      "file": "chat.svg",
+      "source": "Iconly/Regular/Light/Chat.svg",
+      "sha256": "78d6de8f5097871ed5cbc2f75afd0f3d625b2559f3eab2c5ef562daf581bb4f7",
+      "width": 24,
+      "height": 24
+    },
+    "people": {
+      "file": "people.svg",
+      "source": "Iconly/Regular/Light/2 User.svg",
+      "sha256": "5ba1576a3d8cefe344349cff8ee0f7cc5b40917b83ad59782af8b8e06fd2329a",
+      "width": 24,
+      "height": 24
+    },
+    "group": {
+      "file": "group.svg",
+      "source": "Iconly/Regular/Light/3 User.svg",
+      "sha256": "d6deedd54117116e02f01c13b2012fa35c1b4691c3afce182592fec87a95eb87",
+      "width": 24,
+      "height": 24
+    },
+    "addUser": {
+      "file": "add-user.svg",
+      "source": "Iconly/Regular/Light/Add User.svg",
+      "sha256": "0dacc3310c84e4ec7e59c722436f728ab7d074a35fcd9d69d5b07031c664b790",
+      "width": 24,
+      "height": 24
+    },
+    "marketplace": {
+      "file": "marketplace.svg",
+      "source": "Iconly/Regular/Light/Bag.svg",
+      "sha256": "ea1b46bdc4aad139be681a964c6d923c74fcde38184905e1ae0af7f7f2706ab9",
+      "width": 24,
+      "height": 24
+    },
+    "discovery": {
+      "file": "discovery.svg",
+      "source": "Iconly/Regular/Light/Discovery.svg",
+      "sha256": "0e969bf91f11c214f4a0265a916501332887ab028fb76e342fd03e46c0237807",
+      "width": 24,
+      "height": 24
+    },
+    "settings": {
+      "file": "settings.svg",
+      "source": "Iconly/Regular/Light/Setting.svg",
+      "sha256": "c8d6bb4ccb6c9f378cb711fb7a357e4ccbe7b0c3251994d8c089961794a189d8",
+      "width": 24,
+      "height": 24
+    },
+    "profile": {
+      "file": "profile.svg",
+      "source": "Iconly/Regular/Light/Profile.svg",
+      "sha256": "c0aaef179ff6bb4ba610f59f1c57f1cd7adeba0bf6eaa39ba403ea30351cc942",
+      "width": 24,
+      "height": 24
+    },
+    "logout": {
+      "file": "logout.svg",
+      "source": "Iconly/Regular/Light/Logout.svg",
+      "sha256": "f7351cbd263f7b786ffb78d9f600f410ea2ee67ca81028e89557d99a4fda1cd2",
+      "width": 24,
+      "height": 24
+    },
+    "login": {
+      "file": "login.svg",
+      "source": "Iconly/Regular/Light/Login.svg",
+      "sha256": "efbb4a433d2338e13711d4483303dfb967823c6d15effcbbf6c2a7a1ccf9f627",
+      "width": 24,
+      "height": 24
+    },
+    "show": {
+      "file": "show.svg",
+      "source": "Iconly/Regular/Light/Show.svg",
+      "sha256": "af668e4c69e40ee2645f4930d1a37f500773175b34f531d9a9bfd81bc030d464",
+      "width": 24,
+      "height": 24
+    },
+    "hide": {
+      "file": "hide.svg",
+      "source": "Iconly/Regular/Light/Hide.svg",
+      "sha256": "eed89b4a397bc8132bf3c3ca2429e1de74d61a41100e72226e2434c271206d33",
+      "width": 24,
+      "height": 24
+    },
+    "time": {
+      "file": "time.svg",
+      "source": "Iconly/Regular/Light/Time Circle.svg",
+      "sha256": "e4a04774611518aae521d29e66606b33b09b16dc29ab6e8dbac422721bb3f834",
+      "width": 24,
+      "height": 24
+    },
+    "privacy": {
+      "file": "privacy.svg",
+      "source": "Iconly/Regular/Light/Shield Done.svg",
+      "sha256": "0bc179206bb91f6d10ba6efa97d1e957c4da32b6d5bc77af349ae4fb39cd6838",
+      "width": 24,
+      "height": 24
+    },
+    "shieldAlert": {
+      "file": "shield-alert.svg",
+      "source": "Iconly/Regular/Light/Shield Fail.svg",
+      "sha256": "389645284c2d6d37ff1b135962326a62140b0bcb189072c75271c93dafae1ec4",
+      "width": 24,
+      "height": 24
+    },
+    "danger": {
+      "file": "danger.svg",
+      "source": "Iconly/Regular/Light/Danger Triangle.svg",
+      "sha256": "8f08380a2ea7e6e49e8688bb6333edaa5dea406897d54cda77bfe6d6a4897ab5",
+      "width": 24,
+      "height": 24
+    },
+    "info": {
+      "file": "info.svg",
+      "source": "Iconly/Regular/Light/Info Square.svg",
+      "sha256": "4fa7069d99974d27c3460e3a262b46dad8df4cdc0a8c4e03ef4d91dee195ef14",
+      "width": 24,
+      "height": 24
+    },
+    "notification": {
+      "file": "notification.svg",
+      "source": "Iconly/Regular/Light/Notification.svg",
+      "sha256": "233bc7e974ee45dec06a90c87a328ae58284904dfbea348ac00a314fb1d4c846",
+      "width": 24,
+      "height": 24
+    },
+    "send": {
+      "file": "send.svg",
+      "source": "Iconly/Regular/Light/Send.svg",
+      "sha256": "90ef668c2ed8e66980b67537ff5a858810bf11b773cff6e6fe08a00e0a05a75a",
+      "width": 24,
+      "height": 24
+    },
+    "plus": {
+      "file": "plus.svg",
+      "source": "Iconly/Regular/Light/Plus.svg",
+      "sha256": "d41c4e58377a1f43f6bb1f6c3b23070edde257e81c1c0d475afa00c7c9b2a22f",
+      "width": 24,
+      "height": 24
+    },
+    "close": {
+      "file": "close.svg",
+      "source": "Iconly/Regular/Light/Close Square.svg",
+      "sha256": "0f7d4f4f49e1b528f2ad9eb248fb2b6b5a4c6000ebaabb8b5904a15f1c5080ab",
+      "width": 24,
+      "height": 24
+    },
+    "delete": {
+      "file": "delete.svg",
+      "source": "Iconly/Regular/Light/Delete.svg",
+      "sha256": "0aabfc7766eb4432369e3eb140683c0a2876ee4162e9732d1b7e499bc6529ac4",
+      "width": 24,
+      "height": 24
+    },
+    "play": {
+      "file": "play.svg",
+      "source": "Iconly/Regular/Light/Play.svg",
+      "sha256": "e233b4554a7abb49baf9926420777547397a3d58e2bd71a7b4e78afb7a2d4275",
+      "width": 24,
+      "height": 24
+    },
+    "file": {
+      "file": "file.svg",
+      "source": "Iconly/Regular/Light/Paper.svg",
+      "sha256": "90e7dac5bac98a630cd330a50e043af7c089814a227102e8d8df8c87533ad63c",
+      "width": 24,
+      "height": 24
+    },
+    "document": {
+      "file": "document.svg",
+      "source": "Iconly/Regular/Light/Document.svg",
+      "sha256": "bbde2f35ec0e786ded37ef7578d3fb193cd5f178556627064631a9d6bcbca1a8",
+      "width": 24,
+      "height": 24
+    },
+    "paperPlus": {
+      "file": "paper-plus.svg",
+      "source": "Iconly/Regular/Light/Paper Plus.svg",
+      "sha256": "214abff9fdb5bc050577c5437c819e150dc0a64f025b92d810cdaf321e57bbdd",
+      "width": 24,
+      "height": 24
+    },
+    "download": {
+      "file": "download.svg",
+      "source": "Iconly/Regular/Light/Download.svg",
+      "sha256": "7a18a39bf56a233a122c71f2b9de3884ecf8c78fdeb8ddc83c3f7fadfb300697",
+      "width": 24,
+      "height": 24
+    },
+    "upload": {
+      "file": "upload.svg",
+      "source": "Iconly/Regular/Light/Upload.svg",
+      "sha256": "1e2d58678ec7902e100ea212a030d31a32e5ed9c4fda87a1ce9b5e8b3ee54a45",
+      "width": 24,
+      "height": 24
+    },
+    "lock": {
+      "file": "lock.svg",
+      "source": "Iconly/Regular/Light/Lock.svg",
+      "sha256": "975d0db64bc0f1280b370a6abdf16238e2c6a7b87947338b38e946ecc6aa0999",
+      "width": 24,
+      "height": 24
+    },
+    "password": {
+      "file": "password.svg",
+      "source": "Iconly/Regular/Light/Password.svg",
+      "sha256": "7799e73cc36e93399af18d5c73b3744b070b8972514fba3a9a29d8a2692adaa3",
+      "width": 24,
+      "height": 24
+    },
+    "heart": {
+      "file": "heart.svg",
+      "source": "Iconly/Regular/Light/Heart.svg",
+      "sha256": "5ebee04b508cabe18cc1d8b2a9fc91f9cc71d5d1260d527ef58e13e297ad065e",
+      "width": 24,
+      "height": 24
+    },
+    "location": {
+      "file": "location.svg",
+      "source": "Iconly/Regular/Light/Location.svg",
+      "sha256": "3ce777d5ba28f872e5605c1dc679373e7cc1497f9df99662c3829b16d9b7e99c",
+      "width": 24,
+      "height": 24
+    },
+    "activity": {
+      "file": "activity.svg",
+      "source": "Iconly/Regular/Light/Activity.svg",
+      "sha256": "425768b6362d8d8754774420444d4746c082a74954ca39af646fd38ec47031d1",
+      "width": 24,
+      "height": 24
+    },
+    "filter": {
+      "file": "filter.svg",
+      "source": "Iconly/Regular/Light/Filter.svg",
+      "sha256": "36353db6bd5a761eb93951f18b6c3233f6c1fc8afa41b1468bc8633f0cdd9962",
+      "width": 24,
+      "height": 24
+    },
+    "more": {
+      "file": "more.svg",
+      "source": "Iconly/Regular/Light/More Circle.svg",
+      "sha256": "c3bb8ec51fe36e9d753fa35bc7160719cbc00d9f47f25b5230a5fdc86632ec80",
+      "width": 24,
+      "height": 24
+    },
+    "archive": {
+      "file": "archive.svg",
+      "source": "Iconly/Regular/Light/Folder.svg",
+      "sha256": "eb6205897ce431d0f316a9430892f6c9e990a9e2a118e84995087e6a6cedd3c2",
+      "width": 24,
+      "height": 24
+    },
+    "volumeOff": {
+      "file": "volume-off.svg",
+      "source": "Iconly/Regular/Light/Volume Off.svg",
+      "sha256": "d8f9eef4dc44837db588e61c1a7edd9893182836c4b88622d6bd57af9ee8301b",
+      "width": 24,
+      "height": 24
+    },
+    "volumeUp": {
+      "file": "volume-up.svg",
+      "source": "Iconly/Regular/Light/Volume Up.svg",
+      "sha256": "efb14ab86cdb262ebea491edeca8de6c1ebb1b832256e531dd6bc27bc522471e",
+      "width": 24,
+      "height": 24
+    },
+    "back": {
+      "file": "back.svg",
+      "source": "Iconly/Regular/Outline/Arrow - Left.svg",
+      "sha256": "aa5bbbe99153e8b543939304ca9f80f032097abeb2b2149a00d7a867f4415fe4",
+      "width": 24,
+      "height": 24
+    },
+    "chevronLeft": {
+      "file": "chevron-left.svg",
+      "source": "Iconly/Regular/Outline/Arrow - Left 2.svg",
+      "sha256": "686e203dcffcdbe81a39514f2cea5f453d4baa359dd1f2e4d90fbea1c0ff7d1e",
+      "width": 24,
+      "height": 24
+    },
+    "chevronRight": {
+      "file": "chevron-right.svg",
+      "source": "Iconly/Regular/Outline/Arrow - Right 2.svg",
+      "sha256": "337c5eae2a20d901a29b40d6e4c1f188032518435b9c19b67cda85357623b82c",
+      "width": 24,
+      "height": 24
+    },
+    "checkSquare": {
+      "file": "check-square.svg",
+      "source": "Iconly/Regular/Light/Tick Square.svg",
+      "sha256": "de0f9207de6baec906ec0ec16fc8d468cfee17279589f0b8389cff6f50d2caba",
+      "width": 24,
+      "height": 24
+    },
+    "chatActive": {
+      "file": "chat-active.png",
+      "source": "Iconly/Regular/Bold/Chat.png",
+      "sha256": "746af2ea9b995f38f3362bd0401579e6ec4a8634553146e19db1c7d892190a2c",
+      "width": 24,
+      "height": 24,
+      "exportScale": 2
+    },
+    "peopleActive": {
+      "file": "people-active.png",
+      "source": "Iconly/Regular/Bold/2 User.png",
+      "sha256": "286df4a49977c5eba46c5c768e02ef15356bcbf51186248d374c14575845ab08",
+      "width": 24,
+      "height": 24,
+      "exportScale": 2
+    },
+    "marketplaceActive": {
+      "file": "marketplace-active.png",
+      "source": "Iconly/Regular/Bold/Bag.png",
+      "sha256": "709fb3ddbd2351c18e6f8884e7796f9d7bc9a61f9cb800a5bd2b85abab38bc74",
+      "width": 24,
+      "height": 24,
+      "exportScale": 2
+    },
+    "discoveryActive": {
+      "file": "discovery-active.png",
+      "source": "Iconly/Regular/Bold/Discovery.png",
+      "sha256": "735252af8365cd9ad247a05e430a8b317711f3e59d06e0ea71fd0c124e355dd7",
+      "width": 24,
+      "height": 24,
+      "exportScale": 2
+    },
+    "dangerCircle": {
+      "file": "danger-circle.svg",
+      "source": "Iconly/Regular/Light/Danger Circle.svg",
+      "sha256": "b8ee748bd99b98e8370706a05cdd664bcc1d872694241700c70a2e94e572b157",
+      "width": 24,
+      "height": 24
+    },
+    "swap": {
+      "file": "swap.svg",
+      "source": "Iconly/Regular/Light/Swap.svg",
+      "sha256": "1f8f0e977f9f58d319c6c691def151ed7b8ee65f32e0f80e51f71ef995ddfd60",
+      "width": 24,
+      "height": 24
+    }
+  }
+}

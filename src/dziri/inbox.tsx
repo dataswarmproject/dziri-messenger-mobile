@@ -1,6 +1,7 @@
 import { safetyCopy } from './messenger-safety.generated';
 import { staffCopy } from './messenger-staff.generated';
 import { messengerMetrics as metrics } from './colors';
+import { MessengerBrandTitle } from './messenger-brand-title';
 import React, { memo, useCallback, useState } from 'react';
 import { Linking, Pressable, View } from 'react-native';
 import { Text, TextInput } from './typography';
@@ -281,6 +282,7 @@ export function InboxScreen({
         }}>
         <Text
           accessibilityRole="header"
+          accessibilityLabel={lane === 'friends' ? t.app : undefined}
           numberOfLines={1}
           style={{
             flex: 1,
@@ -289,7 +291,13 @@ export function InboxScreen({
             fontWeight: '700',
             color: colors.text,
           }}>
-          {lane === 'friends' ? t.app : lane === 'marketplace' ? t.marketplaceTab : t.teamView}
+          {lane === 'friends' ? (
+            <MessengerBrandTitle title={t.app} />
+          ) : lane === 'marketplace' ? (
+            t.marketplaceTab
+          ) : (
+            t.teamView
+          )}
         </Text>
         <FigmaButton
           name="newMessage"

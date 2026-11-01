@@ -1,9 +1,10 @@
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { Image } from 'expo-image';
 import { useAppearance } from './appearance';
 import { useLocale } from './locale';
 import { messengerColors } from './colors';
+import { IconlyGlyph, type IconlyName } from './iconly';
 export { messengerColors } from './colors';
 // Natural SVG dimensions are retained from the exported Figma layers.
 const assets = {
@@ -53,10 +54,84 @@ const assets = {
   group: [require('../../assets/figma/group.svg'), 40, 40],
 } as const;
 export type FigmaIconName = keyof typeof assets;
+const iconlyNames: Partial<Record<FigmaIconName, IconlyName>> = {
+  search: 'search',
+  newMessage: 'compose',
+  cameraTop: 'camera',
+  discover: 'discovery',
+  people: 'people',
+  peopleActive: 'peopleActive',
+  chats: 'chatActive',
+  chatsInactive: 'chat',
+  discoverActive: 'discoveryActive',
+  discoverDark: 'discovery',
+  back: 'back',
+  call: 'call',
+  video: 'video',
+  actions: 'category',
+  photo: 'camera',
+  gallery: 'image',
+  audio: 'voice',
+  profileAudio: 'call',
+  profileVideo: 'video',
+  profileUser: 'profile',
+  profileMute: 'notification',
+  cameraClose: 'close',
+  cameraGallery: 'image',
+  switchCamera: 'swap',
+  pickerClose: 'close',
+  pickerSearch: 'search',
+  swipeMenu: 'more',
+  swipeMute: 'notification',
+  settingsActive: 'activity',
+  settingsPhone: 'call',
+  settingsPeople: 'people',
+  settingsMessaging: 'chat',
+  chevron: 'chevronRight',
+  peopleRequests: 'addUser',
+  peopleAdd: 'addUser',
+  group: 'group',
+};
 export function FigmaIcon({ name }: { name: FigmaIconName }) {
   const [source, width, height] = assets[name];
   const { dark } = useAppearance();
   const { rtl } = useLocale();
+  const canonical = iconlyNames[name];
+  if (canonical) {
+    const circle = [
+      'newMessage',
+      'cameraTop',
+      'profileAudio',
+      'profileVideo',
+      'profileUser',
+      'profileMute',
+      'peopleRequests',
+      'peopleAdd',
+      'group',
+    ].includes(name);
+    const glyph = (
+      <IconlyGlyph
+        name={canonical}
+        color={messengerColors(dark).text}
+        mirror={rtl && (name === 'back' || name === 'chevron')}
+      />
+    );
+    return circle ? (
+      <View
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+          backgroundColor: messengerColors(dark).surface,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        {glyph}
+      </View>
+    ) : (
+      glyph
+    );
+  }
   const selectedGlyph = [
     'chats',
     'peopleActive',

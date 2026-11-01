@@ -11,7 +11,11 @@ execFileSync(
 );
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+execFileSync(process.execPath, [resolve(root, 'scripts/sync-messenger-title.mjs')], {
+  stdio: 'pipe',
+});
 const upstream = 'e3c8fc5f3d0ece96ea6843e38759bc9b44e13112';
+execFileSync(process.execPath, [resolve(root, 'scripts/sync-iconly.mjs')], { stdio: 'pipe' });
 const sha = path =>
   createHash('sha256')
     .update(readFileSync(resolve(root, path)))

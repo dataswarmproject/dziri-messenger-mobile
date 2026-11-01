@@ -2,6 +2,7 @@ import React from 'react';
 import { ActivityIndicator, Pressable } from 'react-native';
 import { Image } from 'expo-image';
 import { useLocale } from './locale';
+import { IconlyGlyph, type IconlyName } from './iconly';
 const sources = {
   file: require('../../assets/icons/file.svg'),
   link: require('../../assets/icons/link.svg'),
@@ -32,8 +33,48 @@ const sources = {
   send: require('../../assets/icons/send.svg'),
 };
 export type IconName = keyof typeof sources;
-export function Icon({ name, color, size = 20 }: { name: IconName; color: string; size?: number }) {
+const iconlyNames: Partial<Record<IconName, IconlyName>> = {
+  file: 'file',
+  play: 'play',
+  menu: 'category',
+  addCircle: 'plus',
+  more: 'more',
+  edit: 'edit',
+  trash: 'delete',
+  eye: 'show',
+  eyeOff: 'hide',
+  logout: 'logout',
+  search: 'search',
+  support: 'chat',
+  staff: 'people',
+  marketplace: 'marketplace',
+  plus: 'plus',
+  close: 'close',
+  info: 'info',
+  send: 'send',
+};
+export function Icon({
+  name,
+  color,
+  size = 20,
+  active = false,
+}: {
+  name: IconName;
+  color: string;
+  size?: number;
+  active?: boolean;
+}) {
   const { rtl } = useLocale();
+  const canonical =
+    active && name === 'staff'
+      ? 'peopleActive'
+      : active && name === 'marketplace'
+        ? 'marketplaceActive'
+        : iconlyNames[name];
+  if (canonical)
+    return (
+      <IconlyGlyph name={canonical} color={color} size={size} mirror={rtl && name === 'send'} />
+    );
   return (
     <Image
       source={sources[name]}

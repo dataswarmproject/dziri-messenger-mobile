@@ -130,7 +130,8 @@ export function MessengerTabs({
             {tab === 'staff' || tab === 'marketplace' ? (
               <Icon
                 name={tab}
-                size={28}
+                size={24}
+                active={tab === selected}
                 color={tab === selected ? colors.primary : colors.secondary}
               />
             ) : (

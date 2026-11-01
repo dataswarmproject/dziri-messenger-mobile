@@ -183,7 +183,7 @@ function ConnectedApp({ url }: { url: string }) {
   return <SessionRuntime key={session} url={url} reset={() => setSession(value => value + 1)} />;
 }
 
-function SessionRuntime({ url, reset }: { url: string; reset: () => void }) {
+export function SessionRuntime({ url, reset }: { url: string; reset: () => void }) {
   const client = useMemo(() => new ConvexReactClient(url, { unsavedChangesWarning: false }), [url]);
   useEffect(
     () => () => {

@@ -17,6 +17,7 @@ export interface MessengerCapabilities {
     forwarding?: number;
     inboxOrganization?: number;
     historyDeletion?: number;
+    marketplaceMute?: number;
     groupManagement?: number;
     safety?: number;
   };

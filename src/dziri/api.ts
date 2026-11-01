@@ -23,6 +23,7 @@ import type {
 } from './message-receipts.generated';
 
 export interface CommerceSummary {
+  peerId?: string;
   hasUnread?: boolean;
   _id: string;
   storeId?: string;
@@ -462,6 +463,21 @@ export const dziriApi = {
   commerce: makeFunctionReference<'query', { lane: 'marketplace' }, CommerceSummary[]>(
     'messaging/messenger:listCommerce',
   ),
+  commerceInboxState: makeFunctionReference<
+    'query',
+    { conversationId: string; storeId?: string },
+    { mutedUntil: number; peerId: string; commandContext: MarketplaceWriteContext } | null
+  >('marketplaceInbox:state'),
+  commerceMute: makeFunctionReference<
+    'mutation',
+    {
+      conversationId: string;
+      storeId?: string;
+      untilMs: number;
+      commandContext: MarketplaceWriteContext;
+    },
+    null
+  >('marketplaceInbox:setMuted'),
   commerceDetail: makeFunctionReference<
     'query',
     { conversationId: string; storeId?: string },

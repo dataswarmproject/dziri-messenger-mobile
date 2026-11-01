@@ -13,6 +13,7 @@ import { ThreadActions } from './thread-actions';
 
 export function SwipeConversation({
   threadId,
+  commerce,
   details,
   children,
   organization,
@@ -21,6 +22,7 @@ export function SwipeConversation({
   title = '',
 }: {
   threadId?: string;
+  commerce?: { conversationId: string; storeId?: string };
   details: () => void;
   children: (showActions: () => void, canOpen: () => boolean) => ReactNode;
   organization?: { pinned: boolean; archived: boolean; unread: boolean };
@@ -39,11 +41,20 @@ export function SwipeConversation({
   const offset = useRef(new Animated.Value(0)).current,
     opened = useRef(false),
     swipeAt = useRef(0);
-  const width = threadId ? (userId ? 248 : 188) : 60;
+  const width = commerce ? 248 : threadId ? (userId ? 248 : 188) : 60;
   const detail = useQuery(dziriApi.thread, open && threadId ? { threadId } : 'skip');
   const capabilities = useQuery(dziriApi.capabilities, open || !!deleteIntent ? {} : 'skip');
   const me = useQuery(dziriApi.me, open || !!deleteIntent ? {} : 'skip');
+  const commerceState = useQuery(
+    dziriApi.commerceInboxState,
+    open && commerce && capabilities?.features?.marketplaceMute === 1 ? commerce : 'skip',
+  );
   const mute = useMutation(dziriApi.muteThread);
+  const muteCommerce = useMutation(dziriApi.commerceMute);
+  const muteState = commerce ? commerceState : detail;
+  const muteReady = commerce
+    ? !!commerceState && me?._id === commerceState.commandContext.expectedActorId
+    : !!detail;
   const position = (value: boolean) => {
     opened.current = value;
     setOpen(value);
@@ -87,14 +98,15 @@ export function SwipeConversation({
     [offset, rtl, width],
   );
   async function toggleMute() {
-    if (!threadId || !detail || busy) return;
+    if (!muteReady || !muteState || busy) return;
     setBusy(true);
     setFailed(false);
     try {
-      await mute({
-        threadId,
-        untilMs: (detail.mutedUntil ?? 0) > Date.now() ? 0 : Date.now() + 86400000,
-      });
+      const untilMs = (muteState.mutedUntil ?? 0) > Date.now() ? 0 : Date.now() + 86400000;
+      if (commerce && commerceState)
+        await muteCommerce({ ...commerce, untilMs, commandContext: commerceState.commandContext });
+      else if (threadId) await mute({ threadId, untilMs });
+      else return;
       position(false);
     } catch {
       setFailed(true);
@@ -153,34 +165,47 @@ export function SwipeConversation({
           gap: 4,
           pointerEvents: open ? 'auto' : 'none',
         }}>
-        {threadId
+        {threadId || commerce
           ? action(
               'volumeOff',
-              (detail?.mutedUntil ?? 0) > Date.now() ? copy.unmute : copy.mute,
+              (muteState?.mutedUntil ?? 0) > Date.now() ? copy.unmute : copy.mute,
               () => void toggleMute(),
-              !detail || busy,
+              !muteReady || busy,
             )
           : null}
-        {threadId
+        {threadId || commerce
           ? action(
               'delete',
               copy.delete,
               () => {
-                if (!me?._id || !detail || capabilities?.features?.historyDeletion !== 1) return;
+                if (
+                  !threadId ||
+                  !me?._id ||
+                  !detail ||
+                  capabilities?.features?.historyDeletion !== 1
+                )
+                  return;
                 setDeleteIntent({
                   threadId,
                   expectedActorId: me._id,
                   throughRevision: detail.historyRevision ?? 0,
                 });
               },
-              !detail || !me || capabilities?.features?.historyDeletion !== 1,
+              !threadId || !detail || !me || capabilities?.features?.historyDeletion !== 1,
             )
           : null}
-        {action('profile', profile ? copy.profile : t.details, () => {
-          position(false);
-          (profile ?? details)();
-        })}
-        {threadId && userId ? (
+        {action(
+          'profile',
+          commerce || profile ? copy.profile : t.details,
+          () => {
+            position(false);
+            (profile ?? details)();
+          },
+          !!commerce && !profile,
+        )}
+        {commerce ? (
+          action('shieldAlert', copy.block, () => {}, true)
+        ) : threadId && userId ? (
           <SafetyAction
             userId={userId}
             name={title}
@@ -215,6 +240,7 @@ export function SwipeConversation({
         <DeleteChat
           intent={deleteIntent}
           current={
+            threadId === deleteIntent.threadId &&
             capabilities?.features?.historyDeletion === 1 &&
             me?._id === deleteIntent.expectedActorId &&
             !!detail &&

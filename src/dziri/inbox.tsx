@@ -71,10 +71,14 @@ const ConversationRow = memo(function ConversationRow({
     .join('');
   return (
     <SwipeConversation
+      key={`${row.kind}:${row.id}:${row.storeId ?? ''}`}
       userId={row.userId}
       title={row.title}
       profile={row.userId ? () => profile(row) : undefined}
       threadId={row.kind === 'thread' ? row.id : undefined}
+      commerce={
+        row.kind === 'commerce' ? { conversationId: row.id, storeId: row.storeId } : undefined
+      }
       organization={
         row.organization
           ? { pinned: !!row.pinned, archived: !!row.archived, unread: row.unread > 0 }
@@ -251,6 +255,7 @@ export function InboxScreen({
       ? (commerce ?? []).map(row => ({
           id: row._id,
           kind: 'commerce',
+          userId: row.peerId,
           title: row.title,
           preview: row.lastMessagePreview,
           image: row.avatarUrl,

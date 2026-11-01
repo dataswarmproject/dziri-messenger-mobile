@@ -11,6 +11,10 @@ const state = vi.hoisted(() => ({
   safetyCapability: 1 as number | undefined,
   safetyQueryFails: false,
   safetyQueries: 0,
+  marketplaceMuteCapability: 1 as number | undefined,
+  marketplaceQueries: 0,
+  marketplaceMutedUntil: 0,
+  marketplaceActor: 'alice',
   pan: {} as Record<string, (...args: unknown[]) => unknown>,
 }));
 vi.mock('react-native', () => {
@@ -98,7 +102,24 @@ vi.mock('convex/react', () => ({
     const name = getFunctionName(ref);
     if (name === 'users:getMe') return { _id: state.actor };
     if (name === 'messaging/messenger:capabilities')
-      return { features: { historyDeletion: 1, safety: state.safetyCapability } };
+      return {
+        features: {
+          historyDeletion: 1,
+          safety: state.safetyCapability,
+          marketplaceMute: state.marketplaceMuteCapability,
+        },
+      };
+    if (name === 'marketplaceInbox:state') {
+      state.marketplaceQueries++;
+      return {
+        mutedUntil: state.marketplaceMutedUntil,
+        peerId: 'bob',
+        commandContext: {
+          expectedActorId: state.marketplaceActor,
+          authorityKey: 'v1:' + 'f'.repeat(64),
+        },
+      };
+    }
     if (name === 'messaging/messenger:thread')
       return { _id: 'thread', historyRevision: 0, mutedUntil: 0 };
     if (name === 'messaging/safety:state') {
@@ -112,11 +133,12 @@ vi.mock('convex/react', () => ({
 }));
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 let root: Root, host: HTMLDivElement;
-async function render() {
+async function render(marketplace = false, threadId = 'thread') {
   await act(async () =>
     root.render(
       <SwipeConversation
-        threadId="thread"
+        threadId={marketplace ? undefined : threadId}
+        commerce={marketplace ? { conversationId: 'commerce', storeId: 'store' } : undefined}
         details={() => {}}
         userId="bob"
         title="Bob"
@@ -140,9 +162,59 @@ beforeEach(() => {
   state.safetyCapability = 1;
   state.safetyQueryFails = false;
   state.safetyQueries = 0;
+  state.marketplaceMuteCapability = 1;
+  state.marketplaceQueries = 0;
+  state.marketplaceMutedUntil = 0;
+  state.marketplaceActor = 'alice';
   host = document.createElement('div');
   document.body.append(host);
   root = createRoot(host);
+});
+
+test('Marketplace mute uses its scoped canonical endpoint and preserves unavailable delete/block', async () => {
+  await render(true);
+  await swipe();
+  expect(action('Delete').disabled).toBe(true);
+  expect(action('Block').disabled).toBe(true);
+  await act(async () => action('Mute').click());
+  expect(state.mutate).toHaveBeenCalledWith('marketplaceInbox:setMuted', {
+    conversationId: 'commerce',
+    storeId: 'store',
+    untilMs: expect.any(Number),
+    commandContext: { expectedActorId: 'alice', authorityKey: 'v1:' + 'f'.repeat(64) },
+  });
+  await swipe();
+  await act(async () => action('Profile').click());
+  expect(state.profile).toHaveBeenCalledOnce();
+});
+test('Marketplace without mute capability does not query an unavailable endpoint', async () => {
+  state.marketplaceMuteCapability = undefined;
+  await render(true);
+  await swipe();
+  expect(state.marketplaceQueries).toBe(0);
+  expect(action('Mute').disabled).toBe(true);
+  expect(action('Profile').disabled).toBe(false);
+  expect(state.mutate).not.toHaveBeenCalled();
+});
+test('Marketplace unmute sends zero without changing its captured account/store scope', async () => {
+  state.marketplaceMutedUntil = Date.now() + 86400000;
+  await render(true);
+  await swipe();
+  await act(async () => action('Unmute').click());
+  expect(state.mutate.mock.calls[0][1]).toMatchObject({
+    conversationId: 'commerce',
+    storeId: 'store',
+    untilMs: 0,
+  });
+});
+test('a lagging Marketplace state cannot mute after the current account changes', async () => {
+  await render(true);
+  await swipe();
+  state.actor = 'charlie';
+  await render(true);
+  expect(action('Mute').disabled).toBe(true);
+  await act(async () => action('Mute').click());
+  expect(state.mutate).not.toHaveBeenCalled();
 });
 afterEach(async () => {
   await act(async () => root.unmount());
@@ -202,6 +274,18 @@ test('switching accounts invalidates an open confirmation', async () => {
   await act(async () => confirm.click());
   expect(state.mutate).not.toHaveBeenCalled();
 });
+test('a recycled row cannot confirm deletion for its previous conversation', async () => {
+  await render();
+  await swipe();
+  await act(async () => action('Delete').click());
+  await render(false, 'another-thread');
+  const confirm = [...host.querySelectorAll<HTMLButtonElement>('[role="dialog"] button')].find(
+    node => node.textContent === 'Delete',
+  )!;
+  expect(confirm.disabled).toBe(true);
+  await act(async () => confirm.click());
+  expect(state.mutate).not.toHaveBeenCalled();
+});
 test('block uses the existing confirmation instead of changing the account on swipe', async () => {
   await render();
   await swipe();
@@ -227,31 +311,35 @@ test('Arabic mirrors the gesture and uses the same action set', async () => {
 test.each([
   { backend: 'unadvertised', capability: undefined },
   { backend: 'advertised but failing', capability: 1 },
-])('a swipe preserves the conversation and unrelated actions with $backend safety', async ({ capability }) => {
-  // Convex useQuery throws endpoint failures during render. Only this optional
-  // safety endpoint fails; thread/profile/capabilities remain available.
-  vi.spyOn(console, 'error').mockImplementation(() => {});
-  state.safetyCapability = capability;
-  state.safetyQueryFails = true;
-  await render();
-  expect(host.textContent).toContain('Bob conversation');
-  await expect(swipe()).resolves.toBeUndefined();
+])(
+  'a swipe preserves the conversation and unrelated actions with $backend safety',
+  async ({ capability }) => {
+    // Convex useQuery throws endpoint failures during render. Only this optional
+    // safety endpoint fails; thread/profile/capabilities remain available.
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    state.safetyCapability = capability;
+    state.safetyQueryFails = true;
+    await render();
+    expect(host.textContent).toContain('Bob conversation');
+    await expect(swipe()).resolves.toBeUndefined();
 
-  expect(host.textContent).toContain('Bob conversation');
-  expect(action('Block').disabled).toBe(true);
-  expect(action('Mute').disabled).toBe(false);
-  expect(action('Profile').disabled).toBe(false);
-  if (capability === undefined) expect(state.safetyQueries).toBe(0);
-  expect(state.mutate).not.toHaveBeenCalled();
-  await act(async () => action('Block').click());
-  expect(state.mutate).not.toHaveBeenCalled();
+    expect(host.textContent).toContain('Bob conversation');
+    expect(action('Block').disabled).toBe(true);
+    expect(action('Mute').disabled).toBe(false);
+    expect(action('Profile').disabled).toBe(false);
+    if (capability === undefined) expect(state.safetyQueries).toBe(0);
+    expect(state.mutate).not.toHaveBeenCalled();
+    await act(async () => action('Block').click());
+    expect(state.mutate).not.toHaveBeenCalled();
 
-  await act(async () => action('Profile').click());
-  expect(state.profile).toHaveBeenCalledOnce();
-  await expect(swipe()).resolves.toBeUndefined();
-  await act(async () => action('Mute').click());
-  expect(state.mutate).toHaveBeenCalledWith('messaging/threads:setMuted', {
-    threadId: 'thread', untilMs: expect.any(Number),
-  });
-  expect(host.textContent).toContain('Bob conversation');
-});
+    await act(async () => action('Profile').click());
+    expect(state.profile).toHaveBeenCalledOnce();
+    await expect(swipe()).resolves.toBeUndefined();
+    await act(async () => action('Mute').click());
+    expect(state.mutate).toHaveBeenCalledWith('messaging/threads:setMuted', {
+      threadId: 'thread',
+      untilMs: expect.any(Number),
+    });
+    expect(host.textContent).toContain('Bob conversation');
+  },
+);

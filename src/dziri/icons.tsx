@@ -24,6 +24,7 @@ const sources = {
   staff: require('../../assets/icons/staff.svg'),
   marketplace: require('../../assets/icons/marketplace.svg'),
   plus: require('../../assets/icons/plus.svg'),
+  plainPlus: require('../../assets/icons/plus.svg'),
   close: require('../../assets/icons/close.svg'),
   check: require('../../assets/icons/check.svg'),
   doubleCheck: require('../../assets/icons/double-check.svg'),

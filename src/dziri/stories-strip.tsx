@@ -92,7 +92,7 @@ export function StoriesStrip({
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Icon name="plus" color={colors.onPrimary} size={12} />
+              <Icon name="plainPlus" color={colors.onPrimary} size={12} />
             </View>
           </View>
           <Text numberOfLines={1} style={{ fontSize: 13, color: colors.secondary }}>

@@ -6,7 +6,9 @@ The archive contains 924 files: 517 SVGs and 407 PNGs. The selected runtime cata
 
 Consumer uses `apps/dziri/public/icons/iconly/catalog.json` and local CSS alpha masks. Standalone DM copies that catalogue through `scripts/sync-iconly.mjs --source <platform-checkout>` into its static Expo registry and `docs/iconly-contract.json`. Verification mode checks the copied hashes without needing Figma. Assets follow the current neutral theme; only directional arrows mirror in RTL. Brand artwork never mirrors.
 
-The pack does not provide every chat action. Existing standard glyphs remain for semantic gaps such as read ticks, pause, thumbs-up, reply, copy, link and emoji. Button handlers, accessible labels and touch targets remain owned by the existing controls. The Iconly images are decorative.
+The pack does not provide every chat action. Existing standard glyphs remain for semantic gaps such as read ticks, pause, thumbs-up, reply, copy, link and emoji. At the user's request, the story-avatar badge uses a plain unframed plus inside its existing circle, rather than Iconly's framed Plus. Consumer and standalone use matching rounded-stroke geometry for this badge. Button handlers, accessible labels and touch targets remain owned by the existing controls. The Iconly images are decorative.
+
+Consumer masks keep their default size in a zero-specificity CSS rule so caller sizing classes behave like the previous SVG controls. Circular settings backgrounds live on a separate 40px wrapper around the 20px glyph, matching standalone's wrapper and avoiding a background clipped to the icon mask.
 
 The complete export is a local source archive, not a redistributable icon library. Use is subject to the original [Iconly licensing guide](https://iconly.pro/pages/licensing-guide) and [terms](https://iconly.pro/pages/terms); this repository does not relicense Iconly artwork under MIT. No paid Iconly Pro assets have been purchased or activated.
 

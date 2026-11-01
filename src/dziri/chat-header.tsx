@@ -102,6 +102,7 @@ export function ChatHeader({
         <IconButton
           compact
           name="info"
+          size={24}
           label={t.details}
           color={colors.primary}
           onPress={details}

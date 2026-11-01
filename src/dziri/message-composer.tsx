@@ -336,6 +336,7 @@ export function MessageComposer({
           {submitMedia ? (
             <IconButton
               name="addCircle"
+              size={24}
               color={colors.primary}
               compact
               label={t.tools}

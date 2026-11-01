@@ -38,7 +38,6 @@ const iconlyNames: Partial<Record<IconName, IconlyName>> = {
   file: 'file',
   play: 'play',
   menu: 'category',
-  addCircle: 'plus',
   more: 'more',
   edit: 'edit',
   trash: 'delete',
@@ -51,7 +50,6 @@ const iconlyNames: Partial<Record<IconName, IconlyName>> = {
   marketplace: 'marketplace',
   plus: 'plus',
   close: 'close',
-  info: 'info',
   send: 'send',
 };
 export function Icon({
@@ -99,6 +97,7 @@ export function IconButton({
   disabled = false,
   expanded,
   compact = false,
+  size = 20,
 }: {
   name: IconName;
   label: string;
@@ -108,6 +107,7 @@ export function IconButton({
   disabled?: boolean;
   expanded?: boolean;
   compact?: boolean;
+  size?: number;
 }) {
   return (
     <Pressable
@@ -125,7 +125,11 @@ export function IconButton({
         justifyContent: 'center',
         opacity: pressed || busy ? 0.55 : 1,
       })}>
-      {busy ? <ActivityIndicator color={color} size="small" /> : <Icon name={name} color={color} />}
+      {busy ? (
+        <ActivityIndicator color={color} size="small" />
+      ) : (
+        <Icon name={name} color={color} size={size} />
+      )}
     </Pressable>
   );
 }

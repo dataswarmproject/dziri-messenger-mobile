@@ -59,6 +59,7 @@ import { BlockedPeopleScreen } from './safety';
 import { LocalMessagesProvider, clearLocalMessageSessions } from './local-messages';
 import { StartupScreen } from './startup-screen';
 import { StaffSetupScreen } from './staff-setup';
+import { useClientRetirement } from './client-retirement.generated';
 
 const Stack = createNativeStackNavigator<MessengerRoutes>();
 const ResetSession = createContext(() => {});
@@ -185,12 +186,7 @@ function ConnectedApp({ url }: { url: string }) {
 
 export function SessionRuntime({ url, reset }: { url: string; reset: () => void }) {
   const client = useMemo(() => new ConvexReactClient(url, { unsavedChangesWarning: false }), [url]);
-  useEffect(
-    () => () => {
-      void client.close();
-    },
-    [client],
-  );
+  useClientRetirement(client);
   const [attempt, setAttempt] = useState(0);
   return (
     <ResetSession.Provider value={reset}>

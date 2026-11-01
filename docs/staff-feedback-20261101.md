@@ -1,0 +1,13 @@
+# Staff verification and Messenger navigation — 1 November 2026
+
+Based on native `cec3a0909a7b499c1c5c4b139410fecf15a1134f`, with canonical source in `E:/CodexWorktrees/messenger-actions-integration-20261101/tawasool-mmogram`. The native working branch is local only; never push the upstream Chatwoot repository.
+
+Generated shared copy now distinguishes rejected verification from an invalid attempt in EN/FR/AR. The actual panel clears factor inputs, announces errors assertively and keeps codes LTR within Arabic layouts. Web pending handoff recovery now survives refresh through namespaced tab session storage, retaining server-encrypted tickets/recovery metadata only. Native OS-vault behavior and isolated provider-credential ownership remain unchanged. Storage failures and stale/other-owner cleanup fail closed.
+
+Actual isolated Rails/PostgreSQL/Redis/Devise/MFA rendering verified wrong-factor feedback, invalid recovery fallback, pending/active refresh review, explicit same-attempt queue restoration, another-owner sign-in gating and confirmed cancellation. Canonical identities/subscriptions and platform resources were synthetic. Two tenants/users were cleaned without resetting the existing database. The old memory-only web reload failure is preserved and excluded. This is not deployed identity, phone, OS-vault or full-flow acceptance.
+
+Navigation now matches Consumer: `Dziri Messenger`, compose action and approved corner ring logo, compact filters, avatar Story action with plus badge, and profile at the bottom-right. Four new navigation checks cover profile/tab separation, RTL, revoked eligibility and replacement accounts. Temporary icons remain pending the exact user-requested Figma export.
+
+Current checks: 269 UI cases/40 files, 78 domain cases, TypeScript, consistency and Android/iOS/web export5 pass. Header-only formatting after export has identical parsed syntax. The normalized source lint passes with four existing hook warnings; the broader command also exposed pre-existing CRLF in two unchanged files. Dependency audit retains 27 findings (13 high, 10 moderate, four low); no dependencies changed. Exports are not an APK.
+
+Still required: real isolated provider recovery-code success, Consumer popup-child proof, full responsive/accessibility and native/device/process recovery, legacy staff copy completeness, exact Figma assets, the separately retained dependency/security gates and the full original Messenger plan. The matching final Consumer build and source reconciliation passed. Push remains HARD_DISABLED; no provider activation, deployment, real message or new APK occurred.

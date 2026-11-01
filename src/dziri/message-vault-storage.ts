@@ -24,6 +24,7 @@ export async function openAccountVault(deployment: string, actor: string) {
   const directory = native ? new Directory(Paths.document, 'dm-private') : null;
   const file = directory ? new File(directory, `${name}.enc`) : null;
   const temp = directory ? new File(directory, `${name}.pending`) : null;
+  let recoverableCiphertext: string | undefined;
   const readKey = () =>
     native
       ? SecureStore.getItemAsync(name)
@@ -44,15 +45,38 @@ export async function openAccountVault(deployment: string, actor: string) {
     return (key = generated);
   }
   return createMessageVault({
-    read: async () => (file ? (file.exists ? file.text() : null) : sessionStorage.getItem(name)),
+    read: async () => {
+      if (!file) return sessionStorage.getItem(name);
+      // Expo's native replacement removes the destination before moving the
+      // staging file. Recover that file after an interrupted replacement only
+      // when the main journal is absent; a present main remains authoritative.
+      const source = file.exists ? file : temp?.exists ? temp : null;
+      if (!source) return null;
+      const ciphertext = await source.text();
+      // Existing but incomplete data must not become an empty writable vault.
+      // Authentication and journal validation happen before anything is saved.
+      if (!ciphertext) throw new Error('Incomplete local journal');
+      recoverableCiphertext = source === temp ? ciphertext : undefined;
+      return ciphertext;
+    },
     write: async ciphertext => {
       if (temp && file) {
         directory!.create({ idempotent: true, intermediates: true });
+        // load() authenticated a recovered journal before this write, or this
+        // instance finished staging it. Preserve that sole copy before reusing
+        // the staging path, including if the next write is interrupted too.
+        if (!file.exists && temp.exists) {
+          if (recoverableCiphertext === undefined || (await temp.text()) !== recoverableCiphertext)
+            throw new Error('Local journal changed before saving');
+          await new File(temp.uri).move(file, { overwrite: false });
+        }
         // File.move changes the instance URI; keep the reusable staging path intact.
         const staged = new File(temp.uri);
         staged.create({ overwrite: true });
         staged.write(ciphertext);
+        recoverableCiphertext = ciphertext;
         await staged.move(file, { overwrite: true });
+        recoverableCiphertext = undefined;
       } else sessionStorage.setItem(name, ciphertext);
     },
     remove: async () => {

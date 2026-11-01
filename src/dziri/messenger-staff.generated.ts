@@ -71,6 +71,8 @@ export function staffHandoffCopy(locale: string) {
         working: 'جارٍ التحقق من الوصول…',
         idle: 'استخدم حساب دزيري المرتبط بملف فريقك. قد يُطلب منك تحقق إضافي.',
         challenge: 'أدخل رمز المصادقة أو رمز استرداد غير مستخدم.',
+        challengeFailed: 'فشل التحقق. جرّب رمز مصادقة حاليًا أو رمز استرداد غير مستخدم.',
+        invalidAttempt: 'تعذر متابعة التحقق. ألغِ هذه المحاولة ثم سجّل الدخول من جديد.',
         retry: 'تعذر إكمال الطلب. تابع المحاولة نفسها أو ألغها.',
         review: 'توجد محاولة تسجيل دخول محفوظة. تابعها أو ألغها قبل بدء محاولة أخرى.',
         cleanup: 'لم نتمكن من تأكيد إلغاء الجلسة على الخادم. احتفظنا بالمحاولة لإعادة الإلغاء.',
@@ -93,6 +95,10 @@ export function staffHandoffCopy(locale: string) {
           working: 'Vérification de l’accès…',
           idle: 'Utilisez le compte Dziri lié à votre profil d’équipe. Une vérification supplémentaire peut être demandée.',
           challenge: 'Saisissez votre code d’authentification ou un code de secours inutilisé.',
+          challengeFailed:
+            'La vérification a échoué. Essayez un code d’authentification actuel ou un code de secours inutilisé.',
+          invalidAttempt:
+            'La vérification ne peut pas continuer. Annulez cette tentative, puis reconnectez-vous.',
           retry: 'La demande n’a pas abouti. Reprenez la même tentative ou annulez-la.',
           review:
             'Une tentative de connexion est enregistrée. Reprenez-la ou annulez-la avant d’en créer une autre.',
@@ -119,6 +125,9 @@ export function staffHandoffCopy(locale: string) {
           working: 'Verifying access…',
           idle: 'Use the Dziri account linked to your staff profile. Additional verification may be required.',
           challenge: 'Enter your authenticator code or an unused recovery code.',
+          challengeFailed:
+            'Verification failed. Try a current authenticator code or an unused recovery code.',
+          invalidAttempt: 'Verification cannot continue. Cancel this attempt, then sign in again.',
           retry: 'The request did not complete. Resume the same attempt or cancel it.',
           review: 'A sign-in attempt is saved. Resume or cancel it before starting another.',
           cleanup:
@@ -134,8 +143,9 @@ export function staffHandoffCopy(locale: string) {
 
 export function staffHandoffMessage(state: string, locale: string) {
   const copy = staffHandoffCopy(locale);
-  if (state === 'mfa_required' || state === 'challenge_failed' || state === 'invalid_attempt')
-    return copy.challenge;
+  if (state === 'mfa_required') return copy.challenge;
+  if (state === 'challenge_failed') return copy.challengeFailed;
+  if (state === 'invalid_attempt') return copy.invalidAttempt;
   if (state === 'revocation_unconfirmed') return copy.cleanup;
   if (state === 'storage_failed') return copy.storage;
   if (state === 'review_required') return copy.review;

@@ -4,31 +4,31 @@
     {
       "source": "packages/shared/src/messenger-staff.ts",
       "target": "src/dziri/messenger-staff.generated.ts",
-      "sourceSha256": "58a0b3117066a170e5629169109bdff364893a45cc99f275852a0a3825eca975",
-      "sha256": "b8aff0fbc98bed78f65e2e549ba4ceb3b6e33b2fcc1f4f795f49a5bc5cac0b9e"
+      "sourceSha256": "4ce490474e3eded26ae37d10592cb2089d09ac3022011671e8dc76a43ac58ae3",
+      "sha256": "fccbc7cc7de608f28f40d002534ea394642729758493304608305e1c14d7be53"
     },
     {
       "source": "packages/ui/src/messaging/use-staff-setup.ts",
       "target": "src/dziri/use-staff-setup.generated.ts",
-      "sourceSha256": "2db577c34749f4e2ea68e44bc343934a76b0090bac56e819a834f496b3d4a01a",
+      "sourceSha256": "3471008ddca7f9604caa282cd5f80c57076da4fb439b71eab82015d8dbe4b044",
       "sha256": "74f6325b5543e3d132ed279ac8310122d1a9c4db2c4aefc006562d773577707f"
     },
     {
       "source": "packages/shared/src/inbox/staff-session-policy.ts",
       "target": "src/inbox/workspace-policy.ts",
-      "sourceSha256": "b7cced1019aa2afdf253401a405fa5d5f181b29ed58271e32b686d2040f9d65e",
+      "sourceSha256": "34d22eea690531899faf524b191973d2df2ee512970f445c94c7f2ed3f769bae",
       "sha256": "d418b265ca987a1f319de5fc7cc17214e30ab37dc0c30e3ba55affa3995a33a7"
     },
     {
       "source": "packages/shared/src/inbox/handoff.ts",
       "target": "src/inbox/handoff.ts",
-      "sourceSha256": "4d5d9b987d1d51d30620ef036917cfdbbd753888192af9456484c5896c3779fe",
+      "sourceSha256": "ff8768252c21f4e4c70f5ae0e3df89b99110ddaa5e3c743c9bac06fc35e19f02",
       "sha256": "fd54690ea5d6f6e3f001c36bce362d74343fc916d241aa31366b61b72dc3d40d"
     },
     {
       "source": "packages/shared/src/inbox/pending-handoff.ts",
       "target": "src/inbox/pending-handoff.ts",
-      "sourceSha256": "37914a23710ed40307d366e97e944cb60a54a26713bf7188c7b2f5c1493755b8",
+      "sourceSha256": "e0aba04b1db44ee2e228fcd2aa99fd9771817a166e10139f2387b98b9f889e77",
       "sha256": "e16633598141202b930b473b2087452e25102c43a0b1d9589e241ab65af5221f"
     }
   ]

@@ -6,21 +6,26 @@ import { staffWorkspaceKey, type StaffWorkspace } from '../dziri/messenger-staff
 import { sameHandoff, type PendingHandoff } from './handoff';
 import { staffHandoffOwner as ownerOf, parsePendingHandoff as parse } from './pending-handoff';
 
-const memory = new Map<string, string>();
 const writes = new Map<string, Promise<void>>();
+// Only server-encrypted attempt tickets and recovery metadata persist across a tab reload.
+// Provider credentials remain in the isolated session runtime; never fall back to memory
+// when storage fails, since that would silently lose cancellation/recovery proof.
+const webKey = (key: string) => 'dziri.staff.pending.v1.' + key;
 const keyForScope = (scope: string) => secureStorageKey('staff-handoff-v1:' + scope);
 const keyFor = (workspace: StaffWorkspace) => keyForScope(staffWorkspaceKey(workspace));
 const read = (key: string) =>
-  Platform.OS === 'web' ? Promise.resolve(memory.get(key) ?? null) : SecureStore.getItemAsync(key);
+  Platform.OS === 'web'
+    ? Promise.resolve(window.sessionStorage.getItem(webKey(key)))
+    : SecureStore.getItemAsync(key);
 // 24 SHA-256 identifiers keep the owner index below older OS-vault value limits.
 const MAX_PENDING = 24;
 const write = (key: string, value: string) =>
   Platform.OS === 'web'
-    ? Promise.resolve(memory.set(key, value)).then(() => {})
+    ? Promise.resolve(window.sessionStorage.setItem(webKey(key), value))
     : SecureStore.setItemAsync(key, value);
 const remove = (key: string) =>
   Platform.OS === 'web'
-    ? Promise.resolve(memory.delete(key)).then(() => {})
+    ? Promise.resolve(window.sessionStorage.removeItem(webKey(key)))
     : SecureStore.deleteItemAsync(key);
 const directoryKey = (actorId: string) => secureStorageKey('staff-handoff-owner-v1:' + actorId);
 const recoveryId = (scope: string) => digestStringAsync(CryptoDigestAlgorithm.SHA256, scope);
@@ -118,7 +123,7 @@ export async function listPendingHandoffs(actorId: string): Promise<PendingHando
     });
   return result;
 }
-/** Web is memory-only. Native recovery stores an already encrypted ticket in the OS vault. */
+/** Encrypted attempt recovery uses tab storage on web and the OS vault on native. */
 export async function loadPendingHandoff(workspace: StaffWorkspace) {
   const key = keyFor(workspace);
   await writes.get(key)?.catch(() => {});
@@ -182,7 +187,6 @@ export function savePendingHandoff(
     });
     parse(value, staffWorkspaceKey(workspace));
     await remember(JSON.parse(value));
-    if (Platform.OS === 'web') memory.set(key, value);
-    else await SecureStore.setItemAsync(key, value);
+    await write(key, value);
   });
 }

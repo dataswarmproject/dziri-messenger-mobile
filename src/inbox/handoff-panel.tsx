@@ -35,6 +35,8 @@ const styles = StyleSheet.create({
     color: colors.text,
     backgroundColor: colors.surface,
     fontSize: 16,
+    writingDirection: 'ltr',
+    textAlign: 'left',
   },
 });
 export function StaffHandoffGate({
@@ -55,6 +57,7 @@ export function StaffHandoffGate({
   const [code, setCode] = useState(''),
     [recovery, setRecovery] = useState(false);
   const challenge = ['mfa_required', 'challenge_failed', 'invalid_attempt'].includes(flow.state);
+  const failed = !flow.busy && ['challenge_failed', 'invalid_attempt'].includes(flow.state);
   const button = (label: string, action: () => void, disabled = flow.busy) => (
     <Pressable
       accessibilityRole="button"
@@ -73,7 +76,10 @@ export function StaffHandoffGate({
   return children(
     flow.blocked,
     <View style={styles.group}>
-      <Text accessibilityLiveRegion="polite" style={styles.text}>
+      <Text
+        accessibilityRole={failed ? 'alert' : undefined}
+        accessibilityLiveRegion={failed ? 'assertive' : 'polite'}
+        style={styles.text}>
         {flow.busy ? copy.working : staffHandoffMessage(flow.state, locale)}
       </Text>
       {challenge ? (
@@ -81,6 +87,7 @@ export function StaffHandoffGate({
           <Text style={styles.label}>{recovery ? copy.recoveryCode : copy.code}</Text>
           <TextInput
             accessibilityLabel={recovery ? copy.recoveryCode : copy.code}
+            accessibilityHint={failed ? staffHandoffMessage(flow.state, locale) : undefined}
             value={code}
             onChangeText={setCode}
             secureTextEntry={recovery}

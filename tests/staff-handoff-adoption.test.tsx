@@ -321,3 +321,12 @@ test('handoff copy handles every server state safely in all supported languages'
       expect(staffHandoffMessage(state, locale).length).toBeGreaterThan(10);
   }
 });
+
+test.each(['en', 'fr', 'ar'])('MFA failures differ from the initial challenge in %s', locale => {
+  const prompt = staffHandoffMessage('mfa_required', locale);
+  expect(staffHandoffMessage('challenge_failed', locale)).not.toBe(prompt);
+  expect(staffHandoffMessage('invalid_attempt', locale)).not.toBe(prompt);
+  expect(staffHandoffMessage('challenge_failed', locale)).not.toBe(
+    staffHandoffMessage('invalid_attempt', locale),
+  );
+});

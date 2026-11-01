@@ -287,6 +287,7 @@ function Commerce({ route, navigation }: NativeStackScreenProps<MessengerRoutes,
       ) : null}
       <MessageComposer
         key={writeKey || 'unavailable'}
+        storageFailureShown={outbox.cacheFailed}
         draftScope={localScope}
         reply={reply}
         cancelReply={submitted =>
@@ -317,7 +318,7 @@ function Commerce({ route, navigation }: NativeStackScreenProps<MessengerRoutes,
             : false
         }
       />
-      {!writeScope ? (
+      {!writeScope && !outbox.cacheFailed ? (
         <Text accessibilityLiveRegion="polite" style={{ padding: 8, color: colors.text }}>
           {marketplaceWriteCopy[locale]}
         </Text>

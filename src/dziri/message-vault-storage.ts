@@ -78,8 +78,12 @@ export async function openAccountVault(deployment: string, actor: string) {
       return data.combined('base64');
     },
     open: async ciphertext => {
+      // Expo57's Android fromCombined bridge requires a typed byte array even
+      // though its JavaScript declaration also accepts Base64 strings. Decode
+      // the existing format without rewriting the journal or replacing its key.
+      const bytes = Uint8Array.from(atob(ciphertext), character => character.charCodeAt(0));
       const data = await aesDecryptAsync(
-        AESSealedData.fromCombined(ciphertext),
+        AESSealedData.fromCombined(bytes),
         await encryptionKey(false),
         { additionalData: aad },
       );

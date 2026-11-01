@@ -32,6 +32,7 @@ export function MessageComposer({
   submitMedia,
   full = false,
   unavailable = false,
+  storageFailureShown = false,
   imagesOnly = false,
   draftScope,
   onActivity,
@@ -47,6 +48,7 @@ export function MessageComposer({
   submitSticker?: (sticker: StickerSelection, reply?: ReplyPreview) => boolean;
   full?: boolean;
   unavailable?: boolean;
+  storageFailureShown?: boolean;
   imagesOnly?: boolean;
   draftScope?: string;
   onActivity?: (body: string) => void;
@@ -172,7 +174,7 @@ export function MessageComposer({
           onRemove={removeLocal ? removeReviewedCopy : undefined}
         />
       ) : null}
-      {localFailed ? (
+      {localFailed && !storageFailureShown ? (
         <Text accessibilityRole="alert" style={{ padding: 8, fontSize: 13, color: colors.text }}>
           {t.localSaveFailed}
         </Text>

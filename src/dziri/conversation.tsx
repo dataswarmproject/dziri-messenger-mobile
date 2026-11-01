@@ -309,6 +309,7 @@ function Conversation({
             }
             full={outbox.drafts.length >= 20}
             unavailable={!writable || !writeScope || !outbox.ready}
+            storageFailureShown={outbox.cacheFailed}
             review={
               queuedReview?.owner === reviewOwner &&
               !confirmed.includes(queuedReview.draft.id) &&
@@ -339,7 +340,7 @@ function Conversation({
       {!writable ? (
         <Text style={{ padding: 16, color: colors.secondary }}>{t.readonly}</Text>
       ) : null}
-      {writable && !writeScope ? (
+      {writable && !writeScope && !outbox.cacheFailed ? (
         <Text accessibilityLiveRegion="polite" style={{ padding: 8, color: colors.text }}>
           {personalWriteCopy[locale]}
         </Text>

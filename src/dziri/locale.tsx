@@ -75,7 +75,7 @@ const en = {
   searchingHistory: 'Searching history…',
   searchOlder: 'Search older messages',
   localSaveFailed:
-    'Could not save messages on this device. Your current draft is kept. Retry after checking device storage.',
+    'Encrypted storage is unavailable. Your draft is kept on this screen. Try again.',
   more: 'More',
   edit: 'Edit',
   copy: 'Copy',
@@ -355,7 +355,7 @@ const fr: typeof en = {
   searchingHistory: 'Recherche dans l’historique…',
   searchOlder: 'Rechercher les messages plus anciens',
   localSaveFailed:
-    'Impossible de sauvegarder les messages sur cet appareil. Votre brouillon actuel est conservé. Vérifiez le stockage puis réessayez.',
+    'Le stockage chiffré est indisponible. Votre brouillon est conservé sur cet écran. Réessayez.',
   more: 'Plus',
   edit: 'Modifier',
   copy: 'Copier',
@@ -629,8 +629,7 @@ const ar: typeof en = {
   searchSoFar: 'نتائج حتى الآن',
   searchingHistory: 'جارٍ البحث في السجل…',
   searchOlder: 'البحث في رسائل أقدم',
-  localSaveFailed:
-    'تعذّر حفظ الرسائل على هذا الجهاز. مسودتك الحالية محفوظة في الشاشة. تحقّق من مساحة التخزين ثم أعد المحاولة.',
+  localSaveFailed: 'التخزين المشفّر غير متاح. مسودتك محفوظة في هذه الشاشة. أعد المحاولة.',
   more: 'المزيد',
   edit: 'تعديل',
   copy: 'نسخ',

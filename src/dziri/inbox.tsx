@@ -2,7 +2,7 @@ import { safetyCopy } from './messenger-safety.generated';
 import { staffCopy } from './messenger-staff.generated';
 import { messengerMetrics as metrics } from './colors';
 import React, { memo, useCallback, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Linking, Pressable, View } from 'react-native';
 import { Text, TextInput } from './typography';
 import { Image } from 'expo-image';
 import { FlashList } from '@shopify/flash-list';
@@ -17,7 +17,6 @@ import { FigmaButton, FigmaIcon } from './figma';
 import type { MessengerRoutes } from './routes';
 import type { MessengerTab } from '../messenger-policy';
 import { StoriesStrip } from './stories-strip';
-import { StoryComposer } from './story-composer';
 import { SwipeConversation } from './swipe-conversation';
 import { newConversationTarget } from './workspace-layout';
 import type { WorkspaceSelection } from './workspace-sidebar';
@@ -210,7 +209,6 @@ export function InboxScreen({
   const colors = useColors();
   const supportCompany = useSupportCompanyId();
   const [search, setSearch] = useState('');
-  const [cameraStory, setCameraStory] = useState(false);
   const open = useCallback(
     (row: Row) => {
       if (row.kind === 'commerce')
@@ -275,25 +273,12 @@ export function InboxScreen({
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <View
         style={{
-          height: 64,
+          height: 56,
           paddingHorizontal: 16,
           gap: 12,
           alignItems: 'center',
           flexDirection: rtl ? 'row-reverse' : 'row',
         }}>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t.settings}
-          onPress={() => navigation.navigate('Settings')}>
-          {me?.image ? (
-            <Image source={{ uri: me.image }} style={{ width: 40, height: 40, borderRadius: 20 }} />
-          ) : (
-            <Image
-              source={require('../../assets/dziri-ring.svg')}
-              style={{ width: 40, height: 40 }}
-            />
-          )}
-        </Pressable>
         <Text
           accessibilityRole="header"
           numberOfLines={1}
@@ -304,11 +289,8 @@ export function InboxScreen({
             fontWeight: '700',
             color: colors.text,
           }}>
-          {lane === 'friends' ? t.chats : lane === 'marketplace' ? t.marketplaceTab : t.teamView}
+          {lane === 'friends' ? t.app : lane === 'marketplace' ? t.marketplaceTab : t.teamView}
         </Text>
-        {lane === 'friends' ? (
-          <FigmaButton name="cameraTop" label={t.camera} onPress={() => setCameraStory(true)} />
-        ) : null}
         <FigmaButton
           name="newMessage"
           label={t.newMessage}
@@ -322,12 +304,29 @@ export function InboxScreen({
               );
           }}
         />
+        {lane === 'friends' ? (
+          <Pressable
+            accessibilityRole="link"
+            accessibilityLabel="Dziri"
+            onPress={() => {
+              void Linking.openURL('https://dziri.app');
+            }}
+            style={{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }}>
+            <Image
+              source={require('../../assets/dziri-ring.svg')}
+              contentFit="contain"
+              tintColor={colors.text}
+              accessible={false}
+              style={{ width: 28, height: 28 }}
+            />
+          </Pressable>
+        ) : null}
       </View>
       <View
         style={{
           paddingHorizontal: 16,
-          paddingTop: 4,
-          paddingBottom: 8,
+          paddingTop: 0,
+          paddingBottom: 4,
           flexDirection: rtl ? 'row-reverse' : 'row',
           alignItems: 'center',
           gap: 8,
@@ -370,7 +369,6 @@ export function InboxScreen({
           />
         ) : null}
       </View>
-      {cameraStory ? <StoryComposer initialCamera close={() => setCameraStory(false)} /> : null}
       {lane === 'staff' && capabilities?.features?.staffSetup === 1 ? (
         <Pressable
           accessibilityRole="button"
@@ -387,7 +385,7 @@ export function InboxScreen({
             flexDirection: rtl ? 'row-reverse' : 'row',
             paddingHorizontal: 16,
             gap: 8,
-            paddingVertical: 8,
+            paddingVertical: 2,
           }}>
           {(
             [
@@ -400,11 +398,12 @@ export function InboxScreen({
               key={value}
               accessibilityRole="button"
               accessibilityState={{ selected: view === value }}
+              hitSlop={6}
               onPress={() => setView(value)}
               style={{
-                minHeight: 36,
-                paddingHorizontal: 14,
-                borderRadius: 18,
+                minHeight: 32,
+                paddingHorizontal: 10,
+                borderRadius: 16,
                 justifyContent: 'center',
                 backgroundColor: view === value ? colors.surface : colors.background,
               }}>
@@ -432,6 +431,7 @@ export function InboxScreen({
       ) : null}
       {lane === 'friends' && !search.trim() && view === 'all' ? (
         <StoriesStrip
+          avatar={me?.image}
           openConversation={threadId =>
             navigation.navigate('Conversation', { threadId, lane: 'friends' })
           }

@@ -47,6 +47,7 @@ vi.mock('../src/dziri/media-preview', () => ({
   },
 }));
 vi.mock('../src/dziri/icons', () => ({
+  Icon: () => <span aria-hidden="true" />,
   IconButton: ({ label, onPress }: any) => <button aria-label={label} onClick={onPress} />,
 }));
 vi.mock('expo-image', () => ({

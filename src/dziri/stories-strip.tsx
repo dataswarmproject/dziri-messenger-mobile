@@ -8,9 +8,11 @@ import { useColors } from './ui';
 import { useLocale } from './locale';
 import { StoryViewer } from './story-viewer';
 import { StoryComposer } from './story-composer';
+import { Icon } from './icons';
 export function StoriesStrip({
   openConversation,
-}: { openConversation?: (threadId: string) => void } = {}) {
+  avatar,
+}: { openConversation?: (threadId: string) => void; avatar?: string } = {}) {
   const stories = useQuery(dziriApi.stories, {}),
     { t, rtl } = useLocale();
   const colors = useColors();
@@ -39,29 +41,59 @@ export function StoriesStrip({
         showsVerticalScrollIndicator={false}
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={{ maxHeight: 106 }}
+        style={{ maxHeight: 84 }}
         contentContainerStyle={{
-          height: 106,
-          paddingTop: 14,
+          height: 84,
+          paddingTop: 4,
+          paddingBottom: 8,
           paddingHorizontal: 12,
-          gap: 15,
+          gap: 12,
           flexDirection: rtl ? 'row-reverse' : 'row',
         }}>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={t.yourStory}
           onPress={() => setCreate(true)}
-          style={{ width: 65, alignItems: 'center', gap: 7 }}>
+          style={{ width: 64, alignItems: 'center', gap: 4 }}>
           <View
             style={{
-              width: 52,
-              height: 52,
-              borderRadius: 26,
+              width: 48,
+              height: 48,
+              borderRadius: 24,
               backgroundColor: colors.surface,
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Text style={{ color: colors.text, fontSize: 32, lineHeight: 38 }}>+</Text>
+            {avatar ? (
+              <Image
+                source={{ uri: avatar }}
+                contentFit="cover"
+                style={{ width: 48, height: 48, borderRadius: 24 }}
+              />
+            ) : (
+              <Image
+                source={require('../../assets/dziri-ring.svg')}
+                contentFit="contain"
+                tintColor={colors.text}
+                style={{ width: 28, height: 28 }}
+              />
+            )}
+            <View
+              style={{
+                position: 'absolute',
+                bottom: -2,
+                right: -2,
+                width: 20,
+                height: 20,
+                borderRadius: 10,
+                backgroundColor: colors.primary,
+                borderWidth: 2,
+                borderColor: colors.background,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Icon name="plus" color={colors.onPrimary} size={12} />
+            </View>
           </View>
           <Text numberOfLines={1} style={{ fontSize: 13, color: colors.secondary }}>
             {t.yourStory}
@@ -75,25 +107,29 @@ export function StoriesStrip({
               accessibilityRole="button"
               accessibilityLabel={story.authorName || story.authorHandle || t.stories}
               onPress={() => setSelected(story.authorId)}
-              style={{ width: 65, alignItems: 'center', gap: 7 }}>
+              style={{ width: 64, alignItems: 'center', gap: 4 }}>
               <View
                 style={{
                   padding: 2,
-                  borderRadius: 30,
-                  borderWidth: items.some(item => !item.iHaveViewed) ? 2 : 0,
-                  borderColor: colors.primary,
+                  width: 48,
+                  height: 48,
+                  borderRadius: 24,
+                  borderWidth: 2,
+                  borderColor: items.some(item => !item.iHaveViewed)
+                    ? colors.primary
+                    : 'transparent',
                 }}>
                 {story.authorImage ? (
                   <Image
                     source={{ uri: story.authorImage }}
-                    style={{ width: 48, height: 48, borderRadius: 24 }}
+                    style={{ width: 40, height: 40, borderRadius: 20 }}
                   />
                 ) : (
                   <View
                     style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: 24,
+                      width: 40,
+                      height: 40,
+                      borderRadius: 20,
                       backgroundColor: colors.surface,
                       alignItems: 'center',
                       justifyContent: 'center',

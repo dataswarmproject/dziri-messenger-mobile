@@ -6,6 +6,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -22,7 +23,12 @@ import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { tailwind } from '../theme';
 import { deploymentUrl, secureStorageKey, MAIN_DZIRI_CONVEX_URL } from './config';
@@ -226,6 +232,8 @@ function AuthGate() {
 }
 
 function UserNavigator() {
+  const navigation = useNavigationContainerRef<MessengerRoutes>();
+  const profileRequest = useRef<string | null>(null);
   const { width } = useWindowDimensions();
   const [workspaceRoute, setWorkspaceRoute] = useState<{
     scope: string;
@@ -276,6 +284,17 @@ function UserNavigator() {
         immersive={workspace.split || immersive}
         selected={tab}
         select={selectTab}
+        profile={{
+          image: me.image,
+          open: () => {
+            profileRequest.current = scope;
+            setSupportInbox(null);
+            if (navigation.isReady()) {
+              profileRequest.current = null;
+              navigation.navigate('Settings');
+            }
+          },
+        }}
         account={<SignOut />}>
         {tab === 'staff' && supportInbox === messengerScopeKey(me._id, tab, capabilities) ? (
           <View style={{ flex: 1 }}>
@@ -293,6 +312,11 @@ function UserNavigator() {
           </View>
         ) : (
           <NavigationContainer
+            ref={navigation}
+            onReady={() => {
+              if (profileRequest.current === scope) navigation.navigate('Settings');
+              profileRequest.current = null;
+            }}
             key={messengerScopeKey(me._id, tab, capabilities)}
             onStateChange={state => {
               const route = state?.routes[state.index ?? 0];

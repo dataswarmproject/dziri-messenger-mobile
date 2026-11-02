@@ -1,6 +1,6 @@
 # Compact voice-message player
 
-Consumer and standalone DM use the same generated presentation metrics: a 240 px player, 64 px minimum height, 44 px circular play control, 24 px icon, 32 rounded progress segments and 11 px tabular time labels. The single message pill keeps the existing outgoing/incoming monochrome colors. Elapsed time and total duration remain visible together. The segments display actual playback position, not invented amplitude data; historical recordings do not contain waveform metadata.
+Consumer and standalone DM use the same generated presentation metrics: a 240 px player, 64 px minimum height, 44 px circular play control, 24 px icon, 32 rounded progress segments and 11 px tabular time labels. The single message pill keeps the existing outgoing/incoming monochrome colors. Elapsed time and total duration remain visible together. Waveform metadata is optional; the segments display actual playback position without inferring or displaying measured audio amplitude.
 
 The plain play triangle avoids the previous tiny circled Iconly play glyph inside another control. The new native `playSolid` name reuses the existing local triangle asset without changing other Iconly controls. Seeking, exclusive playback ownership, pause/resume, Story suspension, failed-seek feedback and existing source authorization remain in their existing implementations. Progress stays left to right in Arabic. No library, provider, backend/media schema or recording format was added.
 

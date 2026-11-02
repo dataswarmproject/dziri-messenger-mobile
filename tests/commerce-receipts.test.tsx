@@ -13,6 +13,8 @@ const state = vi.hoisted(() => ({
   composerInstance: 0,
   nextComposerInstance: 0,
   writeSupported: true,
+  contactProofs: false,
+  contactKey: 'v1:' + 'b'.repeat(64),
   discard: vi.fn(async () => true),
   wire: vi.fn(async (_name: string, _args: unknown) => null),
 }));
@@ -26,6 +28,7 @@ vi.mock('convex/react', () => ({
         storeName: 'Store',
         viewerSide: 'seller',
         receiptContext: state.context,
+        receiptContactProofs: state.contactProofs ? 1 : undefined,
         writeContext: state.context
           ? {
               expectedActorId: state.context.expectedActorId,
@@ -46,6 +49,7 @@ vi.mock('convex/react', () => ({
     results: [
       {
         _id: 'incoming',
+        receiptContactKey: state.contactKey,
         senderId: 'buyer',
         senderSide: 'buyer',
         senderName: 'Buyer',
@@ -108,6 +112,8 @@ beforeEach(() => {
   state.actor = 'alice';
   state.drafts = [];
   state.writeSupported = true;
+  state.contactProofs = false;
+  state.contactKey = 'v1:' + 'b'.repeat(64);
   state.discard.mockClear();
   state.context = {
     expectedActorId: 'alice',
@@ -158,6 +164,31 @@ test('actual Commerce screen binds its canonical endpoint and inline receipt ren
   });
   expect(state.props.messages.find((m: any) => m.id === 'team').status).toBe('sent');
   expect(state.props.messages.find((m: any) => m.id === 'incoming').status).toBeUndefined();
+});
+
+test('actual Commerce screen forwards captured contact snapshots and rejects a retired contact callback', async () => {
+  state.contactProofs = true;
+  await render();
+  const previous = state.props.exactReceipts;
+  const captured = { ...command(), messageIds: [previous.observationId('incoming')] };
+  state.contactKey = 'v1:' + 'c'.repeat(64);
+  await render();
+  state.wire.mockClear();
+  await expect(state.props.exactReceipts.send(captured)).rejects.toThrow(
+    'Stale contact observation',
+  );
+  expect(state.wire).not.toHaveBeenCalled();
+  await state.props.exactReceipts.send({
+    ...command(),
+    messageIds: [state.props.exactReceipts.observationId('incoming')],
+  });
+  expect(state.wire).toHaveBeenCalledWith('marketplaceMessages:markConversationAsRead', {
+    conversationId: 'commerce',
+    storeId: 'store',
+    messageIds: ['incoming'],
+    observation: state.context,
+    contactObservations: [{ messageId: 'incoming', authorityKey: state.contactKey }],
+  });
 });
 
 test('actual Commerce send uses the scope captured into the durable outbox command', async () => {

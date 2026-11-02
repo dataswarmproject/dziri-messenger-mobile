@@ -175,6 +175,7 @@ export function MessageList({
         exactReceipts.scope.threadId,
         exactReceipts.scope.epoch,
         ...(exactReceipts.scope.authorityKey ? [exactReceipts.scope.authorityKey] : []),
+        ...(exactReceipts.observationKey ? [exactReceipts.observationKey] : []),
       ])
     : '';
   useEffect(() => {

@@ -84,6 +84,11 @@ function Commerce({ route, navigation }: NativeStackScreenProps<MessengerRoutes,
       conversationId,
       storeId,
       context: detail?.receiptContext,
+      contactProofs: detail?.receiptContactProofs === 1,
+      contacts: (messages ?? []).map(message => ({
+        messageId: message._id,
+        authorityKey: message.receiptContactKey ?? null,
+      })),
     },
     (kind, payload) => (kind === 'read' ? markRead(payload) : markDelivered(payload)),
   );

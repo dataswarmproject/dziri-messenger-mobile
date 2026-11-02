@@ -168,6 +168,40 @@ test('a retired native visibility callback cannot read after a same-account supp
   });
 });
 
+test('a native visibility callback captured before a contact transition cannot observe its replacement snapshot', async () => {
+  const wire = vi.fn(async () => null);
+  function ContactProbe({ value }: { value: string }) {
+    const adapter = createMarketplaceReceiptAdapter(
+      {
+        actorId: 'alice',
+        conversationId: 'commerce',
+        contactProofs: true,
+        context: {
+          expectedActorId: 'alice',
+          readGeneration: 0,
+          authorityKey: 'v1:' + 'a'.repeat(64),
+        },
+        contacts: [{ messageId: 'same', authorityKey: 'v1:' + value.repeat(64) }],
+      },
+      wire,
+    );
+    visible = useReceiptObserver(adapter, true, ['same']);
+    return null;
+  }
+  await act(async () => root.render(<ContactProbe value="b" />));
+  const oldCallback = visible;
+  await act(async () => root.render(<ContactProbe value="c" />));
+  await act(async () => oldCallback(['same']));
+  await tick(600);
+  expect(wire.mock.calls.filter(call => call[0] === 'read')).toEqual([]);
+  await act(async () => visible(['same']));
+  await tick(500);
+  expect(wire.mock.calls.find(call => call[0] === 'read')?.[1]).toMatchObject({
+    messageIds: ['same'],
+    contactObservations: [{ messageId: 'same', authorityKey: 'v1:' + 'c'.repeat(64) }],
+  });
+});
+
 test('native StrictMode only reads exact viewable incoming IDs after dwell', async () => {
   await render();
   await act(async () => visible(['same']));

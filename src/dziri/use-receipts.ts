@@ -44,6 +44,8 @@ export type ExactReceiptAdapter = {
   send: (command: ReceiptCommand) => Promise<unknown>;
   state?: 'inline';
   marketplace?: MarketplaceInboxSource | null;
+  observationId?: (id: string) => string | null;
+  observationKey?: string;
 };
 /** Render only for an advertised Marketplace capability; personal threads never query this API. */
 export function MarketplaceReactionObserver({
@@ -85,6 +87,14 @@ export function useReceiptObserver(
   const visible = useRef<string[]>([]),
     allowed = useRef(new Set(incoming));
   allowed.current = new Set(incoming);
+  const observationIds = useCallback(
+    (ids: string[]) =>
+      ids
+        .map(id => (latest.current?.observationId ? latest.current.observationId(id) : id))
+        .filter((id): id is string => id !== null),
+    [],
+  );
+  const incomingObservations = observationIds(incoming);
   useLayoutEffect(() => {
     const current = createReceiptObserver(
       command => latest.current?.send(command) ?? Promise.resolve(null),
@@ -96,32 +106,36 @@ export function useReceiptObserver(
     };
   }, []);
   const key = receiptScopeKey(adapter?.scope),
-    ids = JSON.stringify(incoming);
+    ids = JSON.stringify(incomingObservations);
   const identity = adapter?.scope
     ? JSON.stringify([
         adapter.scope.actorId,
         adapter.scope.threadId,
         adapter.scope.epoch,
         ...(adapter.scope.authorityKey ? [adapter.scope.authorityKey] : []),
+        ...(adapter.observationKey ? [adapter.observationKey] : []),
       ])
     : '';
   const previousIdentity = useRef(identity);
   useLayoutEffect(() => {
     if (previousIdentity.current !== identity) {
       visible.current = [];
+      observer.current?.visible([]);
       previousIdentity.current = identity;
     }
     observer.current?.configure(adapter?.scope ?? null, enabled);
-    observer.current?.received(incoming);
-    observer.current?.visible(visible.current.filter(id => allowed.current.has(id)));
-  }, [key, enabled, ids, identity, adapter?.scope, incoming]);
+    observer.current?.received(JSON.parse(ids));
+    observer.current?.visible(
+      observationIds(visible.current.filter(id => allowed.current.has(id))),
+    );
+  }, [key, enabled, ids, identity, adapter?.scope, observationIds]);
   const update = useCallback(
     (ids: string[]) => {
       if (previousIdentity.current !== identity) return;
       visible.current = ids;
-      observer.current?.visible(ids.filter(id => allowed.current.has(id)));
+      observer.current?.visible(observationIds(ids.filter(id => allowed.current.has(id))));
     },
-    [identity],
+    [identity, observationIds],
   );
   return update;
 }

@@ -50,8 +50,12 @@ export type MarketplaceReceiptPayload = {
   companyId?: string;
   messageIds: string[];
   observation: MarketplaceReceiptContext;
+  contactObservations?: { messageId: string; authorityKey: string }[];
 };
-export type MarketplaceInboxSource = Omit<MarketplaceReceiptPayload, 'messageIds'>;
+export type MarketplaceInboxSource = Omit<
+  MarketplaceReceiptPayload,
+  'messageIds' | 'contactObservations'
+>;
 export type MarketplaceReactionInbox = MarketplaceInboxSource & {
   headId: string | null;
 };
@@ -76,10 +80,27 @@ export function createMarketplaceReceiptAdapter(
     storeId?: string;
     companyId?: string;
     context?: MarketplaceReceiptContext | null;
+    contactProofs?: boolean;
+    contacts?: readonly { messageId: string; authorityKey: string | null }[];
   },
   send: (kind: Kind, payload: MarketplaceReceiptPayload) => Promise<unknown>,
 ) {
   const { actorId, conversationId, storeId, companyId, context } = options;
+  const contactProofs = options.contactProofs === true;
+  const contacts = new Map<string, string | null>();
+  for (const item of options.contacts ?? []) {
+    const key =
+      item.authorityKey && /^v1:[a-f0-9]{64}$/.test(item.authorityKey) ? item.authorityKey : null;
+    contacts.set(
+      item.messageId,
+      contacts.has(item.messageId) && contacts.get(item.messageId) !== key ? null : key,
+    );
+  }
+  const observationId = (messageId: string) => {
+    if (!contactProofs) return messageId;
+    const key = contacts.get(messageId);
+    return key ? JSON.stringify(['marketplace-contact', messageId, key]) : null;
+  };
   const observation = context ? { ...context } : null;
   const scope: ReceiptScope | null =
     actorId &&
@@ -104,6 +125,10 @@ export function createMarketplaceReceiptAdapter(
   const key = receiptScopeKey(scope);
   return {
     scope,
+    observationId,
+    observationKey: contactProofs
+      ? JSON.stringify([...contacts].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)))
+      : '',
     marketplace:
       scope && observation
         ? Object.freeze({
@@ -120,11 +145,37 @@ export function createMarketplaceReceiptAdapter(
         receiptScopeKey({ ...command, actorId: command.expectedActorId }) !== key
       )
         throw new Error('Stale observation');
+      let messageIds = command.messageIds;
+      let contactObservations: MarketplaceReceiptPayload['contactObservations'];
+      if (contactProofs) {
+        contactObservations = command.messageIds.map(token => {
+          let parts: unknown;
+          try {
+            parts = JSON.parse(token);
+          } catch {
+            throw new Error('Stale contact observation');
+          }
+          if (
+            !Array.isArray(parts) ||
+            parts.length !== 3 ||
+            parts[0] !== 'marketplace-contact' ||
+            typeof parts[1] !== 'string' ||
+            typeof parts[2] !== 'string' ||
+            contacts.get(parts[1]) !== parts[2]
+          )
+            throw new Error('Stale contact observation');
+          return { messageId: parts[1], authorityKey: parts[2] };
+        });
+        messageIds = contactObservations.map(item => item.messageId);
+        if (new Set(messageIds).size !== messageIds.length)
+          throw new Error('Stale contact observation');
+      }
       return send(command.kind, {
         conversationId,
         ...(storeId ? { storeId } : {}),
         ...(companyId ? { companyId } : {}),
-        messageIds: command.messageIds,
+        messageIds,
+        ...(contactObservations ? { contactObservations } : {}),
         observation: { ...observation },
       });
     },

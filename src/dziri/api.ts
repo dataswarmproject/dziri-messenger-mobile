@@ -50,6 +50,7 @@ export interface CommerceMessage {
   senderSide: 'buyer' | 'seller';
   deliveredAt?: number;
   receiptReadAt?: number;
+  receiptContactKey?: string | null;
   parentMessageId?: string;
   parentContent?: string | null;
   parentSenderName?: string;
@@ -487,6 +488,7 @@ export const dziriApi = {
       storeName: string;
       viewerSide: 'buyer' | 'seller';
       receiptContext?: MarketplaceReceiptContext | null;
+      receiptContactProofs?: 1;
       writeContext?: MarketplaceWriteContext | null;
     } | null
   >('marketplaceMessages:getConversation'),
@@ -520,6 +522,7 @@ export const dziriApi = {
       storeId?: string;
       messageIds: string[];
       observation?: MarketplaceReceiptContext;
+      contactObservations?: { messageId: string; authorityKey: string }[];
     },
     null
   >('marketplaceMessages:markConversationAsRead'),
@@ -540,6 +543,7 @@ export const dziriApi = {
       storeId?: string;
       messageIds: string[];
       observation?: MarketplaceReceiptContext;
+      contactObservations?: { messageId: string; authorityKey: string }[];
     },
     null
   >('marketplaceMessages:markMessagesDelivered'),

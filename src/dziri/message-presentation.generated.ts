@@ -51,3 +51,19 @@ export function audioProgress(time: number, duration: number) {
     ? Math.max(0, Math.min(1, time / duration))
     : 0;
 }
+
+// Shared Consumer/DM voice-player geometry. Segments represent playback position,
+// not recorded amplitude: historical voice notes do not contain waveform data.
+export const voicePlayerMetrics = Object.freeze({
+  width: 240,
+  minHeight: 64,
+  padding: 10,
+  gap: 10,
+  control: 44,
+  icon: 24,
+  segments: 32,
+  segmentHeight: 16,
+  segmentWidth: 2,
+  timeSize: 11,
+  timeLine: 16,
+});

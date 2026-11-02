@@ -124,10 +124,26 @@ test('a voice note is one pill with real progress, compact duration and left-to-
   expect(JSON.parse(host.firstElementChild!.getAttribute('data-style')!)).toMatchObject({
     backgroundColor: '#1a1b17',
     direction: 'ltr',
-    minHeight: 56,
+    minHeight: 64,
   });
   await act(async () => host.querySelector<HTMLButtonElement>('[role="slider"]')!.click());
   expect(state.players.get('one')!.seekTo).toHaveBeenCalledWith(2.995);
+});
+
+test('elapsed and total time remain visible while keyboard seeking uses actual playback duration', async () => {
+  Object.assign(state.status.get('one')!, { duration: 60, currentTime: 12 });
+  await act(async () => root.render(<VoiceMessage uri="one" />));
+  expect(host.textContent).toContain('0:12');
+  expect(host.textContent).toContain('1:00');
+  const slider = host.querySelector<HTMLButtonElement>('[role="slider"]')!;
+  await act(async () =>
+    slider.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })),
+  );
+  expect(state.players.get('one')!.seekTo).toHaveBeenLastCalledWith(17);
+  await act(async () =>
+    slider.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true })),
+  );
+  expect(state.players.get('one')!.seekTo).toHaveBeenLastCalledWith(60);
 });
 test('starting one recording pauses other players and finished notes restart from zero', async () => {
   state.status.get('one')!.didJustFinish = true;

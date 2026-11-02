@@ -7,6 +7,7 @@ const sources = {
   file: require('../../assets/icons/file.svg'),
   link: require('../../assets/icons/link.svg'),
   play: require('../../assets/icons/play.svg'),
+  playSolid: require('../../assets/icons/play.svg'),
   pause: require('../../assets/icons/pause.svg'),
   pin: require('../../assets/icons/pin.svg'),
   menu: require('../../assets/icons/menu.svg'),

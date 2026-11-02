@@ -7,7 +7,11 @@ import { Text } from './typography';
 import { Icon } from './icons';
 import { useLocale } from './locale';
 import { useColors } from './ui';
-import { audioClock, audioProgress } from './message-presentation.generated';
+import {
+  audioClock,
+  audioProgress,
+  voicePlayerMetrics as metrics,
+} from './message-presentation.generated';
 
 export function VoiceMessage({
   uri,
@@ -84,16 +88,15 @@ export function VoiceMessage({
   return (
     <View
       style={{
-        width: 220,
+        width: metrics.width,
         maxWidth: '100%',
-        minHeight: 56,
-        borderRadius: 28,
+        minHeight: metrics.minHeight,
+        borderRadius: 24,
         backgroundColor: outgoing ? colors.outgoing : colors.surface,
-        paddingHorizontal: 8,
-        paddingVertical: 6,
+        padding: metrics.padding,
         direction: 'ltr',
       }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: metrics.gap }}>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={status.playing ? t.pauseVoice : t.playVoice}
@@ -101,75 +104,119 @@ export function VoiceMessage({
             event.stopPropagation();
             void toggle();
           }}
-          style={{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }}>
-          <Icon name={status.playing ? 'pause' : 'play'} size={24} color={foreground} />
-        </Pressable>
-        <Pressable
-          accessibilityRole="adjustable"
-          accessibilityLabel={t.voicePosition}
-          aria-valuemin={0}
-          aria-valuemax={duration || 1}
-          aria-valuenow={time}
-          aria-valuetext={`${audioClock(time)} / ${audioClock(Math.ceil(duration))}`}
-          accessibilityValue={{
-            min: 0,
-            max: duration || 1,
-            now: time,
-            text: `${audioClock(time)} / ${audioClock(Math.ceil(duration))}`,
-          }}
-          accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
-          onAccessibilityAction={event =>
-            void seek(time + (event.nativeEvent.actionName === 'increment' ? 5 : -5))
-          }
-          disabled={!duration || !status.isLoaded}
-          onLayout={event => setTrackWidth(Math.max(1, event.nativeEvent.layout.width))}
-          onPress={event => {
-            event.stopPropagation();
-            void seek((duration * event.nativeEvent.locationX) / trackWidth);
-          }}
-          {...(Platform.OS === 'web'
-            ? {
-                onKeyDown: (event: React.KeyboardEvent) => {
-                  if (['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    void seek(
-                      event.key === 'Home'
-                        ? 0
-                        : event.key === 'End'
-                          ? duration
-                          : time + (event.key === 'ArrowRight' ? 5 : -5),
-                    );
-                  }
-                },
-              }
-            : {})}
-          style={{ flex: 1, minWidth: 32, height: 44, justifyContent: 'center' }}>
-          <View
-            style={{ height: 3, borderRadius: 2, backgroundColor: foreground, opacity: 0.25 }}
-          />
-          <View
-            style={{
-              position: 'absolute',
-              height: 3,
-              borderRadius: 2,
-              left: 0,
-              width: `${audioProgress(time, duration) * 100}%`,
-              backgroundColor: foreground,
-            }}
-          />
-        </Pressable>
-        <Text
           style={{
-            minWidth: 34,
-            fontSize: 12,
-            lineHeight: 16,
-            color: foreground,
-            textAlign: 'center',
-            writingDirection: 'ltr',
+            width: metrics.control,
+            height: metrics.control,
+            borderRadius: metrics.control / 2,
+            overflow: 'hidden',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}>
-          {audioClock(time > 0 && !status.didJustFinish ? time : Math.ceil(duration))}
-        </Text>
+          <View
+            pointerEvents="none"
+            style={{ position: 'absolute', inset: 0, backgroundColor: foreground, opacity: 0.12 }}
+          />
+          <Icon
+            name={status.playing ? 'pause' : 'playSolid'}
+            size={metrics.icon}
+            color={foreground}
+          />
+        </Pressable>
+        <View style={{ flex: 1, minWidth: 0 }}>
+          <Pressable
+            accessibilityRole="adjustable"
+            accessibilityLabel={t.voicePosition}
+            aria-valuemin={0}
+            aria-valuemax={duration || 1}
+            aria-valuenow={time}
+            aria-valuetext={`${audioClock(time)} / ${audioClock(Math.ceil(duration))}`}
+            accessibilityValue={{
+              min: 0,
+              max: duration || 1,
+              now: time,
+              text: `${audioClock(time)} / ${audioClock(Math.ceil(duration))}`,
+            }}
+            accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
+            onAccessibilityAction={event =>
+              void seek(time + (event.nativeEvent.actionName === 'increment' ? 5 : -5))
+            }
+            disabled={!duration || !status.isLoaded}
+            onLayout={event => setTrackWidth(Math.max(1, event.nativeEvent.layout.width))}
+            onPress={event => {
+              event.stopPropagation();
+              void seek((duration * event.nativeEvent.locationX) / trackWidth);
+            }}
+            {...(Platform.OS === 'web'
+              ? {
+                  onKeyDown: (event: React.KeyboardEvent) => {
+                    if (['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      void seek(
+                        event.key === 'Home'
+                          ? 0
+                          : event.key === 'End'
+                            ? duration
+                            : time + (event.key === 'ArrowRight' ? 5 : -5),
+                      );
+                    }
+                  },
+                }
+              : {})}
+            hitSlop={{ top: 8, bottom: 8 }}
+            style={{
+              height: 28,
+              justifyContent: 'center',
+              opacity: !duration || !status.isLoaded ? 0.5 : 1,
+            }}>
+            <View
+              accessible={false}
+              pointerEvents="none"
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              {Array.from({ length: metrics.segments }, (_, index) => (
+                <View
+                  key={index}
+                  style={{
+                    width: metrics.segmentWidth,
+                    height: metrics.segmentHeight,
+                    borderRadius: metrics.segmentWidth,
+                    backgroundColor: foreground,
+                    opacity:
+                      audioProgress(time, duration) >= (index + 1) / metrics.segments ? 1 : 0.45,
+                  }}
+                />
+              ))}
+            </View>
+          </Pressable>
+          <View
+            accessible={false}
+            style={{ flexDirection: 'row', justifyContent: 'space-between', opacity: 0.7 }}>
+            <Text
+              style={{
+                fontSize: metrics.timeSize,
+                lineHeight: metrics.timeLine,
+                color: foreground,
+                writingDirection: 'ltr',
+                fontVariant: ['tabular-nums'],
+              }}>
+              {audioClock(time)}
+            </Text>
+            <Text
+              style={{
+                fontSize: metrics.timeSize,
+                lineHeight: metrics.timeLine,
+                color: foreground,
+                writingDirection: 'ltr',
+                fontVariant: ['tabular-nums'],
+              }}>
+              {audioClock(Math.ceil(duration))}
+            </Text>
+          </View>
+        </View>
       </View>
       {failed || status.playbackState === 'error' ? (
         <Text accessibilityRole="alert" style={{ padding: 6, color: foreground, fontSize: 11 }}>

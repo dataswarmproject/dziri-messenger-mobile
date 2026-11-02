@@ -1,0 +1,11 @@
+# Compact voice-message player
+
+Consumer and standalone DM use the same generated presentation metrics: a 240 px player, 64 px minimum height, 44 px circular play control, 24 px icon, 32 rounded progress segments and 11 px tabular time labels. The single message pill keeps the existing outgoing/incoming monochrome colors. Elapsed time and total duration remain visible together. The segments display actual playback position, not invented amplitude data; historical recordings do not contain waveform metadata.
+
+The plain play triangle avoids the previous tiny circled Iconly play glyph inside another control. The new native `playSolid` name reuses the existing local triangle asset without changing other Iconly controls. Seeking, exclusive playback ownership, pause/resume, Story suspension, failed-seek feedback and existing source authorization remain in their existing implementations. Progress stays left to right in Arabic. No library, provider, backend/media schema or recording format was added.
+
+Native qualification: 352 UI tests across 46 files, Consumer type checking, changed-file lint, 28 selected domain/presentation/layout/action-contract cases and the consistency check pass. Android/iOS/web export succeeds with 1,016 frozen inputs unchanged in the existing stable builder. Receipts: `audio-player-native-all-ui-20261102.json`, `native-audio-player-export-result-20261102.json` and `native-audio-player-source-inputs-20261102.json` under `E:/CodexArtifacts/dziri-journal-recovery-20261101`.
+
+Consumer's real player was exercised in Edge using a quiet synthetic six-second tone: loading, play/pause, keyboard seeking and exclusive playback worked. Mobile preview and measured 320/768 px widths had no horizontal overflow. The in-app browser could not load the synthetic audio and displayed the existing retry state; Edge provided the actual playback check. Later Edge automation timed out during larger viewport checks. These are isolated component/synthetic checks, not a physical-phone or authenticated media-URL acceptance claim.
+
+This increment is local source and bundle work. It does not update the installed APK or production frontend. Push remains HARD_DISABLED, and staff isolation is unchanged.

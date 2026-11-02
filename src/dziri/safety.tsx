@@ -1,6 +1,7 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import {
   captureSafetyIntent,
+  safetyDecisionCopy,
   isSafetyIntentCurrent,
   safetyIntentCommand,
   type SafetyIntent,
@@ -49,13 +50,7 @@ export function SafetyAction(props: React.ComponentProps<typeof SafetyActionCont
     </SafetyBoundary>
   );
 }
-function SafetyActionContent({
-  userId,
-  name,
-  active = true,
-  renderTrigger,
-  onComplete,
-}: {
+type SafetyActionProps = {
   userId: string;
   name: string;
   knownBlocked?: boolean;
@@ -66,39 +61,114 @@ function SafetyActionContent({
     open: () => void;
   }) => React.ReactNode;
   onComplete?: () => void;
+};
+function SafetyTrigger({
+  render,
+  state,
+}: {
+  render: NonNullable<SafetyActionProps['renderTrigger']>;
+  state: Parameters<NonNullable<SafetyActionProps['renderTrigger']>>[0];
 }) {
+  return <>{render(state)}</>;
+}
+function SafetyActionContent(props: SafetyActionProps) {
+  const { active = true, userId, renderTrigger } = props;
+  const { t } = useLocale(),
+    colors = useColors();
   const me = useQuery(dziriApi.me, active ? {} : 'skip');
   const actorId = me?._id;
   const state = useQuery(
     dziriApi.blockState,
     active && actorId ? { otherUserId: userId, expectedActorId: actorId } : 'skip',
   );
-  const blocked = state?.expectedActorId === actorId ? state?.blocked : undefined;
-  const owner = useMemo<SafetyOwner | null>(
-    () =>
-      active && actorId && state?.expectedActorId === actorId
-        ? Object.freeze({ actorId, userId })
-        : null,
-    [active, actorId, state?.expectedActorId, userId],
+  if (active && actorId && state?.expectedActorId === actorId)
+    return (
+      <SafetyActionSession
+        key={`${actorId}:${userId}`}
+        {...props}
+        actorId={actorId}
+        blocked={state.blocked}
+      />
+    );
+  return renderTrigger ? (
+    <SafetyTrigger
+      render={renderTrigger}
+      state={{ disabled: true, blocked: false, open: () => {} }}
+    />
+  ) : (
+    <Pressable
+      disabled
+      accessibilityRole="button"
+      accessibilityState={{ disabled: true }}
+      style={{ minHeight: 44, justifyContent: 'center', opacity: 0.5 }}>
+      <Text style={{ color: colors.primary, fontSize: 14 }}>{t.blockAccount}</Text>
+    </Pressable>
   );
-  const liveOwner = useRef(owner);
-  liveOwner.current = owner;
+}
+function SafetyActionSession({
+  userId,
+  name,
+  renderTrigger,
+  onComplete,
+  actorId,
+  blocked,
+}: SafetyActionProps & { actorId: string; blocked: boolean }) {
+  const [owner] = useState<SafetyOwner>(() => Object.freeze({ actorId, userId }));
+  const liveOwner = useRef<SafetyOwner | null>(null);
+  const prepare = useMutation(dziriApi.prepareSafetyDecision);
   const block = useMutation(dziriApi.blockUser),
     unblock = useMutation(dziriApi.unblockUser);
-  const { t, rtl } = useLocale(),
+  const { t, rtl, locale } = useLocale(),
     colors = useColors();
+  const decisionCopy = safetyDecisionCopy(locale);
   const [intent, setIntent] = useState<SafetyIntent | null>(null),
     [busy, setBusy] = useState(false),
     [failed, setFailed] = useState(false);
   const lock = useRef<SafetyOwner | null>(null);
-  useEffect(() => {
-    setIntent(null);
-    setBusy(false);
-    setFailed(false);
+  type Opening = Readonly<{ owner: SafetyOwner; blocked: boolean }>;
+  const [opening, setOpening] = useState<Opening | null>(null),
+    [preparing, setPreparing] = useState(false);
+  const pending = useRef<Opening | null>(null);
+  useLayoutEffect(() => {
+    liveOwner.current = owner;
     return () => {
       if (liveOwner.current === owner) liveOwner.current = null;
+      pending.current = null;
     };
   }, [owner]);
+  function close() {
+    if (busy) return;
+    pending.current = null;
+    setOpening(null);
+    setPreparing(false);
+    setIntent(null);
+    setFailed(false);
+  }
+  async function open() {
+    if (!owner || blocked === undefined || busy || preparing) return;
+    const request = Object.freeze({ owner, blocked });
+    pending.current = request;
+    setOpening(request);
+    setPreparing(true);
+    setIntent(null);
+    setFailed(false);
+    try {
+      const prepared = await prepare({ otherUserId: owner.userId, expectedActorId: owner.actorId });
+      if (pending.current !== request || liveOwner.current !== request.owner) return;
+      const captured = captureSafetyIntent(request.owner, request.blocked, prepared);
+      if (!captured) throw new Error('Safety state changed');
+      setIntent(captured);
+      setOpening(null);
+    } catch {
+      if (pending.current === request && liveOwner.current === request.owner) setFailed(true);
+    } finally {
+      if (pending.current === request) {
+        pending.current = null;
+        setPreparing(false);
+      }
+    }
+  }
+  const selectedBlock = intent ? intent.action === 'block' : !opening?.blocked;
   async function confirm() {
     if (
       !intent ||
@@ -134,31 +204,29 @@ function SafetyActionContent({
   );
   return (
     <>
-      {renderTrigger
-        ? renderTrigger({
-            disabled: !owner || blocked === undefined || busy,
+      {renderTrigger ? (
+        <SafetyTrigger
+          render={renderTrigger}
+          state={{
+            disabled: !owner || blocked === undefined || busy || preparing,
             blocked: !!blocked,
-            open: () => {
-              if (!owner || blocked === undefined || busy) return;
-              setIntent(captureSafetyIntent(owner, blocked));
-              setFailed(false);
-            },
-          })
-        : button(
-            blocked ? t.unblockAccount : t.blockAccount,
-            () => {
-              setIntent(captureSafetyIntent(owner, blocked));
-              setFailed(false);
-            },
-            !owner || blocked === undefined,
-          )}
-      {isSafetyIntentCurrent(intent, owner) ? (
+            open: () => void open(),
+          }}
+        />
+      ) : (
+        button(
+          blocked ? t.unblockAccount : t.blockAccount,
+          () => void open(),
+          !owner || blocked === undefined || preparing,
+        )
+      )}
+      {isSafetyIntentCurrent(intent, owner) || !!(opening && opening.owner === owner) ? (
         <Modal
           visible
           transparent
           animationType="fade"
           onRequestClose={() => {
-            if (!busy) setIntent(null);
+            close();
           }}>
           <View
             accessibilityViewIsModal
@@ -178,26 +246,30 @@ function SafetyActionContent({
                 backgroundColor: colors.actionSurface,
               }}>
               <Text accessibilityRole="header" style={{ fontSize: 18, color: colors.text }}>
-                {intent?.action === 'block' ? t.blockAccount : t.unblockAccount}
+                {selectedBlock ? t.blockAccount : t.unblockAccount}
               </Text>
               <Text style={{ fontSize: 15, color: colors.text, paddingVertical: 12 }}>{name}</Text>
               <Text style={{ color: colors.secondary, fontSize: 13, lineHeight: 19 }}>
-                {intent?.action === 'block' ? t.blockDescription : t.unblockDescription}
+                {selectedBlock ? t.blockDescription : t.unblockDescription}
               </Text>
               {failed ? (
                 <Text accessibilityRole="alert" style={{ paddingVertical: 12, color: colors.text }}>
-                  {t.actionFailed}
+                  {decisionCopy.failed}
                 </Text>
               ) : null}
-              {busy ? <ActivityIndicator color={colors.secondary} /> : null}
+              {busy || preparing ? <ActivityIndicator color={colors.secondary} /> : null}
               <View
                 style={{
                   flexDirection: rtl ? 'row-reverse' : 'row',
                   justifyContent: 'flex-end',
                   gap: 24,
                 }}>
-                {button(t.cancel, () => setIntent(null))}
-                {button(t.confirm, () => void confirm())}
+                {button(t.cancel, close)}
+                {button(
+                  preparing ? decisionCopy.loading : t.confirm,
+                  () => void confirm(),
+                  preparing || !isSafetyIntentCurrent(intent, owner),
+                )}
               </View>
             </View>
           </View>

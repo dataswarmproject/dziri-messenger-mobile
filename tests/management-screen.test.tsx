@@ -10,6 +10,7 @@ const state = vi.hoisted(() => ({
   members: [] as object[],
   blocked: false,
   mutate: vi.fn(),
+  prepare: vi.fn(),
   close: vi.fn(),
   leave: vi.fn(),
 }));
@@ -19,7 +20,10 @@ vi.mock('convex/react', () => ({
       ? { _id: 'actor' }
       : { blocked: state.blocked, expectedActorId: 'actor' },
   usePaginatedQuery: () => ({ results: state.members, status: 'Exhausted', loadMore: vi.fn() }),
-  useMutation: (ref: never) => (args: object) => state.mutate(getFunctionName(ref), args),
+  useMutation: (ref: never) => (args: object) =>
+    getFunctionName(ref) === 'messaging/safety:prepareDecision'
+      ? state.prepare(args)
+      : state.mutate(getFunctionName(ref), args),
 }));
 vi.mock('react-native', () => ({
   View: ({ children }: React.PropsWithChildren) => <div>{children}</div>,
@@ -82,6 +86,13 @@ beforeEach(() => {
   ];
   state.blocked = false;
   state.mutate.mockReset();
+  state.prepare
+    .mockReset()
+    .mockImplementation(async (args: { expectedActorId: string }) => ({
+      blocked: state.blocked,
+      expectedActorId: args.expectedActorId,
+      decisionKey: 'v1:' + 'a'.repeat(64),
+    }));
   state.close.mockClear();
   state.leave.mockClear();
   host = document.createElement('div');
@@ -144,9 +155,13 @@ test('a block confirmation keeps its original intent when live state changes and
   await act(async () => button('confirm').click());
   expect(state.mutate.mock.calls[0]).toEqual([
     'messaging/moderationDecisions:blockUser',
-    { blockedUserId: 'peer', expectedActorId: 'actor' },
+    {
+      blockedUserId: 'peer',
+      expectedActorId: 'actor',
+      expectedDecisionKey: 'v1:' + 'a'.repeat(64),
+    },
   ]);
-  expect(host.textContent).toContain('actionFailed');
+  expect(host.textContent).toContain('Close and reopen');
   expect(host.textContent).not.toContain('private backend detail');
   await act(async () => button('confirm').click());
   expect(state.mutate.mock.calls[1]).toEqual(state.mutate.mock.calls[0]);

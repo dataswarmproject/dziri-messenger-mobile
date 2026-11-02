@@ -245,8 +245,13 @@ export const dziriApi = {
   blockState: makeFunctionReference<
     'query',
     { otherUserId: string; expectedActorId: string },
-    { blocked: boolean; expectedActorId: string } | null
+    { blocked: boolean; expectedActorId: string; decisionKey?: string } | null
   >('messaging/safety:state'),
+  prepareSafetyDecision: makeFunctionReference<
+    'mutation',
+    { otherUserId: string; expectedActorId: string },
+    { blocked: boolean; expectedActorId: string; decisionKey?: string }
+  >('messaging/safety:prepareDecision'),
   blockedPage: makeFunctionReference<
     'query',
     { paginationOpts: PaginationOptions },
@@ -254,12 +259,12 @@ export const dziriApi = {
   >('messaging/safety:blockedPage'),
   blockUser: makeFunctionReference<
     'mutation',
-    { blockedUserId: string; expectedActorId: string },
+    { blockedUserId: string; expectedActorId: string; expectedDecisionKey: string },
     string
   >('messaging/moderationDecisions:blockUser'),
   unblockUser: makeFunctionReference<
     'mutation',
-    { blockedUserId: string; expectedActorId: string },
+    { blockedUserId: string; expectedActorId: string; expectedDecisionKey: string },
     null
   >('messaging/moderationDecisions:unblockUser'),
   groupMembers: makeFunctionReference<

@@ -1,4 +1,20 @@
 export type RequestState = 'pending' | 'spam' | 'declined';
+export function safetyDecisionCopy(locale = 'en') {
+  return locale === 'ar'
+    ? {
+        loading: 'جارٍ التحميل…',
+        failed: 'تعذّرت العملية. أغلق النافذة وأعد فتحها لمراجعة أحدث حالة.',
+      }
+    : locale === 'fr'
+      ? {
+          loading: 'Chargement…',
+          failed: 'Action impossible. Fermez et rouvrez pour vérifier l’état actuel.',
+        }
+      : {
+          loading: 'Loading…',
+          failed: 'Could not complete this action. Close and reopen to review the latest state.',
+        };
+}
 /** One mounted account/target lifetime, never an authorization grant. */
 export type SafetyOwner<T extends string = string> = Readonly<{
   actorId: T;
@@ -7,13 +23,27 @@ export type SafetyOwner<T extends string = string> = Readonly<{
 export type SafetyIntent<T extends string = string> = Readonly<{
   owner: SafetyOwner<T>;
   action: 'block' | 'unblock';
+  decisionKey: string;
 }>;
 export function captureSafetyIntent<T extends string>(
   owner: SafetyOwner<T> | null,
   blocked?: boolean,
+  prepared?: {
+    blocked: boolean;
+    expectedActorId: string;
+    decisionKey?: string;
+  },
 ): SafetyIntent<T> | null {
-  return owner && typeof blocked === 'boolean'
-    ? Object.freeze({ owner, action: blocked ? 'unblock' : 'block' })
+  return owner &&
+    typeof blocked === 'boolean' &&
+    prepared?.blocked === blocked &&
+    prepared.expectedActorId === owner.actorId &&
+    /^v1:[a-f0-9]{64}$/.test(prepared.decisionKey ?? '')
+    ? Object.freeze({
+        owner,
+        action: blocked ? 'unblock' : 'block',
+        decisionKey: prepared.decisionKey!,
+      })
     : null;
 }
 export function isSafetyIntentCurrent<T extends string>(
@@ -26,6 +56,7 @@ export function safetyIntentCommand<T extends string>(intent: SafetyIntent<T>) {
   return {
     blockedUserId: intent.owner.userId,
     expectedActorId: intent.owner.actorId,
+    expectedDecisionKey: intent.decisionKey,
   };
 }
 export type RequestView = {

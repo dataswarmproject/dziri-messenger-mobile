@@ -9,6 +9,7 @@ const state = vi.hoisted(() => ({
   actor: 'alice',
   blocked: false,
   mutate: vi.fn(),
+  prepare: vi.fn(),
   profile: vi.fn(),
   safetyCapability: 1 as number | undefined,
   safetyQueryFails: false,
@@ -136,7 +137,10 @@ vi.mock('convex/react', () => ({
       expectedActorId: state.missingSafetyOwner ? undefined : (state.safetyActor ?? state.actor),
     };
   },
-  useMutation: (ref: never) => (args: object) => state.mutate(getFunctionName(ref), args),
+  useMutation: (ref: never) => (args: object) =>
+    getFunctionName(ref) === 'messaging/safety:prepareDecision'
+      ? state.prepare(args)
+      : state.mutate(getFunctionName(ref), args),
   usePaginatedQuery: () => ({ results: [], status: 'Exhausted', loadMore: vi.fn() }),
 }));
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
@@ -167,6 +171,11 @@ beforeEach(() => {
   state.actor = 'alice';
   state.blocked = false;
   state.mutate.mockReset().mockResolvedValue(null);
+  state.prepare.mockReset().mockImplementation(async (args: { expectedActorId: string }) => ({
+    blocked: state.blocked,
+    expectedActorId: args.expectedActorId,
+    decisionKey: 'v1:' + 'a'.repeat(64),
+  }));
   state.profile.mockReset();
   state.safetyCapability = 1;
   state.safetyQueryFails = false;
@@ -309,6 +318,7 @@ test('block uses the existing confirmation instead of changing the account on sw
   expect(confirm).toBeTruthy();
   await act(async () => confirm.click());
   expect(state.mutate).toHaveBeenCalledWith('messaging/moderationDecisions:blockUser', {
+    expectedDecisionKey: 'v1:' + 'a'.repeat(64),
     blockedUserId: 'bob',
     expectedActorId: 'alice',
   });
@@ -375,6 +385,7 @@ test('a confirmed safety action remains usable after React effect replay', async
   expect(state.mutate).toHaveBeenCalledWith('messaging/moderationDecisions:blockUser', {
     blockedUserId: 'bob',
     expectedActorId: 'alice',
+    expectedDecisionKey: 'v1:' + 'a'.repeat(64),
   });
 });
 
@@ -415,6 +426,7 @@ test.each([
     await act(async () => confirm().click());
     expect(state.mutate.mock.calls[1][1]).toEqual({
       blockedUserId: 'bob',
+      expectedDecisionKey: 'v1:' + 'a'.repeat(64),
       expectedActorId: back ? 'alice' : 'charlie',
     });
   },
@@ -517,5 +529,105 @@ test.each([
       untilMs: expect.any(Number),
     });
     expect(host.textContent).toContain('Bob conversation');
+  },
+);
+
+async function showPreparedSafety() {
+  await act(async () => root.render(<SafetyAction userId="bob" name="Bob" />));
+}
+function safetyTextButton(text: string) {
+  return [...host.querySelectorAll<HTMLButtonElement>('button')].find(
+    node => node.textContent === text,
+  )!;
+}
+test('cancelled preparation cannot reopen a dialog or unlock a newer preparation', async () => {
+  let first!: (value: unknown) => void, second!: (value: unknown) => void;
+  state.prepare
+    .mockImplementationOnce(
+      () =>
+        new Promise(resolve => {
+          first = resolve;
+        }),
+    )
+    .mockImplementationOnce(
+      () =>
+        new Promise(resolve => {
+          second = resolve;
+        }),
+    );
+  await showPreparedSafety();
+  await act(async () => safetyTextButton('blockAccount').click());
+  expect(safetyTextButton('Loading…').disabled).toBe(true);
+  await act(async () => safetyTextButton('cancel').click());
+  expect(host.querySelector('[role="dialog"]')).toBeNull();
+  await act(async () => safetyTextButton('blockAccount').click());
+  await act(async () =>
+    first({ blocked: false, expectedActorId: 'alice', decisionKey: 'v1:' + 'a'.repeat(64) }),
+  );
+  expect(safetyTextButton('Loading…').disabled).toBe(true);
+  expect(state.mutate).not.toHaveBeenCalled();
+  await act(async () =>
+    second({ blocked: false, expectedActorId: 'alice', decisionKey: 'v1:' + 'b'.repeat(64) }),
+  );
+  await act(async () => safetyTextButton('confirm').click());
+  expect(state.mutate).toHaveBeenCalledWith('messaging/moderationDecisions:blockUser', {
+    blockedUserId: 'bob',
+    expectedActorId: 'alice',
+    expectedDecisionKey: 'v1:' + 'b'.repeat(64),
+  });
+});
+test('preparation cannot silently reverse the chosen action and retry needs a fresh review', async () => {
+  state.prepare.mockResolvedValueOnce({
+    blocked: true,
+    expectedActorId: 'alice',
+    decisionKey: 'v1:' + 'a'.repeat(64),
+  });
+  await showPreparedSafety();
+  await act(async () => safetyTextButton('blockAccount').click());
+  expect(safetyTextButton('confirm').disabled).toBe(true);
+  expect(host.textContent).toContain('Close and reopen');
+  expect(state.mutate).not.toHaveBeenCalled();
+  await act(async () => safetyTextButton('cancel').click());
+  state.blocked = true;
+  await showPreparedSafety();
+  await act(async () => safetyTextButton('unblockAccount').click());
+  await act(async () => safetyTextButton('confirm').click());
+  expect(state.mutate).toHaveBeenCalledWith(
+    'messaging/moderationDecisions:unblockUser',
+    expect.objectContaining({ expectedDecisionKey: 'v1:' + 'a'.repeat(64) }),
+  );
+});
+test('late preparation from an earlier account lifetime cannot replace a fresh decision', async () => {
+  let finish!: (value: unknown) => void;
+  state.prepare.mockImplementationOnce(
+    () =>
+      new Promise(resolve => {
+        finish = resolve;
+      }),
+  );
+  await showPreparedSafety();
+  await act(async () => safetyTextButton('blockAccount').click());
+  state.actor = 'charlie';
+  await showPreparedSafety();
+  state.actor = 'alice';
+  await showPreparedSafety();
+  await act(async () => safetyTextButton('blockAccount').click());
+  await act(async () =>
+    finish({ blocked: false, expectedActorId: 'alice', decisionKey: 'v1:' + 'b'.repeat(64) }),
+  );
+  await act(async () => safetyTextButton('confirm').click());
+  expect(state.mutate).toHaveBeenCalledWith(
+    'messaging/moderationDecisions:blockUser',
+    expect.objectContaining({ expectedDecisionKey: 'v1:' + 'a'.repeat(64) }),
+  );
+});
+test.each([undefined, 'invalid'])(
+  'unproven preparation key %s never falls back to an unscoped command',
+  async decisionKey => {
+    state.prepare.mockResolvedValueOnce({ blocked: false, expectedActorId: 'alice', decisionKey });
+    await showPreparedSafety();
+    await act(async () => safetyTextButton('blockAccount').click());
+    expect(safetyTextButton('confirm').disabled).toBe(true);
+    expect(state.mutate).not.toHaveBeenCalled();
   },
 );

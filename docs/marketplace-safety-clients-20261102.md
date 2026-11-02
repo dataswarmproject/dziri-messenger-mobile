@@ -1,0 +1,11 @@
+# Marketplace individual-account safety
+
+DM now uses the same generated capture/command/copy helpers as Consumer. A separate `marketplaceSafety` capability enables the canonical Marketplace source query and prepared Block/Unblock commands, independently from mute. The confirmation names the verified individual rather than the store, preserves EN/FR/AR and RTL, and leaves other employees independent.
+
+Stable account/peer/conversation/store/company lifetimes retire replaced UI. Each opening freezes source, chosen action and private decision consistency; stale, cancelled and mismatched results cannot enable a mutation. The acknowledgement path handles a successful block updating its own source key without reporting a false failure. Existing personal safety, optional endpoint/account-switch recovery and isolated Chatwoot staff credentials are retained.
+
+The full DM UI suite passes 374 cases /46 files. Types, changed-file lint, consistency and 28 selected domain/presentation/action/layout cases pass. Android/iOS/web export succeeds with 1016 frozen runtime inputs unchanged; newest builder baseline is native-marketplace-safety-source-inputs-20261102.json under E:/CodexArtifacts/dziri-journal-recovery-20261101. Consumer passes1072 UI cases and the combined backend/client-contract scope passes286. Synthetic browser proof covers Consumer's real component, not a physical DM installation. A previous native selector mistake was corrected and the three actual RED cases reproduced against the prior component with exact working-source restoration.
+
+Matching mute-deadline timers update an open row after expiry and clear on closure. No new dependency, schema field, provider, permission or push activation is introduced by this client slice. Full Consumer build, compatible backend/index publication, release and authorized physical/two-account acceptance remain gates. The installed APK is unchanged. Push remains HARD_DISABLED.
+
+Canonical task/evidence live in the monorepo at tasks/messenger-meta-parity/marketplace-safety-clients-20261102.md and docs/messenger/evidence/marketplace-safety-clients-20261102.json. Marketplace account-only history deletion and the remaining catalogue remain unfinished.

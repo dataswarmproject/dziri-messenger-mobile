@@ -1,9 +1,9 @@
-import React, { useMemo, useRef, useState, type ReactNode } from 'react';
+import React, { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Animated, PanResponder, Platform, Pressable, View } from 'react-native';
 import { useMutation, useQuery } from 'convex/react';
 import { dziriApi } from './api';
 import { IconlyGlyph, type IconlyName } from './iconly';
-import { SafetyAction } from './safety';
+import { SafetyAction, MarketplaceSafetyAction } from './safety';
 import { DeleteChat, type DeleteChatIntent } from './delete-chat';
 import { inboxActionCopy } from './inbox-actions.generated';
 import { useLocale } from './locale';
@@ -22,7 +22,7 @@ export function SwipeConversation({
   title = '',
 }: {
   threadId?: string;
-  commerce?: { conversationId: string; storeId?: string };
+  commerce?: { conversationId: string; storeId?: string; companyId?: string };
   details: () => void;
   children: (showActions: () => void, canOpen: () => boolean) => ReactNode;
   organization?: { pinned: boolean; archived: boolean; unread: boolean };
@@ -38,6 +38,7 @@ export function SwipeConversation({
     [menu, setMenu] = useState(false),
     [busy, setBusy] = useState(false),
     [failed, setFailed] = useState(false);
+  const [observedAt, setObservedAt] = useState(0);
   const offset = useRef(new Animated.Value(0)).current,
     opened = useRef(false),
     swipeAt = useRef(0);
@@ -52,10 +53,26 @@ export function SwipeConversation({
   const mute = useMutation(dziriApi.muteThread);
   const muteCommerce = useMutation(dziriApi.commerceMute);
   const muteState = commerce ? commerceState : detail;
+  const muteDeadline = muteState?.mutedUntil ?? 0;
+  useEffect(() => {
+    if (!open || !muteDeadline) return;
+    let timer: ReturnType<typeof setTimeout>;
+    const tick = () => {
+      const now = Date.now();
+      setObservedAt(now);
+      if (now < muteDeadline) schedule();
+    };
+    const schedule = () => {
+      timer = setTimeout(tick, Math.min(2_147_000_000, Math.max(1, muteDeadline - Date.now() + 1)));
+    };
+    schedule();
+    return () => clearTimeout(timer);
+  }, [open, muteDeadline]);
   const muteReady = commerce
     ? !!commerceState && me?._id === commerceState.commandContext.expectedActorId
     : !!detail;
   const position = (value: boolean) => {
+    if (value) setObservedAt(Date.now());
     opened.current = value;
     setOpen(value);
     Animated.spring(offset, {
@@ -168,7 +185,7 @@ export function SwipeConversation({
         {threadId || commerce
           ? action(
               'volumeOff',
-              (muteState?.mutedUntil ?? 0) > Date.now() ? copy.unmute : copy.mute,
+              muteDeadline > observedAt ? copy.unmute : copy.mute,
               () => void toggleMute(),
               !muteReady || busy,
             )
@@ -204,7 +221,14 @@ export function SwipeConversation({
           !!commerce && !profile,
         )}
         {commerce ? (
-          action('shieldAlert', copy.block, () => {}, true)
+          <MarketplaceSafetyAction
+            commerce={commerce}
+            active={open && capabilities?.features?.marketplaceSafety === 1}
+            onComplete={() => position(false)}
+            renderTrigger={({ blocked, disabled, open: showBlock }) =>
+              action('shieldAlert', blocked ? copy.unblock : copy.block, showBlock, disabled)
+            }
+          />
         ) : threadId && userId ? (
           <SafetyAction
             userId={userId}

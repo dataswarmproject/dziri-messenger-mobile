@@ -4,6 +4,12 @@ import {
   safetyDecisionCopy,
   isSafetyIntentCurrent,
   safetyIntentCommand,
+  sameSafetySource,
+  marketplaceSafetyPreparationCommand,
+  marketplaceSafetyIntentCommand,
+  marketplaceSafetyScopeKey,
+  marketplaceSafetyCopy,
+  type MarketplaceSafetySource,
   type SafetyIntent,
   type SafetyOwner,
 } from './messenger-safety.generated';
@@ -37,7 +43,7 @@ export function SafetyAction(props: React.ComponentProps<typeof SafetyActionCont
     </SafetyBoundary>
   );
 }
-function SafetyUnavailable(props: SafetyActionProps) {
+function SafetyUnavailable(props: Pick<SafetyActionProps, 'renderTrigger' | 'knownBlocked'>) {
   const { t } = useLocale(),
     colors = useColors();
   const fallback = props.renderTrigger ? (
@@ -70,6 +76,52 @@ type SafetyActionProps = {
   }) => React.ReactNode;
   onComplete?: () => void;
 };
+type MarketplaceActionProps = Pick<SafetyActionProps, 'active' | 'renderTrigger' | 'onComplete'> & {
+  commerce: Omit<MarketplaceSafetySource, 'sourceKey'>;
+};
+export function MarketplaceSafetyAction(props: MarketplaceActionProps) {
+  return (
+    <SafetyBoundary
+      key={`${marketplaceSafetyScopeKey(props.commerce)}:${props.active !== false}`}
+      fallback={<SafetyUnavailable {...props} />}>
+      <MarketplaceSafetyContent {...props} />
+    </SafetyBoundary>
+  );
+}
+function MarketplaceSafetyContent(props: MarketplaceActionProps) {
+  const me = useQuery(dziriApi.me, props.active !== false ? {} : 'skip');
+  if (props.active === false || !me?._id) return <SafetyUnavailable {...props} />;
+  return (
+    <SafetyBoundary
+      key={`${me._id}:${marketplaceSafetyScopeKey(props.commerce)}`}
+      fallback={<SafetyUnavailable {...props} />}>
+      <MarketplaceSafetyState {...props} actorId={me._id} />
+    </SafetyBoundary>
+  );
+}
+function MarketplaceSafetyState({
+  commerce,
+  actorId,
+  renderTrigger,
+  onComplete,
+}: MarketplaceActionProps & { actorId: string }) {
+  const { locale } = useLocale();
+  const state = useQuery(dziriApi.commerceSafetyState, commerce);
+  if (!state || state.expectedActorId !== actorId)
+    return <SafetyUnavailable renderTrigger={renderTrigger} />;
+  return (
+    <SafetyActionSession
+      key={`${actorId}:${state.peerId}:${marketplaceSafetyScopeKey(commerce)}`}
+      actorId={actorId}
+      userId={state.peerId}
+      name={state.peerName || marketplaceSafetyCopy(locale).account}
+      blocked={state.blocked}
+      renderTrigger={renderTrigger}
+      onComplete={onComplete}
+      marketplace={{ ...commerce, sourceKey: state.sourceKey }}
+    />
+  );
+}
 function SafetyTrigger({
   render,
   state,
@@ -112,10 +164,18 @@ function SafetyActionSession({
   onComplete,
   actorId,
   blocked,
-}: SafetyActionProps & { actorId: string; blocked: boolean }) {
+  marketplace,
+}: SafetyActionProps & {
+  actorId: string;
+  blocked: boolean;
+  marketplace?: MarketplaceSafetySource;
+}) {
   const [owner] = useState<SafetyOwner>(() => Object.freeze({ actorId, userId }));
   const liveOwner = useRef<SafetyOwner | null>(null);
+  const liveMarketplace = useRef(marketplace);
   const prepare = useMutation(dziriApi.prepareSafetyDecision);
+  const prepareMarketplace = useMutation(dziriApi.prepareCommerceSafety);
+  const decideMarketplace = useMutation(dziriApi.decideCommerceSafety);
   const block = useMutation(dziriApi.blockUser),
     unblock = useMutation(dziriApi.unblockUser);
   const { t, rtl, locale } = useLocale(),
@@ -125,7 +185,11 @@ function SafetyActionSession({
     [busy, setBusy] = useState(false),
     [failed, setFailed] = useState(false);
   const lock = useRef<SafetyOwner | null>(null);
-  type Opening = Readonly<{ owner: SafetyOwner; blocked: boolean }>;
+  type Opening = Readonly<{
+    owner: SafetyOwner;
+    blocked: boolean;
+    marketplace?: MarketplaceSafetySource;
+  }>;
   const [opening, setOpening] = useState<Opening | null>(null),
     [preparing, setPreparing] = useState(false);
   const pending = useRef<Opening | null>(null);
@@ -136,6 +200,9 @@ function SafetyActionSession({
       pending.current = null;
     };
   }, [owner]);
+  useLayoutEffect(() => {
+    liveMarketplace.current = marketplace;
+  }, [marketplace]);
   function close() {
     if (busy) return;
     pending.current = null;
@@ -146,16 +213,31 @@ function SafetyActionSession({
   }
   async function open() {
     if (!owner || blocked === undefined || busy || preparing) return;
-    const request = Object.freeze({ owner, blocked });
+    const request = Object.freeze({
+      owner,
+      blocked,
+      marketplace: marketplace ? Object.freeze({ ...marketplace }) : undefined,
+    });
     pending.current = request;
     setOpening(request);
     setPreparing(true);
     setIntent(null);
     setFailed(false);
     try {
-      const prepared = await prepare({ otherUserId: owner.userId, expectedActorId: owner.actorId });
+      const prepared = request.marketplace
+        ? await prepareMarketplace(
+            marketplaceSafetyPreparationCommand(owner, blocked, request.marketplace),
+          )
+        : await prepare({ otherUserId: owner.userId, expectedActorId: owner.actorId });
       if (pending.current !== request || liveOwner.current !== request.owner) return;
-      const captured = captureSafetyIntent(request.owner, request.blocked, prepared);
+      if (!sameSafetySource(request.marketplace, liveMarketplace.current))
+        throw new Error('Safety source changed');
+      const captured = captureSafetyIntent(
+        request.owner,
+        request.blocked,
+        prepared,
+        request.marketplace,
+      );
       if (!captured) throw new Error('Safety state changed');
       setIntent(captured);
       setOpening(null);
@@ -169,10 +251,12 @@ function SafetyActionSession({
     }
   }
   const selectedBlock = intent ? intent.action === 'block' : !opening?.blocked;
+  const sourceChanged = !!intent && !sameSafetySource(intent.marketplace, marketplace);
   async function confirm() {
     if (
       !intent ||
       !isSafetyIntentCurrent(intent, liveOwner.current) ||
+      !sameSafetySource(intent.marketplace, liveMarketplace.current) ||
       lock.current === intent.owner
     )
       return;
@@ -181,7 +265,8 @@ function SafetyActionSession({
     setBusy(true);
     setFailed(false);
     try {
-      if (intent.action === 'block') await block(safetyIntentCommand(intent));
+      if (intent.marketplace) await decideMarketplace(marketplaceSafetyIntentCommand(intent));
+      else if (intent.action === 'block') await block(safetyIntentCommand(intent));
       else await unblock(safetyIntentCommand(intent));
       if (liveOwner.current !== requestOwner) return;
       setIntent(null);
@@ -250,9 +335,15 @@ function SafetyActionSession({
               </Text>
               <Text style={{ fontSize: 15, color: colors.text, paddingVertical: 12 }}>{name}</Text>
               <Text style={{ color: colors.secondary, fontSize: 13, lineHeight: 19 }}>
-                {selectedBlock ? t.blockDescription : t.unblockDescription}
+                {marketplace
+                  ? selectedBlock
+                    ? marketplaceSafetyCopy(locale).block
+                    : marketplaceSafetyCopy(locale).unblock
+                  : selectedBlock
+                    ? t.blockDescription
+                    : t.unblockDescription}
               </Text>
-              {failed ? (
+              {failed || (sourceChanged && !busy) ? (
                 <Text accessibilityRole="alert" style={{ paddingVertical: 12, color: colors.text }}>
                   {decisionCopy.failed}
                 </Text>
@@ -268,7 +359,7 @@ function SafetyActionSession({
                 {button(
                   preparing ? decisionCopy.loading : t.confirm,
                   () => void confirm(),
-                  preparing || !isSafetyIntentCurrent(intent, owner),
+                  preparing || sourceChanged || !isSafetyIntentCurrent(intent, owner),
                 )}
               </View>
             </View>

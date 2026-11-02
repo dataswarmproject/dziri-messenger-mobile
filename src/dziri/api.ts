@@ -1,4 +1,5 @@
 import { makeFunctionReference, type PaginationResult } from 'convex/server';
+import type { MarketplaceSafetySource } from './messenger-safety.generated';
 import type {
   SupportPreparation,
   SupportStartCommand,
@@ -22,6 +23,19 @@ import type {
   MarketplaceReactionInbox,
 } from './message-receipts.generated';
 
+type CommerceSafetyState = {
+  expectedActorId: string;
+  peerId: string;
+  peerName: string | null;
+  sourceKey: string;
+  blocked: boolean;
+};
+type CommerceSafetyPreparation = Omit<MarketplaceSafetySource, 'sourceKey'> & {
+  expectedActorId: string;
+  expectedPeerId: string;
+  expectedSourceKey: string;
+  action: 'block' | 'unblock';
+};
 export interface CommerceSummary {
   peerId?: string;
   hasUnread?: boolean;
@@ -247,6 +261,21 @@ export const dziriApi = {
     { otherUserId: string; expectedActorId: string },
     { blocked: boolean; expectedActorId: string; decisionKey?: string } | null
   >('messaging/safety:state'),
+  commerceSafetyState: makeFunctionReference<
+    'query',
+    Omit<MarketplaceSafetySource, 'sourceKey'>,
+    CommerceSafetyState | null
+  >('marketplaceInbox:safetyState'),
+  prepareCommerceSafety: makeFunctionReference<
+    'mutation',
+    CommerceSafetyPreparation,
+    CommerceSafetyState & { decisionKey: string }
+  >('marketplaceInbox:prepareSafetyDecision'),
+  decideCommerceSafety: makeFunctionReference<
+    'mutation',
+    CommerceSafetyPreparation & { expectedDecisionKey: string },
+    null
+  >('marketplaceInbox:decideSafety'),
   prepareSafetyDecision: makeFunctionReference<
     'mutation',
     { otherUserId: string; expectedActorId: string },

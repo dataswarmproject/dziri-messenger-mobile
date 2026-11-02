@@ -3,7 +3,7 @@ import { createRoot, type Root } from 'react-dom/client';
 import { getFunctionName } from 'convex/server';
 import { beforeEach, afterEach, test, expect, vi } from 'vitest';
 import { SwipeConversation } from '../src/dziri/swipe-conversation';
-import { SafetyAction } from '../src/dziri/safety';
+import { SafetyAction, MarketplaceSafetyAction } from '../src/dziri/safety';
 const state = vi.hoisted(() => ({
   locale: 'en',
   actor: 'alice',
@@ -21,6 +21,10 @@ const state = vi.hoisted(() => ({
   marketplaceQueries: 0,
   marketplaceMutedUntil: 0,
   marketplaceActor: 'alice',
+  marketplaceSafetyCapability: undefined as number | undefined,
+  marketplaceSafetyQueries: 0,
+  marketplaceSafetyFails: false,
+  marketplaceSourceKey: 'v1:' + 'b'.repeat(64),
   pan: {} as Record<string, (...args: unknown[]) => unknown>,
 }));
 vi.mock('react-native', () => {
@@ -113,6 +117,7 @@ vi.mock('convex/react', () => ({
           historyDeletion: 1,
           safety: state.safetyCapability,
           marketplaceMute: state.marketplaceMuteCapability,
+          marketplaceSafety: state.marketplaceSafetyCapability,
         },
       };
     if (name === 'marketplaceInbox:state') {
@@ -124,6 +129,17 @@ vi.mock('convex/react', () => ({
           expectedActorId: state.marketplaceActor,
           authorityKey: 'v1:' + 'f'.repeat(64),
         },
+      };
+    }
+    if (name === 'marketplaceInbox:safetyState') {
+      state.marketplaceSafetyQueries++;
+      if (state.marketplaceSafetyFails) throw new Error('Synthetic Marketplace safety failure');
+      return {
+        expectedActorId: state.marketplaceActor,
+        peerId: 'verified-person',
+        peerName: 'Merchant Mira',
+        blocked: state.blocked,
+        sourceKey: state.marketplaceSourceKey,
       };
     }
     if (name === 'messaging/messenger:thread')
@@ -138,7 +154,9 @@ vi.mock('convex/react', () => ({
     };
   },
   useMutation: (ref: never) => (args: object) =>
-    getFunctionName(ref) === 'messaging/safety:prepareDecision'
+    ['messaging/safety:prepareDecision', 'marketplaceInbox:prepareSafetyDecision'].includes(
+      getFunctionName(ref),
+    )
       ? state.prepare(args)
       : state.mutate(getFunctionName(ref), args),
   usePaginatedQuery: () => ({ results: [], status: 'Exhausted', loadMore: vi.fn() }),
@@ -171,11 +189,22 @@ beforeEach(() => {
   state.actor = 'alice';
   state.blocked = false;
   state.mutate.mockReset().mockResolvedValue(null);
-  state.prepare.mockReset().mockImplementation(async (args: { expectedActorId: string }) => ({
-    blocked: state.blocked,
-    expectedActorId: args.expectedActorId,
-    decisionKey: 'v1:' + 'a'.repeat(64),
-  }));
+  state.prepare
+    .mockReset()
+    .mockImplementation(
+      async (args: {
+        expectedActorId: string;
+        expectedPeerId?: string;
+        expectedSourceKey?: string;
+      }) => ({
+        blocked: state.blocked,
+        expectedActorId: args.expectedActorId,
+        decisionKey: 'v1:' + 'a'.repeat(64),
+        ...(args.expectedPeerId
+          ? { peerId: args.expectedPeerId, sourceKey: args.expectedSourceKey }
+          : {}),
+      }),
+    );
   state.profile.mockReset();
   state.safetyCapability = 1;
   state.safetyQueryFails = false;
@@ -187,6 +216,10 @@ beforeEach(() => {
   state.marketplaceQueries = 0;
   state.marketplaceMutedUntil = 0;
   state.marketplaceActor = 'alice';
+  state.marketplaceSafetyCapability = undefined;
+  state.marketplaceSafetyQueries = 0;
+  state.marketplaceSafetyFails = false;
+  state.marketplaceSourceKey = 'v1:' + 'b'.repeat(64);
   host = document.createElement('div');
   document.body.append(host);
   root = createRoot(host);
@@ -535,11 +568,196 @@ test.each([
 async function showPreparedSafety() {
   await act(async () => root.render(<SafetyAction userId="bob" name="Bob" />));
 }
+test('Marketplace safety works without mute and names the verified individual', async () => {
+  state.marketplaceSafetyCapability = 1;
+  state.marketplaceMuteCapability = undefined;
+  await render(true);
+  await swipe();
+  expect(state.marketplaceQueries).toBe(0);
+  expect(action('Block').disabled).toBe(false);
+  await act(async () => action('Block').click());
+  expect(host.querySelector('[role="dialog"]')!.textContent).toContain('Merchant Mira');
+  expect(state.prepare).toHaveBeenCalledWith({
+    conversationId: 'commerce',
+    storeId: 'store',
+    expectedActorId: 'alice',
+    expectedPeerId: 'verified-person',
+    expectedSourceKey: state.marketplaceSourceKey,
+    action: 'block',
+  });
+  await act(async () => safetyTextButton('confirm').click());
+  expect(state.mutate).toHaveBeenCalledExactlyOnceWith('marketplaceInbox:decideSafety', {
+    conversationId: 'commerce',
+    storeId: 'store',
+    expectedActorId: 'alice',
+    expectedPeerId: 'verified-person',
+    expectedSourceKey: state.marketplaceSourceKey,
+    action: 'block',
+    expectedDecisionKey: 'v1:' + 'a'.repeat(64),
+  });
+});
+test('an open Marketplace row updates its mute action when the private mute expires', async () => {
+  vi.useFakeTimers();
+  try {
+    state.marketplaceMutedUntil = Date.now() + 1000;
+    await render(true);
+    await swipe();
+    expect(action('Unmute').disabled).toBe(false);
+    await act(async () => vi.advanceTimersByTimeAsync(1001));
+    expect(action('Mute').disabled).toBe(false);
+    expect(state.mutate).not.toHaveBeenCalled();
+  } finally {
+    vi.useRealTimers();
+  }
+});
+
+test('Marketplace source change requires a fresh confirmation before dispatch', async () => {
+  state.marketplaceSafetyCapability = 1;
+  await render(true);
+  await swipe();
+  expect(action('Block').disabled).toBe(false);
+  await act(async () => action('Block').click());
+  state.marketplaceSourceKey = 'v1:' + 'c'.repeat(64);
+  await render(true);
+  expect(safetyTextButton('confirm').disabled).toBe(true);
+  expect(host.querySelector('[role="alert"]')).not.toBeNull();
+  expect(state.mutate).not.toHaveBeenCalled();
+  await act(async () => safetyTextButton('cancel').click());
+  await act(async () => action('Block').click());
+  expect(safetyTextButton('confirm').disabled).toBe(false);
+  expect(state.prepare.mock.calls.at(-1)[0].expectedSourceKey).toBe(state.marketplaceSourceKey);
+});
+
+test("Marketplace's own source update before acknowledgement still completes the accepted action", async () => {
+  state.marketplaceSafetyCapability = 1;
+  let done!: () => void;
+  state.mutate.mockImplementation(
+    () =>
+      new Promise<void>(resolve => {
+        done = resolve;
+      }),
+  );
+  await render(true);
+  await swipe();
+  expect(action('Block').disabled).toBe(false);
+  await act(async () => action('Block').click());
+  await act(async () => safetyTextButton('confirm').click());
+  state.blocked = true;
+  state.marketplaceSourceKey = 'v1:' + 'c'.repeat(64);
+  await render(true);
+  await act(async () => done());
+  expect(host.querySelector('[role="dialog"]')).toBeNull();
+  expect(host.querySelector('[role="alert"]')).toBeNull();
+  expect(state.mutate).toHaveBeenCalledTimes(1);
+});
 function safetyTextButton(text: string) {
   return [...host.querySelectorAll<HTMLButtonElement>('button')].find(
     node => node.textContent === text,
   )!;
 }
+
+async function showMarketplaceContext(
+  scope = { conversationId: 'commerce', storeId: 'store' },
+  complete = vi.fn(),
+) {
+  await act(async () =>
+    root.render(<MarketplaceSafetyAction commerce={scope} onComplete={complete} />),
+  );
+}
+function marketplaceReply(sourceKey = state.marketplaceSourceKey) {
+  return {
+    expectedActorId: state.actor,
+    peerId: 'verified-person',
+    sourceKey,
+    blocked: false,
+    decisionKey: 'v1:' + 'a'.repeat(64),
+  };
+}
+test('a source change during preparation cannot install the old result', async () => {
+  let done!: (value: unknown) => void;
+  state.prepare.mockImplementationOnce(
+    () =>
+      new Promise(resolve => {
+        done = resolve;
+      }),
+  );
+  await showMarketplaceContext();
+  await act(async () => safetyTextButton('blockAccount').click());
+  const old = marketplaceReply();
+  state.marketplaceSourceKey = 'v1:' + 'c'.repeat(64);
+  await showMarketplaceContext();
+  await act(async () => done(old));
+  expect(safetyTextButton('confirm').disabled).toBe(true);
+  expect(host.querySelector('[role="alert"]')).not.toBeNull();
+  expect(state.mutate).not.toHaveBeenCalled();
+});
+test.each(['peerId', 'sourceKey'])(
+  'a mismatched Marketplace preparation %s cannot enable confirmation',
+  async field => {
+    state.prepare.mockResolvedValueOnce({ ...marketplaceReply(), [field]: 'mismatched' });
+    await showMarketplaceContext();
+    await act(async () => safetyTextButton('blockAccount').click());
+    expect(safetyTextButton('confirm').disabled).toBe(true);
+    expect(state.mutate).not.toHaveBeenCalled();
+  },
+);
+test.each([
+  { conversationId: 'other', storeId: 'store' },
+  { conversationId: 'commerce', storeId: 'other' },
+  { conversationId: 'commerce', storeId: 'store', companyId: 'company' },
+])('a changed Marketplace scope retires the old confirmation: %j', async scope => {
+  await showMarketplaceContext();
+  await act(async () => safetyTextButton('blockAccount').click());
+  await showMarketplaceContext(scope);
+  expect(host.querySelector('[role="dialog"]')).toBeNull();
+  expect(state.mutate).not.toHaveBeenCalled();
+});
+test.each([
+  ['en', 'other staff'],
+  ['fr', 'employés'],
+  ['ar', 'موظفيه'],
+])('Marketplace confirmation explains individual scope in %s', async (locale, explanation) => {
+  state.locale = locale;
+  await showMarketplaceContext();
+  await act(async () => safetyTextButton('blockAccount').click());
+  const dialog = host.querySelector('[role="dialog"]')!;
+  expect(dialog.textContent).toContain('Merchant Mira');
+  expect(dialog.textContent).toContain(explanation);
+});
+test("an old Marketplace acknowledgement cannot close another account's fresh confirmation", async () => {
+  const complete = vi.fn();
+  let done!: () => void;
+  state.mutate.mockImplementationOnce(
+    () =>
+      new Promise<void>(resolve => {
+        done = resolve;
+      }),
+  );
+  await showMarketplaceContext(undefined, complete);
+  await act(async () => safetyTextButton('blockAccount').click());
+  await act(async () => safetyTextButton('confirm').click());
+  state.actor = state.marketplaceActor = 'charlie';
+  await showMarketplaceContext(undefined, complete);
+  await act(async () => safetyTextButton('blockAccount').click());
+  await act(async () => done());
+  expect(host.querySelector('[role="dialog"]')).not.toBeNull();
+  expect(safetyTextButton('confirm').disabled).toBe(false);
+  expect(complete).not.toHaveBeenCalled();
+});
+test('a Marketplace endpoint error stays isolated and retires on account switch', async () => {
+  const errors = vi.spyOn(console, 'error').mockImplementation(() => {});
+  try {
+    state.marketplaceSafetyFails = true;
+    await showMarketplaceContext();
+    expect(safetyTextButton('blockAccount').disabled).toBe(true);
+    state.marketplaceSafetyFails = false;
+    state.actor = state.marketplaceActor = 'charlie';
+    await showMarketplaceContext();
+    expect(safetyTextButton('blockAccount').disabled).toBe(false);
+  } finally {
+    errors.mockRestore();
+  }
+});
 test.each(['different account', 'identity gap'])(
   'an optional safety failure retires across %s without reusing failed account state',
   async transition => {

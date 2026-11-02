@@ -20,31 +20,119 @@ export type SafetyOwner<T extends string = string> = Readonly<{
   actorId: T;
   userId: T;
 }>;
-export type SafetyIntent<T extends string = string> = Readonly<{
+export type MarketplaceSafetySource = Readonly<{
+  conversationId: string;
+  storeId?: string;
+  companyId?: string;
+  sourceKey: string;
+}>;
+export type SafetyIntent<
+  T extends string = string,
+  Source extends MarketplaceSafetySource = MarketplaceSafetySource,
+> = Readonly<{
   owner: SafetyOwner<T>;
   action: 'block' | 'unblock';
   decisionKey: string;
+  marketplace?: Readonly<Source>;
 }>;
-export function captureSafetyIntent<T extends string>(
+export function captureSafetyIntent<
+  T extends string,
+  Source extends MarketplaceSafetySource = MarketplaceSafetySource,
+>(
   owner: SafetyOwner<T> | null,
   blocked?: boolean,
   prepared?: {
     blocked: boolean;
     expectedActorId: string;
     decisionKey?: string;
+    peerId?: string;
+    sourceKey?: string;
   },
-): SafetyIntent<T> | null {
+  marketplace?: Source,
+): SafetyIntent<T, Source> | null {
   return owner &&
     typeof blocked === 'boolean' &&
     prepared?.blocked === blocked &&
     prepared.expectedActorId === owner.actorId &&
+    (!marketplace ||
+      (prepared.peerId === owner.userId &&
+        prepared.sourceKey === marketplace.sourceKey &&
+        /^v1:[a-f0-9]{64}$/.test(marketplace.sourceKey))) &&
     /^v1:[a-f0-9]{64}$/.test(prepared.decisionKey ?? '')
     ? Object.freeze({
         owner,
         action: blocked ? 'unblock' : 'block',
         decisionKey: prepared.decisionKey!,
+        ...(marketplace ? { marketplace: Object.freeze({ ...marketplace }) } : {}),
       })
     : null;
+}
+export function sameSafetySource(left?: MarketplaceSafetySource, right?: MarketplaceSafetySource) {
+  return !left || !right
+    ? left === right
+    : left.conversationId === right.conversationId &&
+        left.storeId === right.storeId &&
+        left.companyId === right.companyId &&
+        left.sourceKey === right.sourceKey;
+}
+export function marketplaceSafetyScopeKey(scope: Omit<MarketplaceSafetySource, 'sourceKey'>) {
+  return JSON.stringify([scope.conversationId, scope.storeId ?? null, scope.companyId ?? null]);
+}
+export function marketplaceSafetyPreparationCommand<
+  T extends string,
+  Source extends MarketplaceSafetySource,
+>(owner: SafetyOwner<T>, blocked: boolean, source: Source) {
+  // Keep platform ID brands while copying only the approved public scope fields.
+  const scope = {
+    conversationId: source.conversationId,
+    ...(source.storeId !== undefined ? { storeId: source.storeId } : {}),
+    ...(source.companyId !== undefined ? { companyId: source.companyId } : {}),
+  } as Pick<Source, 'conversationId'> & Partial<Pick<Source, 'storeId' | 'companyId'>>;
+  return {
+    ...scope,
+    expectedActorId: owner.actorId,
+    expectedPeerId: owner.userId,
+    expectedSourceKey: source.sourceKey,
+    action: blocked ? ('unblock' as const) : ('block' as const),
+  };
+}
+export function marketplaceSafetyIntentCommand<
+  T extends string,
+  Source extends MarketplaceSafetySource,
+>(intent: SafetyIntent<T, Source>) {
+  if (!intent.marketplace) throw new Error('Missing Marketplace safety source');
+  return {
+    ...marketplaceSafetyPreparationCommand(
+      intent.owner,
+      intent.action === 'unblock',
+      intent.marketplace,
+    ),
+    expectedDecisionKey: intent.decisionKey,
+  };
+}
+export function marketplaceSafetyCopy(locale = 'en') {
+  return locale === 'ar'
+    ? {
+        account: 'حساب دزيري',
+        block:
+          'سيتم حظر حساب هذا الشخص فقط، دون التأثير على المتجر أو موظفيه الآخرين. يبقى سجل المحادثة محفوظاً.',
+        unblock: 'سيتم إلغاء حظر حساب هذا الشخص فقط. يمكنكما استئناف التواصل وفق إعدادات الخصوصية.',
+      }
+    : locale === 'fr'
+      ? {
+          account: 'Compte Dziri',
+          block:
+            'Seul le compte de cette personne sera bloqué. La boutique et ses autres employés ne sont pas concernés. L’historique est conservé.',
+          unblock:
+            'Seul le compte de cette personne sera débloqué. Les échanges pourront reprendre selon vos paramètres de confidentialité.',
+        }
+      : {
+          account: 'Dziri account',
+          block:
+            'This blocks only this person’s account. The store and its other staff are unaffected. Chat history is kept.',
+          unblock:
+            'This unblocks only this person’s account. Messaging can resume according to your privacy settings.',
+        };
 }
 export function isSafetyIntentCurrent<T extends string>(
   intent: SafetyIntent<T> | null,

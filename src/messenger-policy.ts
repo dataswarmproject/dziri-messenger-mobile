@@ -18,6 +18,7 @@ export interface MessengerCapabilities {
     inboxOrganization?: number;
     historyDeletion?: number;
     marketplaceMute?: number;
+    marketplaceSafety?: number;
     groupManagement?: number;
     safety?: number;
   };

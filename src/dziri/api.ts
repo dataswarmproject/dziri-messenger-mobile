@@ -242,20 +242,26 @@ export const dziriApi = {
   clearTyping: makeFunctionReference<'mutation', { threadId: string }, null>(
     'messaging/typing:clearTyping',
   ),
-  blockState: makeFunctionReference<'query', { otherUserId: string }, { blocked: boolean }>(
-    'messaging/safety:state',
-  ),
+  blockState: makeFunctionReference<
+    'query',
+    { otherUserId: string; expectedActorId: string },
+    { blocked: boolean; expectedActorId: string } | null
+  >('messaging/safety:state'),
   blockedPage: makeFunctionReference<
     'query',
     { paginationOpts: PaginationOptions },
     PaginationResult<{ userId: string; name?: string; image?: string }>
   >('messaging/safety:blockedPage'),
-  blockUser: makeFunctionReference<'mutation', { blockedUserId: string }, string>(
-    'messaging/moderationDecisions:blockUser',
-  ),
-  unblockUser: makeFunctionReference<'mutation', { blockedUserId: string }, null>(
-    'messaging/moderationDecisions:unblockUser',
-  ),
+  blockUser: makeFunctionReference<
+    'mutation',
+    { blockedUserId: string; expectedActorId: string },
+    string
+  >('messaging/moderationDecisions:blockUser'),
+  unblockUser: makeFunctionReference<
+    'mutation',
+    { blockedUserId: string; expectedActorId: string },
+    null
+  >('messaging/moderationDecisions:unblockUser'),
   groupMembers: makeFunctionReference<
     'query',
     { threadId: string; paginationOpts: PaginationOptions },

@@ -1,4 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  captureSafetyIntent,
+  isSafetyIntentCurrent,
+  safetyIntentCommand,
+  type SafetyIntent,
+  type SafetyOwner,
+} from './messenger-safety.generated';
 import { ActivityIndicator, Modal, Pressable, ScrollView, View } from 'react-native';
 import { useMutation, usePaginatedQuery, useQuery } from 'convex/react';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -45,7 +52,6 @@ export function SafetyAction(props: React.ComponentProps<typeof SafetyActionCont
 function SafetyActionContent({
   userId,
   name,
-  knownBlocked,
   active = true,
   renderTrigger,
   onComplete,
@@ -61,34 +67,60 @@ function SafetyActionContent({
   }) => React.ReactNode;
   onComplete?: () => void;
 }) {
+  const me = useQuery(dziriApi.me, active ? {} : 'skip');
+  const actorId = me?._id;
   const state = useQuery(
     dziriApi.blockState,
-    active && knownBlocked === undefined ? { otherUserId: userId } : 'skip',
+    active && actorId ? { otherUserId: userId, expectedActorId: actorId } : 'skip',
   );
-  const blocked = knownBlocked ?? state?.blocked;
+  const blocked = state?.expectedActorId === actorId ? state?.blocked : undefined;
+  const owner = useMemo<SafetyOwner | null>(
+    () =>
+      active && actorId && state?.expectedActorId === actorId
+        ? Object.freeze({ actorId, userId })
+        : null,
+    [active, actorId, state?.expectedActorId, userId],
+  );
+  const liveOwner = useRef(owner);
+  liveOwner.current = owner;
   const block = useMutation(dziriApi.blockUser),
     unblock = useMutation(dziriApi.unblockUser);
   const { t, rtl } = useLocale(),
     colors = useColors();
-  const [intent, setIntent] = useState<'block' | 'unblock' | null>(null),
+  const [intent, setIntent] = useState<SafetyIntent | null>(null),
     [busy, setBusy] = useState(false),
     [failed, setFailed] = useState(false);
-  const lock = useRef(false);
+  const lock = useRef<SafetyOwner | null>(null);
+  useEffect(() => {
+    setIntent(null);
+    setBusy(false);
+    setFailed(false);
+    return () => {
+      if (liveOwner.current === owner) liveOwner.current = null;
+    };
+  }, [owner]);
   async function confirm() {
-    if (!intent || lock.current) return;
-    lock.current = true;
+    if (
+      !intent ||
+      !isSafetyIntentCurrent(intent, liveOwner.current) ||
+      lock.current === intent.owner
+    )
+      return;
+    const requestOwner = intent.owner;
+    lock.current = requestOwner;
     setBusy(true);
     setFailed(false);
     try {
-      if (intent === 'block') await block({ blockedUserId: userId });
-      else await unblock({ blockedUserId: userId });
+      if (intent.action === 'block') await block(safetyIntentCommand(intent));
+      else await unblock(safetyIntentCommand(intent));
+      if (liveOwner.current !== requestOwner) return;
       setIntent(null);
       onComplete?.();
     } catch {
-      setFailed(true);
+      if (liveOwner.current === requestOwner) setFailed(true);
     } finally {
-      lock.current = false;
-      setBusy(false);
+      if (lock.current === requestOwner) lock.current = null;
+      if (liveOwner.current === requestOwner) setBusy(false);
     }
   }
   const button = (text: string, action: () => void, disabled = false) => (
@@ -104,23 +136,23 @@ function SafetyActionContent({
     <>
       {renderTrigger
         ? renderTrigger({
-            disabled: blocked === undefined || busy,
+            disabled: !owner || blocked === undefined || busy,
             blocked: !!blocked,
             open: () => {
-              if (blocked === undefined || busy) return;
-              setIntent(blocked ? 'unblock' : 'block');
+              if (!owner || blocked === undefined || busy) return;
+              setIntent(captureSafetyIntent(owner, blocked));
               setFailed(false);
             },
           })
         : button(
             blocked ? t.unblockAccount : t.blockAccount,
             () => {
-              setIntent(blocked ? 'unblock' : 'block');
+              setIntent(captureSafetyIntent(owner, blocked));
               setFailed(false);
             },
-            blocked === undefined,
+            !owner || blocked === undefined,
           )}
-      {intent ? (
+      {isSafetyIntentCurrent(intent, owner) ? (
         <Modal
           visible
           transparent
@@ -146,11 +178,11 @@ function SafetyActionContent({
                 backgroundColor: colors.actionSurface,
               }}>
               <Text accessibilityRole="header" style={{ fontSize: 18, color: colors.text }}>
-                {intent === 'block' ? t.blockAccount : t.unblockAccount}
+                {intent?.action === 'block' ? t.blockAccount : t.unblockAccount}
               </Text>
               <Text style={{ fontSize: 15, color: colors.text, paddingVertical: 12 }}>{name}</Text>
               <Text style={{ color: colors.secondary, fontSize: 13, lineHeight: 19 }}>
-                {intent === 'block' ? t.blockDescription : t.unblockDescription}
+                {intent?.action === 'block' ? t.blockDescription : t.unblockDescription}
               </Text>
               {failed ? (
                 <Text accessibilityRole="alert" style={{ paddingVertical: 12, color: colors.text }}>

@@ -1,4 +1,33 @@
 export type RequestState = 'pending' | 'spam' | 'declined';
+/** One mounted account/target lifetime, never an authorization grant. */
+export type SafetyOwner<T extends string = string> = Readonly<{
+  actorId: T;
+  userId: T;
+}>;
+export type SafetyIntent<T extends string = string> = Readonly<{
+  owner: SafetyOwner<T>;
+  action: 'block' | 'unblock';
+}>;
+export function captureSafetyIntent<T extends string>(
+  owner: SafetyOwner<T> | null,
+  blocked?: boolean,
+): SafetyIntent<T> | null {
+  return owner && typeof blocked === 'boolean'
+    ? Object.freeze({ owner, action: blocked ? 'unblock' : 'block' })
+    : null;
+}
+export function isSafetyIntentCurrent<T extends string>(
+  intent: SafetyIntent<T> | null,
+  owner: SafetyOwner<T> | null,
+) {
+  return !!intent && !!owner && intent.owner === owner;
+}
+export function safetyIntentCommand<T extends string>(intent: SafetyIntent<T>) {
+  return {
+    blockedUserId: intent.owner.userId,
+    expectedActorId: intent.owner.actorId,
+  };
+}
 export type RequestView = {
   role: 'sender' | 'recipient';
   state: RequestState;

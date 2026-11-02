@@ -15,7 +15,9 @@ const state = vi.hoisted(() => ({
 }));
 vi.mock('convex/react', () => ({
   useQuery: (ref: never) =>
-    getFunctionName(ref) === 'users:getMe' ? { _id: 'actor' } : { blocked: state.blocked },
+    getFunctionName(ref) === 'users:getMe'
+      ? { _id: 'actor' }
+      : { blocked: state.blocked, expectedActorId: 'actor' },
   usePaginatedQuery: () => ({ results: state.members, status: 'Exhausted', loadMore: vi.fn() }),
   useMutation: (ref: never) => (args: object) => state.mutate(getFunctionName(ref), args),
 }));
@@ -142,7 +144,7 @@ test('a block confirmation keeps its original intent when live state changes and
   await act(async () => button('confirm').click());
   expect(state.mutate.mock.calls[0]).toEqual([
     'messaging/moderationDecisions:blockUser',
-    { blockedUserId: 'peer' },
+    { blockedUserId: 'peer', expectedActorId: 'actor' },
   ]);
   expect(host.textContent).toContain('actionFailed');
   expect(host.textContent).not.toContain('private backend detail');

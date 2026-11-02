@@ -3,14 +3,19 @@ import { createRoot, type Root } from 'react-dom/client';
 import { getFunctionName } from 'convex/server';
 import { beforeEach, afterEach, test, expect, vi } from 'vitest';
 import { SwipeConversation } from '../src/dziri/swipe-conversation';
+import { SafetyAction } from '../src/dziri/safety';
 const state = vi.hoisted(() => ({
   locale: 'en',
   actor: 'alice',
+  blocked: false,
   mutate: vi.fn(),
   profile: vi.fn(),
   safetyCapability: 1 as number | undefined,
   safetyQueryFails: false,
   safetyQueries: 0,
+  safetyActor: null as string | null,
+  missingSafetyOwner: false,
+  actorLoading: false,
   marketplaceMuteCapability: 1 as number | undefined,
   marketplaceQueries: 0,
   marketplaceMutedUntil: 0,
@@ -100,7 +105,7 @@ vi.mock('convex/react', () => ({
   useQuery: (ref: never, args: unknown) => {
     if (args === 'skip') return undefined;
     const name = getFunctionName(ref);
-    if (name === 'users:getMe') return { _id: state.actor };
+    if (name === 'users:getMe') return state.actorLoading ? undefined : { _id: state.actor };
     if (name === 'messaging/messenger:capabilities')
       return {
         features: {
@@ -126,7 +131,10 @@ vi.mock('convex/react', () => ({
       state.safetyQueries += 1;
       if (state.safetyQueryFails) throw new Error('Synthetic optional safety endpoint failure');
     }
-    return { blocked: false };
+    return {
+      blocked: state.blocked,
+      expectedActorId: state.missingSafetyOwner ? undefined : (state.safetyActor ?? state.actor),
+    };
   },
   useMutation: (ref: never) => (args: object) => state.mutate(getFunctionName(ref), args),
   usePaginatedQuery: () => ({ results: [], status: 'Exhausted', loadMore: vi.fn() }),
@@ -157,11 +165,15 @@ const action = (label: string) => host.querySelector<HTMLButtonElement>(`[aria-l
 beforeEach(() => {
   state.locale = 'en';
   state.actor = 'alice';
+  state.blocked = false;
   state.mutate.mockReset().mockResolvedValue(null);
   state.profile.mockReset();
   state.safetyCapability = 1;
   state.safetyQueryFails = false;
   state.safetyQueries = 0;
+  state.safetyActor = null;
+  state.missingSafetyOwner = false;
+  state.actorLoading = false;
   state.marketplaceMuteCapability = 1;
   state.marketplaceQueries = 0;
   state.marketplaceMutedUntil = 0;
@@ -298,14 +310,178 @@ test('block uses the existing confirmation instead of changing the account on sw
   await act(async () => confirm.click());
   expect(state.mutate).toHaveBeenCalledWith('messaging/moderationDecisions:blockUser', {
     blockedUserId: 'bob',
+    expectedActorId: 'alice',
   });
 });
+
+test.each([false, true])(
+  'changing accounts retires the previous safety confirmation (blocked=%s)',
+  async blocked => {
+    state.blocked = blocked;
+    await render();
+    await swipe();
+    await act(async () => action(blocked ? 'Unblock' : 'Block').click());
+    expect(host.querySelector('[role="dialog"]')).toBeTruthy();
+    state.actor = 'charlie';
+    await render();
+    const confirm = [...host.querySelectorAll<HTMLButtonElement>('[role="dialog"] button')].find(
+      node => node.textContent === 'confirm',
+    );
+    if (confirm) await act(async () => confirm.click());
+    expect(state.mutate).not.toHaveBeenCalled();
+  },
+);
+
+test.each(['lagging', 'unadvertised', 'loading'])(
+  '%s ownership keeps block unavailable',
+  async kind => {
+    if (kind === 'lagging') state.safetyActor = 'other-account';
+    if (kind === 'unadvertised') state.missingSafetyOwner = true;
+    if (kind === 'loading') state.actorLoading = true;
+    await render();
+    await swipe();
+    expect(action('Block').disabled).toBe(true);
+    await act(async () => action('Block').click());
+    expect(state.mutate).not.toHaveBeenCalled();
+  },
+);
+
+test('unknown identity retires confirmation even when the same account returns', async () => {
+  await render();
+  await swipe();
+  await act(async () => action('Block').click());
+  state.actorLoading = true;
+  await render();
+  expect(host.querySelector('[role="dialog"]')).toBeNull();
+  state.actorLoading = false;
+  await render();
+  expect(host.querySelector('[role="dialog"]')).toBeNull();
+  expect(state.mutate).not.toHaveBeenCalled();
+});
+
+test('a confirmed safety action remains usable after React effect replay', async () => {
+  await act(async () =>
+    root.render(
+      <React.StrictMode>
+        <SafetyAction userId="bob" name="Bob" />
+      </React.StrictMode>,
+    ),
+  );
+  await act(async () => host.querySelector<HTMLButtonElement>('button')!.click());
+  const confirm = [...host.querySelectorAll<HTMLButtonElement>('[role="dialog"] button')].find(
+    node => node.textContent === 'confirm',
+  )!;
+  await act(async () => confirm.click());
+  expect(state.mutate).toHaveBeenCalledWith('messaging/moderationDecisions:blockUser', {
+    blockedUserId: 'bob',
+    expectedActorId: 'alice',
+  });
+});
+
+test.each([
+  { reject: false, back: false },
+  { reject: true, back: false },
+  { reject: false, back: true },
+  { reject: true, back: true },
+])(
+  'late old-account completion cannot close a newer confirmation ($reject, ABA=$back)',
+  async ({ reject, back }) => {
+    let done!: () => void;
+    state.mutate.mockImplementationOnce(
+      () =>
+        new Promise((resolve, fail) => {
+          done = () => (reject ? fail(new Error('private old error')) : resolve(null));
+        }),
+    );
+    await render();
+    await swipe();
+    await act(async () => action('Block').click());
+    const confirm = () =>
+      [...host.querySelectorAll<HTMLButtonElement>('[role="dialog"] button')].find(
+        node => node.textContent === 'confirm',
+      )!;
+    await act(async () => confirm().click());
+    state.actor = 'charlie';
+    await render();
+    if (back) {
+      state.actor = 'alice';
+      await render();
+    }
+    await act(async () => action('Block').click());
+    await act(async () => done());
+    expect(host.querySelector('[role="dialog"]')).toBeTruthy();
+    expect(host.textContent).not.toContain('private old error');
+    expect(confirm().disabled).toBe(false);
+    await act(async () => confirm().click());
+    expect(state.mutate.mock.calls[1][1]).toEqual({
+      blockedUserId: 'bob',
+      expectedActorId: back ? 'alice' : 'charlie',
+    });
+  },
+);
 test('Arabic mirrors the gesture and uses the same action set', async () => {
   state.locale = 'ar';
   await render();
   expect(state.pan.onMoveShouldSetPanResponder({}, { dx: 60, dy: 4 })).toBe(true);
   await swipe(100);
   for (const name of ['كتم', 'حذف', 'الملف', 'حظر']) expect(action(name).disabled).toBe(false);
+});
+
+test("an old completion cannot unlock another account's in-flight confirmation", async () => {
+  let oldDone!: () => void, newDone!: () => void;
+  state.mutate
+    .mockImplementationOnce(
+      () =>
+        new Promise(resolve => {
+          oldDone = () => resolve(null);
+        }),
+    )
+    .mockImplementationOnce(
+      () =>
+        new Promise(resolve => {
+          newDone = () => resolve(null);
+        }),
+    );
+  const confirm = () =>
+    [...host.querySelectorAll<HTMLButtonElement>('[role="dialog"] button')].find(
+      n => n.textContent === 'confirm',
+    )!;
+  await render();
+  await swipe();
+  await act(async () => action('Block').click());
+  await act(async () => confirm().click());
+  state.actor = 'charlie';
+  await render();
+  await act(async () => action('Block').click());
+  await act(async () => confirm().click());
+  await act(async () => oldDone());
+  expect(confirm().disabled).toBe(true);
+  await act(async () => confirm().click());
+  expect(state.mutate).toHaveBeenCalledTimes(2);
+  await act(async () => newDone());
+  expect(host.querySelector('[role="dialog"]')).toBeNull();
+});
+
+test('unmounting retires late navigation callbacks', async () => {
+  let done!: () => void;
+  const onComplete = vi.fn();
+  state.mutate.mockImplementation(
+    () =>
+      new Promise(resolve => {
+        done = () => resolve(null);
+      }),
+  );
+  await act(async () =>
+    root.render(<SafetyAction userId="bob" name="Bob" onComplete={onComplete} />),
+  );
+  await act(async () => host.querySelector<HTMLButtonElement>('button')!.click());
+  const confirm = [...host.querySelectorAll<HTMLButtonElement>('[role="dialog"] button')].find(
+    n => n.textContent === 'confirm',
+  )!;
+  await act(async () => confirm.click());
+  await act(async () => root.unmount());
+  await act(async () => done());
+  expect(onComplete).not.toHaveBeenCalled();
 });
 
 test.each([

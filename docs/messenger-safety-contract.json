@@ -1,6 +1,6 @@
 {
   "version": 1,
   "source": "packages/shared/src/messenger-safety.ts",
-  "sourceSha256": "0f1884a1cf7fb2d3edbc7c081b5f10d2a7f0bfe6f0e1ad96700aa8dafc8aa9bf",
-  "sha256": "d55451b93635b90e3e325dd8ca397d1c66377855fa058cf509c8ee50a996c5e2"
+  "sourceSha256": "94687df0bbe4b711a4b143eedf906ef8c6e13c760f48abb62aad1f4e9edf68f0",
+  "sha256": "ab2ade5c2ea23b5acd32143f6c8cee40b5a1152e81c12730d67cc3bceabf427f"
 }

@@ -29,10 +29,22 @@ class SafetyBoundary extends React.Component<
   }
 }
 export function SafetyAction(props: React.ComponentProps<typeof SafetyActionContent>) {
+  return (
+    <SafetyBoundary
+      key={`${props.userId}:${props.active !== false}`}
+      fallback={<SafetyUnavailable {...props} />}>
+      <SafetyActionContent {...props} />
+    </SafetyBoundary>
+  );
+}
+function SafetyUnavailable(props: SafetyActionProps) {
   const { t } = useLocale(),
     colors = useColors();
   const fallback = props.renderTrigger ? (
-    props.renderTrigger({ disabled: true, blocked: !!props.knownBlocked, open: () => {} })
+    <SafetyTrigger
+      render={props.renderTrigger}
+      state={{ disabled: true, blocked: !!props.knownBlocked, open: () => {} }}
+    />
   ) : (
     <Pressable
       disabled
@@ -44,11 +56,7 @@ export function SafetyAction(props: React.ComponentProps<typeof SafetyActionCont
       </Text>
     </Pressable>
   );
-  return (
-    <SafetyBoundary key={`${props.userId}:${props.active !== false}`} fallback={fallback}>
-      <SafetyActionContent {...props} />
-    </SafetyBoundary>
-  );
+  return fallback;
 }
 type SafetyActionProps = {
   userId: string;
@@ -72,16 +80,21 @@ function SafetyTrigger({
   return <>{render(state)}</>;
 }
 function SafetyActionContent(props: SafetyActionProps) {
-  const { active = true, userId, renderTrigger } = props;
-  const { t } = useLocale(),
-    colors = useColors();
+  const { active = true, userId } = props;
   const me = useQuery(dziriApi.me, active ? {} : 'skip');
   const actorId = me?._id;
-  const state = useQuery(
-    dziriApi.blockState,
-    active && actorId ? { otherUserId: userId, expectedActorId: actorId } : 'skip',
+  if (!active || !actorId) return <SafetyUnavailable {...props} />;
+  return (
+    <SafetyBoundary key={`${actorId}:${userId}`} fallback={<SafetyUnavailable {...props} />}>
+      <SafetyStateAction {...props} actorId={actorId} />
+    </SafetyBoundary>
   );
-  if (active && actorId && state?.expectedActorId === actorId)
+}
+// Keep identity subscribed outside the optional endpoint's failed boundary.
+function SafetyStateAction(props: SafetyActionProps & { actorId: string }) {
+  const { userId, actorId } = props;
+  const state = useQuery(dziriApi.blockState, { otherUserId: userId, expectedActorId: actorId });
+  if (state?.expectedActorId === actorId)
     return (
       <SafetyActionSession
         key={`${actorId}:${userId}`}
@@ -90,20 +103,7 @@ function SafetyActionContent(props: SafetyActionProps) {
         blocked={state.blocked}
       />
     );
-  return renderTrigger ? (
-    <SafetyTrigger
-      render={renderTrigger}
-      state={{ disabled: true, blocked: false, open: () => {} }}
-    />
-  ) : (
-    <Pressable
-      disabled
-      accessibilityRole="button"
-      accessibilityState={{ disabled: true }}
-      style={{ minHeight: 44, justifyContent: 'center', opacity: 0.5 }}>
-      <Text style={{ color: colors.primary, fontSize: 14 }}>{t.blockAccount}</Text>
-    </Pressable>
-  );
+  return <SafetyUnavailable {...props} />;
 }
 function SafetyActionSession({
   userId,

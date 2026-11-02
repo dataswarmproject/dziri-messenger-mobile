@@ -540,6 +540,39 @@ function safetyTextButton(text: string) {
     node => node.textContent === text,
   )!;
 }
+test.each(['different account', 'identity gap'])(
+  'an optional safety failure retires across %s without reusing failed account state',
+  async transition => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      state.safetyQueryFails = true;
+      await showPreparedSafety();
+      expect(safetyTextButton('blockAccount').disabled).toBe(true);
+      expect(host.textContent).not.toContain('Synthetic optional');
+      state.safetyQueryFails = false;
+      await showPreparedSafety();
+      expect(safetyTextButton('blockAccount').disabled).toBe(true);
+      if (transition === 'identity gap') {
+        state.actorLoading = true;
+        await showPreparedSafety();
+        expect(safetyTextButton('blockAccount').disabled).toBe(true);
+        state.actorLoading = false;
+      } else state.actor = 'charlie';
+      await showPreparedSafety();
+      expect(safetyTextButton('blockAccount').disabled).toBe(false);
+      await act(async () => safetyTextButton('blockAccount').click());
+      expect(state.prepare).toHaveBeenCalledExactlyOnceWith({
+        otherUserId: 'bob',
+        expectedActorId: state.actor,
+      });
+      await act(async () => safetyTextButton('cancel').click());
+      expect(state.mutate).not.toHaveBeenCalled();
+    } finally {
+      consoleError.mockRestore();
+    }
+  },
+);
+
 test('cancelled preparation cannot reopen a dialog or unlock a newer preparation', async () => {
   let first!: (value: unknown) => void, second!: (value: unknown) => void;
   state.prepare

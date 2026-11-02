@@ -1,0 +1,9 @@
+# Account-scoped safety endpoint recovery
+
+An optional safety query failure could leave Block/Unblock disabled after switching accounts or passing through unknown identity. Both regression cases failed before the fix. Identity now stays subscribed outside an account/target keyed safety-error boundary. Unknown/inactive identity disables the action and retires the previous boundary. The next lifetime must load its own authoritative state and prepare a fresh decision; there is no unscoped fallback or silent retry within the failed lifetime.
+
+The full DM UI suite passes 359 cases /46 files, focused management/action suites pass 37 (overlapping), native types/lint/consistency and 28 selected domain/presentation/action/layout cases pass. Android/iOS/web export succeeds with 1016 frozen source inputs unchanged. The native builder baseline is native-safety-endpoint-source-inputs-20261102.json under E:/CodexArtifacts/dziri-journal-recovery-20261101. No fresh APK or physical/authenticated-account qualification is claimed.
+
+Consumer implements the same boundary separation and passes 1057 UI cases /121 files. Its detailed task/evidence files are in the canonical monorepo at tasks/messenger-meta-parity/safety-endpoint-recovery-20261102.md and docs/messenger/evidence/safety-endpoint-recovery-20261102.json. The actual Consumer component also passed synthetic browser checks for failure containment, account transition, unknown identity, fresh preparation and cancellation. Expected injected faults appear only in development logs; no live block or other account action was performed.
+
+The outer identity-query error containment is unchanged; this increment does not qualify recovery from the identity query itself throwing. Marketplace individual peer/source/current business-access binding and account-only history deletion remain unfinished. Personal push remains HARD_DISABLED. Staff credentials, production and the installed APK are untouched.

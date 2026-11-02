@@ -16,6 +16,7 @@ const state = vi.hoisted(() => ({
   queries: [] as { name: string; args: unknown }[],
   summary: undefined as unknown,
   status: undefined as unknown,
+  marketplaceStatus: undefined as unknown,
   focused: true,
   online: true,
   list: undefined as any,
@@ -31,7 +32,13 @@ vi.mock('convex/react', () => ({
   useQuery: (ref: Parameters<typeof getFunctionName>[0], args: unknown) => {
     const name = getFunctionName(ref);
     state.queries.push({ name, args });
-    return args === 'skip' ? undefined : name.endsWith(':state') ? state.status : state.summary;
+    return args === 'skip'
+      ? undefined
+      : name === 'marketplaceMessages:receiptState'
+        ? state.marketplaceStatus
+        : name.endsWith(':state')
+          ? state.status
+          : state.summary;
   },
 }));
 vi.mock('react-native', () => ({
@@ -97,6 +104,7 @@ beforeEach(() => {
   state.queries = [];
   state.summary = undefined;
   state.status = undefined;
+  state.marketplaceStatus = undefined;
   state.focused = true;
   state.online = true;
   state.list = undefined;
@@ -648,4 +656,114 @@ test('Marketplace observes only incoming buyer-side rows and never queries perso
     { messageIds: ['buyer'], observation: { expectedActorId: 'alice' } },
   ]);
   expect(state.queries.filter(call => call.name === 'messaging/receipts:state')).toEqual([]);
+});
+const marketSource = createMarketplaceReceiptAdapter(
+  {
+    actorId: 'alice',
+    conversationId: 'commerce',
+    storeId: 'store',
+    companyId: 'company',
+    context: { expectedActorId: 'alice', readGeneration: 3, authorityKey: 'v1:' + 'a'.repeat(64) },
+  },
+  async () => null,
+).marketplace!;
+test.each([null, undefined, 'sent', 'delivered', 'read'])(
+  'Marketplace aggregate %s replaces inline proof without querying personal IDs',
+  async value => {
+    state.status = 'read';
+    state.marketplaceStatus = value;
+    await act(async () =>
+      root.render(
+        <ReceiptMessageBubble
+          {...({
+            mine: true,
+            message: { id: 'team-message', senderId: 'employee', createdAt: 1, status: 'read' },
+            marketplace: marketSource,
+          } as never)}
+          receiptScope={initial}
+          receiptVisible
+        />,
+      ),
+    );
+    expect(host.textContent).toBe(value ?? '');
+    expect(
+      state.queries.filter(q => q.name === 'messaging/receipts:state' && q.args !== 'skip'),
+    ).toEqual([]);
+    expect(
+      state.queries.findLast(q => q.name === 'marketplaceMessages:receiptState')?.args,
+    ).toEqual({ ...marketSource, messageId: 'team-message' });
+  },
+);
+test.each([
+  { receiptVisible: false },
+  { mine: false },
+  { marketplace: null },
+  { message: { id: 'out', senderId: 'alice', createdAt: 1, status: 'pending', local: true } },
+  { message: { id: 'out', senderId: 'alice', createdAt: 1, deleted: true } },
+  { message: { id: 'out', senderId: 'alice', createdAt: 1, reportable: false } },
+])(
+  'Marketplace unready/incoming/local/deleted/restricted rows skip both receipt endpoints: %j',
+  async overrides => {
+    state.marketplaceStatus = 'read';
+    await act(async () =>
+      root.render(
+        <ReceiptMessageBubble
+          {...({
+            mine: true,
+            receiptVisible: true,
+            marketplace: marketSource,
+            receiptScope: initial,
+            message: { id: 'out', senderId: 'alice', createdAt: 1, status: 'read' },
+            ...overrides,
+          } as never)}
+        />,
+      ),
+    );
+    expect(state.queries.filter(q => q.args !== 'skip')).toEqual([]);
+    expect(host.textContent).not.toBe('read');
+  },
+);
+test('actual native Marketplace list queries only current visible outgoing rows and retires offline/background proof', async () => {
+  state.marketplaceStatus = 'delivered';
+  const adapter = createMarketplaceReceiptAdapter(
+    {
+      actorId: 'alice',
+      conversationId: 'commerce',
+      storeId: 'store',
+      context: marketSource.observation,
+    },
+    async () => null,
+  );
+  const rows = [listRows[0], { ...listRows[2], senderId: 'employee' }];
+  const draw = () =>
+    act(async () =>
+      root.render(
+        <MessageList
+          messages={rows}
+          myId="alice"
+          retry={() => {}}
+          read={async () => null}
+          delivered={async () => null}
+          exactReceipts={{ ...adapter, state: 'marketplace' } as never}
+        />,
+      ),
+    );
+  await draw();
+  expect(state.queries.filter(q => q.args !== 'skip')).toEqual([]);
+  await act(async () =>
+    state.list.onViewableItemsChanged({
+      viewableItems: rows.map(item => ({ isViewable: true, item })),
+    }),
+  );
+  expect(state.queries.filter(q => q.args !== 'skip').at(-1)).toEqual({
+    name: 'marketplaceMessages:receiptState',
+    args: { ...adapter.marketplace, messageId: 'mine' },
+  });
+  expect(host.textContent).toBe('delivered');
+  state.online = false;
+  await draw();
+  expect(host.textContent).toBe('');
+  expect(
+    state.queries.filter(q => q.name === 'messaging/receipts:state' && q.args !== 'skip'),
+  ).toEqual([]);
 });

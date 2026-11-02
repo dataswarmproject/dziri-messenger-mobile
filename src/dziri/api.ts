@@ -489,6 +489,7 @@ export const dziriApi = {
       viewerSide: 'buyer' | 'seller';
       receiptContext?: MarketplaceReceiptContext | null;
       receiptContactProofs?: 1;
+      receiptEvidence?: 1;
       writeContext?: MarketplaceWriteContext | null;
     } | null
   >('marketplaceMessages:getConversation'),
@@ -526,6 +527,11 @@ export const dziriApi = {
     },
     null
   >('marketplaceMessages:markConversationAsRead'),
+  commerceReceiptState: makeFunctionReference<
+    'query',
+    MarketplaceInboxSource & { messageId: string },
+    'sent' | 'delivered' | 'read' | null
+  >('marketplaceMessages:receiptState'),
   reactionInbox: makeFunctionReference<
     'query',
     MarketplaceInboxSource,

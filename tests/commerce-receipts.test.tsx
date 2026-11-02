@@ -14,6 +14,7 @@ const state = vi.hoisted(() => ({
   nextComposerInstance: 0,
   writeSupported: true,
   contactProofs: false,
+  receiptEvidence: false,
   contactKey: 'v1:' + 'b'.repeat(64),
   discard: vi.fn(async () => true),
   wire: vi.fn(async (_name: string, _args: unknown) => null),
@@ -29,6 +30,7 @@ vi.mock('convex/react', () => ({
         viewerSide: 'seller',
         receiptContext: state.context,
         receiptContactProofs: state.contactProofs ? 1 : undefined,
+        receiptEvidence: state.receiptEvidence ? 1 : undefined,
         writeContext: state.context
           ? {
               expectedActorId: state.context.expectedActorId,
@@ -113,6 +115,7 @@ beforeEach(() => {
   state.drafts = [];
   state.writeSupported = true;
   state.contactProofs = false;
+  state.receiptEvidence = false;
   state.contactKey = 'v1:' + 'b'.repeat(64);
   state.discard.mockClear();
   state.context = {
@@ -278,4 +281,17 @@ test('Marketplace legacy intent is held for review without sending or rebinding 
   expect(await state.composer.removeLocal('legacy')).toBe(true);
   expect(state.discard).toHaveBeenCalledExactlyOnceWith(state.drafts[0]);
   expect(state.wire).not.toHaveBeenCalled();
+});
+test('actual Commerce screen opts into aggregate status only with advertised evidence support', async () => {
+  state.receiptEvidence = true;
+  await render();
+  expect(state.props.exactReceipts.state).toBe('marketplace');
+  expect(state.props.exactReceipts.marketplace).toEqual({
+    conversationId: 'commerce',
+    storeId: 'store',
+    observation: state.context,
+  });
+  state.receiptEvidence = false;
+  await render();
+  expect(state.props.exactReceipts.state).toBe('inline');
 });

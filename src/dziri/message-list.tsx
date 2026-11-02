@@ -246,6 +246,11 @@ export function MessageList({
           return (
             <Bubble
               receiptScope={exactReceipts?.scope}
+              marketplace={
+                exactReceipts?.state === 'marketplace'
+                  ? (exactReceipts.marketplace ?? null)
+                  : undefined
+              }
               receiptVisible={enabled && viewable.has(item.id)}
               message={item}
               mine={item.status !== undefined || item.senderId === myId}

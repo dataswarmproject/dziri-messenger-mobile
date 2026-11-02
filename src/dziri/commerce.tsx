@@ -243,7 +243,10 @@ function Commerce({ route, navigation }: NativeStackScreenProps<MessengerRoutes,
       />
       <MessageList
         actionScope={localScope}
-        exactReceipts={{ ...receipts, state: 'inline' }}
+        exactReceipts={{
+          ...receipts,
+          state: detail.receiptEvidence === 1 ? 'marketplace' : 'inline',
+        }}
         reactionInbox={capabilities?.features?.reactionInbox === 1}
         reporting={capabilities?.features?.messageReporting === 1}
         reportStoreId={route.params.storeId}

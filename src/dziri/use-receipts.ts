@@ -42,7 +42,7 @@ export function useReceiptScope(
 export type ExactReceiptAdapter = {
   scope: ReceiptScope | null;
   send: (command: ReceiptCommand) => Promise<unknown>;
-  state?: 'inline';
+  state?: 'inline' | 'marketplace';
   marketplace?: MarketplaceInboxSource | null;
   observationId?: (id: string) => string | null;
   observationKey?: string;

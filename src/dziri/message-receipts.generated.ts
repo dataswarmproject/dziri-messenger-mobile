@@ -1,5 +1,16 @@
 export const RECEIPT_VIEW_AREA_PERCENT = 80;
 export const RECEIPT_READ_DWELL_MS = 500;
+export const RECEIPT_RETIRED_CODE = 'MESSENGER_RECEIPT_RETIRED';
+
+/** Structured transport data only; human-readable network errors remain retryable. */
+export function isRetiredReceiptObservation(error: unknown) {
+  if (!error || typeof error !== 'object' || !('data' in error)) return false;
+  const data = error.data;
+  return !!data && typeof data === 'object' && 'code' in data && data.code === RECEIPT_RETIRED_CODE;
+}
+export class RetiredReceiptObservation extends Error {
+  readonly data = Object.freeze({ code: RECEIPT_RETIRED_CODE });
+}
 
 /** Short items must fit completely; oversized items can fill the viewport. */
 export function receiptIsViewable(visible: number, item: number, viewport: number) {
@@ -144,7 +155,7 @@ export function createMarketplaceReceiptAdapter(
         !observation ||
         receiptScopeKey({ ...command, actorId: command.expectedActorId }) !== key
       )
-        throw new Error('Stale observation');
+        throw new RetiredReceiptObservation('Stale observation');
       let messageIds = command.messageIds;
       let contactObservations: MarketplaceReceiptPayload['contactObservations'];
       if (contactProofs) {
@@ -153,7 +164,7 @@ export function createMarketplaceReceiptAdapter(
           try {
             parts = JSON.parse(token);
           } catch {
-            throw new Error('Stale contact observation');
+            throw new RetiredReceiptObservation('Stale contact observation');
           }
           if (
             !Array.isArray(parts) ||
@@ -163,12 +174,12 @@ export function createMarketplaceReceiptAdapter(
             typeof parts[2] !== 'string' ||
             contacts.get(parts[1]) !== parts[2]
           )
-            throw new Error('Stale contact observation');
+            throw new RetiredReceiptObservation('Stale contact observation');
           return { messageId: parts[1], authorityKey: parts[2] };
         });
         messageIds = contactObservations.map(item => item.messageId);
         if (new Set(messageIds).size !== messageIds.length)
-          throw new Error('Stale contact observation');
+          throw new RetiredReceiptObservation('Stale contact observation');
       }
       return send(command.kind, {
         conversationId,
@@ -190,6 +201,7 @@ export function createReactionInboxObserver(
     key = '',
     active = false,
     disposed = false,
+    retired = false,
     version = 0,
     head: string | null = null,
     completed: string | null = null,
@@ -205,7 +217,16 @@ export function createReactionInboxObserver(
     completed = null;
   }
   function schedule(delay: number) {
-    if (disposed || !source || !active || !head || head === completed || flight || timer !== null)
+    if (
+      disposed ||
+      retired ||
+      !source ||
+      !active ||
+      !head ||
+      head === completed ||
+      flight ||
+      timer !== null
+    )
       return;
     const stamp = version;
     timer = setTimeout(() => {
@@ -226,8 +247,13 @@ export function createReactionInboxObserver(
           completed = result.more ? null : sentHead;
           schedule(0);
         })
-        .catch(() => {
+        .catch(error => {
           if (disposed || stamp !== version) return;
+          if (isRetiredReceiptObservation(error)) {
+            retired = true;
+            cancel();
+            return;
+          }
           flight = false;
           schedule(1000);
         });
@@ -238,6 +264,7 @@ export function createReactionInboxObserver(
       if (disposed) return;
       const nextKey = marketplaceInboxKey(next),
         nextActive = !!next && enabled;
+      if (key !== nextKey) retired = false;
       if (key !== nextKey || active !== nextActive) cancel();
       key = nextKey;
       source = next ? { ...next, observation: { ...next.observation } } : null;
@@ -274,6 +301,7 @@ export function createReceiptObserver(send: (command: ReceiptCommand) => Promise
   let scope: ReceiptScope | null = null,
     active = false,
     disposed = false,
+    retired = false,
     stamp = 0;
   let received = new Set<string>(),
     visible = new Set<string>(),
@@ -298,7 +326,7 @@ export function createReceiptObserver(send: (command: ReceiptCommand) => Promise
     }
   }
   function drive(kind: Kind) {
-    if (disposed || !active || !scope || flights[kind] || retries[kind] !== null) return;
+    if (disposed || retired || !active || !scope || flights[kind] || retries[kind] !== null) return;
     const candidates =
       kind === 'read'
         ? [...ready].filter(id => visible.has(id) && !blocked.has(id))
@@ -329,8 +357,13 @@ export function createReceiptObserver(send: (command: ReceiptCommand) => Promise
         flights[kind] = null;
         drive(kind);
       })
-      .catch(() => {
+      .catch(error => {
         if (disposed || stamp !== version || flights[kind] !== token) return;
+        if (isRetiredReceiptObservation(error)) {
+          retired = true;
+          cancel();
+          return;
+        }
         flights[kind] = null;
         retries[kind] = setTimeout(() => {
           retries[kind] = null;
@@ -339,7 +372,7 @@ export function createReceiptObserver(send: (command: ReceiptCommand) => Promise
       });
   }
   function observe() {
-    if (disposed || !active || !scope) return;
+    if (disposed || retired || !active || !scope) return;
     for (const id of visible) {
       if (known.read.has(id) || ready.has(id) || blocked.has(id) || dwell.has(id)) continue;
       const version = stamp;
@@ -373,6 +406,7 @@ export function createReceiptObserver(send: (command: ReceiptCommand) => Promise
       if (!changed && !revision && active === nextActive) return;
       const wasActive = active;
       cancel();
+      if (changed || revision) retired = false;
       if (changed) {
         known.read.clear();
         known.delivered.clear();

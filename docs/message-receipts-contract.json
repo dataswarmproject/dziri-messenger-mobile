@@ -1,6 +1,6 @@
 {
   "version": 1,
   "source": "packages/shared/src/messenger-receipts.ts",
-  "sourceSha256": "c8873d616f70d0730b4699d2af9969f9e1936803744ea66b602dc12098a4bd1e",
-  "sha256": "17b78f5f0488c5dacfbd54bcebcef09f0d18249a61da66db7a2b9b64672668ea"
+  "sourceSha256": "f89e3bad25337b7ed7429f8a11b85620bc694d8fba48cc0c8c7d1ea2f5840815",
+  "sha256": "986c6c91ac372a20a0f8ebf8423c7885f2094cfb3b6eac64c28381952e5cb4d8"
 }

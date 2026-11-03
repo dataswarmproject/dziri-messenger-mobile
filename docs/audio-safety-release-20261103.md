@@ -1,0 +1,13 @@
+# Compact audio and individual Marketplace safety
+
+DM and Consumer now share compact monochrome voice-player geometry, a circular play/pause control, seekable segmented progress and aligned elapsed/total time. Playback remains left to right in Arabic. The segments show actual playback position rather than inferred audio amplitude.
+
+Marketplace Block/Unblock confirms the verified individual account, with matching EN/FR/AR copy and current account/source/decision constraints. Store colleagues remain independent. Account changes, cancelled preparation, stale results and source updates before acknowledgement are covered. Open-row mute labels update when their private deadline expires. Personal push remains HARD_DISABLED and staff credentials stay isolated.
+
+Native runtime `e8ad8fe01b479a52b1d11689990467137ce9f4a7` is packaged from documentation head `822f7a2a04e0e89d58a2f52213fc2c44c858dac8`. The unchanged 1,016 native/builder inputs match the qualified export. The backend is published and verified at platform commit `9886e882017b4f6f8ce0aac493fc494b38c6f05a`: three private consistency indexes are ready, the four expected endpoints are registered, and existing functions and all 140 scheduled jobs are retained. The platform's normal Consumer build passes with 3,703 exact inputs; its merged UI suite passes 1,083 cases. Native UI374, selected domain28, types/lint/consistency and all-platform exports pass their recorded scopes.
+
+The offline ARM64 APK builds successfully in the existing stable builder. Package `com.dziri.messenger`, launcher label DM, version0.1.0/code1, non-debuggable metadata and the existing development signing certificate are verified. Permissions are unchanged. Its embedded bundle contains the production Convex URL and new scoped safety endpoints, and excludes the synthetic qualification URL. The previous verified APK is retained under the stable module's `outputs/apk/checkpoints` folder.
+
+APK SHA-256: `cf86432b291205dd2182a7b9307c97a6479cc29a44dcf4c714573828be1c7eae`, 48,671,192 bytes. Private Drive delivery is verified by owner-only permission readback and an independent streamed byte/SHA-256 match. The private link is provided to the owner in the task; no public sharing or store publication is created.
+
+This is a qualified private build and release checkpoint. Installation, authenticated two-account, physical-device, complete recovery/RTL/accessibility and web-domain rollout acceptance remain separately recorded gates. Account-only Marketplace history deletion and the rest of the full 92-feature/45-screen/14-flow plan remain unfinished; all 151 classifications stay intact. No provider/background activation, new permission or live message/report/story/moderator action is introduced.
